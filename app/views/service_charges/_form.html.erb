@@ -1,0 +1,22 @@
+<%= form_with(model: service_charge, local: true) do |form| %>
+  <% if service_charge.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(service_charge.errors.count, "error") %> prohibited this service_charge from being saved:</h2>
+
+      <ul>
+        <% service_charge.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :water_price %>
+    <%= form.text_field :water_price %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

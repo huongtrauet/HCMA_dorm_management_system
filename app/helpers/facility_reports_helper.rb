@@ -1,0 +1,2 @@
+module FacilityReportsHelper
+end

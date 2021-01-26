@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Service Charges</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Water price</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @service_charges.each do |service_charge| %>
+      <tr>
+        <td><%= service_charge.water_price %></td>
+        <td><%= link_to 'Show', service_charge %></td>
+        <td><%= link_to 'Edit', edit_service_charge_path(service_charge) %></td>
+        <td><%= link_to 'Destroy', service_charge, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Service Charge', new_service_charge_path %>

@@ -1,0 +1,9 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user_duty_id: 1
+  user_duty_type: 
+
+two:
+  user_duty_id: 1
+  user_duty_type: 

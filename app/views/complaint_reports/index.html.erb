@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Complaint Reports</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @complaint_reports.each do |complaint_report| %>
+      <tr>
+        <td><%= complaint_report.title %></td>
+        <td><%= link_to 'Show', complaint_report %></td>
+        <td><%= link_to 'Edit', edit_complaint_report_path(complaint_report) %></td>
+        <td><%= link_to 'Destroy', complaint_report, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Complaint Report', new_complaint_report_path %>

@@ -1,0 +1,67 @@
+validations:
+  student:
+    password:
+      min_length: 6
+    student_id_number:
+      min_length: 7
+      max_length: 12
+  complaint_reports:
+    title:
+      min_length: 5
+      max_length: 500
+    description:
+      min_length: 5
+      max_length: 1000
+  facility:
+    name:
+      max_length: 100
+    description:
+      max_length: 1000
+      min_length: 5
+  facility_reports:
+    title:
+      min_length: 5
+      max_length: 500
+    description:
+      min_length: 5
+      max_length: 1000
+  form_request:
+    description:
+      min_length: 5
+      max_length: 1000
+  manager:
+    email:
+      regex: !ruby/regexp '/\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i'
+    phone_number:
+      regex: !ruby/regexp /(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}/
+  notification:
+    message:
+      max_length: 1000
+  room:
+    room_name:
+      max_length: 100
+  service_charge:
+    water_price:
+      minimum: 0
+    electricity_price:
+      minimum: 0
+    total_price:
+      minimum: 0
+  student_profile:
+    name:
+      max_length: 50
+    email:
+      regex: !ruby/regexp '/\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i'
+      max_length: 255
+    identity_number:
+      min_length: 9
+      max_length: 12
+      regex: !ruby/regexp /\A[0-9]*\z/
+    phone_number:
+      regex: !ruby/regexp /(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}/
+    class_name:
+      min_length: 3
+      max_length: 20
+    address:
+      min_length: 5
+      max_length: 500
