@@ -1,0 +1,31 @@
+.student_header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 3000;
+  background-color: #ffffff;
+  border-bottom:  solid rgba(34,36,38,.15);
+  .ui.secondary.pointing.menu {
+    border: none !important;
+    height: 4rem;
+    width: 80%;
+    margin: 0 auto;
+    a {
+      height: 100%;
+    }
+    input, .text {
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+  .right.menu{
+    width: 40%;
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 3em;
+  }
+  .ui.labeled.icon.button {
+    padding-left: 1em !important;
+  }
+}

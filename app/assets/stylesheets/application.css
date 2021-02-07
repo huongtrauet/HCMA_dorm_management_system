@@ -13,3 +13,15 @@
  *= require_tree .
  *= require_self
  */
+
+ *, html {
+  font-family: 'Quicksand', sans-serif !important;
+ }
+ .student_layout {
+   background-color: #f9f9f9;
+   height: 100%;
+   overflow: auto;
+ }
+ a:hover {
+   background-color: #ffffff;
+ }

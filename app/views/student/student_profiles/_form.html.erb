@@ -1,0 +1,117 @@
+<div class="student_profile_form">
+  <div class= "container">
+    <div class="profile_content">
+      <div class="ui grid">
+        <div class="five wide column">
+          <div class="left_column">
+            <div class="ava">
+              <div class="ava_image">
+                <img class="ui medium circular image" src="/assets/ava.jpg">
+              </div>
+              <div class="ava_icon">
+                <button class="ui icon button">
+                  <i class="edit outline icon"></i>
+                </button>
+                <button class="ui icon button">
+                  <i class="trash alternate outline icon"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="eleven wide column">
+          <div class="right_column">
+            <h3 class="ui dividing header">
+              Student Information
+            </h3>
+            <%= form_for [:student, @student_profile], html: { class: "ui form" } do |f| %>
+                <% if @student_profile.errors.any? %>
+                  <div id="error_explanation">
+                    <h2><%= pluralize(student_profile.errors.count, "error") %> prohibited this student_profile from being saved:</h2>
+                    <ul>
+                      <% student_profile.errors.full_messages.each do |message| %>
+                        <li><%= message %></li>
+                      <% end %>
+                    </ul>
+                  </div>
+                <% end %>
+                <div class="required field field_line">
+                  <%= f.label :name %>
+                  <%= f.text_field :name, class: "input", required: true, placeholder: "Full name" %>
+                </div>
+                <div class="required field field_line">
+                  <div class="two fields">
+                    <div class="required field">
+                      <label>Class name</label>
+                      <%= f.text_field :class_name, class: "input", required: true, placeholder: "Class name" %>
+                    </div>
+                    <div class="required field">
+                      <label>Email</label>
+                      <%= f.text_field :email, class: "input", required: true, placeholder: "Email" %>
+                    </div>
+                  </div>
+                </div>
+                <div class="fields field_line">
+                  <div class="required eight wide field">
+                    <label>Identity Card Number</label>
+                    <%= f.text_field :identity_card_number, class: "input",  required: true, maxlength: "16", placeholder: "Identity card number" %>
+                  </div>
+                  <div class="required eight wide field">
+                    <label>Date of Birth</label>
+                    <%= f.date_field :date_of_birth, class: "input date", data: {provide: "datepicker"}, required: true%>
+                  </div>
+                </div>
+                <div class="required field field_line">
+                  <label>Address</label>
+                  <%= f.text_field :address, class: "input", required: true, placeholder: "Address" %>
+                </div>
+                <div class="field field_line">
+                  <div class="two fields">
+                    <div class="required field">
+                      <label>Phone number</label>
+                      <%= f.text_field :phone_number, class: "input", required: true, placeholder: "Phone number" %>
+                    </div>
+                    <%# <div class="required field">
+                      <label for="gender">Select your gender</label>
+                      <div class="inline fields">
+                        <div class="field gender_field">
+                          <div class="ui radio checkbox">
+                            <input type="radio" name="gender" checked="" tabindex="0" class="hidden">
+                            <label>Male</label>
+                          </div>
+                        </div>
+                        <div class="field gender_field">
+                          <div class="ui radio checkbox">
+                            <input type="radio" name="gender" tabindex="0" class="hidden">
+                            <label>Female</label>
+                          </div>
+                        </div>
+                      </div>
+                    </div> %>
+                    <div class="field">    
+                      <%= f.label :gender %></br>
+                      <span class="option">Male<span><%= f.radio_button :gender, 'nam' %></br>
+                      <span class="option">Female<span><%= f.radio_button :gender, 'nu' %></br>
+                    </div>
+                  </div>
+                </div>
+                <div class="ui dividing header">
+                  Confirmation
+                </div>
+                <div class="ui checkbox">
+                  <input type="checkbox" name="example">
+                  <label>You are sure that the information above is correct</label>
+                </div>
+                <div class="field" style="float: right; margin-top: 4em">
+                  <%= f.submit "Cancel", class: "ui primary button right"%>
+                  <%= f.submit "Save change", class: "ui primary button right"%>
+                </div>
+              <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+</script>

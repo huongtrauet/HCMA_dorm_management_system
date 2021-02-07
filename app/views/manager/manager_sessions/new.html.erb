@@ -1,0 +1,40 @@
+<% provide :title, t(".title") %>
+<div class="container manager_session new">
+  <div class="ui grid">
+    <div class="eight wide column">
+      <div class="right_column">
+        <div class="hcma_logo">
+          <img class="logo_image" style=""src="/assets/hcma logo.png"/>
+        </div>
+        <div class="title">
+         Login to dormitory
+        </div>
+        <%= form_for :manager_session, class: "ui form", url: manager_login_path do |f| %>
+          <div class="ui left icon input">
+            <%= f.text_field :email, class: "input", required: true, placeholder: "Email" %>
+            <i class="icon" style="left: 20px;">
+              <img class="icon" src="/assets/email.png" style="width: 1.5rem; height: 1.5rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+            </i>
+          </div>
+          <div class="field ui left icon input">
+            <%= f.password_field :password, class: "input", required: true, placeholder: "Password" %>
+            <i class="icon" style="left: 20px;">
+              <img class="icon" src="/assets/padlock.png" style="width: 1.5rem; height: 1.5rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+            </i>
+          </div>
+           <%= f.label :remember_me, class: "checkbox inline", style: "margin-top: 1rem; margin-left: 2.6rem;" do %>
+              <%= f.check_box :remember_me %>
+              <span>Remember </span>
+            <% end %>
+          <div style="text-align: center; margin-top: 1.5rem">
+            <%= f.submit "Submit", class: "ui inverted brown button manager_login_submit", style: "width: 10rem; color: #f4810b;"%>
+          </div>
+          <%# <button class="ui inverted primary button">Primary</button> %>
+        <% end %>
+      </div>
+    </div>
+    <div class="eight wide column" style="padding-right: 5rem">
+      <img class="ui image" style="height: 100vh; width: 100%" src="/assets/manager_login.svg"/>
+    </div>
+  </div>
+</div>

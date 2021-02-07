@@ -1,9 +1,11 @@
 class Student < ApplicationRecord
-  belongs_to :room, dependent: :destroy
+  attr_accessor :remember_token
+  belongs_to :room
   has_one :student_profile, dependent: :destroy
-  has_many :form_requests, dependent: :destroy
-  has_many :complaint_reports, dependent: :destroy
-  has_many :facility_reports, dependent: :destroy
+  accepts_nested_attributes_for :student_profile, update_only: true, allow_destroy: true
+  has_many :form_requests, class_name: FormRequest.name, foreign_key: :requester_id, dependent: :destroy
+  has_many :complaint_reports, class_name: ComplaintReport.name,foreign_key: :reporter_id, dependent: :destroy
+  has_many :facility_reports, class_name: FacilityReport.name, foreign_key: :reporter_id, dependent: :destroy
 
   has_many :passive_notifications, class_name: Notification.name,
     foreign_key: :sender_id,
@@ -34,4 +36,33 @@ class Student < ApplicationRecord
   validates :check_out_date, presence: true, allow_nil: true
 
   has_secure_password
+
+  def Student.new_token
+    SecureRandom.urlsafe_base64
+  end
+
+  class << self
+    def digest(string)
+      cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
+                                                      BCrypt::Engine.cost
+      BCrypt::Password.create(string, cost: cost)
+    end
+
+    def new_token
+      SecureRandom.urlsafe_base64
+    end
+  end
+  def remember
+    self.remember_token = Student.new_token
+    update_attribute(:remember_digest, Student.digest(remember_token))
+  end
+
+  def authenticated?(remember_token)
+    return false if remember_digest.nil?
+    BCrypt::Password.new(remember_digest).is_password?(remember_token)
+  end
+  
+  def forget
+    update_attribute(:remember_digest, nil)
+  end
 end

@@ -1,3 +1,28 @@
 // Place all the styles related to the ComplaintReports controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: https://sass-lang.com/
+.complaint_report_index {
+  width: 70%;
+  margin: 0 auto;
+}
+
+.complaint_report_list {
+  table {
+    margin-top: 1em;
+    tbody tr{
+      text-align: center;
+    }
+    thead tr {
+      text-align: center;
+    }
+  }
+  .ui.dividing.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2em;
+    .add_btn {
+      cursor: pointer;
+    }
+  }
+}

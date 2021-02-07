@@ -1,0 +1,52 @@
+<p id="notice"><%= notice %></p>
+<div class="request_show">
+  <div class="ui grid">
+    <div class="four wide column" style="padding-top: 5em">
+      <%= render "student/requests/request_sidebar" %>
+    </div>
+    <div class="twelve wide column">
+      <div class="" id="facility_report">
+        <%= render "student/facility_reports/facility_report_list" %>
+      </div>
+      <div class="" id="complaint_report" style="display: none">
+        <%= render "student/complaint_reports/complaint_report_list" %>
+      </div>
+      <div class="" id="form_request" style="display: none">
+        <%= render "student/form_requests/form_request_list" %>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  const facilityReportBtn = document.querySelector('#facility_report_btn')
+  const complaintBtn = document.querySelector('#complaint_report_btn')
+  const formBtn = document.querySelector('#form_request_btn')
+  const facilityReportList = document.querySelector('#facility_report')
+  const complaintReportList = document.querySelector('#complaint_report')
+  const formRequestList = document.querySelector('#form_request')
+
+  facilityReportBtn.onclick = () => {
+    facilityReportList.style.display = 'block'
+    complaintReportList.style.display = 'none'
+    formRequestList.style.display = 'none'
+    facilityReportBtn.classList.add('active')
+    complaintBtn.classList.remove('active')
+    formBtn.classList.remove('active')
+  }
+  complaintBtn.onclick = () => {
+    facilityReportList.style.display = 'none'
+    complaintReportList.style.display = 'block'
+    formRequestList.style.display = 'none'
+    formBtn.classList.remove('active')
+    complaintBtn.classList.add('active')
+    facilityReportBtn.classList.remove('active')
+  }
+  formBtn.onclick = () => {
+    facilityReportList.style.display = 'none'
+    complaintReportList.style.display = 'none'
+    formRequestList.style.display = 'block'
+    facilityReportBtn.classList.remove('active')
+    complaintBtn.classList.remove('active')
+    formBtn.classList.add('active')
+  }
+</script>

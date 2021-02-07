@@ -1,0 +1,63 @@
+
+<p id="notice"><%= notice %></p>
+<div class="room_show">
+
+  <div class="ui grid">
+    <div class="four wide column" style="padding-top: 5em">
+      <%= render "student/rooms/room_sidebar" %>
+    </div>
+    <div class="twelve wide column">
+      <p>
+        <strong>Room:</strong>
+        <%= @room.room_name %>
+      </p>
+      <div id="room_service_charge">
+        <%= render "student/service_charges/service_charge_list" %>
+      </div>
+      <div id="room_facility">
+        <%= render "student/facilities/facilities_list" %>
+      </div>
+      <div id="room_member">
+        <%= render "student/rooms/member" %>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  const memberBtn = document.querySelector('#room_member_btn')
+  const serviceBtn = document.querySelector('#room_service_charge_btn')
+  const facilityBtn = document.querySelector('#room_facility_btn')
+  const memberList = document.querySelector('#room_member')
+  const serviceList = document.querySelector('#room_service_charge')
+  const facilityList = document.querySelector('#room_facility')
+
+
+  memberList.style.display = 'block'
+  serviceList.style.display = 'none'
+  facilityList.style.display = 'none'
+
+  memberBtn.onclick = () => {
+    memberList.style.display = 'block'
+    serviceList.style.display = 'none'
+    facilityList.style.display = 'none'
+    memberBtn.classList.add('active')
+    serviceBtn.classList.remove('active')
+    facilityBtn.classList.remove('active')
+  }
+  serviceBtn.onclick = () => {
+    memberList.style.display = 'none'
+    serviceList.style.display = 'block'
+    facilityList.style.display = 'none'
+    memberBtn.classList.remove('active')
+    serviceBtn.classList.add('active')
+    facilityBtn.classList.remove('active')
+  }
+  facilityBtn.onclick = () => {
+    memberList.style.display = 'none'
+    serviceList.style.display = 'none'
+    facilityList.style.display = 'block'
+    memberBtn.classList.remove('active')
+    serviceBtn.classList.remove('active')
+    facilityBtn.classList.add('active')
+  }
+</script>

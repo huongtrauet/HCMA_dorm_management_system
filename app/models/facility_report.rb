@@ -1,5 +1,5 @@
 class FacilityReport < ApplicationRecord
-  belongs_to :reporter, dependent: :destroy
+  belongs_to :reporter, class_name: Student.name, foreign_key: :user_id, dependent: :destroy
   validates :title, presence: true,
               length: {
                 minimum: Settings.validations.facility_reports.title.min_length,

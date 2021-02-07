@@ -1,0 +1,171 @@
+<div class="container">
+  <div class="students_arrangement main" style="height: 100%">
+      <div class="ui grid" style="height: 100%; overflow: hidden">
+        <div class="four wide column left" style="background-color: #edeff1; overflow: auto; height: calc(100vh - 58.72px)">
+          <div class="title" style="margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center">
+            <div style="font-weight: bold; font-size: 1rem">Room list: </div>
+            <div style="background-color: #d8d8d8; border-radius:0.5rem; cursor: pointer; width: 2rem; height: 2rem; display: flex;justify-content: center;align-items: center;">
+              <img src="/assets/search.png" style="width: 1rem; height: 1rem">
+            </div>
+            <form class="ui fluid form" style= "width: 0; display: none">
+              <div class="field">
+                <input typetext" placeholder="First name">
+                <div class="ui pointing red basic label">
+                  Please enter a value
+                </div>
+              </div>
+            </form>
+          </div>
+          <% for i in 0..4 do %>
+            <div class="room_item" style="background-color: white" >
+              <div class="ui grid ">
+                <div class="seven wide column">
+                  <div class="room_progress">
+                    <div class=" ui indicating progress" data-percent="40" id="example1">
+                      <div class="bar"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="five wide column">
+                </div>
+                <div class="four wide column">
+                  <button style="background-color: #d8d8d8; border-radius:0.5rem; cursor: pointer; width: 1.5rem; height: 1.5rem; display: flex;justify-content: center;align-items: center; border: none;">
+                    <img src="/assets/close.png" style="width: 0.7rem; height: 0.7rem">
+                  </button>
+                </div>
+              </div>
+              <div class="room_content">
+                <div class="date" style="height: 50%; padding-top: 0.7rem;">
+                  <h3>VIP</h3>
+                </div>
+                <div class="room_name" style="height: 50%">
+                  <h2 style="color: #787878;">P1010</h2>
+                </div>
+              </div>
+              <div class="line"></div>
+              <div class="room_footer">
+                <div class="ui grid">
+                  <div class="four wide column" style= "display: flex">
+                    <img src="/assets/mars.png" style="height: 1.1rem; width: 1.1rem; margin-right: 0.4rem;"/>
+                    <span>Nam</span>
+                  </div>
+                  <div class="three wide column" style="display: flex">
+                    <img src="/assets/group.png" style="width: 1.5rem; margin-right: 0.2rem "/>
+                    <span>6</span>
+                  </div>
+                  <div class="four wide column" style="">
+
+                  </div>
+                  <div class="five wide column" style="">
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+        <div class="eight wide column center" style="background-color: white; height: calc(100vh - 58.72px)">
+          <div class="room_detail" style="margin-top: 5rem">
+            <div class="ui grid">
+              <div class="seven wide column">
+                <div class="">
+                  <p style="font-size: 4rem; margin-bottom: 0.7rem;">P1010</p>
+                  <p style="font-size: 1.5rem"><b>VIP</b></p>
+                </div>
+                <div class="ui grid" style="margin-top: 0.5rem"> 
+                  <div class="ten wide column" style="font-style: italic; font-size: 1.1rem"> Number of member</div>
+                  <div class="five wide column" style="font-style: italic; font-size: 1.1rem">6/10</div>
+                </div>
+                <div class="ui grid" style="margin-top: 0.1rem">
+                  <div class="ten wide column" style="font-style: italic; font-size: 1.1rem">Phong danh cho</div>
+                  <div class="five wide column" style="font-style: italic; font-size: 1.1rem">Nam</div>
+                </div>
+              </div>
+              <div class="nine wide column">
+                <img src="/assets/teamwork.svg" style="width: 100%"/>
+              </div>
+            </div>
+          </div>
+          <div class="room_member" style="margin-top: 3rem; height: 100%" >
+            <div class="room_member_title">
+              <h3>Room member:</h3>
+            </div>
+            <div  style= "margin-top: 2rem; height: 100%; width: 100%;"  ondrop="drop(event)" ondragover="allowDrop(event)">
+               <div class="room_member_list ui grid"></div>
+            </div>
+          </div>
+        </div>
+        <div class="four wide column right" style="background-color: #edeff1; overflow: auto; height: calc(100vh - 58.72px)">
+          <div class="header" style="margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center">
+          <div style="font-weight: bold; font-size: 1rem">Student list: </div>
+            <div style="background-color: #d8d8d8; border-radius:0.5rem; cursor: pointer; width: 2rem; height: 2rem; display: flex;justify-content: center;align-items: center;">
+              <img src="/assets/search.png" style="width: 1rem; height: 1rem">
+            </div>
+            <form class="ui fluid form" style= "width: 0; display: none">
+              <div class="field">
+                <input typetext" placeholder="First name">
+                <div class="ui pointing red basic label">
+                  Please enter a value
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="students_list" ondrop="dropRevert(event)" ondragover="allowDrop(event)" style="height: calc(100vh - 58.72px)">
+            <% for i in 0..6 do%>
+              <div class="students_item" id="student_<%= i %>" draggable="true" ondragstart="drag(event)" style="background-color: white; position:relative; height: 9rem">
+                <div class="ui grid" >
+                  <button style="background-color: #d8d8d8; border-radius:0.5rem; cursor: pointer; width: 1.5rem; height: 1.5rem; display: flex;justify-content: center;align-items: center; border: none; position: absolute; right: 1rem; top: 0.5rem;">
+                    <img src="/assets/close.png" style="width: 0.7rem; height: 0.7rem">
+                  </button>
+                  <div class="three wide column avatar" style="">
+                    <img src="/assets/ava.jpg" style="width: 2.5rem; height: 2.5rem; border-radius: 50%">
+                  </div>
+                  <div class="thirteen wide column student_information" style="">
+                    <h4>Nguyen Thi Huong Tra</h4>
+                    <div class="ui grid">
+                      <div class="six wide column" style="display: flex">
+                        <img src="/assets/presentation.png" style="width: 1.2rem; height: 1.2rem; margin-right: 1rem">
+                        <p><b>K62J</b></p>
+                      </div>
+                      <div class="ten wide column" style="display: flex">
+                        <img src="/assets/calendar.png" style="width: 1.2rem; height: 1.2rem; margin-right: 1rem"/>
+                        <p><b>21/11/1999</b></p>
+                      </div>
+                    </div>
+                    <p style="margin-top: 0.5rem"><b>Ngay vao: 20/11/2017</b></p>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+<script>
+  $('#example1').progress();
+  function allowDrop(ev) {
+    ev.preventDefault();
+  }
+
+  function drag(ev) {
+    ev.dataTransfer.setData("text", ev.target.id);
+  }
+
+  function drop(ev) {
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("text");
+    var count = document.querySelector('.room_member_list').childElementCount;
+    if(count < 6){
+      document.querySelector('.room_member_list').appendChild(document.getElementById(data));
+      // console.log(data)
+      document.querySelector(`#${data}`).classList.add("eight", "wide","column");
+    }
+  }
+  function dropRevert(ev){
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("text");
+    document.querySelector('.students_list').appendChild(document.getElementById(data));
+    document.querySelector(`#${data}`).classList.remove("eight", "wide", "column");
+
+  }
+</script>

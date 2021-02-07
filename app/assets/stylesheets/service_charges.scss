@@ -1,3 +1,11 @@
 // Place all the styles related to the ServiceCharges controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: https://sass-lang.com/
+.service_charge_list {
+  .title {
+    margin-bottom: 1em;
+  }
+  th,td {
+    text-align: center !important;
+  }
+}

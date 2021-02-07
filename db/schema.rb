@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_26_081427) do
+ActiveRecord::Schema.define(version: 2021_02_02_180303) do
 
   create_table "complaint_reports", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "title", null: false
@@ -56,6 +56,8 @@ ActiveRecord::Schema.define(version: 2021_01_26_081427) do
     t.string "phone_number", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "password_digest"
+    t.string "remember_digest"
     t.index ["email"], name: "index_managers_on_email", unique: true
   end
 
@@ -115,6 +117,7 @@ ActiveRecord::Schema.define(version: 2021_01_26_081427) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "room_id", default: 1, null: false
     t.string "password_digest"
+    t.string "remember_digest"
     t.index ["room_id"], name: "index_students_on_room_id"
     t.index ["student_id_number"], name: "index_students_on_student_id_number", unique: true
   end

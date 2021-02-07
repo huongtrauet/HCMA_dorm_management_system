@@ -1,0 +1,65 @@
+  <div class="student_header">
+    <div class="ui secondary pointing menu">
+      <%= link_to "Home", "/students" %>
+      <div class="right menu">
+        <%= link_to "Home", "/students", class: "item", id: "home_path", data: { turbolinks: false } %>
+        <% if logged_in? %>
+          <%= link_to "Profile", student_student_profiles_path, class: "item", id: "student_student_profiles_path", data: { turbolinks: false } %>
+          <%= link_to "Request", student_requests_path, class: "item", id: "student_requests_path", data: { turbolinks: false } %>
+          <div class="ui floating labeled icon dropdown button" style="position: relative; background-color: #ffffff" id="noti_button" >
+            <img src="/assets/bell.png" style="width: 1.5rem; height: 1.5rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)" onclick="showNotiList()"/>
+            <div class="floating ui red label" style="top: 0.5rem; left: 1.5rem; padding: 0.3rem; border-radius: 0.2rem;">22</div>
+            <div class="menu">
+              <div class="item noti_item" style="width: 20rem; height: 4.5rem">
+                Important
+              </div>
+              <div class="item noti_item" style="width: 20rem; height: 4.5rem">
+                Announcement
+              </div>
+              <div class="item noti_item" >
+                <p style="width: 17rem; height: 4.5rem; overflow: hidden;text-overflow: ellipsis;word-wrap: break-word;-webkit-line-clamp: 2;-webkit-box-orient: vertical;line-height: 2.25rem;  white-space: pre-wrap;"
+   >Discussio nDi scussionDis cussio nDiscu ssionDiscuss ionDiscussionDiscuss ionDiscussionDiscussionDiscussionDiscussionDiscussion</p>
+              </div>
+            </div>
+          </div>
+        <% else %>
+          <%= link_to "Login", student_login_path, class: "item", id: "student_login_path", data: { turbolinks: false } %>
+        <% end %>
+        <div class="ui floating dropdown labeled search icon button" id="language_dropdown" style="background-color: #ffffff">
+          <span class="text">
+            <% if I18n.locale == :en %>
+              <%= t(".english") %>
+            <% else %>
+              <%= t(".vienamese") %>
+            <% end %>
+          </span>
+          <div class="menu" style="z-index: 3000">
+            <%= link_to t(".english"), {locale:"en"}, class: "item", data: { turbolinks: false } %>
+            <%= link_to t(".vienamese"), {locale:"vi"}, class: "item",  data: { turbolinks: false } %>
+          </div>
+        </div>
+        <% if logged_in? %>
+          <%= link_to t(".logout"), student_logout_path, class: "item", data: { turbolinks: false } %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<script>
+  $(document).on('click', '#language_dropdown', function(){
+    $('#language_dropdown').dropdown('show');
+  });
+  const current_url = window.location.pathname
+  if (current_url.indexOf("/student/requests") != -1) {
+    $("#student_requests_path").addClass("active");
+  }
+  else if (current_url.indexOf("/student/student_profiles") != -1){
+    $("#student_student_profiles_path").addClass("active");
+  }
+  else if (current_url.indexOf("students") != -1){
+    $("#home_path").addClass("active");
+  }
+    
+  function showNotiList(){
+    $('#noti_button').dropdown();
+  }
+</script>

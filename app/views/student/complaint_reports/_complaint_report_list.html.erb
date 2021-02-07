@@ -1,0 +1,69 @@
+<div class="complaint_report_list">
+  <div class="ui dividing header">
+    <h3 class="" >Complaint Report</h3>
+    <div class="add_btn" onclick="addNewComplaintReport()">
+      <img src="/assets/add.png" style="width: 1.5em; height: 1.5em; margin-right: 2.5em">
+    </div>
+  </div>
+  <table class="ui very basic table selectable">
+    <thead>
+      <tr>
+        <th>STT</th>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for i in 0..5 do %>
+        <tr onclick="viewMoreComplaintReport()">
+          <td>1</td>
+          <td>Ve an ninh KTX</td>
+          <td>KTX quan ly long leo</td>
+          <td>
+            <a class="ui teal tag label">Pending</a>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <div class="ui modal new_complaint_report">
+    <div class="header">New complaint report</div>
+    <div class="content">
+      <div class="ui form">
+        <div class="field">
+          <label>Title</label>
+          <input type="text" placeholder="Enter title">
+        </div>
+      </div>
+      <div class="ui form">
+        <div class="field">
+          <label>Description</label>
+          <textarea placeholder="Enter description"></textarea>
+        </div>
+      </div>
+      <button class="ui primary basic button" style="margin: 1rem 0; float: right">Primary</button>
+    </div>
+  </div>
+
+  <div class="ui small test modal transition" id="complaint_report_detail">
+    <div class="header">
+      Title
+    </div>
+    <div class="content">
+      Description
+    </div>
+    <div class="footer">
+      <button class="ui primary basic button" style="margin: 1rem; float: right">Primary</button>
+    </div>
+  </div>
+</div>
+<script>
+  function addNewComplaintReport(){
+    $('.new_complaint_report').modal('show');
+  }
+  function viewMoreComplaintReport(){
+    $('#complaint_report_detail').modal('show');
+  }
+</script>

@@ -1,0 +1,16 @@
+<p id="notice"><%= notice %></p>
+<div class="facility_report_index">
+  <div class="ui grid">
+    <div class="four wide column" style="padding-top: 5em">
+      <%= render "student/requests/request_sidebar" %>
+    </div>
+    <div class="twelve wide column">
+      <div class="" id="facility_report">
+        <%= render "student/facility_reports/facility_report_list" %>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $("#facility_report_btn").addClass("active");
+</script>

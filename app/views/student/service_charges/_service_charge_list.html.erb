@@ -1,0 +1,35 @@
+<div class="service_charge_list">
+  <h3 class="ui dividing header">
+    Service charges
+  </h3>
+  <table class="ui very basic table">
+    <thead>
+      <tr>
+        <th>STT</th>
+        <th>Thang</th>
+        <th>Tien dien</th>
+        <th>Tien nuoc</th>
+        <th>Tong</th>
+        <th>Trang thai</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for i in 0..5 do %>
+        <tr>
+          <td>1</td>
+          <td>2</td>
+          <td>200,000</td>
+          <td>300,000</td>
+          <td>500,000</td>
+          <td>
+            <% if i % 2 == 0 %>
+              <a class="ui teal tag label">Done</a>
+            <% else  %>
+              <a class="ui red tag label">Pay now</a>
+            <% end  %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

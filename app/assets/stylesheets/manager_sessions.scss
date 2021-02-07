@@ -1,0 +1,56 @@
+// Place all the styles related to the student_sessions controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+.manager_session.new {
+  .right_column {
+    width: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    .logo_image {
+      width: 70%;
+      height: 70% !important;
+      margin-left: 3.5em;
+      margin-bottom: 2em;
+
+  };
+  }
+  .title {
+    text-align: center;
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 5rem;
+  }
+  .input {
+    height: 4rem;
+    // border: 0.2rem solid #246966 !important;
+    // border-radius: 9999rem !important;
+    outline: none !important;
+    // border-bottom: 2px solid #246966;
+    margin-bottom: 1rem !important;
+    padding-left: 1.5rem !important;
+    font-size: 1.3rem !important;
+    width: 100% !important;
+    background-color: #ffffff;
+    border: none;
+    font-size: 17px !important;
+  }
+  .input:focus {
+    // border: none;
+    border-bottom: 0.1px solid #f4810B;
+    border-radius: 0 !important;
+  }
+  input[type="checkbox"]:checked {
+    background-color: #f4810B !important;
+  }
+  .ui.inverted.brown.button.manager_login_submit{
+    border-color:  #f4810b !important;
+      &:hover{
+      color: #ffffff !important;
+      background-color:  #f4810b;
+    }
+  }
+
+  
+}

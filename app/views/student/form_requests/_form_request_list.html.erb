@@ -1,0 +1,83 @@
+<div class="form_request_list">
+  <div class="ui dividing header">
+    <h3 class="" >Form request</h3>
+    <div class="add_btn" onclick="addNewFormRequest()">
+      <img src="/assets/add.png" style="width: 1.5em; height: 1.5em; margin-right: 2.5em">
+    </div>
+  </div>
+  <table class="ui very basic table selectable">
+    <thead>
+      <tr>
+        <th>STT</th>
+        <th>Type</th>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for i in 0..5 do %>
+        <tr onclick="viewMoreFormRequest()">
+          <td>1</td>
+          <td>Giay xac nhan o KTX</td>
+          <td>Ve an ninh KTX</td>
+          <td>KTX quan ly long leo</td>
+          <td>
+            <a class="ui teal tag label">Pending</a>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <div class="ui modal" id="new_form_request">
+    <div class="header">
+      <span class="">Request form</span>
+      <span class="">
+        <div class="ui scrolling dropdown">
+          <input type="hidden" name="gender">
+          <div class="default text">Select choice</div>
+          <div class="menu">
+            <div class="item">Choice 1</div>
+            <div class="item">Choice 2</div>
+          </div>
+        </div>
+      </span>
+    </div>
+    <div class="content">
+      <div class="ui form">
+        <div class="field">
+          <label>Title</label>
+          <input type="text" placeholder="Enter title">
+        </div>
+      </div>
+      <div class="ui form">
+        <div class="field">
+          <label>Description</label>
+          <textarea placeholder="Enter description"></textarea>
+        </div>
+      </div>
+      <button class="ui primary basic button" style="margin: 1rem 0; float: right">Primary</button>
+    </div>
+  </div>
+
+  <div class="ui small test modal transition" id="form_request_detail">
+    <div class="header">
+      Title
+    </div>
+    <div class="content">
+      Description
+    </div>
+    <button class="ui primary basic button" style="margin: 1rem; float: right">Primary</button>
+  </div>
+</div>
+<script>
+  window.onload = function(){
+      $('.form_request_list .ui.dropdown').dropdown();
+  };
+  function addNewFormRequest(){
+    $('#new_form_request').modal('show');
+  }
+  function viewMoreFormRequest(){
+    $('#form_request_detail').modal('show');
+  }
+</script>

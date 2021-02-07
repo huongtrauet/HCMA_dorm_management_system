@@ -1,8 +1,7 @@
 class Room < ApplicationRecord
   has_many :service_charges, dependent: :destroy
   has_many :facilities, dependent: :destroy
-  has_many :students, dependent: :destroy
-
+  has_many :students
 
   validates :room_name, presence: true, allow_nil: false,
             length: {maximum: Settings.validations.room.room_name.max_length}

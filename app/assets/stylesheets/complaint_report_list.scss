@@ -1,0 +1,20 @@
+.complaint_report_list {
+  table {
+    margin-top: 1em;
+    tbody tr{
+      text-align: center;
+    }
+    thead tr {
+      text-align: center;
+    }
+  }
+  .ui.dividing.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2em;
+    .add_btn {
+      cursor: pointer;
+    }
+  }
+}

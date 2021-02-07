@@ -1,3 +1,73 @@
 // Place all the styles related to the StudentProfiles controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: https://sass-lang.com/
+
+.student_profile_form {
+  .container {
+    // width: 80%;
+    // margin-left: 10%;
+    // margin-left: 10%;
+    // padding-top: 1%;
+    background-color: #f9f9f9;
+    // padding-bottom: 8%;
+    height: 100%;
+  }
+
+  .profile_content {
+    width: 70%;
+    height: 100%;
+    margin: 0 auto;
+    padding-top: 7%;
+    background-color: #ffffff;
+    padding-bottom: 5%;
+    padding-right: 4%;
+  }
+  .left_column {
+    margin-top: 7%;
+    display: flex;
+    justify-content: center;
+    .ava{
+      width: 50%;
+      .ava_image{
+
+      }
+    }
+    .ava_icon {
+      margin-top: 1em;
+      content: center;
+      display: flex;
+      justify-content: center;
+    }
+  }
+
+  .ui.grid {
+    margin: 0;
+  }
+
+  .field_line{
+    margin-top: 2em !important;
+  }
+
+  .gender_field{
+    margin: 0.7em !important;
+  }
+
+  // .input {
+  //   height: 4rem;
+  //   border: 0.2rem solid #246966 !important;
+  //   border-radius: 9999rem !important;
+  //   margin-bottom: 1rem !important;
+  //   padding-left: 1.5rem !important;
+  //   font-size: 1.3rem !important;
+  //   width: 100% !important;
+  // }
+  input:focus {
+    border: 0.01rem solid #246966 !important;
+  }
+  .ui.primary.button {
+    background-color: #246966 !important;
+  }
+  .input.date {
+    height: 2.7rem;
+  }
+}

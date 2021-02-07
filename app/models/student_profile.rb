@@ -1,5 +1,5 @@
 class StudentProfile < ApplicationRecord
-  belongs_to :student, dependent: :destroy
+  belongs_to :student
 
   validates :name, presence: true, allow_nil: false,
             length: {maximum: Settings.validations.student_profile.name.max_length}
@@ -12,7 +12,8 @@ class StudentProfile < ApplicationRecord
               minimum: Settings.validations.student_profile.identity_number.min_length,
               maximum: Settings.validations.student_profile.identity_number.max_length
             },
-            format: {with: Settings.validations.student_profile.identity_number.regex}
+            format: {with: Settings.validations.student_profile.identity_number.regex},
+            uniqueness: {case_sensitive: false}
   validates :phone_number, presence: true, allow_nil: false,
             format: {with: Settings.validations.student_profile.phone_number.regex}
   validates :class_name, presence: true, allow_nil: false,
@@ -22,5 +23,5 @@ class StudentProfile < ApplicationRecord
             length: {maximum: Settings.validations.student_profile.address.max_length, 
                     minimum: Settings.validations.student_profile.address.min_length}
   validates :date_of_birth, presence: true, allow_nil: false
-  validates :gender, presence: true, inclusion: { in: %w(nam, nu)}, allow_nil: false
+  validates :gender, presence: true, inclusion: { in: ['nam', 'nu']}, allow_nil: false
 end

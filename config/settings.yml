@@ -32,6 +32,7 @@ validations:
   manager:
     email:
       regex: !ruby/regexp '/\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i'
+      max_length: 225
     phone_number:
       regex: !ruby/regexp /(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}/
   notification:

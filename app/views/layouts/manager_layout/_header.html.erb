@@ -1,0 +1,53 @@
+  <div class="manager_header">
+    <div class="ui secondary pointing menu">
+      <a class="active item">
+        Home
+      </a>
+      <a class="item">
+        Post management
+      </a>
+      <a class="item">
+        Student arrangement
+      </a>
+      <a class="item">
+        Students
+      </a>
+      <a class="item">
+        Rooms
+      </a>
+      <a class="item">
+        Services
+      </a>
+      <div class="right menu">
+        <div class="item">
+          <div class="ui icon input">
+            <input type="text" placeholder="Search...">
+            <i class="icon">
+            <img src="/assets/search.png" style="width: 1rem; height: 1rem">
+            </i>
+          </div>
+        </div>
+         <div class="ui item floating dropdown labeled search icon button" id="language_dropdown" style="background-color: #ffffff; border-bottom: 2px solid rgba(34, 36, 38, 0.15)">
+          <span class="text">
+            <% if I18n.locale == :en %>
+              <%= t(".english") %>
+            <% else %>
+              <%= t(".vienamese") %>
+            <% end %>
+          </span>
+          <div class="menu" style="z-index: 3000">
+            <%= link_to t(".english"), {locale:"en"}, class: "item", data: { turbolinks: false } %>
+            <%= link_to t(".vienamese"), {locale:"vi"}, class: "item",  data: { turbolinks: false } %>
+          </div>
+        </div>
+        <a class="ui item">
+          Logout
+        </a>
+      </div>
+    </div>
+  </div>
+  <script>
+  $(document).on('click', '#language_dropdown', function(){
+    $('#language_dropdown').dropdown('show');
+  });
+  </script>
