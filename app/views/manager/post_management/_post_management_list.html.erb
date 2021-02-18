@@ -1,0 +1,148 @@
+<div class="post_management_list">
+  <div class="header" style="display: flex; justify-content: space-between;">
+    <div class="header_title">
+      <h3>Post Management: </h3>
+    </div>
+    <div class="header_search">
+      <button class="ui icon button" onclick="addPost()">
+        <i class="plus icon"></i>
+      </button>
+      <div class="ui icon input">
+        <input type="text" placeholder="Search...">
+        <i class="icon">
+          <img src="/assets/search.png" style="width: 1rem; height: 1rem; width: 1rem; top: 50%; position: absolute; transform: translateY(-50%);right: 0.7rem;">
+        </i> 
+      </div>
+    </div>
+  </div>
+  <div class="footer_line" style="height: 1px; background-color: rgba(34,36,38,.15); margin-top: 0.5rem; margin-bottom: 1.5rem"></div>
+  <table class="ui very basic selectable table">
+    <thead>
+      <tr>
+        <th>STT</th>
+        <th>Tieu de</th>
+        <th>Noi dung</th>
+        <th>Thoi gian</th>
+        <th>Nguoi dang</th>
+        <th>Trang thai</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for i in 0..5 do %>
+        <tr onclick="showPost()">
+          <td>1</td>
+          <td>Thong bao cat dien</td>
+          <td style="max-width: 25rem">
+          <span style="margin: 0 auto; word-wrap: break-word; max-width: 20rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">Ngay mai se cat dien tu 8h den 10hNgay mai se cat dien tu 8h den 10hNgay mai se cat dien tu 8h den 10h</span>
+          </td>
+          <td>14:00 20/11/1999</td>
+          <td>Tra</td>
+          <td>
+           Posted
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<div class="ui longer modal first">
+  <div class="header">
+    Profile Picture
+  </div>
+  <div class="scrolling image content">
+    <div class="description">
+      <div class="ui header">Modal Header</div>
+      <div class="content">This is content</div>
+    </div>   
+  </div>
+  <div class="actions">
+    <button class="ui cancel button">
+      Cancel
+    </button>
+    <div class="ui primary approve button proceed">
+      Proceed
+      <i class="right chevron icon"></i>
+    </div>
+  </div>
+</div>
+
+<div class="ui longer modal second">
+  <div class="header">
+    Profile Picture 2
+  </div>
+  <div class="scrolling image content">
+    <div class="description">
+      <textarea class="ui header" style="width: 100%">Title</textarea>
+      <textarea id="editor1"></textarea>
+    </div>
+  </div>
+  <div class="actions">
+    <button class="ui approve button">
+      Cancel
+    </button>
+    <div class="ui primary approve button">
+      Proceed
+      <i class="right chevron icon"></i>
+    </div>
+  </div>
+</div>
+
+<div class="ui longer modal add">
+  <div class="header">
+    Create a new post
+  </div>
+  <div class="scrolling image content">
+    <div class="description">
+      <textarea class="ui header" style="width: 100%">Title</textarea>
+      <textarea id="editor2"></textarea>
+    </div>
+  </div>
+  <div class="actions">
+    <button class="ui approve button">
+      Cancel
+    </button>
+    <div class="ui primary approve button">
+      Submit
+      <i class="right chevron icon"></i>
+    </div>
+  </div>
+</div>
+
+<style>
+  .ck-editor__editable_inline {
+    min-height: 150px;  
+  }
+</style>
+
+<script src="https://cdn.ckeditor.com/ckeditor5/25.0.0/classic/ckeditor.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) { 
+  var numb = 1;
+    do {
+      ClassicEditor
+      .create(document.querySelector( '#editor'+ numb )) 
+      .catch( error => {
+        console.error( error );
+      } )
+      numb++;
+    }
+    while (numb < 3);
+  });
+  function showPost() {
+    $('.ui.longer.modal.first').modal('show');
+  }
+  $('.coupled.modal')
+    .modal({
+      allowMultiple: false
+    })
+  ;
+  // attach events to buttons
+  $('.second.modal')
+    .modal('attach events', '.first.modal .button.proceed')
+  ;
+  function addPost() {
+    $('.ui.longer.modal.add').modal('show');
+  }
+  // CKEDITOR.replace('content',{ toolbar :[ ['Subscript','Superscript'] ], height: '35px', width: '100%' });
+</script>

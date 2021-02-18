@@ -11,6 +11,7 @@ class Manager < ApplicationRecord
     source: :receiver, source_type: Manager.name
   has_many :sent_notifications, through: :active_notifications,
     source: :sender, source_type: Manager.name
+  has_many :posts
 
   validates :email, presence: true, allow_nil: false,
     length: {maximum: 255},

@@ -1,4 +1,4 @@
-<div class="student_profile_form">
+<div class="student_management_student_profile_form">
   <div class= "container">
     <div class="profile_content">
       <div class="ui grid">
@@ -36,8 +36,16 @@
                   </div>
                 <% end %>
                 <div class="required field field_line">
-                  <%= f.label :name %>
-                  <%= f.text_field :name, class: "input", required: true, placeholder: "Full name" %>
+                  <div class="two fields">
+                    <div class="required field">
+                      <%= f.label :full_name %>
+                      <%= f.text_field :name, class: "input", required: true, placeholder: "Full name" %>
+                    </div>
+                    <div class="required field">
+                      <label>Student ID</label>
+                      <%= f.text_field :identity_card_number, class: "input", required: true, placeholder: "Ma KTX" %>
+                    </div>
+                  </div>
                 </div>
                 <div class="required field field_line">
                   <div class="two fields">
@@ -99,6 +107,16 @@
                         </span>
                       </div>
                     </div>
+                  </div>
+                </div>
+                <div class="fields field_line">
+                  <div class="required eight wide field">
+                    <label>Ngay vao</label>
+                    <%= f.date_field :date_of_birth, class: "input date", data: {provide: "datepicker"}, required: true%>
+                  </div>
+                  <div class="required eight wide field">
+                    <label>Ngay het gia han</label>
+                    <%= f.date_field :date_of_birth, class: "input date", data: {provide: "datepicker"}, required: true%>
                   </div>
                 </div>
                 <div class="ui dividing header">

@@ -1,0 +1,150 @@
+<div class="service_charge_list">
+  <h3 class="ui dividing header">
+    Service charges
+  </h3>
+  <table class="ui very basic table">
+    <thead>
+      <tr>
+        <th>STT</th>
+        <th>Thang</th>
+        <th>Tien dien</th>
+        <th>Tien nuoc</th>
+        <th>Tong</th>
+        <th>Trang thai</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for i in 0..5 do %>
+        <tr onclick="showServiceChargeInfo()">
+          <td>1</td>
+          <td>2</td>
+          <td>200,000</td>
+          <td>300,000</td>
+          <td>500,000</td>
+          <td>
+            <% if i % 2 == 0 %>
+              <a class="ui teal tag label" style="width: 6.7rem">Paid</a>
+            <% else  %>
+              <a class="ui red tag label" style="width: 6.7rem">Unpaid</a>
+            <% end  %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<div class="ui first modal service_charge_info">
+  <i class="close icon"></i>
+  <div class="header">
+    Service charge
+  </div>
+  <div class="ui header" style="margin-bottom: 2rem;">P1410</div>
+  <div class="">
+    <div class="ui grid">
+      <div class="one wide column"></div>
+      <div class="five wide column">
+        <div class="student-info">
+          <label>Thang:</label>
+          <p>Thang 2</p>
+          <label>Tong tien:</label>
+          <p>500000</p>
+        </div>
+      </div>
+      <div class="five wide column">
+        <div class="student-info">
+          <label>Tien dien: </label>
+          <p>200000</p>
+          <label>Tien nuoc</label>
+          <p>300000</p>
+        </div>
+      </div>
+      <div class="five wide column">
+        <div class="student-info">
+          <label>Trang thai: </label>
+          <p>
+            <span style="background-color: #f4810b; padding: 3px 5px">Paid</span>
+          </p>
+          <label>Nguoi nop</label>
+          <p>Tra</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="actions" style="padding: 0.7rem 1rem;">
+    <div class="ui black deny button">
+      Cancel
+    </div>
+    <div class="ui positive right labeled icon button edit">
+      Edit
+      <i class="arrow right icon"></i>
+    </div>
+  </div>
+</div>
+
+<div class="ui second modal service_charge_info">
+  <i class="close icon"></i>
+  <div class="header">
+    Service charge edit
+  </div>
+  <div class="ui header" style="margin-bottom: 2rem;">P1410</div>
+  <form class="ui form" style="margin: 0 1.5rem">
+    <div class="three fields">
+      <div class="field">
+        <label>Thang</label>
+        <input type="text" placeholder="Thang" disabled value="Thang 2">
+      </div>
+      <div class="field">
+        <label>Tien dien</label>
+        <input type="text" placeholder="Tien dien">
+      </div>
+      <div class="field">
+        <label>Trang thai</label>
+        <div class="ui selection dropdown">
+          <input type="hidden" name="gender">
+          <i class="dropdown icon"></i>
+          <div class="default text">Trang thai</div>
+          <div class="menu">
+            <div class="item" data-value="1">Paid</div>
+            <div class="item" data-value="0">Unpaid</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="three fields">
+      <div class="field">
+        <label>Tong tien</label>
+        <input type="text" placeholder="Tong tien">
+      </div>
+      <div class="field">
+        <label>Tien nuoc</label>
+        <input type="text" placeholder="Tien nuoc">
+      </div>
+      <div class="field">
+        <label>Nguoi nop</label>
+        <input type="text" placeholder="Nguoi nop">
+      </div>
+    </div>
+  </form>
+  <div class="actions" style="padding: 0.7rem 1rem;">
+    <div class="ui black deny button">
+      Cancel
+    </div>
+    <div class="ui positive right labeled icon button">
+      Submit
+      <i class="arrow right icon"></i>
+    </div>
+  </div>
+</div>
+
+<script>
+  function showServiceChargeInfo() {
+    $('.ui.modal.first.service_charge_info').modal('show');
+  }
+
+  $('.second.modal')
+    .modal('attach events', '.first.modal .button.edit');
+
+  $('.ui.dropdown')
+  .dropdown();
+</script>
