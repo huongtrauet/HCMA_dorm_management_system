@@ -9,6 +9,7 @@ class CreateStudentProfiles < ActiveRecord::Migration[6.0]
       t.string :address, null: false
       t.string :phone_number, null: false
       t.string :gender, null: false
+      t.string :avatar, null: true
 
       t.timestamps
     end

@@ -1,0 +1,2 @@
+module Manager::ServiceManagementHelper
+end

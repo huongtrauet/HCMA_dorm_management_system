@@ -1,0 +1,189 @@
+<div class="student_management_list">
+  <div class="header" style="display: flex; justify-content: space-between;">
+    <div class="header_title">
+      <h3>Student Management: </h3>
+    </div>
+    <div class="header_search">
+      <button class="ui icon button" onclick="addStudent()">
+        <i class="plus icon"></i>
+      </button>
+      <div class="ui icon input">
+        <input type="text" placeholder="Search...">
+        <i class="icon">
+          <img src="/assets/search.png" style="width: 1rem; height: 1rem; width: 1rem; top: 50%; position: absolute; transform: translateY(-50%);right: 0.7rem;">
+        </i> 
+      </div>
+    </div>
+  </div>
+  <div class="footer_line" style="height: 1px; background-color: rgba(34,36,38,.15); margin-top: 0.5rem; margin-bottom: 1.5rem"></div>
+  <table class="ui very basic selectable table">
+    <thead>
+      <tr>
+        <th>STT</th>
+        <th>MSSV</th>
+        <th>HO VA TEN</th>
+        <th>NGAY SINH</th>
+        <th>LOP</th>
+        <th>QUE QUAN</th>
+        <th>NGAY VAO</th>
+        <th>ACTIVE</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for i in 0..5 do %>
+        <tr onclick="showStudentInfo()">
+          <td>1</td>
+          <td>17021070</td>
+          <td>Nguyen Thi Huong Tra</td>
+          <td>21/11/1999</td>
+          <td>K62J</td>
+          <td>Nghe An</td>
+          <td>20/11/2001</td>
+          <td>
+           <% if i % 2 == 0 %>
+              <a class="ui teal tag label teal_label" style="width: 5.7rem">Active</a>
+            <% else  %>
+              <a class="ui tag label danger_label" style="width: 5.7rem">Pending</a>
+            <% end  %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<div class="ui modal student_info">
+  <i class="close icon"></i>
+  <div class="header">
+    Student profiles
+  </div>
+  <div class="image content">
+    <div class="ui grid">
+      <div class="five wide column">
+        <div class="" style="width: 15rem; margin: 0 auto;">
+          <img src="/assets/ava.jpg" style="width: 15rem; height: 15rem; margin: 0 auto;">
+          <div class="sub-info ui grid" style="padding-top: 1rem">
+            <div class="two wide column" style="padding-bottom: 0!important">
+              <i class="icon address card outline"></i>
+            </div>
+            <div class="fourteen wide column" style="padding-bottom: 0!important">
+              17021070
+            </div>
+            <div class="two wide column" style="padding-bottom: 0!important">
+              <i class="icon check square outline"></i>
+            </div>
+            <div class="fourteen wide column" style="padding-bottom: 0!important">
+              K62J
+            </div>
+            <div class="two wide column">
+              <i class="icon envelope outline"></i>
+            </div>
+            <div class="fourteen wide column">
+              huongtra@gmail.com
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="description eleven wide column">
+        <div class="ui header" style="margin-bottom: 2rem;">Nguyen Thi Huong Tra</div>
+        <div class="student-info ui grid">
+          <div class="three wide column"><b>Ngay sinh:</b></div>
+          <div class="thirteen wide column">21/11/1999</div>
+          <div class="three wide column"><b>Gioi tinh:</b></div>
+          <div class="thirteen wide column">Nu</div>
+          <div class="three wide column"><b>Que quan:</b></div>
+          <div class="thirteen wide column">30A, Le Hong Phong, Vinh, Nghe An</div>
+          <div class="three wide column"><b>SDT:</b></div>
+          <div class="thirteen wide column">0972403331</div>
+          <div class="three wide column"><b>So CMND:</b></div>
+          <div class="thirteen wide column">0972403331</div>
+          <div class="three wide column"><b>Ngay dang ky:</b></div>
+          <div class="thirteen wide column">20/11/2006</div>
+          <div class="three wide column"><b>Ngay vao:</b></div>
+          <div class="thirteen wide column">20/12/2006</div>
+          <div class="three wide column"><b>Thoi gian gia han:</b></div>
+          <div class="thirteen wide column">1 nam</div>
+          <div class="three wide column"><b>Trang thai:</b></div>
+          <div class="thirteen wide column">Active</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="actions" style="padding: 0.7rem 1rem;">
+    <div class="ui black deny button">
+      Cancel
+    </div>
+    <a href="http://localhost:3000/manager/student-management/1" class="ui positive right labeled icon button">
+      Edit
+      <i class="arrow right icon"></i>
+    </a>
+  </div>
+</div>
+
+<div class="ui mini modal add_student">
+  <div class="header">
+    Create new student
+  </div>
+  <div class="content">
+    <div class="description">
+      <%# <label style="display: inline-block">Ho va ten</label> %>
+      <div class="ui left corner labeled input" style="display: block; width: 85%; margin: 1rem auto;">
+        <input type="text" placeholder="Ho va ten..." style="display:block; width: 100%">
+        <div class="ui left corner label">
+          <i class="asterisk icon"></i>
+        </div>
+      </div>
+      <div class="ui left corner labeled input" style="display: block; width: 85%; margin: 1rem auto;">
+        <input type="text" placeholder="MSSV..." style="display:block; width: 100%">
+        <div class="ui left corner label">
+          <i class="asterisk icon"></i>
+        </div>
+      </div>
+       <div class="ui left corner labeled input" style="display: block; width: 85%; margin: 1rem auto;">
+        <input type="text" placeholder="MSSV..." style="display:block; width: 100%">
+        <div class="ui left corner label">
+          <i class="asterisk icon"></i>
+        </div>
+      </div>
+    </div>   
+  </div>
+  <div class="actions">
+    <button class="ui cancel button">
+      Cancel
+    </button>
+    <div class="ui primary approve button proceed">
+      Add
+      <i class="right chevron icon"></i>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.ckeditor.com/4.13.0/standard/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace( 'editor' );
+</script>
+<script>
+  function showStudentInfo() {
+    $('.ui.modal.student_info').modal('show');
+  }
+  function addStudent() {
+    $('.ui.mini.modal.add_student').modal('show');
+  }
+
+  // $('.coupled.modal')
+  //   .modal({
+  //     allowMultiple: false
+  //   })
+  // ;
+  // attach events to buttons
+  $('.second.modal')
+    .modal('attach events', '.first.modal .button.proceed')
+  ;
+
+
+
+  // CKEDITOR.replace('content',{ toolbar :[ ['Subscript','Superscript'] ], height: '35px', width: '100%' });
+
+
+
+</script>

@@ -1,0 +1,85 @@
+// Place all the styles related to the manager/service_management controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+.service_charge_list {
+  .title {
+    margin-bottom: 1em;
+  }
+  th,td {
+    text-align: center !important;
+  }
+  .filter_options {
+    .ui.selection.dropdown {
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+      text-align: center !important;
+      .default.text {
+        color: #969696;
+        font-weight: 500;
+      }
+      &:hover {
+        background-color: #F4810B;
+        border: none;
+        .default.text {
+          color: white;
+        }
+      }
+    }
+  }
+  .ui.very.basic.table {
+    .danger_label {
+      background-color: #f4810b;
+      color: white;
+      cursor: default;
+    }
+    .teal_label {
+      cursor: default;
+      &:hover {
+        background-color: #00B5AD !important;
+      }
+    }
+  }
+}
+
+.service_charge {
+  .button {
+    color: #bfbfbfde;
+    border: 1px solid #bfbfbfde;
+    background-color: #ffffff;
+    border-radius: 0.35rem;
+    text-align: center;
+    font-weight: 500;
+    padding: 0.7rem 1.2rem;
+    cursor: pointer;
+    // &:hover {
+    //   background-color: #F4810B;
+    //   color: #ffffff;
+    // }
+  }
+
+  .hover{
+    color: #F4810B;
+    border: 1px solid #F4810B;
+    background-color: #ffffff;
+    &:hover {
+        background-color: #F4810B;
+        color: #ffffff;
+    }
+  }
+}
+
+.service_charge_info, .facility_info {
+  .student-info {
+    font-size: 16px;
+    label {
+      color: #b8b8b8;
+      margin-bottom: 1rem;
+    }
+    p {
+      margin-bottom: 2.5rem;
+    }
+  }
+  input, .dropdown.selection {
+    width: 17rem !important;
+  }
+}

@@ -1,0 +1,95 @@
+<div class="student_management_list">
+  <div class="header" style="display: flex; justify-content: space-between;">
+    <div class="header_title">
+      <h3>Room Management: </h3>
+    </div>
+    <div class="header_search">
+      <button class="ui icon button" onclick="addRoom()">
+        <i class="plus icon"></i>
+      </button>
+      <div class="ui icon input">
+        <input type="text" placeholder="Search...">
+        <i class="icon">
+          <img src="/assets/search.png" style="width: 1rem; height: 1rem; width: 1rem; top: 50%; position: absolute; transform: translateY(-50%);right: 0.7rem;">
+        </i> 
+      </div>
+    </div>
+  </div>
+  <div class="footer_line" style="height: 1px; background-color: rgba(34,36,38,.15); margin-top: 0.5rem; margin-bottom: 1.5rem"></div>
+  <table class="ui very basic selectable table">
+    <thead>
+      <tr>
+        <th>STT</th>
+        <th>Name</th>
+        <th>Member</th>
+        <th>Max member</th>
+        <th>Room type</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @rooms.each do |room| %>
+        <tr>
+          <td><a class="room_list_item" href="/manager/room-management/rooms/<%= room.id %>" style="display: block; width: 100%">1 </td>
+          <td><a class="room_list_item" href="/manager/room-management/rooms/<%= room.id %>" style="display: block; width: 100%"><%= room.room_name %></a></td>
+          <td><a class="room_list_item" href="/manager/room-management/rooms/<%= room.id %>" style="display: block; width: 100%"><%= room.number_student %></a></td>
+          <td><a class="room_list_item" href="/manager/room-management/rooms/<%= room.id %>" style="display: block; width: 100%"><%= room.max_number_student %></a></td>
+          <td><a class="room_list_item" href="/manager/room-management/rooms/<%= room.id %>" style="display: block; width: 100%">VIP</a></td>
+          <td><a class="room_list_item" href="/manager/room-management/rooms/<%= room.id %>" style="display: block; width: 100%">
+            <a class="ui teal tag label teal_label" style="width: 5.7rem">Using</a>
+          </a></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<div class="ui mini modal add_room">
+  <div class="header">
+    Create new room
+  </div>
+  <div class="content">
+    <div class="description">
+      <%# <label style="display: inline-block">Ho va ten</label> %>
+      <div class="ui left corner labeled input" style="display: block; width: 85%; margin: 1rem auto;">
+        <input type="text" placeholder="Room name.." style="display:block; width: 100%">
+        <div class="ui left corner label">
+          <i class="asterisk icon"></i>
+        </div>
+      </div>
+      <div class="ui left corner labeled input" style="display: block; width: 85%; margin: 1rem auto;">
+        <input type="text" placeholder="Max number.." style="display:block; width: 100%">
+        <div class="ui left corner label">
+          <i class="asterisk icon"></i>
+        </div>
+      </div>
+      <div class="ui selection dropdown" style="display: block; width: 85%; margin: 1rem auto;">
+        <input type="hidden" name="gender">
+        <i class="dropdown icon"></i>
+        <div class="default text">Room type</div>
+        <div class="menu">
+          <div class="item" data-value="1">Normal</div>
+          <div class="item" data-value="0">VIP</div>
+        </div>
+      </div>
+    </div>   
+  </div>
+  <div class="actions">
+    <button class="ui cancel button">
+      Cancel
+    </button>
+    <div class="ui primary approve button proceed">
+      Add
+      <i class="right chevron icon"></i>
+    </div>
+  </div>
+</div>
+
+<script>
+  function addRoom() {
+    $('.ui.mini.modal.add_room').modal('show');
+  }
+  $('.ui.dropdown')
+    .dropdown()
+  ;
+</script>

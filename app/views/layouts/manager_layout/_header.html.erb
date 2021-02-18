@@ -1,23 +1,18 @@
   <div class="manager_header">
     <div class="ui secondary pointing menu">
-      <a class="active item">
-        Home
-      </a>
-      <a class="item">
-        Post management
-      </a>
-      <a class="item">
-        Student arrangement
-      </a>
-      <a class="item">
-        Students
-      </a>
-      <a class="item">
-        Rooms
-      </a>
-      <a class="item">
-        Services
-      </a>
+      <% if logged_in? %>
+        <%= link_to "Home", manager_managers_path, class: "item", id: "manager_home_path", data: { turbolinks: false } %>
+        <%= link_to "Posts", manager_post_management_path, class: "item", id: "manager_post_management_path", data: { turbolinks: false } %>
+        <%= link_to "Student arrangement", manager_students_arrangement_path, class: "item", id: "manager_students_arrangement_path", data: { turbolinks: false } %>
+        <%= link_to "Students", manager_student_management_path, class: "item", id: "manager_student_management_path", data: { turbolinks: false } %>
+        <%= link_to "Rooms", manager_room_management_path, class: "item", id: "manager_room_management_path", data: { turbolinks: false } %>
+        <%= link_to "Services", manager_service_management_path, class: "item", id: "manager_service_management_path", data: { turbolinks: false } %>
+
+      <% else %>
+        <%= link_to "Home", manager_post_management_path, class: "item", id: "manager_post_management_path", data: { turbolinks: false } %>
+      <% end %>
+
+
       <div class="right menu">
         <div class="item">
           <div class="ui icon input">
@@ -27,7 +22,7 @@
             </i>
           </div>
         </div>
-         <div class="ui item floating dropdown labeled search icon button" id="language_dropdown" style="background-color: #ffffff; border-bottom: 2px solid rgba(34, 36, 38, 0.15)">
+         <div class="ui item floating dropdown labeled" id="language_dropdown" style="background-color: #ffffff; border-bottom: 2px solid rgba(34, 36, 38, 0.15)">
           <span class="text">
             <% if I18n.locale == :en %>
               <%= t(".english") %>
@@ -40,9 +35,13 @@
             <%= link_to t(".vienamese"), {locale:"vi"}, class: "item",  data: { turbolinks: false } %>
           </div>
         </div>
-        <a class="ui item">
-          Logout
-        </a>
+        <% if logged_in? %>
+          <%= link_to t(".logout"), manager_logout_path, class: "item", data: { turbolinks: false } %>
+        <% else %>
+          <%= link_to "Login", manager_login_path, class: "item", id: "student_login_path", data: { turbolinks: false } %>
+        <% end %>
+
+
       </div>
     </div>
   </div>
@@ -50,4 +49,30 @@
   $(document).on('click', '#language_dropdown', function(){
     $('#language_dropdown').dropdown('show');
   });
+  const current_url = window.location.pathname
+  if (current_url.indexOf("/manager/students-arrangement") != -1) {
+    $("#manager_students_arrangement_path").addClass("active");
+  }
+  else if (current_url.indexOf("/manager/managers") != -1){
+    $("#manager_home_path").addClass("active");
+  }
+  else if (current_url.indexOf("/manager/post-management") != -1){
+    $("#manager_post_management_path").addClass("active");
+  }
+  else if (current_url.indexOf("/manager/student-management") != -1){
+    $("#manager_student_management_path").addClass("active");
+  }
+  else if (current_url.indexOf("/manager/room-management") != -1){
+    $("#manager_room_management_path").addClass("active");
+  }
+  else if (current_url.indexOf("/manager/service-management") != -1){
+    $("#manager_service_management_path").addClass("active");
+  }
+  else if (current_url.indexOf("students") != -1){
+    $("#home_path").addClass("active");
+  }
+    
+  function showNotiList(){
+    $('#noti_button').dropdown();
+  }
   </script>

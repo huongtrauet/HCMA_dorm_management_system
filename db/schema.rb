@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_02_180303) do
+ActiveRecord::Schema.define(version: 2021_02_08_020355) do
 
   create_table "complaint_reports", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "title", null: false
@@ -71,6 +71,16 @@ ActiveRecord::Schema.define(version: 2021_02_02_180303) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "posts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "title"
+    t.text "content", size: :long
+    t.string "writer_name"
+    t.bigint "manager_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["manager_id"], name: "index_posts_on_manager_id"
+  end
+
   create_table "rooms", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "room_name", null: false
     t.integer "number_student", default: 0, null: false
@@ -102,10 +112,12 @@ ActiveRecord::Schema.define(version: 2021_02_02_180303) do
     t.string "address", null: false
     t.string "phone_number", null: false
     t.string "gender", null: false
+    t.string "avatar"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "student_id", null: false
     t.index ["email"], name: "index_student_profiles_on_email", unique: true
+    t.index ["identity_card_number"], name: "index_student_profiles_on_identity_card_number", unique: true
     t.index ["student_id"], name: "index_student_profiles_on_student_id"
   end
 
@@ -126,6 +138,7 @@ ActiveRecord::Schema.define(version: 2021_02_02_180303) do
   add_foreign_key "facilities", "rooms"
   add_foreign_key "facility_reports", "students", column: "reporter_id"
   add_foreign_key "form_requests", "students", column: "requester_id"
+  add_foreign_key "posts", "managers"
   add_foreign_key "service_charges", "rooms"
   add_foreign_key "student_profiles", "students"
   add_foreign_key "students", "rooms"

@@ -13,6 +13,8 @@ gem 'jbuilder', '~> 2.7'
 gem 'config'
 gem 'bcrypt'
 gem 'bootsnap', '>= 1.4.2', require: false
+gem 'mini_magick'
+gem 'carrierwave'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

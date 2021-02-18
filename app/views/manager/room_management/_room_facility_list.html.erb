@@ -1,0 +1,150 @@
+<div class="facility_management_list">
+  <div class="header" style="display: flex; justify-content: space-between;">
+    <div class="header_title">
+      <h3>Facilities: </h3>
+    </div>
+    <div class="header_search">
+      <button class="ui icon button" onclick="addStudent()">
+        <i class="plus icon"></i>
+      </button>
+      <div class="ui icon input">
+        <input type="text" placeholder="Search...">
+        <i class="icon">
+          <img src="/assets/search.png" style="width: 1rem; height: 1rem; width: 1rem; top: 50%; position: absolute; transform: translateY(-50%);right: 0.7rem;">
+        </i> 
+      </div>
+    </div>
+  </div>
+  <div class="footer_line" style="height: 1px; background-color: rgba(34,36,38,.15); margin-top: 0.5rem; margin-bottom: 1.5rem"></div>
+  <table class="ui very basic selectable table">
+    <thead>
+      <tr>
+        <th>STT</th>
+        <th>Ma thiet bi</th>
+        <th>Ten thiet bi</th>
+        <th>So luong</th>
+        <th>Trang thai</th>
+        <th>Chu thich</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for i in 0..5 do %>
+        <tr onclick="showFacilityInfo()">
+          <td>1</td>
+          <td>BH179</td>
+          <td>Ban hoc</td>
+          <td>6</td>
+          <td>Moi</td>
+          <td>Khong</td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<div class="ui first modal facility_info">
+  <i class="close icon"></i>
+  <div class="header">
+    Facility
+  </div>
+  <div class="ui header" style="margin-bottom: 2rem;">P1410</div>
+  <div class="">
+    <div class="ui grid">
+      <div class="one wide column"></div>
+      <div class="five wide column">
+        <div class="student-info">
+          <label>Ma thiet bi:</label>
+          <p>MH170</p>
+          <label>Ten thiet bi:</label>
+          <p>Ban hoc</p>
+        </div>
+      </div>
+      <div class="five wide column">
+        <div class="student-info">
+          <label>So luong: </label>
+          <p>
+          <span style="background-color: #f4810b; padding: 3px 5px">6</span>
+          </p>
+          <label>Tinh trang: </label>
+          <p>Moi</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="actions" style="padding: 0.7rem 1rem;">
+    <div class="ui black deny button">
+      Cancel
+    </div>
+    <div class="ui positive right labeled icon button edit">
+      Edit
+      <i class="arrow right icon"></i>
+    </div>
+  </div>
+</div>
+
+<div class="ui second modal facility_info">
+  <i class="close icon"></i>
+  <div class="header">
+    Facility edit
+  </div>
+  <div class="ui header" style="margin-bottom: 2rem;">P1410</div>
+  <form class="ui form" style="margin: 0 1.5rem">
+    <div class="three fields">
+      <div class="field">
+        <label>Thang</label>
+        <input type="text" placeholder="Thang" disabled value="Thang 2">
+      </div>
+      <div class="field">
+        <label>Tien dien</label>
+        <input type="text" placeholder="Tien dien">
+      </div>
+      <div class="field">
+        <label>Trang thai</label>
+        <div class="ui selection dropdown">
+          <input type="hidden" name="gender">
+          <i class="dropdown icon"></i>
+          <div class="default text">Trang thai</div>
+          <div class="menu">
+            <div class="item" data-value="1">Paid</div>
+            <div class="item" data-value="0">Unpaid</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="three fields">
+      <div class="field">
+        <label>Tong tien</label>
+        <input type="text" placeholder="Tong tien">
+      </div>
+      <div class="field">
+        <label>Tien nuoc</label>
+        <input type="text" placeholder="Tien nuoc">
+      </div>
+      <div class="field">
+        <label>Nguoi nop</label>
+        <input type="text" placeholder="Nguoi nop">
+      </div>
+    </div>
+  </form>
+  <div class="actions" style="padding: 0.7rem 1rem;">
+    <div class="ui black deny button">
+      Cancel
+    </div>
+    <div class="ui positive right labeled icon button">
+      Submit
+      <i class="arrow right icon"></i>
+    </div>
+  </div>
+</div>
+
+<script>
+  function showFacilityInfo() {
+    $('.ui.modal.first.facility_info').modal('show');
+  }
+
+  $('.second.modal')
+    .modal('attach events', '.first.modal .button.edit');
+
+  $('.ui.dropdown')
+  .dropdown();
+</script>

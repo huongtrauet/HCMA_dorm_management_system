@@ -1,0 +1,13 @@
+// Place all the styles related to the manager/room_management controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+.student_management_list {
+  .ui.very.basic.selectable.table {
+    .room_list_item {
+      color: #666666;
+      &:hover {
+        background-color: #f2f2f2;
+      }
+    }
+  }
+} 
