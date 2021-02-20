@@ -114,24 +114,57 @@
     min-height: 150px;  
   }
 </style>
-
-<script src="https://cdn.ckeditor.com/ckeditor5/25.0.0/classic/ckeditor.js"></script>
+<script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js">
+</script>
+<script src="https://cdn.ckeditor.com/ckeditor5/25.0.0/classic/ckeditor.js">
+  import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
+  import ImageInsert from '@ckeditor/ckeditor5-image/src/imageinsert';
+  import EssentialsPlugin from '@ckeditor/ckeditor5-essentials/src/essentials';
+  import BoldPlugin from '@ckeditor/ckeditor5-basic-styles/src/bold';
+  import ItalicPlugin from '@ckeditor/ckeditor5-basic-styles/src/italic';
+  import LinkPlugin from '@ckeditor/ckeditor5-link/src/link';
+  import ParagraphPlugin from '@ckeditor/ckeditor5-paragraph/src/paragraph';
+  import Alignment from '@ckeditor/ckeditor5-alignment/src/alignment';
+  import EasyImage from '@ckeditor/ckeditor5-easy-image/src/easyimage';
+  import Underline from '@ckeditor/ckeditor5-basic-styles/src/underline';
+  import SimpleUploadAdapter from '@ckeditor/ckeditor5-upload/src/adapters/simpleuploadadapter';
+  import CKFinder from '@ckeditor/ckeditor5-ckfinder/src/ckfinder';
+  import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
+import ImageUpload from '@ckeditor/ckeditor5-image/src/imageupload';
+</script>
 <script>
+  
   document.addEventListener("DOMContentLoaded", function(event) { 
-  var numb = 1;
+    var numb = 1;
     do {
       ClassicEditor
-      .create(document.querySelector( '#editor'+ numb )) 
-      .catch( error => {
-        console.error( error );
-      } )
+        .create( document.querySelector( '#editor' + numb ), {
+          // plugins: [
+          //   Enter, Typing, Paragraph, Heading, Undo, Bold, Italic, Heading, List, Image, ImageToolbar, Clipboard,
+          //   ImageCaption, ImageStyle, ImageUpload, CKFinderUploadAdapter
+          // ],
+          toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'imageUpload', 'ckfinder', 'imageInsert'],
+          heading: {
+            options: [
+                { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' }
+            ]
+        }
+        })
+        .catch( error => {
+          console.error( error );
+        })
       numb++;
     }
     while (numb < 3);
-  });
+    }
+  );
+
   function showPost() {
     $('.ui.longer.modal.first').modal('show');
   }
+
   $('.coupled.modal')
     .modal({
       allowMultiple: false
@@ -145,4 +178,5 @@
     $('.ui.longer.modal.add').modal('show');
   }
   // CKEDITOR.replace('content',{ toolbar :[ ['Subscript','Superscript'] ], height: '35px', width: '100%' });
+  console.log(ClassicEditor.builtinPlugins.map( plugin => plugin.pluginName ))
 </script>
