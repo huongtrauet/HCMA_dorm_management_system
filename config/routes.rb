@@ -18,6 +18,8 @@ Rails.application.routes.draw do
     get  "/student-management/1", to: "student_management#edit"
     get "/room-management", to: "room_management#index"
     get "/room-management/rooms/:id", to: "room_management#show"
+    get "/homepage/", to: "homepage_management#index"
+    get "/posts/:id", to: "homepage_management#show"
 
     resources :students
     resources :managers

@@ -1,7 +1,7 @@
   <div class="manager_header">
     <div class="ui secondary pointing menu">
       <% if logged_in? %>
-        <%= link_to "Home", manager_managers_path, class: "item", id: "manager_home_path", data: { turbolinks: false } %>
+        <%= link_to "Home", manager_homepage_path, class: "item", id: "manager_home_path", data: { turbolinks: false } %>
         <%= link_to "Posts", manager_post_management_path, class: "item", id: "manager_post_management_path", data: { turbolinks: false } %>
         <%= link_to "Student arrangement", manager_students_arrangement_path, class: "item", id: "manager_students_arrangement_path", data: { turbolinks: false } %>
         <%= link_to "Students", manager_student_management_path, class: "item", id: "manager_student_management_path", data: { turbolinks: false } %>
@@ -53,7 +53,7 @@
   if (current_url.indexOf("/manager/students-arrangement") != -1) {
     $("#manager_students_arrangement_path").addClass("active");
   }
-  else if (current_url.indexOf("/manager/managers") != -1){
+  else if (current_url.indexOf("/manager/homepage") != -1){
     $("#manager_home_path").addClass("active");
   }
   else if (current_url.indexOf("/manager/post-management") != -1){
