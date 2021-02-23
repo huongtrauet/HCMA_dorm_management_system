@@ -2,7 +2,6 @@
     <div class="ui secondary pointing menu">
       <%= link_to "Home", "/students" %>
       <div class="right menu">
-        <%= link_to "Home", "/students", class: "item", id: "home_path", data: { turbolinks: false } %>
         <% if logged_in? %>
           <%= link_to "Profile", student_student_profiles_path, class: "item", id: "student_student_profiles_path", data: { turbolinks: false } %>
           <%= link_to "Request", student_requests_path, class: "item", id: "student_requests_path", data: { turbolinks: false } %>

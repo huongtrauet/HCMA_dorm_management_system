@@ -8,7 +8,7 @@ class Manager::ManagerSessionsController < ManagerMainController
       log_in manager
       params[:manager_session][:remember_me] == '1' ? remember(manager) : forget(manager)
       # remember student
-      redirect_to manager_managers_path
+      redirect_to manager_students_arrangement_path
     else
       flash[:error] = t ".invalid_login"
       render :new

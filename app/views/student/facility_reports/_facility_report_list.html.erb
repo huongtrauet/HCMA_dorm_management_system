@@ -1,4 +1,4 @@
-<div class="facility_report_list">
+<div class="facility_report_list" style="padding-top: 2rem">
   <div class="ui dividing header">
     <h3 class="" >Facility Report</h3>
     <div class="add_btn" onclick="addNewFacilityReport()">
@@ -36,25 +36,25 @@
           <input type="text" placeholder="Enter title">
         </div>
       </div>
-      <div class="ui form">
+      <div class="ui form" style="margin-top:1rem">
         <div class="field">
           <label>Description</label>
           <textarea placeholder="Enter description"></textarea>
         </div>
       </div>
     </div>
-    <div class="footer">
-      <button class="ui primary basic button" style="margin: 1rem; float: right">Primary</button>
+    <div class="actions" style="display: flex; justify-content: flex-end; margin-top: 1rem">
+      <div class="ui cancel button">Submit</div>
     </div>
   </div>
-  <div class="ui small test modal transition" id="facility_report_detail">
-    <div class="header">
-      Title
-    </div>
+  <div class="ui modal" id="facility_report_detail">
+    <div class="header">Header</div>
     <div class="content">
-      Description
+      <p></p>
     </div>
-    <button class="ui primary basic button" style="margin: 1rem; float: right">Primary</button>
+    <div class="actions">
+      <div class="ui cancel button">Close</div>
+    </div>
   </div>
 </div>
 <script>

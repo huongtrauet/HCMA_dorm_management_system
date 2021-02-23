@@ -2,6 +2,9 @@
   "name": "HCMA_dormitory_management_system",
   "private": true,
   "dependencies": {
+    "@ckeditor/ckeditor5-image": "^25.0.0",
+    "@ckeditor/ckeditor5-link": "^25.0.0",
+    "@ckeditor/ckeditor5-upload": "^25.0.0",
     "@rails/actioncable": "^6.0.0",
     "@rails/activestorage": "^6.0.0",
     "@rails/ujs": "^6.0.0",

@@ -28,85 +28,91 @@
       </tr>
     </thead>
     <tbody>
-      <% for i in 0..5 do %>
-        <tr onclick="showPost()">
+      <% @posts.each do |post|%>
+        <tr onclick="showPost(<%= post.id %>)">
           <td>1</td>
-          <td>Thong bao cat dien</td>
+          <td><%= post.title %></td>
           <td style="max-width: 25rem">
-          <span style="margin: 0 auto; word-wrap: break-word; max-width: 20rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">Ngay mai se cat dien tu 8h den 10hNgay mai se cat dien tu 8h den 10hNgay mai se cat dien tu 8h den 10h</span>
+          <span style="margin: 0 auto; word-wrap: break-word; max-width: 20rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+          <%= post.content.html_safe %>
+          </span>
           </td>
-          <td>14:00 20/11/1999</td>
-          <td>Tra</td>
-          <td>
-           Posted
-          </td>
+          <td><%= post.created_at %></td>
+          <td><%= post.writer_name %></td>
+          <td><%= post.status%></td>
         </tr>
+        <div class="ui long small modal first scrolling" id="show_modal_first_<%= post.id %>">
+          <div class="scrolling content">
+            <div class="description">
+              <div class="ui header"><h2><%= post.title %></h2></div>
+              <div class="content" style=""><img style="width: 50%; margin: 0 auto; display: block;" src="/assets/ava.jpg"/></div>
+              <div class="content" style="margin-top: 2rem"><%= post.content %></div>
+            </div>   
+          </div>
+          <div class="actions">
+            <button class="ui cancel button">
+              Cancel
+            </button>
+            <div class="ui primary approve button proceed" onclick="">
+              Proceed
+              <i class="right chevron icon"></i>
+            </div>
+          </div>
+        </div>
+        <div class="ui small modal second scrolling" id="show_modal_second_<%= post.id %>">
+          <div class="header">
+            Edit my post
+          </div>
+          <%= form_for @post_management, url: {controller: "post_management", action: "update"}  do |f|%>
+            <div class="scrolling image content">
+              <div class="description">
+                <div class="ui form">
+                  <%= f.hidden_field :id, value: post.id  %>
+                  <div class="field">
+                    <%= f.text_field :title,  :value => "#{post.title}", rows: "2"  %>
+                  </div>
+                  <div class="field">
+                    <%= f.text_area :content,  :value => "#{post.content}", id: "editor_#{post.id}" %>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="actions">
+              <button class="ui approve button">
+                Cancel
+              </button>
+              <%= f.submit "Submit", class: "ui primary approve button" %>
+            </div>
+          <% end %>
+        </div>
       <% end %>
     </tbody>
   </table>
-</div>
-
-<div class="ui longer modal first">
-  <div class="header">
-    Profile Picture
-  </div>
-  <div class="scrolling image content">
-    <div class="description">
-      <div class="ui header">Modal Header</div>
-      <div class="content">This is content</div>
-    </div>   
-  </div>
-  <div class="actions">
-    <button class="ui cancel button">
-      Cancel
-    </button>
-    <div class="ui primary approve button proceed">
-      Proceed
-      <i class="right chevron icon"></i>
-    </div>
-  </div>
-</div>
-
-<div class="ui longer modal second">
-  <div class="header">
-    Profile Picture 2
-  </div>
-  <div class="scrolling image content">
-    <div class="description">
-      <textarea class="ui header" style="width: 100%">Title</textarea>
-      <textarea id="editor1"></textarea>
-    </div>
-  </div>
-  <div class="actions">
-    <button class="ui approve button">
-      Cancel
-    </button>
-    <div class="ui primary approve button">
-      Proceed
-      <i class="right chevron icon"></i>
-    </div>
-  </div>
 </div>
 
 <div class="ui longer modal add">
   <div class="header">
     Create a new post
   </div>
-  <div class="scrolling image content">
-    <div class="description">
-      <textarea class="ui header" style="width: 100%">Title</textarea>
-      <textarea id="editor2"></textarea>
+  <%= form_for @post_management, url: {controller: "post_management", action: "create"}  do |f|%>
+    <div class="ui form" style="padding: 1rem">
+      <div class="field">
+        <%= f.text_area :title, placeholder: "Enter title", rows: "2"  %>
+      </div>
+      <div class="field">
+        <%= f.text_area :content, placeholder: "Enter content", id: "editor" %>
+      </div>
+      <div class="field" style= "display: flex; justify-content: flex-end;">
+        <%= f.text_area :writer_name, placeholder: "Writer", rows: "1", style: "width: 30%" %>
+      </div>
+      <div class="actions" style="float: right">
+        <button class="ui approve button">
+          Cancel
+        </button>
+        <%= f.submit "Submit", class: "ui primary approve button" %>
+      </div>
     </div>
-  </div>
-  <div class="actions">
-    <button class="ui approve button">
-      Cancel
-    </button>
-    <div class="ui primary approve button">
-      Submit
-      <i class="right chevron icon"></i>
-    </div>
-  </div>
+  <% end %>
 </div>
 
 <style>
@@ -114,35 +120,65 @@
     min-height: 150px;  
   }
 </style>
-
-<script src="https://cdn.ckeditor.com/ckeditor5/25.0.0/classic/ckeditor.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/25.0.0/classic/ckeditor.js">
+</script>
 <script>
+  var isCreated = []
   document.addEventListener("DOMContentLoaded", function(event) { 
-  var numb = 1;
-    do {
       ClassicEditor
-      .create(document.querySelector( '#editor'+ numb )) 
-      .catch( error => {
-        console.error( error );
-      } )
-      numb++;
+        .create( document.querySelector( '#editor' ), {
+          toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'imageInsert'],
+          heading: {
+            options: [
+                { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' }
+            ]
+        }
+        })
+        .catch( error => {
+          console.error( error );
+        })
     }
-    while (numb < 3);
-  });
-  function showPost() {
-    $('.ui.longer.modal.first').modal('show');
+  );
+
+  function showPost(post_id) {
+    $(`#show_modal_first_${post_id}`).modal('show');
+    $(`#show_modal_second_${post_id}`)
+    .modal('attach events', `#show_modal_first_${post_id} .button.proceed`)
+  ;
+    if (isCreated[post_id] != true) {
+       ClassicEditor
+        .create( document.querySelector( '#editor_' + post_id ), {
+          toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'imageInsert'],
+          heading: {
+            options: [
+                { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' }
+            ]
+        }
+        })
+        .catch( error => {
+          console.error( error );
+        })
+        isCreated[post_id] = true;
+    }
   }
+
   $('.coupled.modal')
     .modal({
       allowMultiple: false
     })
   ;
   // attach events to buttons
-  $('.second.modal')
-    .modal('attach events', '.first.modal .button.proceed')
-  ;
   function addPost() {
     $('.ui.longer.modal.add').modal('show');
   }
   // CKEDITOR.replace('content',{ toolbar :[ ['Subscript','Superscript'] ], height: '35px', width: '100%' });
+  console.log(ClassicEditor.builtinPlugins.map( plugin => plugin.pluginName ))
+
+  function convertStringToHtml(str) { 
+    return $(str);
+  }
 </script>

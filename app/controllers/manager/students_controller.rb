@@ -52,7 +52,6 @@ class Manager::StudentsController < ManagerMainController
   # DELETE /students/1 or /students/1.json
   def destroy
     @student.destroy
-    byebug
     respond_to do |format|
       format.html { redirect_to manager_students_url, notice: "Student was successfully destroyed." }
       format.json { head :no_content }
