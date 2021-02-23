@@ -14,6 +14,8 @@ Rails.application.routes.draw do
     get "/students-arrangement", to: "students_arrangement#main"
     get "/service-management", to: "service_management#index"
     get "/post-management", to: "post_management#index"
+    post "/post-management/create", to: "post_management#create"
+    post "/post-management/update", to: "post_management#update"
     get "/student-management", to: "student_management#index"
     get  "/student-management/1", to: "student_management#edit"
     get "/room-management", to: "room_management#index"

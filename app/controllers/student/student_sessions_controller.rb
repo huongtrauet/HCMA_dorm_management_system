@@ -1,4 +1,5 @@
 class Student::StudentSessionsController < StudentMainController
+  layout 'student_layout/student'
   def new
   end
   def create

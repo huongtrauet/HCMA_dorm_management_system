@@ -1,13 +1,13 @@
 <% provide :title, t(".title") %>
 <div class="container student_session new">
-  <div class="ui grid">
-    <div class="eight wide column">
-      <img class="ui image" style="height: 100vh; width: 100%" src="/assets/campus.jpg"/>
+  <div class="ui grid" style="overflow: auto">
+    <div class="eight wide column" style="display: flex; justify-content: center; align-item: center">
+      <img class="ui image" style="height: 70vh; width: 70%;" src="/assets/campus.jpg"/>
     </div>
-    <div class="eight wide column">
+    <div class="eight wide column" style="overflow: auto">
       <div class="right_column">
-        <div class="hcma_logo">
-          <img class="logo_image" style=""src="/assets/hcma logo.png"/>
+        <div class="hcma_logo" style="display:flex; justify-content: center">
+          <img class="logo_image" style="width: 15rem"src="/assets/favicon.ico"/>
         </div>
         <div class="title">
          Login to dormitory
@@ -19,13 +19,6 @@
           <div class="field">
             <%= f.password_field :password, class: "input", required: true, placeholder: "Password" %>
           </div>
-          <%# <div class="field">
-            <div class="ui checkbox">
-              <input type="checkbox">
-              <label>Remember me</label>
-            </div>
-          </div> %>
-
            <%= f.label :remember_me, class: "checkbox inline" do %>
               <%= f.check_box :remember_me %>
               <span>Remember </span>
