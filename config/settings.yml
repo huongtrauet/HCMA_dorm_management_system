@@ -73,3 +73,5 @@ validations:
       max_length: 100000
     writer_name:
       max_length: 100
+    image:
+      less_than: 5.megabytes

@@ -31,22 +31,29 @@
       <% @posts.each do |post|%>
         <tr onclick="showPost(<%= post.id %>)">
           <td>1</td>
-          <td><%= post.title %></td>
           <td style="max-width: 25rem">
-          <span style="margin: 0 auto; word-wrap: break-word; max-width: 20rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
-          <%= post.content.html_safe %>
-          </span>
+            <span style="margin: 0 auto; word-wrap: break-word; max-width: 20rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+              <%= post.title %>
+            </span>
+          </td>
+          <td style="max-width: 25rem">
+            <span style="margin: 0 auto; word-wrap: break-word; max-width: 20rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+              <%= post.content.html_safe %>
+            </span>
           </td>
           <td><%= post.created_at %></td>
           <td><%= post.writer_name %></td>
           <td><%= post.status%></td>
         </tr>
         <div class="ui long small modal first scrolling" id="show_modal_first_<%= post.id %>">
-          <div class="scrolling content">
+          <div class="scrolling content" style="padding: 3rem">
             <div class="description">
               <div class="ui header"><h2><%= post.title %></h2></div>
-              <div class="content" style=""><img style="width: 50%; margin: 0 auto; display: block;" src="/assets/ava.jpg"/></div>
-              <div class="content" style="margin-top: 2rem"><%= post.content %></div>
+              <%# <div class="content" style=""><img style="width: 50%; margin: 0 auto; display: block;"/></div> %>
+              <div class="content" style="margin-top: 2rem"><%= post.content.html_safe %></div>
+              <div class="picture" style="width: 100%; margin: 0 auto;">
+                <img src="<%= image_path post.image.url  %>" style="width: 100%; margin: 0 auto"/>
+              </div>
             </div>   
           </div>
           <div class="actions">
@@ -104,6 +111,23 @@
       </div>
       <div class="field" style= "display: flex; justify-content: flex-end;">
         <%= f.text_area :writer_name, placeholder: "Writer", rows: "1", style: "width: 30%" %>
+      </div>
+      <span class="field">
+    	  <%= f.file_field :image, accept: "image/jpeg, image/gif, image/png, image/jpg", :onchange => "generatePreviewImage(this)" %>
+      </span>
+
+      <div class="ui middle aligned center aligned grid container">
+        <div class="ui fluid segment">
+            <input type="file" (change)="fileEvent($event)" class="inputfile" id="embedpollfileinput" />
+        <label for="embedpollfileinput" class="ui huge red right floated button">
+          <i class="ui plus icon"></i> 
+        </label>
+        </div>
+        
+      </div>
+
+      <div>
+         <img id="preview_img"/>
       </div>
       <div class="actions" style="float: right">
         <button class="ui approve button">
@@ -181,4 +205,20 @@
   function convertStringToHtml(str) { 
     return $(str);
   }
+  function generatePreviewImage(image){
+    $('#preview_img').attr('src', URL.createObjectURL(image.files[0]))
+  }
 </script>
+<style>
+.grid.container {
+  margin-top: 5em;
+}
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+</style>

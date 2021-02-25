@@ -15,6 +15,7 @@ gem 'bcrypt'
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'mini_magick'
 gem 'carrierwave'
+gem'active_storage_validations','~>0.8'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

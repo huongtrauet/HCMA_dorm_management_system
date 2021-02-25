@@ -11,7 +11,7 @@ class Manager::PostManagementController < ApplicationController
   def create
     _params = post_params.merge(manager_id: 1, status: 'POSTED')
     @post = Post.new(_params)
-    # byebug
+    byebug
     if @post.save
       redirect_to manager_post_management_path
     else
@@ -37,6 +37,6 @@ class Manager::PostManagementController < ApplicationController
   private
 
   def post_params
-    params.require(:post).permit(:title, :content, :writer_name, :id)
+    params.require(:post).permit(:title, :content, :writer_name, :id, :image)
   end
 end
