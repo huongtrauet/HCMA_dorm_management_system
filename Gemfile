@@ -13,8 +13,9 @@ gem 'jbuilder', '~> 2.7'
 gem 'config'
 gem 'bcrypt'
 gem 'bootsnap', '>= 1.4.2', require: false
-gem 'mini_magick'
-gem 'carrierwave'
+gem 'mini_magick', '~> 4.0'
+gem 'carrierwave', '~> 2.2.0'
+gem 'image_processing', '~> 1.7.1'
 gem'active_storage_validations','~>0.8'
 
 group :development, :test do

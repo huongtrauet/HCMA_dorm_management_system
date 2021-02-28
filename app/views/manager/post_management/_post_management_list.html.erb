@@ -25,35 +25,61 @@
         <th>Thoi gian</th>
         <th>Nguoi dang</th>
         <th>Trang thai</th>
+        <th>Action</th>
       </tr>
     </thead>
     <tbody>
-      <% @posts.each do |post|%>
-        <tr onclick="showPost(<%= post.id %>)">
-          <td>1</td>
-          <td style="max-width: 25rem">
-            <span style="margin: 0 auto; word-wrap: break-word; max-width: 20rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
-              <%= post.title %>
-            </span>
-          </td>
-          <td style="max-width: 25rem">
-            <span style="margin: 0 auto; word-wrap: break-word; max-width: 20rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
-              <%= post.content.html_safe %>
-            </span>
-          </td>
-          <td><%= post.created_at %></td>
-          <td><%= post.writer_name %></td>
-          <td><%= post.status%></td>
+      <% @posts.each_with_index do |post, index|%>  
+        <tr>
+            <td onclick="showPost(<%= post.id %>)"><%= index + 1 %></td>
+            <td style="max-width: 25rem" onclick="showPost(<%= post.id %>)">
+              <span style="margin: 0 auto; word-wrap: break-word; max-width: 10rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+                <%= post.title %>
+              </span>
+            </td onclick="showPost(<%= post.id %>)">
+            <td style="max-width: 25rem"onclick="showPost(<%= post.id %>)">
+              <span style="margin: 0 auto; word-wrap: break-word; max-width: 20rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+                <%= post.content.html_safe %>
+              </span>
+            </td>
+            <td onclick="showPost(<%= post.id %>)"><%= post.created_at %></td>
+            <td onclick="showPost(<%= post.id %>)"><%= post.writer_name %></td>
+            <td onclick="showPost(<%= post.id %>)" id="post_status_<%= post.id%>"><%= post.status%></td>
+            <td id="post_actions_<%= post.id%>">
+              <% if post.status == "POSTED" %>
+                <i class="trash alternate outline icon" id="delete_post_<%= post.id %>" onclick="changePostStatus(<%= post.id %>)"></i>
+              <% elsif post.status == "DELETED" %>
+                <i class="window restore outline icon" id="delete_post_<%= post.id %>" onclick="changePostStatus(<%= post.id %>)"></i>
+              <% end %>
+            </td>
+         </tr> 
         </tr>
+         </tr> 
         <div class="ui long small modal first scrolling" id="show_modal_first_<%= post.id %>">
           <div class="scrolling content" style="padding: 3rem">
             <div class="description">
               <div class="ui header"><h2><%= post.title %></h2></div>
               <%# <div class="content" style=""><img style="width: 50%; margin: 0 auto; display: block;"/></div> %>
               <div class="content" style="margin-top: 2rem"><%= post.content.html_safe %></div>
-              <div class="picture" style="width: 100%; margin: 0 auto;">
-                <img src="<%= image_path post.image.url  %>" style="width: 100%; margin: 0 auto"/>
+              <% if post.images.length == 1 %>
+              <div class="picture" style="width: 100%; height: 50rem; margin: 0 auto; display: flex">
+                <div style="background-image: url(<%= image_path post.images[0].url %>); width: 100%; height: 100%; margin: 0 auto; background-repeat: no-repeat; background-position: top;"></div>
               </div>
+              <% elsif post.images.length > 1 %>
+                <div class="picture" style="width: 100%; height: 25rem; margin: 0 auto; display: flex">
+                  <div style="background-image: url(<%= image_path post.images[0].url %>); width: 50%; height: 100%; margin: 0 auto; background-repeat: no-repeat; background-position: cover; "></div>
+                  <div style="width: 50%; height: 100%; position: relative" >
+                    <div style="background-image: url(<%= image_path post.images[1].url %>); width: 100%; height: 100%; margin: 0 auto; background-repeat: no-repeat; background-position: cover; "></div>
+                    <% if post.images.length > 2 %>
+                      <div style="background-color: #000000; opacity: 0.5; position: absolute; top: 0; left: 0; width: 100%; height: 100%">
+                      </div>
+                      <p style="color: white; top: 50%; left: 50%; transform: translate(-50%, -50%); position: absolute; font-size: 3rem; ">
+                        +<%= post.images.length - 2 %>
+                      </p>
+                    <% end %>
+                  </div>
+                </div>
+              <% end %>
             </div>   
           </div>
           <div class="actions">
@@ -81,6 +107,17 @@
                   <div class="field">
                     <%= f.text_area :content,  :value => "#{post.content}", id: "editor_#{post.id}" %>
                   </div>
+                  <div class="content">
+                    <div class="ui special cards" id=""> 
+                      <div class="card" style="height: 20rem", id="">
+                        <img src="<%= post.images[0].url %>" />
+                        <input type="file" (change)="fileEvent($event)" class="inputfile" id="embedpollfileinput" onchange="generatePreviewImage(this)" style="width: 100%; height: 100%"/>
+                        <label for="embedpollfileinput" class="ui button" style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center">
+                          <i class="ui plus icon"></i>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -101,7 +138,7 @@
   <div class="header">
     Create a new post
   </div>
-  <%= form_for @post_management, url: {controller: "post_management", action: "create"}  do |f|%>
+  <%= form_for @post_management, url: {controller: "post_management", action: "create"}, html: { multipart: true }  do |f|%>
     <div class="ui form" style="padding: 1rem">
       <div class="field">
         <%= f.text_area :title, placeholder: "Enter title", rows: "2"  %>
@@ -112,25 +149,22 @@
       <div class="field" style= "display: flex; justify-content: flex-end;">
         <%= f.text_area :writer_name, placeholder: "Writer", rows: "1", style: "width: 30%" %>
       </div>
-      <span class="field">
-    	  <%= f.file_field :image, accept: "image/jpeg, image/gif, image/png, image/jpg", :onchange => "generatePreviewImage(this)" %>
-      </span>
-
-      <div class="ui middle aligned center aligned grid container">
-        <div class="ui fluid segment">
-            <input type="file" (change)="fileEvent($event)" class="inputfile" id="embedpollfileinput" />
-        <label for="embedpollfileinput" class="ui huge red right floated button">
-          <i class="ui plus icon"></i> 
-        </label>
+      <div class="content">
+        <div class="ui special cards" id="preview_image"> 
+          <div class="card" style="height: 20rem", id="preview_image_card">
+            <%# <input type="file" class="inputfile" id="embedpollfileinput1" onchange="generatePreviewImage(this)" style="width: 100%; height: 100%" multiple="true" accept="image/png, image/jpeg" name="images" /> %>
+            <%= f.file_field :images, accept: 'image/png,image/jpeg', class: "inputfile", id: "embedpollfileinput1", onchange: "generatePreviewImage(this)", style: "width: 100%; height: 100%",  multiple: "true" %> 
+            <label for="embedpollfileinput1" class="ui button" style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center">
+              <i class="ui plus icon"></i>
+            </label>
+          </div>
         </div>
-        
       </div>
-
       <div>
-         <img id="preview_img"/>
+        <img id="preview_img" style= "width: 20%;"/>
       </div>
       <div class="actions" style="float: right">
-        <button class="ui approve button">
+        <button class="ui cancel button">
           Cancel
         </button>
         <%= f.submit "Submit", class: "ui primary approve button" %>
@@ -147,6 +181,29 @@
 <script src="https://cdn.ckeditor.com/ckeditor5/25.0.0/classic/ckeditor.js">
 </script>
 <script>
+  $('.special.cards .card .image').dimmer({
+    on: 'hover'
+  });
+
+  function changePostStatus(post_id) {
+    var r = confirm("Press a button!");
+    if (r == true) {
+      $.ajax({
+        type:"POST",
+        url:"/manager/post-management/",
+        dataType:"json",
+        data: {id: post_id},
+        success:function(result){
+          alert(result.message);
+          document.getElementById(`post_status_${post_id}`).innerHTML = result.status;
+          document.getElementById(`post_actions_${post_id}`).innerHTML = `<i class='${result.status == 'POSTED' ?  'trash alternate' : 'window restore' } outline icon' onclick='changePostStatus(${post_id})'></i>`;
+        }
+      })
+    } else {
+
+    }
+  }
+
   var isCreated = []
   document.addEventListener("DOMContentLoaded", function(event) { 
       ClassicEditor
@@ -167,10 +224,11 @@
   );
 
   function showPost(post_id) {
+    console.log("show post work");
     $(`#show_modal_first_${post_id}`).modal('show');
     $(`#show_modal_second_${post_id}`)
     .modal('attach events', `#show_modal_first_${post_id} .button.proceed`)
-  ;
+;
     if (isCreated[post_id] != true) {
        ClassicEditor
         .create( document.querySelector( '#editor_' + post_id ), {
@@ -206,8 +264,26 @@
     return $(str);
   }
   function generatePreviewImage(image){
-    $('#preview_img').attr('src', URL.createObjectURL(image.files[0]))
+    var index = 0;
+    for (let i = 0; i < image.files.length; i++) {
+      $('#preview_image').append(`<div class='card' style="max-height: 20rem" id="image_${index}">
+                                <i class="ui window close outline icon" style="position: absolute; top: 0.5rem; right: 0.5rem; cursor: pointer;", onclick="removeImage(this)"></i>
+                                <img style="width: 100%; height: 100%;" src='${URL.createObjectURL(image.files[i])}' />
+                                </div>`)
+    }
+    // $('#preview_image').append(`<div class="card" style="height: 20rem", id="preview_image_card">
+    //         <input type="file" class="inputfile" id="embedpollfileinput" onchange="generatePreviewImage(this)" style="width: 100%; height: 100%" multiple/>
+    //         <label for="embedpollfileinput" class="ui button" style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center">
+    //           <i class="ui plus icon"></i>
+    //         </label>
+    //       </div>`)
+    index++;
   }
+  function removeImage(_this){
+    $(_this).parent().remove();
+    console.log($('#embedpollfileinput1').val())
+  }
+
 </script>
 <style>
 .grid.container {
@@ -221,4 +297,12 @@
 	position: absolute;
 	z-index: -1;
 }
+.insert_image:hover {
+  background-color: #e0e1e2;
+  cursor: pointer;
+}
+.card {
+      width: 30% !important;
+      float: left;
+    }
 </style>

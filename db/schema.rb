@@ -79,7 +79,7 @@ ActiveRecord::Schema.define(version: 2021_02_23_151956) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "status"
-    t.string "image"
+    t.json "images"
     t.index ["manager_id"], name: "index_posts_on_manager_id"
   end
 
