@@ -1,8 +1,12 @@
 class Manager::PostManagementController < ApplicationController
   layout 'manager_layout/manager'
   skip_before_action :verify_authenticity_token
+
   def show
     @post = Post.find(params[:id])
+    respond_to do |format|
+      format.json {render json: {object: @post}}
+    end
   end
 
   def new
@@ -10,10 +14,15 @@ class Manager::PostManagementController < ApplicationController
   end
 
   def create
-    _params = post_params.merge(manager_id: 1, status: 'POSTED')
+    # byebug
+    _params = create_post_params.merge(manager_id: 1, status: 'POSTED')
     @post = Post.new(_params)
+    @post_management = Post.new
     if @post.save
-      redirect_to manager_post_management_path
+      respond_to do |format|
+        format.js {render partial: 'list_post_item', locals: { post: @post, index: Post.all.count, post_management: @post_management } } 
+      end
+      # redirect_to manager_post_management_path
     else
       render :new
     end
@@ -54,6 +63,10 @@ class Manager::PostManagementController < ApplicationController
   private
 
   def post_params
-    params.require(:post).permit(:title, :content, :writer_name, :id, {images: []} )
+    params.require(:post).permit(:title, :content, :writer_name, :id )
+  end
+
+  def create_post_params
+    params.permit(:title, :content, :writer_name, {images: []})
   end
 end

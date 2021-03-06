@@ -1,0 +1,97 @@
+
+    <td onclick="showPost(<%= post.id %>)"><%= index %></td>
+    <td style="max-width: 25rem" onclick="showPost(<%= post.id %>)">
+      <span style="margin: 0 auto; word-wrap: break-word; max-width: 10rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+        <%= post.title %>
+      </span>
+    </td onclick="showPost(<%= post.id %>)">
+    <td style="max-width: 25rem"onclick="showPost(<%= post.id %>)">
+      <span style="margin: 0 auto; word-wrap: break-word; max-width: 20rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+        <%= post.content.html_safe %>
+      </span>
+    </td>
+    <td onclick="showPost(<%= post.id %>)"><%= post.created_at %></td>
+    <td onclick="showPost(<%= post.id %>)"><%= post.writer_name %></td>
+    <td onclick="showPost(<%= post.id %>)" id="post_status_<%= post.id%>"><%= post.status%></td>
+    <td id="post_actions_<%= post.id%>">
+      <% if post.status == "POSTED" %>
+        <i class="trash alternate outline icon" id="delete_post_<%= post.id %>" onclick="changePostStatus(<%= post.id %>)"></i>
+      <% elsif post.status == "DELETED" %>
+        <i class="window restore outline icon" id="delete_post_<%= post.id %>" onclick="changePostStatus(<%= post.id %>)"></i>
+      <% end %>
+    </td>
+  
+  <div class="ui long small modal first scrolling" id="show_modal_first_<%= post.id %>">
+          <div class="scrolling content" style="padding: 3rem">
+            <div class="description">
+              <div class="ui header"><h2><%= post.title %></h2></div>
+              <%# <div class="content" style=""><img style="width: 50%; margin: 0 auto; display: block;"/></div> %>
+              <div class="content" style="margin-top: 2rem"><%= post.content.html_safe %></div>
+              <% if post.images.length == 1 %>
+              <div class="picture" style="width: 100%; height: 50rem; margin: 0 auto; display: flex">
+                <div style="background-image: url(<%= image_path post.images[0].url %>); width: 100%; height: 100%; margin: 0 auto; background-repeat: no-repeat; background-position: top;"></div>
+              </div>
+              <% elsif post.images.length > 1 %>
+                <div class="picture" style="width: 100%; height: 25rem; margin: 0 auto; display: flex">
+                  <div style="background-image: url(<%= image_path post.images[0].url %>); width: 50%; height: 100%; margin: 0 auto; background-repeat: no-repeat; background-position: cover; "></div>
+                  <div style="width: 50%; height: 100%; position: relative" >
+                    <div style="background-image: url(<%= image_path post.images[1].url %>); width: 100%; height: 100%; margin: 0 auto; background-repeat: no-repeat; background-position: cover; "></div>
+                    <% if post.images.length > 2 %>
+                      <div style="background-color: #000000; opacity: 0.5; position: absolute; top: 0; left: 0; width: 100%; height: 100%">
+                      </div>
+                      <p style="color: white; top: 50%; left: 50%; transform: translate(-50%, -50%); position: absolute; font-size: 3rem; ">
+                        +<%= post.images.length - 2 %>
+                      </p>
+                    <% end %>
+                  </div>
+                </div>
+              <% end %>
+            </div>   
+          </div>
+          <div class="actions">
+            <button class="ui cancel button">
+              Cancel
+            </button>
+            <div class="ui primary approve button proceed" onclick="">
+              Proceed
+              <i class="right chevron icon"></i>
+            </div>
+          </div>
+        </div>
+        <div class="ui small modal second scrolling" id="show_modal_second_<%= post.id %>">
+          <div class="header">
+            Edit my post
+          </div>
+          <%= form_for post_management, url: {controller: "post_management", action: "update"}  do |f|%>
+            <div class="scrolling image content">
+              <div class="description">
+                <div class="ui form">
+                  <%= f.hidden_field :id, value: post.id  %>
+                  <div class="field">
+                    <%= f.text_field :title,  :value => "#{post.title}", rows: "2"  %>
+                  </div>
+                  <div class="field">
+                    <%= f.text_area :content,  :value => "#{post.content}", id: "editor_#{post.id}" %>
+                  </div>
+                  <div class="content">
+                    <div class="ui special cards" id=""> 
+                      <div class="card" style="height: 20rem", id="">
+                        <img src="<%= post.images[0].url %>" />
+                        <input type="file" (change)="fileEvent($event)" class="inputfile" id="embedpollfileinput" onchange="generatePreviewImage(this)" style="width: 100%; height: 100%"/>
+                        <label for="embedpollfileinput" class="ui button" style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center">
+                          <i class="ui plus icon"></i>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="actions">
+              <button class="ui approve button">
+                Cancel
+              </button>
+              <%= f.submit "Submit", class: "ui primary approve button" %>
+            </div>
+          <% end %>
+        </div>

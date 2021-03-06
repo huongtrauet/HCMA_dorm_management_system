@@ -9,6 +9,7 @@
     "@rails/activestorage": "^6.0.0",
     "@rails/ujs": "^6.0.0",
     "@rails/webpacker": "4.3.0",
+    "aws-sdk": "^2.858.0",
     "jquery": "^3.5.1",
     "semantic-ui-calendar": "^0.0.8",
     "turbolinks": "^5.2.0"

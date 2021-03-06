@@ -125,6 +125,7 @@ ActiveRecord::Schema.define(version: 2021_02_23_151956) do
 
   create_table "students", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "student_id_number", null: false
+    t.string "name", null: false
     t.datetime "check_in_date"
     t.datetime "check_out_date"
     t.datetime "created_at", precision: 6, null: false

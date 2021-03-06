@@ -9,4 +9,5 @@ class Post < ApplicationRecord
   validates :status, presence: true, allow_nil: false, inclusion: { in: ['POSTED', 'DELETED']}
   mount_uploaders :images, PictureUploader
   serialize :images
+  # has_many_attached :images
 end 

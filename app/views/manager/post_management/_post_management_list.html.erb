@@ -28,7 +28,7 @@
         <th>Action</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody id="post_list">
       <% @posts.each_with_index do |post, index|%>  
         <tr>
             <td onclick="showPost(<%= post.id %>)"><%= index + 1 %></td>
@@ -52,8 +52,6 @@
                 <i class="window restore outline icon" id="delete_post_<%= post.id %>" onclick="changePostStatus(<%= post.id %>)"></i>
               <% end %>
             </td>
-         </tr> 
-        </tr>
          </tr> 
         <div class="ui long small modal first scrolling" id="show_modal_first_<%= post.id %>">
           <div class="scrolling content" style="padding: 3rem">
@@ -96,38 +94,43 @@
           <div class="header">
             Edit my post
           </div>
-          <%= form_for @post_management, url: {controller: "post_management", action: "update"}  do |f|%>
-            <div class="scrolling image content">
-              <div class="description">
-                <div class="ui form">
-                  <%= f.hidden_field :id, value: post.id  %>
-                  <div class="field">
-                    <%= f.text_field :title,  :value => "#{post.title}", rows: "2"  %>
+          <form id="myEditForm" multipart="true" name="myEditForm">
+            <div class="ui form" style="padding: 1rem">
+              <input type="hidden" name="id" value="<%= post.id %>">
+              <div class="field">
+                <textarea name="title" rows="2" placeholder="Enter title" value="<%= post.title %>">
+                  <%= post.title %>
+                </textarea>
+              </div>
+              <div class="field">
+                <textarea type="file" name="content" value="<%= post.content%>" id="editor_<%= post.id %>">
+                  <%= post.content %>
+                </textarea>
+              </div>
+              <div class="content">
+                <div class="ui special cards" id="preview_image_edit_<%= post.id %>"> 
+                  <div class="card" style="height: 20rem", id="preview_image_card_<%= post.id %>">
+                    <input type="file" class="inputfile" id="embedpollfileinput_<%= post.id %>" onchange="generatePreviewImageEdit(this)" item_index="<%= post.id %>" style="width: 100%; height: 100%" multiple="true" accept="image/png, image/jpeg" name="images_edit_input" />
+                    <label for="embedpollfileinput_<%= post.id %>" class="ui button" style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center">
+                      <i class="ui plus icon"></i>
+                    </label>
                   </div>
-                  <div class="field">
-                    <%= f.text_area :content,  :value => "#{post.content}", id: "editor_#{post.id}" %>
-                  </div>
-                  <div class="content">
-                    <div class="ui special cards" id=""> 
-                      <div class="card" style="height: 20rem", id="">
-                        <img src="<%= post.images[0].url %>" />
-                        <input type="file" (change)="fileEvent($event)" class="inputfile" id="embedpollfileinput" onchange="generatePreviewImage(this)" style="width: 100%; height: 100%"/>
-                        <label for="embedpollfileinput" class="ui button" style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center">
-                          <i class="ui plus icon"></i>
-                        </label>
-                      </div>
+                  <% for i in 0..post.images.length - 1 do %>
+                    <div class='card' style="max-height: 20rem; height: 20rem" id="image_<%= i %>">
+                    <i class="ui window close outline icon" style="position: absolute; top: 0.5rem; right: 0.5rem; cursor: pointer;", onclick="removeImage(this)"></i>
+                    <img style="width: 100%; height: 100%;" src='<%= post.images[i]%>' />
                     </div>
-                  </div>
+                  <% end %>
                 </div>
               </div>
             </div>
             <div class="actions">
-              <button class="ui approve button">
+              <button class="ui cancel button">
                 Cancel
               </button>
-              <%= f.submit "Submit", class: "ui primary approve button" %>
+              <button class="ui primary button" onclick="updateSubmit(event)">Update</button>
             </div>
-          <% end %>
+          </form>
         </div>
       <% end %>
     </tbody>
@@ -138,39 +141,35 @@
   <div class="header">
     Create a new post
   </div>
-  <%= form_for @post_management, url: {controller: "post_management", action: "create"}, html: { multipart: true }  do |f|%>
+  <form id="myForm" multipart="true" name="myForm"  >
     <div class="ui form" style="padding: 1rem">
       <div class="field">
-        <%= f.text_area :title, placeholder: "Enter title", rows: "2"  %>
+        <textarea name="title" placeholder="Enter title" rows="2"></textarea>
       </div>
       <div class="field">
-        <%= f.text_area :content, placeholder: "Enter content", id: "editor" %>
+        <textarea name="content" placeholder="Enter content" id="editor"></textarea>
       </div>
       <div class="field" style= "display: flex; justify-content: flex-end;">
-        <%= f.text_area :writer_name, placeholder: "Writer", rows: "1", style: "width: 30%" %>
+        <textarea name="writer_name" placeholder="Writer" rows="1" style="width: 30%"></textarea>
       </div>
       <div class="content">
         <div class="ui special cards" id="preview_image"> 
           <div class="card" style="height: 20rem", id="preview_image_card">
-            <%# <input type="file" class="inputfile" id="embedpollfileinput1" onchange="generatePreviewImage(this)" style="width: 100%; height: 100%" multiple="true" accept="image/png, image/jpeg" name="images" /> %>
-            <%= f.file_field :images, accept: 'image/png,image/jpeg', class: "inputfile", id: "embedpollfileinput1", onchange: "generatePreviewImage(this)", style: "width: 100%; height: 100%",  multiple: "true" %> 
+            <input type="file" class="inputfile" id="embedpollfileinput1" onchange="generatePreviewImage(this)" style="width: 100%; height: 100%" multiple="true" accept="image/png, image/jpeg" name="images_input" />
             <label for="embedpollfileinput1" class="ui button" style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center">
               <i class="ui plus icon"></i>
             </label>
           </div>
         </div>
       </div>
-      <div>
-        <img id="preview_img" style= "width: 20%;"/>
-      </div>
       <div class="actions" style="float: right">
         <button class="ui cancel button">
           Cancel
         </button>
-        <%= f.submit "Submit", class: "ui primary approve button" %>
+        <button class="ui primary approve button" onclick="createSubmit(event)">Submit</button>
       </div>
     </div>
-  <% end %>
+  </form>
 </div>
 
 <style>
@@ -178,9 +177,21 @@
     min-height: 150px;  
   }
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js" integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg==" crossorigin="anonymous"></script>
 <script src="https://cdn.ckeditor.com/ckeditor5/25.0.0/classic/ckeditor.js">
 </script>
 <script>
+
+$(document).ready(function(){
+  $("#editor").validate({
+    rules: {
+      content: {
+        required: true
+      }
+    }
+    });
+  });
+
   $('.special.cards .card .image').dimmer({
     on: 'hover'
   });
@@ -223,12 +234,12 @@
     }
   );
 
+  var currentEditor;
   function showPost(post_id) {
     console.log("show post work");
     $(`#show_modal_first_${post_id}`).modal('show');
     $(`#show_modal_second_${post_id}`)
-    .modal('attach events', `#show_modal_first_${post_id} .button.proceed`)
-;
+    .modal('attach events', `#show_modal_first_${post_id} .button.proceed`);
     if (isCreated[post_id] != true) {
        ClassicEditor
         .create( document.querySelector( '#editor_' + post_id ), {
@@ -240,6 +251,9 @@
                 { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' }
             ]
         }
+        })
+        .then(editor => {
+          currentEditor = editor;
         })
         .catch( error => {
           console.error( error );
@@ -263,8 +277,39 @@
   function convertStringToHtml(str) { 
     return $(str);
   }
+
+  let myEditForm = document.getElementById('myEditForm');
+  let formDataEdit = new FormData(myEditForm);
+
+  function generatePreviewImageEdit(image, images){
+    var index = 0;
+    count = image.files.length;
+    image_index = image.getAttribute('item_index')
+    console.log(images)
+    for (let i = 0; i < image.files.length; i++) {
+      $(`#preview_image_edit_${image_index}`).append(`<div class='card' style="max-height: 20rem" id="image_edit_${i}">
+                                <i class="ui window close outline icon" style="position: absolute; top: 0.5rem; right: 0.5rem; cursor: pointer;", onclick="removeImage(this)"></i>
+                                <img style="width: 100%; height: 100%;" src='${URL.createObjectURL(image.files[i])}' />
+                                </div>`)
+      console.log("abc")
+    }
+
+    index++
+    console.log(formDataEdit.getAll("title"))
+  }
+
+//ADD POST
+
+
+  var allImage = [] 
+  let myForm = document.getElementById('myForm');
+  let formData = new FormData(myForm);
+  // console.log(formData.get('content'))
   function generatePreviewImage(image){
     var index = 0;
+    count = image.files.length;
+    // uploadFile(image.files[0])
+
     for (let i = 0; i < image.files.length; i++) {
       $('#preview_image').append(`<div class='card' style="max-height: 20rem" id="image_${index}">
                                 <i class="ui window close outline icon" style="position: absolute; top: 0.5rem; right: 0.5rem; cursor: pointer;", onclick="removeImage(this)"></i>
@@ -277,11 +322,59 @@
     //           <i class="ui plus icon"></i>
     //         </label>
     //       </div>`)
+    let myFormImage = document.getElementById('myForm');
+    let formDataImage = new FormData(myForm);
     index++;
+    for (let index = 0; index < formDataImage.getAll("images_input").length; index++) {
+      formData.append('images', formDataImage.getAll("images_input")[index]);
+    }
   }
+
   function removeImage(_this){
+    const preview_images = Array.prototype.slice.call( document.getElementById('preview_image').children )
     $(_this).parent().remove();
-    console.log($('#embedpollfileinput1').val())
+    const index =  preview_images.indexOf( _this.parentElement )
+    let images = formData.getAll("images")
+    images.splice(index-1, 1)
+    formData.delete('images')
+    for (let index = 0; index < images.length; index++) {
+      formData.append('images', images[index])
+    }
+  }
+
+  function createSubmit(e){
+    let formdatapost = new FormData(document.getElementById('myForm'));
+    let images = formData.getAll('images');
+    for (let i = 0; i < images.length; i++) {
+      formdatapost.append(`images[]`, images[i])
+    }
+    formdatapost.delete('images_input')
+    formdatapost.delete('content')
+    // console.log(formdatapost.get('content'))
+    x = document.querySelector('[role="textbox"]');
+    var post_content = x.innerHTML
+    formdatapost.append('content', post_content)
+    e.preventDefault();
+
+    $.ajax({
+      type: "POST",
+      url: "/manager/post-management/create",
+      processData: false,
+      contentType: false,
+      cache: false,
+      mimeType: 'multipart/form-data',
+      data: formdatapost,
+      success: function(result){
+        console.log(result)
+        let result_html = document.createElement('tr')
+        result_html.innerHTML = result
+        document.querySelector('#post_list').append(result_html)
+      },
+      error: function (error) {
+        console.log(error)
+        console.log("fails")
+      }
+    })
   }
 
 </script>
