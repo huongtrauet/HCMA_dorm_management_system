@@ -10,7 +10,6 @@ class Manager::StudentManagementController < ApplicationController
   end
 
   def create
-    byebug
     if(student_create_params[:student_id_number_confirm] == student_create_params[:student_id_number])
       student_id_number = student_create_params[:student_id_number]
       new_params = student_create_params.merge(password: student_id_number, password_confirmation: student_id_number).except(:student_id_number_confirm)
@@ -18,13 +17,14 @@ class Manager::StudentManagementController < ApplicationController
     else
       redirect_to manager_student_management_path
     end
-    byebug
     if @student.save
       respond_to do |format|
-        format.js {render partial: 'line_student', locals: { student: @student, index: Post.all.count } } 
+        format.js {render partial: 'line_student', locals: { student: @student, index: Student.all.count } } 
       end
     elsif
-      redirect_to manager_student_management_path
+      respond_to do |format|
+        format.json { render json: @student.errors, status: :unprocessable_entity }
+      end
     end
   end
 
@@ -39,6 +39,15 @@ class Manager::StudentManagementController < ApplicationController
     if @student.update(student_params)
       redirect_to manager_student_management_path
 
+    else
+      redirect_to manager_student_management_path
+    end
+  end
+
+  def destroy
+    @student = Student.find(params[:id])
+    if @student.destroy
+      redirect_to manager_student_management_path
     else
       redirect_to manager_student_management_path
     end

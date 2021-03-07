@@ -24,6 +24,7 @@ Rails.application.routes.draw do
     get  "/student-management/:id/edit", to: "student_management#edit"
     get  "/student-management/:id", to: "student_management#edit"
     patch  "/student-management/:id/update", to: "student_management#update"
+    delete  "/student-management/:id/delete", to: "student_management#destroy"
     get "/room-management", to: "room_management#index"
     get "/room-management/rooms/:id", to: "room_management#show"
     get "/homepage/", to: "homepage_management#index"

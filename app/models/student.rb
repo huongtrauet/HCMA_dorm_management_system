@@ -22,22 +22,22 @@ class Student < ApplicationRecord
             length: {
               minimum: Settings.validations.student.student_id_number.min_length,
               maximum: Settings.validations.student.student_id_number.max_length,
-              too_short: "nguyen thi huong tra xinh dep",
-              too_long: "too long"
+              too_short: "ma sinh vien qua ngan",
+              too_long: "ma sinh vien qua dai"
             },
             uniqueness: {
               # object = person object being validated
               # data = { model: "Person", attribute: "Username", value: <username> }
               message: ->(object, data) do
-                "Hey #{object}, #{data[:value]} is already taken."
+                "Hey u! #{data[:value]} da duoc tao!!"
               end
             }
   validates :name, presence: true, allow_nil: false,
             length: {
               minimum: Settings.validations.student.name.min_length,
               maximum: Settings.validations.student.name.max_length,
-              too_short: "nguyen thi huong tra xinh dep",
-              too_long: "too long"
+              too_short: "Ten qua ngan!!",
+              too_long: "Ten qua dai!!"
             }
   validates :check_in_date, presence: true, allow_nil: true
   validates :check_out_date, presence: true, allow_nil: true
