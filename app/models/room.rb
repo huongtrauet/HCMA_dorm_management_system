@@ -9,4 +9,5 @@ class Room < ApplicationRecord
             numericality: {greater_than_or_equal_to: 0}
   validates :max_number_student, presence: true, allow_nil: false,
             numericality: {greater_than_or_equal_to: 0}
+  validates :room_type, presence: true, allow_nil: false, inclusion: { in: ['NORMAL', 'VIP']}
 end

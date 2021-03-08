@@ -87,6 +87,7 @@ ActiveRecord::Schema.define(version: 2021_02_23_151956) do
     t.string "room_name", null: false
     t.integer "number_student", default: 0, null: false
     t.integer "max_number_student", null: false
+    t.string "room_type", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["room_name"], name: "index_rooms_on_room_name", unique: true

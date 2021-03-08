@@ -52,7 +52,7 @@
                 <i class="window restore outline icon" id="delete_post_<%= post.id %>" onclick="changePostStatus(<%= post.id %>)"></i>
               <% end %>
             </td>
-         </tr> 
+        </tr>
         <div class="ui long small modal first scrolling" id="show_modal_first_<%= post.id %>">
           <div class="scrolling content" style="padding: 3rem">
             <div class="description">
@@ -84,26 +84,26 @@
             <button class="ui cancel button">
               Cancel
             </button>
-            <div class="ui primary approve button proceed" onclick="">
+            <div class="ui primary approve button proceed">
               Proceed
               <i class="right chevron icon"></i>
             </div>
           </div>
         </div>
-        <div class="ui small modal second scrolling" id="show_modal_second_<%= post.id %>">
+        <div class="ui longer  modal second scrolling" id="show_modal_second_<%= post.id %>">
           <div class="header">
             Edit my post
           </div>
-          <form id="myEditForm" multipart="true" name="myEditForm">
+          <form id="myEditForm_<%= post.id %>" multipart="true" name="myEditForm" class="ui form segment">
             <div class="ui form" style="padding: 1rem">
-              <input type="hidden" name="id" value="<%= post.id %>">
-              <div class="field">
-                <textarea name="title" rows="2" placeholder="Enter title" value="<%= post.title %>">
-                  <%= post.title %>
-                </textarea>
+              <div style="max-width: 0; max-height: 0; overflow: hidden;">
+                <input autofocus="true" type="hidden" name="id" value="<%= post.id %>" />
               </div>
               <div class="field">
-                <textarea type="file" name="content" value="<%= post.content%>" id="editor_<%= post.id %>">
+                <textarea name="title" rows="2" placeholder="Enter title"><%= post.title %></textarea>
+              </div>
+              <div class="field" onfocusout="validateContent('content_edit_field')" id="content_edit_field<%= post.id %>">
+                <textarea type="file" name="content" id="editor_<%= post.id %>">
                   <%= post.content %>
                 </textarea>
               </div>
@@ -123,12 +123,12 @@
                   <% end %>
                 </div>
               </div>
-            </div>
-            <div class="actions">
-              <button class="ui cancel button">
-                Cancel
-              </button>
-              <button class="ui primary button" onclick="updateSubmit(event)">Update</button>
+              <div class="actions">
+                <button class="ui cancel button">
+                  Cancel
+                </button>
+                <div class="ui primary submit button">Update</div>
+              </div>
             </div>
           </form>
         </div>
@@ -141,16 +141,21 @@
   <div class="header">
     Create a new post
   </div>
-  <form id="myForm" multipart="true" name="myForm"  >
+  <form id="myForm" multipart="true" name="myForm" class="ui form segment" >
     <div class="ui form" style="padding: 1rem">
+      <div style="max-width: 0; max-height: 0; overflow: hidden;">
+        <input autofocus="true" />
+      </div>
       <div class="field">
         <textarea name="title" placeholder="Enter title" rows="2"></textarea>
       </div>
-      <div class="field">
-        <textarea name="content" placeholder="Enter content" id="editor"></textarea>
+      <div class="field" id="content_field" onfocusout="validateContent('content_field')">
+        <textarea id="editor" name="content"></textarea>
       </div>
-      <div class="field" style= "display: flex; justify-content: flex-end;">
-        <textarea name="writer_name" placeholder="Writer" rows="1" style="width: 30%"></textarea>
+      <div class="field">
+        <div style="width: 30.6%">
+          <textarea name="writer_name" placeholder="Writer" rows="1"></textarea>
+        </div>
       </div>
       <div class="content">
         <div class="ui special cards" id="preview_image"> 
@@ -163,10 +168,10 @@
         </div>
       </div>
       <div class="actions" style="float: right">
-        <button class="ui cancel button">
+        <button class="ui cancel button" onclick="cancelCreatePost()">
           Cancel
         </button>
-        <button class="ui primary approve button" onclick="createSubmit(event)">Submit</button>
+        <div class="ui blue submit button">Submit</div>
       </div>
     </div>
   </form>
@@ -232,11 +237,12 @@ $(document).ready(function(){
           console.error( error );
         })
     }
+
+    
   );
 
   var currentEditor;
   function showPost(post_id) {
-    console.log("show post work");
     $(`#show_modal_first_${post_id}`).modal('show');
     $(`#show_modal_second_${post_id}`)
     .modal('attach events', `#show_modal_first_${post_id} .button.proceed`);
@@ -270,6 +276,7 @@ $(document).ready(function(){
   // attach events to buttons
   function addPost() {
     $('.ui.longer.modal.add').modal('show');
+    $('#myForm').form('reset');
   }
   // CKEDITOR.replace('content',{ toolbar :[ ['Subscript','Superscript'] ], height: '35px', width: '100%' });
   console.log(ClassicEditor.builtinPlugins.map( plugin => plugin.pluginName ))
@@ -278,7 +285,7 @@ $(document).ready(function(){
     return $(str);
   }
 
-  let myEditForm = document.getElementById('myEditForm');
+  let myEditForm = document.getElementById('myEditForm_1');
   let formDataEdit = new FormData(myEditForm);
 
   function generatePreviewImageEdit(image, images){
@@ -365,7 +372,10 @@ $(document).ready(function(){
       mimeType: 'multipart/form-data',
       data: formdatapost,
       success: function(result){
-        console.log(result)
+        // console.log(result)
+        $('#myForm').form('reset');
+        $('.ui.longer.modal.add').find('.error').removeClass('error');
+        $('.ui.longer.modal.add').modal('hide')
         let result_html = document.createElement('tr')
         result_html.innerHTML = result
         document.querySelector('#post_list').append(result_html)
@@ -376,6 +386,112 @@ $(document).ready(function(){
       }
     })
   }
+
+  function validateContent(field_id){
+    $('.ui.pointing.red.basic.label.validate.content ').remove();
+    x = document.querySelector('[role="textbox"]');
+    var post_content = x.innerHTML
+    console.log(post_content.replace(/<[^>]*>/gi, '').length)
+    if (post_content.replace(/<[^>]*>/gi, '').length < 1) {
+      $(`#${field_id}`).append(`<div class="ui pointing red basic label validate content " style="color: #9f3a38!important; border-color: #e0b4b4!important">
+                                    Please enter content!!
+                                  </div>`)
+    }
+  }
+
+  $('#myForm').unbind('submit').submit(function(e){
+    if($('#myForm').form('is valid')) {
+      console.log('form work')
+      createSubmit(e);
+    }
+  })
+
+  function cancelCreatePost(){
+    $('#myForm').form('reset');
+    $('.ui.longer.modal.add').find('.error').removeClass('error');
+    $('.ui.longer.modal.add').modal('hide')
+  }
+
+  function updateSubmit(event){
+    
+  }
+
+   $('#myEditForm_1').unbind('submit').submit(function(e){
+     console.log("myEditForm")
+    if($('#myEditForm_1').form('is valid')) {
+      updateSubmit(e);
+    }
+  })
+
+  //VALIDATION
+
+   $('#myForm')
+    .form({
+      fields: {
+        title: {
+          identifier: 'title',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Please enter title!!'
+            },
+            {
+              type: 'minLength[2]',
+              prompt: 'Title must be more than 2 letters!'
+            },
+            {
+              type: 'maxLength[300]',
+              prompt: 'Title must be less than 300 letters!'
+            }
+          ]
+        },
+        writer_name: {
+          identifier: 'writer_name',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Please enter your name !!'
+            },
+            {
+              type: 'minLength[1]',
+              prompt: 'Content must be more than 1 letters!'
+            },
+            {
+              type: 'maxLength[100]',
+              prompt: 'Name must be less than 100 letters!'
+            }
+          ]
+        }
+      },
+      inline: true,
+      on: 'blur'
+    })
+  ;
+  $('#myEditForm_1')
+     .form({
+      fields: {
+        title: {
+          identifier: 'title',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Please enter title!!'
+            },
+            {
+              type: 'minLength[2]',
+              prompt: 'Title must be more than 2 letters!'
+            },
+            {
+              type: 'maxLength[300]',
+              prompt: 'Title must be less than 300 letters!'
+            }
+          ]
+        }
+      },
+      inline: true,
+      on: 'blur'
+    });
+
 
 </script>
 <style>

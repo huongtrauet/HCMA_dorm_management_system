@@ -27,14 +27,14 @@
         <th>Status</th>
       </tr>
     </thead>
-    <tbody>
-      <% @rooms.each do |room| %>
+    <tbody id="room_list">
+      <% @rooms.each_with_index do |room, index| %>
         <tr>
-          <td><a class="room_list_item" href="/manager/room-management/rooms/<%= room.id %>" style="display: block; width: 100%">1 </td>
+          <td><a class="room_list_item" href="/manager/room-management/rooms/<%= room.id %>" style="display: block; width: 100%"><%= index + 1 %></td>
           <td><a class="room_list_item" href="/manager/room-management/rooms/<%= room.id %>" style="display: block; width: 100%"><%= room.room_name %></a></td>
           <td><a class="room_list_item" href="/manager/room-management/rooms/<%= room.id %>" style="display: block; width: 100%"><%= room.number_student %></a></td>
           <td><a class="room_list_item" href="/manager/room-management/rooms/<%= room.id %>" style="display: block; width: 100%"><%= room.max_number_student %></a></td>
-          <td><a class="room_list_item" href="/manager/room-management/rooms/<%= room.id %>" style="display: block; width: 100%">VIP</a></td>
+          <td><a class="room_list_item" href="/manager/room-management/rooms/<%= room.id %>" style="display: block; width: 100%"><%= room.room_type %></a></td>
           <td><a class="room_list_item" href="/manager/room-management/rooms/<%= room.id %>" style="display: block; width: 100%">
             <a class="ui teal tag label teal_label" style="width: 5.7rem">Using</a>
           </a></td>
@@ -48,48 +48,79 @@
   <div class="header">
     Create new room
   </div>
-  <div class="content">
-    <div class="description">
-      <%# <label style="display: inline-block">Ho va ten</label> %>
-      <div class="ui left corner labeled input" style="display: block; width: 85%; margin: 1rem auto;">
-        <input type="text" placeholder="Room name.." style="display:block; width: 100%">
-        <div class="ui left corner label">
-          <i class="asterisk icon"></i>
+  <form id="add_room_form">
+    <div class="content">
+      <div class="description">
+        <%# <label style="display: inline-block">Ho va ten</label> %>
+        <div class="ui left corner labeled input" style="display: block; width: 85%; margin: 1rem auto;">
+          <input type="text" placeholder="Room name.." style="display:block; width: 100%" name="room_name">
+          <div class="ui left corner label">
+            <i class="asterisk icon"></i>
+          </div>
         </div>
-      </div>
-      <div class="ui left corner labeled input" style="display: block; width: 85%; margin: 1rem auto;">
-        <input type="text" placeholder="Max number.." style="display:block; width: 100%">
-        <div class="ui left corner label">
-          <i class="asterisk icon"></i>
+        <div class="ui left corner labeled input" style="display: block; width: 85%; margin: 1rem auto;">
+          <input type="text" placeholder="Max number.." style="display:block; width: 100%" name="max_number_student">
+          <div class="ui left corner label">
+            <i class="asterisk icon"></i>
+          </div>
         </div>
-      </div>
-      <div class="ui selection dropdown" style="display: block; width: 85%; margin: 1rem auto;">
-        <input type="hidden" name="gender">
-        <i class="dropdown icon"></i>
-        <div class="default text">Room type</div>
-        <div class="menu">
-          <div class="item" data-value="1">Normal</div>
-          <div class="item" data-value="0">VIP</div>
+        <div class="ui selection dropdown" style="display: block; width: 85%; margin: 1rem auto;">
+          <input type="hidden" name="room_type">
+          <i class="dropdown icon"></i>
+          <div class="default text">Room type</div>
+          <div class="menu">
+            <div class="item" data-value="NORMAL">Normal</div>
+            <div class="item" data-value="VIP">VIP</div>
+          </div>
         </div>
-      </div>
-    </div>   
-  </div>
-  <div class="actions">
-    <button class="ui cancel button">
-      Cancel
-    </button>
-    <div class="ui primary approve button proceed">
-      Add
-      <i class="right chevron icon"></i>
+      </div>   
     </div>
-  </div>
+    <div class="actions">
+      <button class="ui cancel button">
+        Cancel
+      </button>
+      <div class="ui primary approve button proceed" onclick="addSubmit()">
+        Add
+        <i class="right chevron icon"></i>
+      </div>
+    </div>
+  </form>
 </div>
 
 <script>
   function addRoom() {
     $('.ui.mini.modal.add_room').modal('show');
   }
+
   $('.ui.dropdown')
     .dropdown()
   ;
+
+  function addSubmit(){
+    console.log(document.querySelectorAll('input[name=room_name]')[0].value);
+    $.ajax({
+      type: "POST",
+      url: "/manager/room-management/create",
+      data: {
+        "room": {
+          "room_name": document.querySelectorAll('input[name=room_name]')[0].value,
+          "room_type": document.querySelectorAll('input[name=room_type]')[0].value,
+          "max_number_student": document.querySelectorAll('input[name=max_number_student]')[0].value
+        }
+      },
+      success: function(result){
+        $('#add_room_form').form('reset');
+        $('.ui.mini.modal.add_room').find('.error').removeClass('error');
+        $('.ui.mini.modal.add_room').modal('hide');
+        console.log(result)
+        let result_html = document.createElement('tr')
+        result_html.innerHTML = result
+        document.querySelector('#room_list').append(result_html)
+      },
+      error: function (error) {
+        console.log(error)
+        console.log("fails")
+      }
+    })
+  }
 </script>
