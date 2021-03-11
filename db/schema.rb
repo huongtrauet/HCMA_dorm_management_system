@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_23_151956) do
+ActiveRecord::Schema.define(version: 2021_03_09_035223) do
 
   create_table "complaint_reports", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "title", null: false
@@ -90,6 +90,7 @@ ActiveRecord::Schema.define(version: 2021_02_23_151956) do
     t.string "room_type", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "status", default: "READY"
     t.index ["room_name"], name: "index_rooms_on_room_name", unique: true
   end
 
@@ -97,9 +98,11 @@ ActiveRecord::Schema.define(version: 2021_02_23_151956) do
     t.integer "water_price", null: false
     t.integer "electricity_price", null: false
     t.integer "total_price", null: false
-    t.integer "status", null: false
-    t.datetime "start_date", null: false
-    t.datetime "end_date", null: false
+    t.string "status", null: false
+    t.integer "month", null: false
+    t.integer "year", null: false
+    t.string "payer", null: false
+    t.datetime "paid_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "room_id", null: false

@@ -35,10 +35,8 @@ class Manager::StudentManagementController < ApplicationController
 
   def update
     @student = Student.find(params[:id])
-    byebug
     if @student.update(student_params)
       redirect_to manager_student_management_path
-
     else
       redirect_to manager_student_management_path
     end

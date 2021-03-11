@@ -14,99 +14,112 @@
       </tr>
     </thead>
     <tbody>
-      <% for i in 0..5 do %>
-        <tr onclick="showServiceChargeInfo()">
-          <td>1</td>
-          <td>2</td>
-          <td>200,000</td>
-          <td>300,000</td>
-          <td>500,000</td>
+      <% @room_service_charges.each_with_index do |s, index| %>
+        <tr onclick="showServiceChargeInfo(<%= s.room_id %>, <%= s.year %>, <%= s.month %>, <%= s.id %>)">
+          <td><%= index + 1 %></td>
+          <td><%= s.month %></td>
+          <td><%= s.year %></td>
+          <td><%= s.electricity_price %></td>
+          <td><%= s.water_price %></td>
+          <td><%= s.total_price %></td>
           <td>
-            <% if i % 2 == 0 %>
-              <a class="ui teal tag label" style="width: 6.7rem">Paid</a>
-            <% else  %>
-              <a class="ui red tag label" style="width: 6.7rem">Unpaid</a>
+            <% if s.status == "PAID" %>
+              <a class="ui teal tag label" style="width: 6.7rem"><%= s.status %></a>
+            <% elsif s.status == "UNPAID" %>
+              <a class="ui red tag label" style="width: 6.7rem"><%= s.status %></a>
             <% end  %>
-          </td>
+          </td> 
         </tr>
       <% end %>
     </tbody>
   </table>
 </div>
 
-<div class="ui first modal service_charge_info">
+<div class="ui first modal service_charge_info" id="show_info_modal">
   <i class="close icon"></i>
   <div class="header">
-    Service charge
+      <h3>Service charge</h3>
+      <div>
+        <p style="margin-bottom: -1rem" id="show_paid_at"></p>
+        <p style="float: right; margin-right: 1rem; margin-right: 2.6rem;" class="show_room_name"></p>
+        <input type="hidden" name="room_id" id="room_id">
+        <input type="hidden" name="charge_id" id="charge_id">
+      </div>
   </div>
-  <div class="ui header" style="margin-bottom: 2rem; border: none">P1410</div>
-  <div class="">
-    <div class="ui grid">
-      <div class="one wide column"></div>
-      <div class="five wide column">
-        <div class="student-info">
-          <label>Thang:</label>
-          <p>Thang 2</p>
-          <label>Tong tien:</label>
-          <p>500000</p>
+  <div class="ui header" style="margin-bottom: 2rem; border: none"><%=  %></div>
+    <div class="">
+      <div class="ui grid">
+        <div class="one wide column"></div>
+        <div class="five wide column">
+          <div class="student-info">
+            <div class="ui field">
+              <label>Thang:</label>
+              <p id="show_month"></p>
+            </div>
+            <label>Tong tien:</label>
+            <p id="show_total_price"></p>
+          </div>
         </div>
-      </div>
-      <div class="five wide column">
-        <div class="student-info">
-          <label>Tien dien: </label>
-          <p>200000</p>
-          <label>Tien nuoc</label>
-          <p>300000</p>
+        <div class="five wide column">
+          <div class="student-info">
+            <label>Tien dien: </label>
+            <p id="show_electricity_price"></p>
+            <label>Tien nuoc</label>
+            <p id="show_water_price"></p>
+          </div>
         </div>
-      </div>
-      <div class="five wide column">
-        <div class="student-info">
-          <label>Trang thai: </label>
-          <p>
-            <span style="background-color: #f4810b; padding: 6px 10px; color: #fff; border-radius: 5px; font-weight: bold">Paid</span>
-          </p>
-          <label>Nguoi nop</label>
-          <p>Tra</p>
+        <div class="five wide column">
+          <div class="student-info">
+            <label>Trang thai: </label>
+            <p>
+              <span style="background-color: #f4810b; padding: 6px 10px; color: #fff; border-radius: 5px; font-weight: bold" id="show_status"></span>
+            </p>
+            <label>Nguoi nop</label>
+            <p id="show_payer"></p>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="actions" style="padding: 0.7rem 1rem;">
-    <div class="ui black deny button">
-      Cancel
+    <div class="actions" style="padding: 0.7rem 1rem;">
+      <div class="ui black deny button" onclick="closeModal()">
+        Cancel
+      </div>
+      <div class="ui positive right labeled icon button edit">
+        Edit
+        <i class="arrow right icon"></i>
+      </div>
     </div>
-    <div class="ui positive right labeled icon button edit">
-      Edit
-      <i class="arrow right icon"></i>
-    </div>
-  </div>
 </div>
 
-<div class="ui second modal service_charge_info">
+<div class="ui second modal service_charge_info" id="edit_info_modal">
   <i class="close icon"></i>
   <div class="header">
-    Service charge edit
+    <h3>Service charge edit</h3>
+    <div>
+    <p id="paid_at" style="margin-bottom: -1rem"></p>
+    <p style="float: right; margin-right: 1rem; margin-right: 2.6rem;" class="show_room_name"></p>
+    </div>
   </div>
-  <div class="ui header" style="margin-bottom: 2rem; border: none">P1410</div>
-  <form class="ui form" style="margin: 0 1.5rem">
+  <div class="ui header" style="margin-bottom: 2rem; border: none"></div>
+  <form class="ui form" style="margin: 0 1.5rem" id="service_charge_edit_form" name="service_charge_edit_form" class="ui form segment">
     <div class="three fields">
       <div class="field">
         <label>Thang</label>
-        <input type="text" placeholder="Thang" disabled value="Thang 2">
+        <input type="text" placeholder="Thang" disabled value="Thang 2" name="month" id="month_edit_field">
       </div>
       <div class="field">
         <label>Tien dien</label>
-        <input type="text" placeholder="Tien dien">
+        <input type="text" placeholder="Tien dien" name="electricity_price" id="electricity_price_edit_field">
       </div>
       <div class="field">
         <label>Trang thai</label>
         <div class="ui selection dropdown">
-          <input type="hidden" name="gender">
+          <input type="hidden" name="status" id="status_edit_field">
           <i class="dropdown icon"></i>
-          <div class="default text">Trang thai</div>
+          <div class="text" id="selected_item"></div>
           <div class="menu">
-            <div class="item" data-value="1">Paid</div>
-            <div class="item" data-value="0">Unpaid</div>
+            <div class="item" data-value="PAID">PAID</div>
+            <div class="item" data-value="UNPAID">UNPAID</div>
           </div>
         </div>
       </div>
@@ -114,37 +127,199 @@
     <div class="three fields">
       <div class="field">
         <label>Tong tien</label>
-        <input type="text" placeholder="Tong tien">
+        <input type="text" placeholder="Tong tien" name="total_price" id="total_price_edit_field">
       </div>
       <div class="field">
         <label>Tien nuoc</label>
-        <input type="text" placeholder="Tien nuoc">
+        <input type="text" placeholder="Tien nuoc" name="water_price" id="water_price_edit_field">
       </div>
       <div class="field">
         <label>Nguoi nop</label>
-        <input type="text" placeholder="Nguoi nop">
+        <input type="text" placeholder="Nguoi nop" name="payer" id="payer_edit_field">
       </div>
     </div>
-  </form>
-  <div class="actions" style="padding: 0.7rem 1rem;">
-    <div class="ui black deny button">
+  <div class="actions" style="padding: 0.7rem 1rem; float:right; margin-right: 1.5rem">
+    <div class="ui black deny button" onclick="closeModal()">
       Cancel
     </div>
-    <div class="ui positive right labeled icon button">
-      Submit
-      <i class="arrow right icon"></i>
-    </div>
+    <div class="ui blue submit button">Submit</div>
   </div>
+  </form>
 </div>
 
 <script>
-  function showServiceChargeInfo() {
+  function showServiceChargeInfo(room_id, year, month, charge_id ){
     $('.ui.modal.first.service_charge_info').modal('show');
+    $('#service_charge_edit_form').form('reset');
+    $("#service_charge_edit_form").find('.error').removeClass('error');
+    $.ajax({
+      type: "POST",
+      url: `/manager/room-management/rooms/${room_id}/service-charge/${year}/${month}`,
+      data: {
+        "charge_id": charge_id
+      },
+      success: function(result){
+        console.log(result)
+        //Show modal
+        $('#show_month').html(result.service_charge.month)
+        $('#show_year').html(result.service_charge.year)
+        $('#show_water_price').html(result.service_charge.water_price)
+        $('#show_electricity_price').html(result.service_charge.electricity_price)
+        $('#show_total_price').html(result.service_charge.total_price)
+        $('#show_payer').html(result.service_charge.payer)
+        $('#show_status').html(result.service_charge.status)
+        $('#show_paid_at').html(result.service_charge.paid_at)
+        $('.show_room_name').html(result.room.room_name)
+        $('#room_id').val(result.room.id)
+        $('#charge_id').val(result.service_charge.id)
+        console.log(result.room)
+        //Edit modal
+        $('#month_edit_field').val(result.service_charge.month)
+        $('#year_edit_field').val(result.service_charge.year)
+        $('#water_price_edit_field').val(result.service_charge.water_price)
+        $('#electricity_price_edit_field').val(result.service_charge.electricity_price)
+        $('#total_price_edit_field').val(result.service_charge.total_price)
+        $('#status_edit_field').val(result.service_charge.status)
+        $('#payer_edit_field').val(result.service_charge.payer)
+        $('#paid_at').html(result.service_charge.paid_at)
+        $('#selected_item').html(result.service_charge.status)
+        // $('#status_edit_field').val()
+      },
+      error: function (error) {
+        console.log(error)
+      }
+    })
   }
+
+  function submitUpdateServiceCharge(){
+    let room_id = $('#room_id').val()
+    let year = $('#year_edit_field').val();
+    let month = $('#month_edit_field').val();
+    let charge_id = $('#charge_id').val();
+    console.log("room_id: " + room_id)
+    // $('#service_charge_edit_form').form('reset');
+    $("#service_charge_edit_form").find('.error').removeClass('error');
+    $('#show_info_modal').modal('hide');
+    $('#edit_info_modal').modal('hide');
+    
+    $.ajax({
+      type: "POST",
+      url: `/manager/room-management/rooms/${room_id}/service-charge/${year}/${month}/update`,
+      data: {
+        service_charge: {
+          "charge_id": charge_id,
+          "water_price": $('#water_price_edit_field').val(),
+          "electricity_price": $('#electricity_edit_field').val(),
+          "total_price": $('#total_price_edit_field').val(),
+          "month": $('#month_edit_field').val(),
+          "year": $('#year_edit_field').val(),
+          "payer": $('#payer_edit_field').val(),
+          "status": $('#status_edit_field').val()
+        }
+      },
+      success: function(result){
+        console.log(result)
+      },
+      error: function (error) {}
+    })
+  }
+
+  $('#service_charge_edit_form').off('submit').submit(function(e){
+    if($('service_charge_edit_form').form('is valid')){
+      submitUpdateServiceCharge();
+    }
+  })
 
   $('.second.modal')
     .modal('attach events', '.first.modal .button.edit');
 
   $('.ui.dropdown')
   .dropdown();
+
+
+  // $('#service_charge_edit_form').unbind('submit').submit(function(e) {
+  //   if($('service_charge_edit_form').form('is valid')){
+  //     editSubmit();
+  //   }
+  // });
+  //VALIDATE EDIT FORM
+   $('#service_charge_edit_form')
+    .form({
+      fields: {
+        electricity_price: {
+          identifier: 'electricity_price',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Please enter student name!!'
+            },
+            {
+              type: 'integer[0..1000000000000]',
+              prompt: 'Electricity_price must be more than 0 vnd and less than 1000000000000 vnd!!'
+            }
+          ]
+        },
+        status: {
+          identifier: 'status',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Please setting status!!'
+            }
+          ]
+        },
+        total_price: {
+          identifier: 'total_price',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Please enter student name!!'
+            },
+            {
+              type: 'integer[0..1000000000000]',
+              prompt: 'Total price must be more than 0 vnd and less than 1000000000000 vnd!!'
+            }
+          ]
+        },
+        water_price: {
+          identifier: 'water_price',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Please enter student name!!'
+            },
+            {
+              type: 'integer[0..1000000000000]',
+              prompt: 'Water price must be more than 0 vnd and less than 1000000000000 vnd!!'
+            }
+          ]
+        },
+        payer: {
+          identifier: 'payer',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Please enter payer!!'
+            },
+            {
+              type: 'minLength[1]',
+              prompt: 'Title must be more than 1 letters!'
+            },
+            {
+              type: 'maxLength[10]',
+              prompt: 'Title must be less than 100 letters!'
+            }
+          ]
+        }
+      },
+      inline: true,
+      on: 'blur'
+    })
+  ;
+  function closeModal() {
+    $("#service_charge_edit_form").find('.error').removeClass('error');
+    $('#show_info_modal').modal('hide');
+    $('#edit_info_modal').modal('hide');
+  }
+
 </script>

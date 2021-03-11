@@ -13,23 +13,30 @@ Rails.application.routes.draw do
     get "/logout", to: "manager_sessions#destroy"
     get "/students-arrangement", to: "students_arrangement#main"
     get "/service-management", to: "service_management#index"
+
     get "/post-management", to: "post_management#index"
     get "/post-management/show", to: "post_management#show"
     post "/post-management/create", to: "post_management#create"
     post "/post-management/update", to: "post_management#update"
     post "/post-management/", to: "post_management#change_post_status"
     post "/post-management/restore", to: "post_management#restore"
+
     get "/student-management", to: "student_management#index"
     post "/student-management/create", to: "student_management#create"
     get  "/student-management/:id/edit", to: "student_management#edit"
     get  "/student-management/:id", to: "student_management#edit"
     patch  "/student-management/:id/update", to: "student_management#update"
     delete  "/student-management/:id/delete", to: "student_management#destroy"
+    
     get "/room-management", to: "room_management#index"
+    post "/room-management/checkduplicate", to: "room_management#check_duplicate_room"
     get "/room-management/rooms/:id", to: "room_management#show"
     get "/homepage/", to: "homepage_management#index"
     get "/posts/:id", to: "homepage_management#show"
     post "/room-management/create", to: "room_management#create"
+    post "/room-management/rooms/:room_id/service-charge/:year/:month", to: "service_management#show_service_charge"
+    post "/room-management/rooms/:room_id/service-charge/:year/:month/update", to: "service_management#update_service_charge"
+
 
     resources :students
     resources :managers

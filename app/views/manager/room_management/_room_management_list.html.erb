@@ -30,14 +30,36 @@
     <tbody id="room_list">
       <% @rooms.each_with_index do |room, index| %>
         <tr>
-          <td><a class="room_list_item" href="/manager/room-management/rooms/<%= room.id %>" style="display: block; width: 100%"><%= index + 1 %></td>
-          <td><a class="room_list_item" href="/manager/room-management/rooms/<%= room.id %>" style="display: block; width: 100%"><%= room.room_name %></a></td>
-          <td><a class="room_list_item" href="/manager/room-management/rooms/<%= room.id %>" style="display: block; width: 100%"><%= room.number_student %></a></td>
-          <td><a class="room_list_item" href="/manager/room-management/rooms/<%= room.id %>" style="display: block; width: 100%"><%= room.max_number_student %></a></td>
-          <td><a class="room_list_item" href="/manager/room-management/rooms/<%= room.id %>" style="display: block; width: 100%"><%= room.room_type %></a></td>
-          <td><a class="room_list_item" href="/manager/room-management/rooms/<%= room.id %>" style="display: block; width: 100%">
-            <a class="ui teal tag label teal_label" style="width: 5.7rem">Using</a>
-          </a></td>
+          <td>
+          <%= link_to "/manager/room-management/rooms/#{room.id}", style: "display: block; width: 100%", data: { turbolinks: false } do %>
+            <%= index + 1 %>
+          <% end %>
+          </td>
+          <td>
+          <%= link_to "/manager/room-management/rooms/#{room.id}", style: "display: block; width: 100%", data: { turbolinks: false } do %>
+            <%= room.room_name %>
+          <% end %>
+          </td>
+          <td>
+          <%= link_to "/manager/room-management/rooms/#{room.id}", style: "display: block; width: 100%", data: { turbolinks: false } do %>
+            <%= room.number_student %>
+          <% end %>
+          </td>
+          <td>
+          <%= link_to "/manager/room-management/rooms/#{room.id}", style: "display: block; width: 100%", data: { turbolinks: false } do %>
+            <%= room.max_number_student %>
+          <% end %>
+          </td>
+          <td>
+          <%= link_to "/manager/room-management/rooms/#{room.id}", style: "display: block; width: 100%", data: { turbolinks: false } do %>
+            <%= room.room_type %>
+          <% end %>
+          </td>
+          <td>
+          <%= link_to "/manager/room-management/rooms/#{room.id}", style: "display: block; width: 100%", data: { turbolinks: false } do %>
+            <a class="ui teal tag label teal_label" style="width: 5.7rem"><%= room.status %></a>
+          <% end %>
+          </td>
         </tr>
       <% end %>
     </tbody>
@@ -48,38 +70,44 @@
   <div class="header">
     Create new room
   </div>
-  <form id="add_room_form">
+  <form id="add_room_form" class="ui form segment" name="add_room_form" style="border: none; -webkit-box-shadow: none">
     <div class="content">
       <div class="description">
         <%# <label style="display: inline-block">Ho va ten</label> %>
-        <div class="ui left corner labeled input" style="display: block; width: 85%; margin: 1rem auto;">
-          <input type="text" placeholder="Room name.." style="display:block; width: 100%" name="room_name">
-          <div class="ui left corner label">
-            <i class="asterisk icon"></i>
+        <div class="ui field" style="display: block; width: 85%; margin: 1rem auto;" id="room_name_field" onfocusout="checkDuplicate(this)">
+          <div class="ui left corner labeled input">
+            <input type="text" placeholder="Room name.." style="display:block; width: 100%" name="room_name">
+            <div class="ui left corner label">
+              <i class="asterisk icon"></i>
+            </div>
           </div>
         </div>
-        <div class="ui left corner labeled input" style="display: block; width: 85%; margin: 1rem auto;">
-          <input type="text" placeholder="Max number.." style="display:block; width: 100%" name="max_number_student">
-          <div class="ui left corner label">
-            <i class="asterisk icon"></i>
+        <div class="ui field" style="display: block; width: 85%; margin: 1rem auto;">
+          <div class="ui left corner labeled input">
+            <input type="text" placeholder="Max number.." style="display:block; width: 100%" name="max_number_student">
+            <div class="ui left corner label">
+              <i class="asterisk icon"></i>
+            </div>
           </div>
         </div>
-        <div class="ui selection dropdown" style="display: block; width: 85%; margin: 1rem auto;">
-          <input type="hidden" name="room_type">
-          <i class="dropdown icon"></i>
-          <div class="default text">Room type</div>
-          <div class="menu">
-            <div class="item" data-value="NORMAL">Normal</div>
-            <div class="item" data-value="VIP">VIP</div>
+        <div class="ui field" style="display: block; width: 85%; margin: 1rem auto;">
+          <div class="ui selection dropdown field" id="room_type_dropdown">
+            <input type="hidden" name="room_type" value="">
+            <i class="dropdown icon"></i>
+            <div class="default text">Room type</div>
+            <div class="menu">
+              <div class="item" data-value="NORMAL" selected="">NORMAL</div>
+              <div class="item" data-value="VIP">VIP</div>
+            </div>
           </div>
         </div>
       </div>   
     </div>
-    <div class="actions">
-      <button class="ui cancel button">
+    <div class="actions" style="display: flex; justify-content: center">
+      <button class="ui cancel button" onclick="cancelCreateRoomModal()">
         Cancel
       </button>
-      <div class="ui primary approve button proceed" onclick="addSubmit()">
+      <div class="ui blue submit button">
         Add
         <i class="right chevron icon"></i>
       </div>
@@ -89,6 +117,7 @@
 
 <script>
   function addRoom() {
+    $('#add_room_form').form('reset');
     $('.ui.mini.modal.add_room').modal('show');
   }
 
@@ -96,8 +125,8 @@
     .dropdown()
   ;
 
-  function addSubmit(){
-    console.log(document.querySelectorAll('input[name=room_name]')[0].value);
+  function addSubmit(e){
+    e.preventDefault();
     $.ajax({
       type: "POST",
       url: "/manager/room-management/create",
@@ -118,9 +147,106 @@
         document.querySelector('#room_list').append(result_html)
       },
       error: function (error) {
+        for (var key in error.responseJSON) {
+          alert(error.responseJSON[key]); // val1 and etc...
+        }
         console.log(error)
         console.log("fails")
       }
     })
+  }
+
+  //VALIDATE CREATE ROOM
+
+   $('#add_room_form')
+    .form({
+      fields: {
+        room_name: {
+          identifier: 'room_name',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Please enter room name!!'
+            },
+            {
+              type: 'minLength[1]',
+              prompt: 'Title must be more than 1 letters!'
+            },
+            {
+              type: 'maxLength[10]',
+              prompt: 'Title must be less than 10 letters!'
+            }
+          ]
+        },
+        room_type: {
+          identifier: 'room_type',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Please enter room type!!'
+            }
+          ]
+        },
+        max_number_student: {
+          identifier: 'max_number_student',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Please enter max number students !!'
+            },
+            {
+              type: 'integer[0..6]',
+              prompt: 'Max number students must be integer and greater than or equal to 0'
+            }
+          ]
+        }
+      },
+      inline: true,
+      on: 'blur'
+    })
+  ;
+
+  function checkDuplicate(){
+    current_name = document.querySelectorAll('input[name=room_name]')[0].value
+    let result
+    $.ajax({
+      type: "POST",
+      url: "/manager/room-management/checkduplicate",
+      data: {
+        "room_name": current_name
+      },
+      success: function(_result){
+        console.log("not dup")
+        result = true
+      },
+      error: function (error) {
+        console.log(error)
+        if (error.responseJSON.is_duplicate == true) {
+          console.log("duplicate")
+          $('#room_name_field').find('.error').removeClass('error');
+          $('#room_name_field').addClass("error")
+          $('#room_name_field').append(`<div class="ui basic red pointing prompt label transition visible">This name has been taken</div>`)
+          result = false
+        }
+      }
+    })
+    return result
+  }
+  $('#add_room_form').off('submit').submit(function(e){
+    e.preventDefault();
+    if($('#add_room_form').form('is valid')) {
+      if (checkDuplicate() == true){
+        console.log("is valid")
+        addSubmit(e)
+      }
+    }
+  })
+
+  $('#room_type_dropdown').dropdown('set selected', "NORMAL");
+
+  function cancelCreateRoomModal(){
+    $('#add_room_form').form('reset');
+    $("#add_room_form").find('.error').removeClass('error');
+    $('.ui.mini.modal.add_room').modal('hide');
   }
 </script>

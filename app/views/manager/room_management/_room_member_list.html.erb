@@ -124,23 +124,43 @@
   </div>
   <div class="content">
     <div class="description">
-      <%# <label style="display: inline-block">Ho va ten</label> %>
-      <div class="ui left corner labeled input" style="display: block; width: 85%; margin: 1rem auto;">
-        <input type="text" placeholder="MSSV..." style="display:block; width: 100%">
-        <div class="ui left corner label">
-          <i class="asterisk icon"></i>
+      <form id="add-form" class="ui form segment" style="border: none; -webkit-box-shadow: none">
+        <div style="max-width: 0; max-height: 0; overflow: hidden;">
+          <input autofocus="true" />
         </div>
-      </div>
+        <div class="field" style="margin: 1rem auto;">
+          <div class="ui left corner labeled input" style="display: block;" >
+            <input type="text" placeholder="Ho va ten..." style="display:block; width: 100%" name="name" tabindex="-1">
+            <div class="ui left corner label">
+              <i class="asterisk icon"></i>
+            </div>
+          </div>
+        </div>
+        <div class="field" style="margin: 1rem auto;">
+          <div class="ui left corner labeled input" style="display: block;">
+            <input type="text" placeholder="MSSV..." style="display:block; width: 100%" name="student_id_number" tabindex="-1">
+            <div class="ui left corner label">
+              <i class="asterisk icon"></i>
+            </div>
+          </div>
+        </div>
+        <div class="field" style="margin: 1rem auto;">
+          <div class="ui left corner labeled input" style="display: block;" >
+            <input type="text" placeholder="MSSV..." style="display:block; width: 100%" name="student_id_number_confirm" tabindex="-1">
+            <div class="ui left corner label">
+              <i class="asterisk icon"></i>
+            </div>
+          </div>
+        </div>
+        <div class="actions" style="display: flex; justify-content: center">
+          <div class="ui button" onclick="cancel()">
+            Cancel
+          </div>
+          <%# <button class="ui primary submit button" onclick="addSubmit(event)">Add</button> %>
+          <div class="ui blue submit button">Submit</div>
+        </div>
+      </form>
     </div>   
-  </div>
-  <div class="actions">
-    <button class="ui cancel button">
-      Cancel
-    </button>
-    <div class="ui primary approve button proceed">
-      Add
-      <i class="right chevron icon"></i>
-    </div>
   </div>
 </div>
 
@@ -153,7 +173,112 @@
     $('.ui.modal.student_info').modal('show');
   }
   function addStudent() {
+    $('#add-form').form('reset');
     $('.ui.mini.modal.add_student').modal('show');
+  }
+
+
+  function addSubmit(e) {
+    let addForm = document.getElementById('add-form');
+    let formData = new FormData(addForm);
+      e.preventDefault();
+      console.log("helloooo", $('#add-form').form('is valid'))
+        $.ajax({
+        type: "POST",
+        url: "/manager/student-management/create",
+        processData: false,
+        contentType: false,
+        cache: false,
+        mimeType: 'multipart/form-data',
+        data: formData,
+        success: function(result){
+          alert("Tao sinh vien thang cong nha!");
+          // $("#add-form")[0].reset();
+          $('#add-form').form('reset');
+          $("#add-form").find('.error').removeClass('error');
+          $('.ui.mini.modal.add_student').modal('hide');
+          console.log(result)
+          let result_html = document.createElement('tr')
+          result_html.innerHTML = result
+          document.querySelector('#student_list').append(result_html)
+        },
+        error: function (error) {
+          // $("#add-form")[0].reset();
+          $('#add-form').form('reset');
+          alert(error.responseText);
+          console.log(error)
+          console.log("fails")
+        }
+      })
+  }
+
+  $('#add-form').unbind('submit').submit(function(e){
+    if($('#add-form').form('is valid')) {
+      console.log('aaa')
+      addSubmit(e);
+    }
+  })
+
+  $('#add-form')
+    .form({
+      fields: {
+        name: {
+          identifier: 'name',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Please enter student name!'
+            },
+            {
+              type: 'minLength[2]',
+              prompt: 'Student name must be more than 2 letters!'
+            },
+            {
+              type: 'maxLength[100]',
+              prompt: 'Student name must be less than 100 letters!'
+            }
+          ]
+        },
+        student_id_number: {
+          identifier: 'student_id_number',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Please enter student id number !!'
+            },
+            {
+              type: 'minLength[5]',
+              prompt: 'Student id number must be more than 5 letters!'
+            },
+            {
+              type: 'maxLength[10]',
+              prompt: 'Student id number must be less than 10 letters!'
+            }
+          ]
+        },
+        student_id_number_confirm: {
+          identifier: 'student_id_number_confirm',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Please enter student id number confirmation !!'
+            },
+            {
+              type: 'match[student_id_number]',
+              prompt: 'Password mismatch'
+            }
+          ]
+        }
+      },
+      inline: true,
+      on: 'blur'
+    })
+  ;
+
+  function cancel(){
+    // $("#add-form")[0].reset();
+    $('#add-form').form('reset');
+    $('.ui.mini.modal.add_student').modal('hide');
   }
 
   // $('.coupled.modal')
