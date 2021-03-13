@@ -23,7 +23,7 @@ class StudentProfile < ApplicationRecord
             length: {maximum: Settings.validations.student_profile.address.max_length, 
                     minimum: Settings.validations.student_profile.address.min_length}
   validates :date_of_birth, presence: true, allow_nil: false
-  validates :gender, presence: true, inclusion: { in: ['nam', 'nu']}, allow_nil: false
+  validates :gender, presence: true, inclusion: { in: ['MALE', 'FEMALE']}, allow_nil: false
   validates :avatar, presence: true, allow_nil: true
 
 end

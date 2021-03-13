@@ -4,9 +4,15 @@
       <h3>Student Management: </h3>
     </div>
     <div class="header_search">
-      <button class="ui icon button" onclick="addStudent()">
-        <i class="plus icon"></i>
-      </button>
+      <% if @room_members.length < @room.max_number_student %>
+        <button class="ui icon button" onclick="addStudent()">
+          <i class="plus icon"></i>
+        </button>
+      <% else %>
+        <button class="ui icon button" data-tooltip="Room is full">
+          <i class="plus icon"></i>
+        </button>
+      <% end %>
       <div class="ui icon input">
         <input type="text" placeholder="Search...">
         <i class="icon">
@@ -28,19 +34,19 @@
         <th>ACTIVE</th>
       </tr>
     </thead>
-    <tbody>
-      <% for i in 0..5 do %>
-        <tr onclick="showStudentInfo()">
-          <td>1</td>
-          <td>17021070</td>
-          <td>Nguyen Thi Huong Tra</td>
-          <td>21/11/1999</td>
-          <td>K62J</td>
-          <td>20/11/2001</td>
+    <tbody id="members_list">
+      <% @room_members.each_with_index do |member, index| %>
+        <tr onclick="showStudentInfo(<%= member.id %>)">
+          <td><%= index + 1 %></td>
+          <td><%= member.student_id_number %></td>
+          <td><%= member.name %></td>
+          <td><%= member.student_profile.date_of_birth.to_date %></td>
+          <td><%= member.student_profile.class_name %></td>
+          <td><%= member.check_in_date %></td>
           <td>
-           <% if i % 2 == 0 %>
+           <% if member.status == "ACTIVE" %>
               <a class="ui teal tag label teal_label" style="width: 5.7rem">Active</a>
-            <% else  %>
+            <% elsif member.status == "PENDING" %>
               <a class="ui tag label danger_label" style="width: 5.7rem">Pending</a>
             <% end  %>
           </td>
@@ -64,54 +70,55 @@
             <div class="two wide column" style="padding-bottom: 0!important">
               <i class="icon address card outline"></i>
             </div>
-            <div class="fourteen wide column" style="padding-bottom: 0!important">
+            <div class="fourteen wide column" style="padding-bottom: 0!important" id="student_id_number">
               17021070
             </div>
             <div class="two wide column" style="padding-bottom: 0!important">
               <i class="icon check square outline"></i>
             </div>
-            <div class="fourteen wide column" style="padding-bottom: 0!important">
+            <div class="fourteen wide column" style="padding-bottom: 0!important" id="class_name">
               K62J
             </div>
             <div class="two wide column">
               <i class="icon envelope outline"></i>
             </div>
-            <div class="fourteen wide column">
+            <div class="fourteen wide column" id="email">
               huongtra@gmail.com
             </div>
           </div>
         </div>
       </div>
       <div class="description eleven wide column">
-        <div class="ui header" style="margin-bottom: 2rem;">Nguyen Thi Huong Tra</div>
+        <div class="ui header" style="margin-bottom: 2rem;" id="name">Nguyen Thi Huong Tra</div>
         <div class="student-info ui grid">
           <div class="three wide column"><b>Ngay sinh:</b></div>
-          <div class="thirteen wide column">21/11/1999</div>
+          <div class="thirteen wide column" id="birthday">21/11/1999</div>
           <div class="three wide column"><b>Gioi tinh:</b></div>
-          <div class="thirteen wide column">Nu</div>
+          <div class="thirteen wide column" id="gender">Nu</div>
           <div class="three wide column"><b>Que quan:</b></div>
-          <div class="thirteen wide column">30A, Le Hong Phong, Vinh, Nghe An</div>
+          <div class="thirteen wide column" id="address">30A, Le Hong Phong, Vinh, Nghe An</div>
           <div class="three wide column"><b>SDT:</b></div>
-          <div class="thirteen wide column">0972403331</div>
+          <div class="thirteen wide column" id="phone_number">0972403331</div>
           <div class="three wide column"><b>So CMND:</b></div>
-          <div class="thirteen wide column">0972403331</div>
+          <div class="thirteen wide column" id="identity_card_number">0972403331</div>
           <div class="three wide column"><b>Ngay dang ky:</b></div>
-          <div class="thirteen wide column">20/11/2006</div>
+          <div class="thirteen wide column" id="created_at">20/11/2006</div>
           <div class="three wide column"><b>Ngay vao:</b></div>
-          <div class="thirteen wide column">20/12/2006</div>
+          <div class="thirteen wide column" id="check_in_date">20/12/2006</div>
           <div class="three wide column"><b>Thoi gian gia han:</b></div>
-          <div class="thirteen wide column">1 nam</div>
+          <div class="thirteen wide column" id="check_out_date">1 nam</div>
           <div class="three wide column"><b>Trang thai:</b></div>
-          <div class="thirteen wide column">Active</div>
+          <div class="thirteen wide column" id="status">Active</div>
         </div>
       </div>
     </div>
   </div>
   <div class="actions" style="padding: 0.7rem 1rem;">
+    <input type="hidden" id="member_id" />
     <div class="ui black deny button">
       Cancel
     </div>
-    <div class="ui positive right labeled icon button">
+    <div class="ui positive right labeled icon button" onclick="editMemberInfo()">
       Edit
       <i class="arrow right icon"></i>
     </div>
@@ -127,6 +134,9 @@
       <form id="add-form" class="ui form segment" style="border: none; -webkit-box-shadow: none">
         <div style="max-width: 0; max-height: 0; overflow: hidden;">
           <input autofocus="true" />
+        </div>
+        <div class="field">
+          <input type="hidden" name="room_id" id="room_id" value="<%= @room.id %>">
         </div>
         <div class="field" style="margin: 1rem auto;">
           <div class="ui left corner labeled input" style="display: block;" >
@@ -169,14 +179,44 @@
     CKEDITOR.replace( 'editor' );
 </script>
 <script>
-  function showStudentInfo() {
+  function showStudentInfo(member_id) {
     $('.ui.modal.student_info').modal('show');
+    $.ajax({
+      type: 'GET',
+      url: `/manager/student-management/${member_id}/show`,
+      data: { 
+        id: member_id
+      },
+      success: function(result){
+        $('#student_id_number').html(result.student.student_id_number)
+        $('#class_name').html(result.student_profile.class_name)
+        $('#email').html(result.student_profile.email)
+        $('#name').html(result.student_profile.name)
+        $('#birthday').html(result.student_profile.date_of_birth)
+        $('#gender').html(result.student_profile.gender)
+        $('#address').html(result.student_profile.address)
+        $('#phone_number').html(result.student_profile.phone_number)
+        $('#identity_card_number').html(result.student_profile.identity_card_number)
+        $('#created_at').html(result.student.created_at)
+        $('#check_in_date').html(result.student.check_in_date)
+        $('#check_out_date').html(result.student.check_out_date)
+        $('#status').html(result.student.status)
+        $('#member_id').val(member_id)
+      },
+      error: function (error) {
+        alert(error.message)
+      }
+    })
+  }
+
+  function editMemberInfo() {
+    let member_id = $('#member_id').val()
+    window.location.href= `/manager/student-management/${member_id}/edit`
   }
   function addStudent() {
     $('#add-form').form('reset');
     $('.ui.mini.modal.add_student').modal('show');
   }
-
 
   function addSubmit(e) {
     let addForm = document.getElementById('add-form');
@@ -185,7 +225,7 @@
       console.log("helloooo", $('#add-form').form('is valid'))
         $.ajax({
         type: "POST",
-        url: "/manager/student-management/create",
+        url: "/manager/student-management/create-member",
         processData: false,
         contentType: false,
         cache: false,
@@ -198,9 +238,8 @@
           $("#add-form").find('.error').removeClass('error');
           $('.ui.mini.modal.add_student').modal('hide');
           console.log(result)
-          let result_html = document.createElement('tr')
-          result_html.innerHTML = result
-          document.querySelector('#student_list').append(result_html)
+          $('#members_list').append(result)
+
         },
         error: function (error) {
           // $("#add-form")[0].reset();
@@ -280,21 +319,5 @@
     $('#add-form').form('reset');
     $('.ui.mini.modal.add_student').modal('hide');
   }
-
-  // $('.coupled.modal')
-  //   .modal({
-  //     allowMultiple: false
-  //   })
-  // ;
-  // // attach events to buttons
-  // $('.second.modal')
-  //   .modal('attach events', '.first.modal .button.proceed')
-  // ;
-
-
-
-  // CKEDITOR.replace('content',{ toolbar :[ ['Subscript','Superscript'] ], height: '35px', width: '100%' });
-
-
 
 </script>

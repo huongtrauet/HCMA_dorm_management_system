@@ -29,9 +29,9 @@ class Manager::ServiceManagementController < ApplicationController
   def update_service_charge
     byebug
     @service_charge = ServiceCharge.find(service_charge_params[:charge_id])
-    if @service_charge.update(service_charge_params.except(:charge_id))
+    if @service_charge.update(service_charge_params.except(:charge_id, :index))
       respond_to do |format|
-        format.json {render json: @service_charge, status: :ok}
+        format.js {render partial: 'charge_item', content_type: 'text/html', locals: { service_charge: @service_charge, index: service_charge_params[:index]} } 
       end
     else
       respond_to do |format|
@@ -43,7 +43,7 @@ class Manager::ServiceManagementController < ApplicationController
   private
 
   def service_charge_params
-    params.require(:service_charge).permit(:charge_id, :water_price, :electricity_price, :total_price, :status, :payer, :month, :year)
+    params.require(:service_charge).permit(:charge_id, :water_price, :electricity_price, :total_price, :status, :payer, :month, :year, :index)
   end
 
 end

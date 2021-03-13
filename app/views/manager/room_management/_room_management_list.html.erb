@@ -206,10 +206,10 @@
     })
   ;
 
-  function checkDuplicate(){
+  async function checkDuplicate(){
     current_name = document.querySelectorAll('input[name=room_name]')[0].value
     let result
-    $.ajax({
+    await $.ajax({
       type: "POST",
       url: "/manager/room-management/checkduplicate",
       data: {
@@ -232,10 +232,10 @@
     })
     return result
   }
-  $('#add_room_form').off('submit').submit(function(e){
+  $('#add_room_form').off('submit').submit(async function(e){
     e.preventDefault();
     if($('#add_room_form').form('is valid')) {
-      if (checkDuplicate() == true){
+      if (await checkDuplicate() == true){
         console.log("is valid")
         addSubmit(e)
       }

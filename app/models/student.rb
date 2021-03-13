@@ -2,7 +2,7 @@ class Student < ApplicationRecord
   attr_accessor :remember_token
   belongs_to :room
   has_one :student_profile, dependent: :destroy
-  accepts_nested_attributes_for :student_profile, update_only: true, allow_destroy: true
+  accepts_nested_attributes_for :student_profile, allow_destroy: true
   has_many :form_requests, class_name: FormRequest.name, foreign_key: :requester_id, dependent: :destroy
   has_many :complaint_reports, class_name: ComplaintReport.name,foreign_key: :reporter_id, dependent: :destroy
   has_many :facility_reports, class_name: FacilityReport.name, foreign_key: :reporter_id, dependent: :destroy

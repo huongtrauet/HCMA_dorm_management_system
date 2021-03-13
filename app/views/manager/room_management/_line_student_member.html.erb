@@ -1,0 +1,15 @@
+ <tr onclick="showStudentInfo()">
+  <td><%= index %></td>
+  <td><%= member.student_id_number %></td>
+  <td><%= member.name %></td>
+  <td><%= member.student_profile.date_of_birth.to_date %></td>
+  <td><%= member.student_profile.class_name %></td>
+  <td><%= member.check_in_date %></td>
+  <td>
+    <% if member.status == "ACTIVE" %>
+      <a class="ui teal tag label teal_label" style="width: 5.7rem">Active</a>
+    <% elsif member.status == "PENDING" %>
+      <a class="ui tag label danger_label" style="width: 5.7rem">Pending</a>
+    <% end  %>
+  </td>
+</tr>

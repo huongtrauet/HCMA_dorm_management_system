@@ -7,9 +7,22 @@ class Manager::RoomManagementController < ApplicationController
 
   def show
     @room = Room.find(params[:id])
-    @room_service_charges = ServiceCharge.where(room_id: params[:id]).order("year DESC").order("month DESC")
+    @room_members = @room.students.order("name DESC")
 
+  end
 
+  def show_room_members
+    @room = Room.find(params[:room_id])
+    @room_members = @room.students.order("name DESC")
+  end
+
+  def show_room_facilities
+    @room = Room.find(params[:room_id])
+  end
+
+  def show_room_service_charges
+    @room = Room.find(params[:room_id])
+    @room_service_charges = @room.service_charges.order("year DESC").order("month DESC")
   end
 
   def create
@@ -37,6 +50,10 @@ class Manager::RoomManagementController < ApplicationController
         format.json { render json: {is_duplicate:false} } 
       end
     end
+  end
+
+  def create_room_facility
+        
   end
 
   private

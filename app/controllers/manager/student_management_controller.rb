@@ -10,10 +10,12 @@ class Manager::StudentManagementController < ApplicationController
   end
 
   def create
+    byebug
     if(student_create_params[:student_id_number_confirm] == student_create_params[:student_id_number])
       student_id_number = student_create_params[:student_id_number]
       new_params = student_create_params.merge(password: student_id_number, password_confirmation: student_id_number).except(:student_id_number_confirm)
       @student = Student.new(new_params)
+      @student.student_profile = StudentProfile.new(email:"#{@student.student_id_number}@gmail.com", identity_card_number: @student.student_id_number)
     else
       redirect_to manager_student_management_path
     end
@@ -28,9 +30,39 @@ class Manager::StudentManagementController < ApplicationController
     end
   end
 
+  def create_room_member
+    @room = Room.find(params[:room_id])
+    if(student_create_params[:student_id_number_confirm] == student_create_params[:student_id_number])
+      student_id_number = student_create_params[:student_id_number]
+      new_params = student_create_params.merge(password: student_id_number, password_confirmation: student_id_number).except(:student_id_number_confirm)
+      @student = Student.new(new_params)
+      @student.student_profile = StudentProfile.new(email:"#{@student.student_id_number}@gmail.com", identity_card_number: @student.student_id_number)
+    else
+      redirect_to manager_student_management_path
+    end
+    if @student.save
+      respond_to do |format|
+        format.js {render partial: '/manager/room_management/line_student_member', locals: { member: @student, index: @room.students.count } } 
+      end
+    elsif
+      respond_to do |format|
+        format.json { render json: @student.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   def show
-    @student_profile = StudentProfile.new
     @student = Student.find_by(params[:id])
+    @student_profile = @student.student_profile
+    if @student
+      respond_to do |format|
+        format.json {render json: {student: @student, student_profile: @student_profile}}
+      end
+    else
+      respond_to do |format|
+        format.json { render json: {message: "Coundn't find"}, status: :unprocessable_entity }
+      end
+    end
   end
 
   def update
@@ -58,7 +90,7 @@ class Manager::StudentManagementController < ApplicationController
   end
 
   def student_create_params
-    params.permit(:student_id_number, :student_id_number_confirm, :check_in_date, :check_out_date, :name)
+    params.permit(:student_id_number, :student_id_number_confirm, :check_in_date, :check_out_date, :name, :room_id)
   end
 
 end

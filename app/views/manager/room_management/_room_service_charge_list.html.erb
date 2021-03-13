@@ -15,10 +15,9 @@
     </thead>
     <tbody>
       <% @room_service_charges.each_with_index do |s, index| %>
-        <tr onclick="showServiceChargeInfo(<%= s.room_id %>, <%= s.year %>, <%= s.month %>, <%= s.id %>)">
+        <tr onclick="showServiceChargeInfo(<%= s.room_id %>, <%= s.year %>, <%= s.month %>, <%= s.id %>, <%= index %>)" id="tr_service_charge_<%= s.id %>">
           <td><%= index + 1 %></td>
           <td><%= s.month %></td>
-          <td><%= s.year %></td>
           <td><%= s.electricity_price %></td>
           <td><%= s.water_price %></td>
           <td><%= s.total_price %></td>
@@ -96,8 +95,9 @@
   <div class="header">
     <h3>Service charge edit</h3>
     <div>
-    <p id="paid_at" style="margin-bottom: -1rem"></p>
-    <p style="float: right; margin-right: 1rem; margin-right: 2.6rem;" class="show_room_name"></p>
+      <p id="paid_at" style="margin-bottom: -1rem"></p>
+      <p style="float: right; margin-right: 1rem; margin-right: 2.6rem;" class="show_room_name"></p>
+      <input type="hidden" name="charge_index" id="charge_index">
     </div>
   </div>
   <div class="ui header" style="margin-bottom: 2rem; border: none"></div>
@@ -109,14 +109,14 @@
       </div>
       <div class="field">
         <label>Tien dien</label>
-        <input type="text" placeholder="Tien dien" name="electricity_price" id="electricity_price_edit_field">
+        <input type="number" placeholder="Tien dien" name="electricity_price" id="electricity_price_edit_field" onkeyup="changePrice()">
       </div>
       <div class="field">
         <label>Trang thai</label>
         <div class="ui selection dropdown">
           <input type="hidden" name="status" id="status_edit_field">
           <i class="dropdown icon"></i>
-          <div class="text" id="selected_item"></div>
+          <div class="text" style="color: black;" id="selected_item"></div>
           <div class="menu">
             <div class="item" data-value="PAID">PAID</div>
             <div class="item" data-value="UNPAID">UNPAID</div>
@@ -127,11 +127,11 @@
     <div class="three fields">
       <div class="field">
         <label>Tong tien</label>
-        <input type="text" placeholder="Tong tien" name="total_price" id="total_price_edit_field">
+        <input type="number" placeholder="Tong tien" name="total_price" id="total_price_edit_field" disabled>
       </div>
       <div class="field">
         <label>Tien nuoc</label>
-        <input type="text" placeholder="Tien nuoc" name="water_price" id="water_price_edit_field">
+        <input type="number" placeholder="Tien nuoc" name="water_price" id="water_price_edit_field" onkeyup="changePrice()">
       </div>
       <div class="field">
         <label>Nguoi nop</label>
@@ -148,7 +148,10 @@
 </div>
 
 <script>
-  function showServiceChargeInfo(room_id, year, month, charge_id ){
+function changePrice() {
+  $('#total_price_edit_field').val(parseInt($('#electricity_price_edit_field').val()) + parseInt($('#water_price_edit_field').val()))
+}
+  function showServiceChargeInfo(room_id, year, month, charge_id, index ){
     $('.ui.modal.first.service_charge_info').modal('show');
     $('#service_charge_edit_form').form('reset');
     $("#service_charge_edit_form").find('.error').removeClass('error');
@@ -168,11 +171,11 @@
         $('#show_total_price').html(result.service_charge.total_price)
         $('#show_payer').html(result.service_charge.payer)
         $('#show_status').html(result.service_charge.status)
-        $('#show_paid_at').html(result.service_charge.paid_at)
+        $('#show_paid_at').html(result.service_charge.paid_at.split('T')[0].split('-').reverse().join('/'))
         $('.show_room_name').html(result.room.room_name)
         $('#room_id').val(result.room.id)
         $('#charge_id').val(result.service_charge.id)
-        console.log(result.room)
+        // console.log(result.room)
         //Edit modal
         $('#month_edit_field').val(result.service_charge.month)
         $('#year_edit_field').val(result.service_charge.year)
@@ -181,8 +184,10 @@
         $('#total_price_edit_field').val(result.service_charge.total_price)
         $('#status_edit_field').val(result.service_charge.status)
         $('#payer_edit_field').val(result.service_charge.payer)
-        $('#paid_at').html(result.service_charge.paid_at)
+        $('#paid_at').html(result.service_charge.paid_at.split('T')[0].split('-').reverse().join('/'))
         $('#selected_item').html(result.service_charge.status)
+        $('#charge_index').val(index)
+
         // $('#status_edit_field').val()
       },
       error: function (error) {
@@ -209,23 +214,25 @@
         service_charge: {
           "charge_id": charge_id,
           "water_price": $('#water_price_edit_field').val(),
-          "electricity_price": $('#electricity_edit_field').val(),
+          "electricity_price": $('#electricity_price_edit_field').val(),
           "total_price": $('#total_price_edit_field').val(),
           "month": $('#month_edit_field').val(),
           "year": $('#year_edit_field').val(),
           "payer": $('#payer_edit_field').val(),
-          "status": $('#status_edit_field').val()
+          "status": $('#status_edit_field').val(),
+          "index": $('#charge_index').val()
         }
       },
       success: function(result){
         console.log(result)
+        $('#tr_service_charge').html()
       },
       error: function (error) {}
     })
   }
 
   $('#service_charge_edit_form').off('submit').submit(function(e){
-    if($('service_charge_edit_form').form('is valid')){
+    if($('#service_charge_edit_form').form('is valid')){
       submitUpdateServiceCharge();
     }
   })

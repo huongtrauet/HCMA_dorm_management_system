@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_09_035223) do
+ActiveRecord::Schema.define(version: 2021_03_13_024201) do
 
   create_table "complaint_reports", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "title", null: false
@@ -95,13 +95,13 @@ ActiveRecord::Schema.define(version: 2021_03_09_035223) do
   end
 
   create_table "service_charges", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.integer "water_price", null: false
-    t.integer "electricity_price", null: false
-    t.integer "total_price", null: false
-    t.string "status", null: false
+    t.integer "water_price", default: 0, null: false
+    t.integer "electricity_price", default: 0, null: false
+    t.integer "total_price", default: 0, null: false
+    t.string "status", default: "UNPAID", null: false
     t.integer "month", null: false
     t.integer "year", null: false
-    t.string "payer", null: false
+    t.string "payer", default: "Student name", null: false
     t.datetime "paid_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -111,13 +111,13 @@ ActiveRecord::Schema.define(version: 2021_03_09_035223) do
 
   create_table "student_profiles", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "email", null: false
-    t.string "class_name", null: false
-    t.string "name", null: false
-    t.datetime "date_of_birth", null: false
+    t.string "class_name", default: "WAITING", null: false
+    t.string "name", default: "WAITING", null: false
+    t.datetime "date_of_birth", default: "2001-01-01 00:00:00", null: false
     t.string "identity_card_number", null: false
-    t.string "address", null: false
-    t.string "phone_number", null: false
-    t.string "gender", null: false
+    t.string "address", default: "WAITING", null: false
+    t.string "phone_number", default: "0972403331", null: false
+    t.string "gender", default: "MALE", null: false
     t.string "avatar"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -137,6 +137,7 @@ ActiveRecord::Schema.define(version: 2021_03_09_035223) do
     t.bigint "room_id", default: 1, null: false
     t.string "password_digest"
     t.string "remember_digest"
+    t.string "status", default: "PENDING"
     t.index ["room_id"], name: "index_students_on_room_id"
     t.index ["student_id_number"], name: "index_students_on_student_id_number", unique: true
   end

@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+<div class="room_management_show">
+  <div class="ui grid">
+    <div class="four wide column" style="padding-top: 5em">
+      <%= render partial: "manager/room_management/room_management_sidebar", locals: {active: 'member'} %>
+    </div>
+    <div class="twelve wide column">
+      <p>
+        <strong>Room:</strong>
+        <%= @room.room_name %>
+      </p>
+      <div id="room_member">
+        <%= render "room_member_list" %>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $("#manager_room_management_path").addClass("active");
+</script>
