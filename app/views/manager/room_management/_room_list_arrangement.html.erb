@@ -1,0 +1,46 @@
+
+<% rooms.each do |room|  %>
+  <div class="room_item" style="background-color: white" >
+    <div class="ui grid ">
+      <div class="seven wide column">
+        <div class="room_progress">
+          <div class=" ui indicating progress" data-percent="40" id="example1">
+            <div class="bar"></div>
+          </div>
+        </div>
+      </div>
+      <div class="five wide column">
+      </div>
+      <div class="four wide column">
+        <button style="background-color: #d8d8d8; border-radius:0.5rem; cursor: pointer; width: 1.5rem; height: 1.5rem; display: flex;justify-content: center;align-items: center; border: none;">
+          <img src="/assets/close.png" style="width: 0.7rem; height: 0.7rem">
+        </button>
+      </div>
+    </div>
+    <div class="room_content">
+      <div class="date" style="height: 50%; padding-top: 0.7rem;">
+        <h3><%= room.room_type %></h3>
+      </div>
+      <div class="room_name" style="height: 50%">
+        <h2 style="color: #787878;"><%= room.room_name %></h2>
+      </div>
+    </div>
+    <div class="line"></div>
+    <div class="room_footer">
+      <div class="ui grid">
+        <div class="four wide column" style= "display: flex">
+          <img src="/assets/mars.png" style="height: 1.1rem; width: 1.1rem; margin-right: 0.4rem;"/>
+          <span><%= room.room_type %></span>
+        </div>
+        <div class="three wide column">
+        </div>
+        <div class="two wide column" style="">
+        </div>
+        <div class="seven wide column" style="display: flex">
+          <img src="/assets/group.png" style="width: 1.5rem; margin-right: 0.2rem "/>
+          <span><%= room.number_student %></span>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

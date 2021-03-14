@@ -10,15 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_13_024201) do
+ActiveRecord::Schema.define(version: 2021_03_14_025638) do
 
   create_table "complaint_reports", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "title", null: false
     t.string "description", null: false
+    t.string "status", default: "PENDING", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "reporter_id", null: false
-    t.index ["reporter_id"], name: "index_complaint_reports_on_reporter_id"
+    t.bigint "student_id", null: false
+    t.index ["student_id"], name: "index_complaint_reports_on_student_id"
   end
 
   create_table "facilities", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -36,19 +37,21 @@ ActiveRecord::Schema.define(version: 2021_03_13_024201) do
   create_table "facility_reports", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "title", null: false
     t.string "description", null: false
+    t.string "status", default: "PENDING", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "reporter_id", null: false
-    t.index ["reporter_id"], name: "index_facility_reports_on_reporter_id"
+    t.bigint "student_id", null: false
+    t.index ["student_id"], name: "index_facility_reports_on_student_id"
   end
 
   create_table "form_requests", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "type", null: false
     t.string "description", null: false
+    t.string "status", default: "PENDING", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "requester_id", null: false
-    t.index ["requester_id"], name: "index_form_requests_on_requester_id"
+    t.bigint "student_id", null: false
+    t.index ["student_id"], name: "index_form_requests_on_student_id"
   end
 
   create_table "managers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -58,6 +61,7 @@ ActiveRecord::Schema.define(version: 2021_03_13_024201) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "password_digest"
     t.string "remember_digest"
+    t.string "channel"
     t.index ["email"], name: "index_managers_on_email", unique: true
   end
 
@@ -138,14 +142,15 @@ ActiveRecord::Schema.define(version: 2021_03_13_024201) do
     t.string "password_digest"
     t.string "remember_digest"
     t.string "status", default: "PENDING"
+    t.string "channel"
     t.index ["room_id"], name: "index_students_on_room_id"
     t.index ["student_id_number"], name: "index_students_on_student_id_number", unique: true
   end
 
-  add_foreign_key "complaint_reports", "students", column: "reporter_id"
+  add_foreign_key "complaint_reports", "students"
   add_foreign_key "facilities", "rooms"
-  add_foreign_key "facility_reports", "students", column: "reporter_id"
-  add_foreign_key "form_requests", "students", column: "requester_id"
+  add_foreign_key "facility_reports", "students"
+  add_foreign_key "form_requests", "students"
   add_foreign_key "posts", "managers"
   add_foreign_key "service_charges", "rooms"
   add_foreign_key "student_profiles", "students"

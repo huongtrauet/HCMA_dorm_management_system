@@ -2,7 +2,12 @@ class Manager::RoomManagementController < ApplicationController
   layout 'manager_layout/manager'
   skip_before_action :verify_authenticity_token
   def index
+    byebug
     @rooms = Room.all
+    respond_to do |format|
+      # format.json {render json: {rooms: @rooms}}
+      format.js {render partial: 'room_list_arrangement', locals: { rooms: @rooms, count: Post.all.count } } 
+    end
   end
 
   def show

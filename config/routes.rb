@@ -6,7 +6,7 @@ Rails.application.routes.draw do
     root "students#index"
     resources :managers
   end
-
+  mount ActionCable.server => '/cable'
   namespace :manager do
     get "/login", to: "manager_sessions#new"
     post "/login", to: "manager_sessions#create"
@@ -26,6 +26,7 @@ Rails.application.routes.draw do
     post "/student-management/create-member", to: "student_management#create_room_member"
     post "/student-management/create", to: "student_management#create"
     get  "/student-management/:id/edit", to: "student_management#edit"
+    get  "/student-management/pending-students", to: "student_management#find_pending_student"
     get  "/student-management/:id", to: "student_management#edit"
     patch  "/student-management/:id/update", to: "student_management#update"
     delete  "/student-management/:id/delete", to: "student_management#destroy"
@@ -56,11 +57,12 @@ Rails.application.routes.draw do
     get "/requests", to: "facility_reports#index"
     get "/requests/form", to: "form_requests#index"
     get "/requests/complaint", to: "complaint_reports#index"
+    post "/facility-reports/create", to: "facility_reports#create"
     resources :student_profiles
     resources :rooms
     resources :requests
     resources :notifications
-    resources :facility_reports
+    # resources :facility_reports
     resources :complaint_reports
     resources :form_requests
     resources :facilities

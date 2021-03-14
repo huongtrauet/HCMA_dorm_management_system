@@ -1,0 +1,28 @@
+<% @pending_students.each_with_index do |student, index|  %> 
+ <div class="students_item" id="student_<%= index %>" draggable="true" ondragstart="drag(event)" style="background-color: white; position:relative; height: 9rem">
+  <div class="ui grid" >
+    <button style="background-color: #d8d8d8; border-radius:0.5rem; cursor: pointer; width: 1.5rem; height: 1.5rem; display: flex;justify-content: center;align-items: center; border: none; position: absolute; right: 1rem; top: 0.5rem;">
+      <img src="/assets/close.png" style="width: 0.7rem; height: 0.7rem">
+    </button>
+    <div class="three wide column avatar" style="">
+      <img src="/assets/ava.jpg" style="width: 2.5rem; height: 2.5rem; border-radius: 50%">
+    </div>
+    <div class="thirteen wide column student_information" style="">
+      <h4><%= student.name %></h4>
+      <div class="ui grid">
+        <div class="sixteen wide column" style="display: flex">
+          <img src="/assets/presentation.png" style="width: 1.2rem; height: 1.2rem; margin-right: 1rem">
+          <p><%= student.student_profile.class_name %></p>
+        </div>
+      </div>
+      <div>
+        <div class="sixteen wide column" style="display: flex">
+          <img src="/assets/calendar.png" style="width: 1.2rem; height: 1.2rem; margin-right: 1rem"/>
+          <p><%= student.student_profile.date_of_birth %></p>
+        </div>
+      </div>
+      <p style="margin-top: 0.5rem"><%= student.check_in_date.to_date %></p>
+    </div>
+  </div>
+</div>
+<% end %>
