@@ -13,10 +13,12 @@ class Student < ApplicationRecord
   has_many :active_notifications, class_name: Notification.name,
     foreign_key: :receiver_id,
     dependent: :destroy
-  has_many :notifications, through: :passive_notifications,
-    source: :receiver, source_type: Student.name
-  has_many :sent_notifications, through: :active_notifications,
-    source: :sender, source_type: Student.name
+  # has_many :notifications, through: :passive_notifications,
+  #   source: :receiver, source_type: Student.name
+  # has_many :sent_notifications, through: :active_notifications,
+  #   source: :sender, source_type: Student.name
+  has_many :notifications, as: :receiver
+  has_many :sent_notifications, as: :sender
 
   validates :student_id_number, presence: true, allow_nil: false,
             length: {

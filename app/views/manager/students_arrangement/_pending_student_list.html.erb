@@ -1,5 +1,5 @@
-<% @pending_students.each_with_index do |student, index|  %> 
- <div class="students_item" id="student_<%= index %>" draggable="true" ondragstart="drag(event)" style="background-color: white; position:relative; height: 9rem">
+<% @pending_students.each do |student|  %> 
+ <div class="students_item" id="student_<%= student.id %>" draggable="true" ondragstart="drag(event)" style="background-color: white; position:relative; height: 9rem">
   <div class="ui grid" >
     <button style="background-color: #d8d8d8; border-radius:0.5rem; cursor: pointer; width: 1.5rem; height: 1.5rem; display: flex;justify-content: center;align-items: center; border: none; position: absolute; right: 1rem; top: 0.5rem;">
       <img src="/assets/close.png" style="width: 0.7rem; height: 0.7rem">
@@ -21,7 +21,7 @@
           <p><%= student.student_profile.date_of_birth %></p>
         </div>
       </div>
-      <p style="margin-top: 0.5rem"><%= student.check_in_date.to_date %></p>
+      <p style="margin-top: 0.5rem"><%= student.check_in_date %></p>
     </div>
   </div>
 </div>

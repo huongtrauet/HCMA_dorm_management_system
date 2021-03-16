@@ -1,10 +1,10 @@
 
 <% rooms.each do |room|  %>
-  <div class="room_item" style="background-color: white" >
+  <div class="room_item" style="background-color: white" onclick="activeRoom(<%= room.id %>)" >
     <div class="ui grid ">
       <div class="seven wide column">
         <div class="room_progress">
-          <div class=" ui indicating progress" data-percent="40" id="example1">
+          <div class=" ui indicating progress active" data-percent="<%= 100*room.number_student/room.max_number_student%>" id="example1">
             <div class="bar"></div>
           </div>
         </div>
@@ -44,3 +44,8 @@
     </div>
   </div>
 <% end %>
+<style>
+.room_item {
+  cursor: pointer;
+}
+</style>

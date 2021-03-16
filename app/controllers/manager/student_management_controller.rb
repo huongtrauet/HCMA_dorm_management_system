@@ -87,7 +87,6 @@ class Manager::StudentManagementController < ApplicationController
 
   def find_pending_student
     # @room_service_charges = ServiceCharge.where(room_id: params[:id]).order("year DESC").order("month DESC")
-    byebug
     @pending_students = Student.where(status: "PENDING").order("name DESC")
     respond_to do |format|
       format.js {render partial: '/manager/students_arrangement/pending_student_list', locals: { pending_students: @pending_students } } 

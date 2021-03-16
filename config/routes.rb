@@ -32,6 +32,7 @@ Rails.application.routes.draw do
     delete  "/student-management/:id/delete", to: "student_management#destroy"
     
     get "/room-management/", to: "room_management#index"
+    get "/room-management/rooms/:room_id/active_room", to: "room_management#active_room"
     get "/room-management/rooms/:room_id/members", to: "room_management#show_room_members"
     get "/room-management/rooms/:room_id/facilities", to: "room_management#show_room_facilities"
     get "/room-management/rooms/:room_id/service-charges", to: "room_management#show_room_service_charges"
@@ -42,6 +43,10 @@ Rails.application.routes.draw do
     post "/room-management/create", to: "room_management#create"
     post "/room-management/rooms/:room_id/service-charge/:year/:month", to: "service_management#show_service_charge"
     post "/room-management/rooms/:room_id/service-charge/:year/:month/update", to: "service_management#update_service_charge"
+
+    post "/students-arrangement/remove-student", to: "students_arrangement#remove_student_from_room"
+    post "/students-arrangement/add-student", to: "students_arrangement#add_student_to_room"
+
 
 
     resources :students

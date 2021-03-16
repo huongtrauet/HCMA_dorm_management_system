@@ -2,8 +2,8 @@ class Manager::RoomManagementController < ApplicationController
   layout 'manager_layout/manager'
   skip_before_action :verify_authenticity_token
   def index
-    byebug
-    @rooms = Room.all
+    #get all rooms except waiting room
+    @rooms = Room.where.not(id: 1)
     respond_to do |format|
       # format.json {render json: {rooms: @rooms}}
       format.js {render partial: 'room_list_arrangement', locals: { rooms: @rooms, count: Post.all.count } } 
@@ -13,7 +13,6 @@ class Manager::RoomManagementController < ApplicationController
   def show
     @room = Room.find(params[:id])
     @room_members = @room.students.order("name DESC")
-
   end
 
   def show_room_members
@@ -59,6 +58,15 @@ class Manager::RoomManagementController < ApplicationController
 
   def create_room_facility
         
+  end
+
+  def active_room
+    @room = Room.find_by(id: params[:room_id])
+    if @room
+      respond_to do |format|
+        format.js {render partial: 'room_active', content_type: 'text/html', locals: { room: @room} } 
+      end
+    end
   end
 
   private

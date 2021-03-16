@@ -6,12 +6,31 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 Manager.create!(email: 'manager123@gmail.com', phone_number: "0972403331", password: '999999', password_confirmation: '999999', channel: "manager")
-Room.create!(room_name: 'A01', number_student: 5, max_number_student: 6, room_type: 'NORMAL')
-Room.create!(room_name: 'A02', number_student: 1, max_number_student: 6, room_type: 'VIP')
-Student.create!(student_id_number: '88888888', password: '88888888', name: 'Huong Tra', channel: "1")
-Student.create!(student_id_number: '11111111', password: '11111111', name: 'Huong Tra', room_id: 2, channel: "2" )
-StudentProfile.create!(email: '88888888@gmail.com', identity_card_number: "88888888", student_id: 1)
-StudentProfile.create!(email: '11111111@gmail.com', identity_card_number: "11111111", student_id: 2)
+Room.create!(room_name: 'A01', number_student: 1, max_number_student: 6, room_type: 'NORMAL', gender: "FEMALE")
+Room.create!(room_name: 'A02', number_student: 5, max_number_student: 6, room_type: 'VIP', gender: "MALE")
+Student.create!(student_id_number: '11111111', password: '11111111', name: 'Huong Tra', channel: "1", room_id: 1)
+Student.create!(student_id_number: '22222222', password: '22222222', name: 'Huong Tra', channel: "2", room_id: 1)
+Student.create!(student_id_number: '33333333', password: '33333333', name: 'Huong Tra', channel: "3", room_id: 1)
+Student.create!(student_id_number: '44444444', password: '44444444', name: 'Huong Tra', channel: "4", room_id: 1)
+
+Student.create!(student_id_number: '55555555', password: '55555555', name: 'Huong Tra', channel: "5", room_id: 2, status: "ACTIVE")
+Student.create!(student_id_number: '66666666', password: '66666666', name: 'Huong Tra', channel: "6", room_id: 2, status: "ACTIVE")
+Student.create!(student_id_number: '77777777', password: '77777777', name: 'Huong Tra', channel: "7", room_id: 2, status: "ACTIVE")
+Student.create!(student_id_number: '88888888', password: '88888888', name: 'Huong Tra', channel: "8", room_id: 2, status: "ACTIVE")
+
+Student.create!(student_id_number: '99999999', password: '99999999', name: 'Huong Tra', room_id: 2, channel: "9", status: "ACTIVE")
+StudentProfile.create!(email: '11111111@gmail.com', identity_card_number: "11111111", student_id: 1)
+StudentProfile.create!(email: '22222222@gmail.com', identity_card_number: "22222222", student_id: 2)
+StudentProfile.create!(email: '33333333@gmail.com', identity_card_number: "33333333", student_id: 3)
+StudentProfile.create!(email: '44444444@gmail.com', identity_card_number: "44444444", student_id: 4)
+StudentProfile.create!(email: '55555555@gmail.com', identity_card_number: "55555555", student_id: 5)
+StudentProfile.create!(email: '66666666@gmail.com', identity_card_number: "66666666", student_id: 6)
+StudentProfile.create!(email: '77777777@gmail.com', identity_card_number: "77777777", student_id: 7)
+StudentProfile.create!(email: '88888888@gmail.com', identity_card_number: "88888888", student_id: 8)
+StudentProfile.create!(email: '99999999@gmail.com', identity_card_number: "99999999", student_id: 9)
+
+
+
 Post.create!(title: "Form validation requires passing in a validation object with the rules required to validate your form.",
             content: "Form validation requires passing in a validation object with the rules required to validate your form.",
             writer_name: "Huong Tra",

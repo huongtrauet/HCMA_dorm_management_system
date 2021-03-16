@@ -7,10 +7,13 @@ class Manager < ApplicationRecord
   has_many :active_notifications, class_name: Notification.name,
     foreign_key: :receiver_id,
     dependent: :destroy
-  has_many :notifications, through: :passive_notifications,
-    source: :receiver, source_type: Manager.name
-  has_many :sent_notifications, through: :active_notifications,
-    source: :sender, source_type: Manager.name
+  # has_many :notifications, through: :passive_notifications,
+  #   source: :receiver, source_type: Manager.name
+  # has_many :sent_notifications, through: :active_notifications,
+  #   source: :sender, source_type: Manager.name
+
+  has_many :notifications, as: :receiver
+  has_many :sent_notifications, as: :sender
   has_many :posts
 
   validates :email, presence: true, allow_nil: false,

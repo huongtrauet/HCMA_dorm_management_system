@@ -107,8 +107,8 @@
     channel.bind('new', function(data) {
       alert(JSON.stringify(data.notification.message));
       $('#list_noti').prepend(`<div class="item noti_item" style="width: 20rem; height: 4.5rem; background-color: #e0e1e2" onclick="readNoti(this)">
-            ${data.notification.message}
-          </div>`)
+                                <p style="width: 17rem; max-height: 4.5rem; overflow: hidden;text-overflow: ellipsis;word-wrap: break-word;-webkit-line-clamp: 2;-webkit-box-orient: vertical;line-height: 1.5rem;  white-space: pre-wrap; display: -webkit-box">${data.notification.message}</p>
+                              </div>`)
     });
     function readNoti(item){
       $(item).css("background-color", "white");

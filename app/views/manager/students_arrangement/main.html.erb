@@ -1,74 +1,55 @@
-<div class="student_arrangement main container">
-  <div class="students_arrangement main" style="height: 100%">
-      <div class="ui grid" style="height: 100%; overflow: hidden">
-        <div class="four wide column left" style="background-color: #edeff1; overflow: auto; height: calc(100vh - 58.72px)">
-          <div class="title" style="margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center">
-            <div style="font-weight: bold; font-size: 1rem">Room list: </div>
-            <div style="background-color: #d8d8d8; border-radius:0.5rem; cursor: pointer; width: 2rem; height: 2rem; display: flex;justify-content: center;align-items: center;">
-              <img src="/assets/search.png" style="width: 1rem; height: 1rem">
-            </div>
-            <form class="ui fluid form" style= "width: 0; display: none">
-              <div class="field">
-                <input typetext" placeholder="First name">
-                <div class="ui pointing red basic label">
-                  Please enter a value
-                </div>
+<div class="student_arrangement main container" style="position: fixed; width: 80%">
+  <div class="students_arrangement main"
+    style="height: calc(100vh - 58.72px); ">
+    <div class="ui grid" style="height: height: calc(100vh - 58.72px); overflow: hidden">
+      <div class="four wide column left" style="background-color: #edeff1; overflow: auto; height: calc(100vh - 58.72px)">
+        <div class="title" style="margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center">
+          <div style="font-weight: bold; font-size: 1rem">Room list: </div>
+          <div style="background-color: #d8d8d8; border-radius:0.5rem; cursor: pointer; width: 2rem; height: 2rem; display: flex;justify-content: center;align-items: center;">
+            <img src="/assets/search.png" style="width: 1rem; height: 1rem">
+          </div>
+          <form class="ui fluid form" style= "width: 0; display: none">
+            <div class="field">
+              <input typetext" placeholder="First name">
+              <div class="ui pointing red basic label">
+                Please enter a value
               </div>
-            </form>
-          </div>
-          <div id="room_list_arrangement">
-          </div>
+            </div>
+          </form>
         </div>
-        <div class="eight wide column center" style="background-color: white; height: calc(100vh - 58.72px)">
-          <div class="room_detail" style="margin-top: 5rem">
-            <div class="ui grid">
-              <div class="seven wide column">
-                <div class="">
-                  <p style="font-size: 4rem; margin-bottom: 0.7rem;">P1010</p>
-                  <p style="font-size: 1.5rem"><b>VIP</b></p>
-                </div>
-                <div class="ui grid" style="margin-top: 0.5rem"> 
-                  <div class="ten wide column" style="font-style: italic; font-size: 1.1rem"> Number of member</div>
-                  <div class="five wide column" style="font-style: italic; font-size: 1.1rem">6/10</div>
-                </div>
-                <div class="ui grid" style="margin-top: 0.1rem">
-                  <div class="ten wide column" style="font-style: italic; font-size: 1.1rem">Phong danh cho</div>
-                  <div class="five wide column" style="font-style: italic; font-size: 1.1rem">Nam</div>
-                </div>
-              </div>
-              <div class="nine wide column" style="margin-top: 1.6rem;">
-                <img src="/assets/teamwork.svg" style="width: 100%"/>
-              </div>
-            </div>
-          </div>
-          <div class="room_member" style="margin-top: 3rem; height: 100%" >
-            <div class="room_member_title">
-              <h3>Room member:</h3>
-            </div>
-            <div  style= "margin-top: 2rem; height: 100%; width: 100%;"  ondrop="drop(event)" ondragover="allowDrop(event)">
-               <div class="room_member_list ui grid"></div>
-            </div>
-          </div>
-        </div>
-        <div class="four wide column right" style="background-color: #edeff1; overflow: auto; height: calc(100vh - 58.72px)">
-          <div class="header" style="margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center">
-          <div style="font-weight: bold; font-size: 1rem">Student list: </div>
-            <div style="background-color: #d8d8d8; border-radius:0.5rem; cursor: pointer; width: 2rem; height: 2rem; display: flex;justify-content: center;align-items: center;">
-              <img src="/assets/search.png" style="width: 1rem; height: 1rem">
-            </div>
-            <form class="ui fluid form" style= "width: 0; display: none">
-              <div class="field">
-                <input typetext" placeholder="First name">
-                <div class="ui pointing red basic label">
-                  Please enter a value
-                </div>
-              </div>
-            </form>
-          </div>
-          <div class="students_list" id="pending_students_list" ondrop="dropRevert(event)" ondragover="allowDrop(event)" style="height: calc(100vh - 58.72px)">
-          </div>
+        <div id="room_list_arrangement">
         </div>
       </div>
+      <div class="eight wide column center" style="background-color: white; height: calc(100vh - 58.72px); overflow: auto;" id="active_room_box">
+        
+      </div>
+      <div class="four wide column right" style="background-color: #edeff1; overflow: auto; height: calc(100vh - 58.72px)">
+        <div class="header" style="margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center">
+        <div style="font-weight: bold; font-size: 1rem">Student list: </div>
+          <div style="
+            background-color: #d8d8d8;
+            border-radius:0.5rem; 
+            cursor: pointer; width: 2rem; 
+            height: 2rem; 
+            display: flex;
+            justify-content: center;
+            align-items: center;"
+          >
+            <img src="/assets/search.png" style="width: 1rem; height: 1rem">
+          </div>
+          <form class="ui fluid form" style= "width: 0; display: none">
+            <div class="field">
+              <input type="text" placeholder="First name">
+              <div class="ui pointing red basic label">
+                Please enter a value
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="students_list" id="pending_students_list" ondrop="dropRevert(event)" ondragover="allowDrop(event)" style="height: calc(100vh - 58.72px)">
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 <script>
@@ -79,23 +60,58 @@
 
   function drag(ev) {
     ev.dataTransfer.setData("text", ev.target.id);
+
   }
 
   function drop(ev) {
     ev.preventDefault();
     var data = ev.dataTransfer.getData("text");
     var count = document.querySelector('.room_member_list').childElementCount;
+
     if(count < 6){
-      document.querySelector('.room_member_list').appendChild(document.getElementById(data));
-      // console.log(data)
-      document.querySelector(`#${data}`).classList.add("eight", "wide","column");
+      // document.querySelector('.room_member_list').appendChild(document.getElementById(data));
+      // console.log(data);
+      // document.querySelector(`#${data}`).classList.add("eight", "wide","column");
     }
+    $.ajax({
+      type: "POST",
+      url: "students-arrangement/add-student",
+      data: {
+        student_id: data.split("_")[1],
+        room_id: $("#room_id_input").val()
+      },
+      success: function(result){
+        console.log(result.message)
+        document.querySelector('.room_member_list').appendChild(document.getElementById(data));
+        console.log(data);
+        document.querySelector(`#${data}`).classList.add("eight", "wide","column");
+      },
+      error: function(error){
+        console.log(error)
+        if(error.status == 400)
+          alert(error.responseJSON.message)
+      }
+
+    })
   }
   function dropRevert(ev){
     ev.preventDefault();
     var data = ev.dataTransfer.getData("text");
     document.querySelector('.students_list').appendChild(document.getElementById(data));
     document.querySelector(`#${data}`).classList.remove("eight", "wide", "column");
+    console.log(data)
+
+    $.ajax({
+      type: "POST",
+      url: "students-arrangement/remove-student",
+      data: {student_id: data.split("_")[1]},
+      success: function(result){
+        console.log(result.message)
+      },
+      error: function(result){
+        console.log(result.message)
+      }
+    })
 
   }
   //get all room
@@ -115,6 +131,21 @@
       $('#pending_students_list').html(result)
     }
   })
+
+  function activeRoom(room_id){
+    $.ajax({
+      type: "GET",
+      url: `room-management/rooms/${room_id}/active_room`,
+      success: function(result){
+        $("#active_room_box").html(result)
+         console.log("oke")
+
+      },
+      error: function (error) {
+
+      }
+    })
+  }
 </script>
 <style>
 .students_item{
