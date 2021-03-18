@@ -57,6 +57,22 @@ class Manager::ManagersController < ManagerMainController
     end
   end
 
+  def search_student_and_room
+    if params[:q] 
+      @rooms = Room.where.not(id: 1).ransack(room_name_or_status_cont: params[:q]).result
+      @students = Student.all.ransack(name_or_student_id_number_cont: params[:q]).result
+      if @rooms or @students
+        respond_to do |format|
+          format.json {render json: {students: @students, rooms: @rooms}}
+        end
+      else 
+        respond_to do |format|
+          format.json {render json: {message: 'No result found'}, status: :bad_request}
+        end
+      end
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_manager

@@ -7,8 +7,14 @@
       <button class="ui icon button" onclick="addStudent()">
         <i class="plus icon"></i>
       </button>
-      <div class="ui icon input">
+      <%# <div class="ui icon input">
         <input type="text" placeholder="Search...">
+        <i class="icon">
+          <img src="/assets/search.png" style="width: 1rem; height: 1rem; width: 1rem; top: 50%; position: absolute; transform: translateY(-50%);right: 0.7rem;">
+        </i> 
+      </div> %>
+      <div class="ui icon input">
+        <input type="text" placeholder="Search..." name="q" id="q" class="form-control search-student-form" >
         <i class="icon">
           <img src="/assets/search.png" style="width: 1rem; height: 1rem; width: 1rem; top: 50%; position: absolute; transform: translateY(-50%);right: 0.7rem;">
         </i> 
@@ -346,4 +352,21 @@
     $('#add-form').form('reset');
     $('.ui.mini.modal.add_student').modal('hide');
   }
+
+  $(document).on("turbolinks:load", function() {
+    $(".search-student-form").on("keyup", function() {
+      $('#students_list').html("")
+      $.ajax({
+        type: "GET",
+        url: "/manager/student-management/students?q=" + this.value,
+        success: function(result){
+          $('#students_list').html(result)
+          console.log('success' + result)
+        },
+        error: function (error){
+          console.log('error', error)
+        }
+      })
+    });
+  });
 </script>

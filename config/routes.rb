@@ -22,6 +22,7 @@ Rails.application.routes.draw do
     post "/post-management/restore", to: "post_management#restore"
 
     get "/student-management", to: "student_management#index"
+    get "/student-management/students", to: "student_management#search_student"
     get "/student-management/:id/show", to: "student_management#show"
     post "/student-management/create-member", to: "student_management#create_room_member"
     post "/student-management/create", to: "student_management#create"
@@ -30,6 +31,7 @@ Rails.application.routes.draw do
     get  "/student-management/:id", to: "student_management#edit"
     patch  "/student-management/:id/update", to: "student_management#update"
     delete  "/student-management/:id/delete", to: "student_management#destroy"
+    # get "/student-management/find-student", to: "student_management#find_student"
     
     get "/room-management/", to: "room_management#index"
     get "/room-management/rooms/:room_id/active_room", to: "room_management#active_room"
@@ -46,7 +48,10 @@ Rails.application.routes.draw do
 
     post "/students-arrangement/remove-student", to: "students_arrangement#remove_student_from_room"
     post "/students-arrangement/add-student", to: "students_arrangement#add_student_to_room"
+    get "/students-arrangement/all-rooms-arrangement", to: "students_arrangement#search_rooms_arrangement"
+    get "students-arrangement/all-pending-students-arrangement", to: "students_arrangement#search_pending_students_arrangement"
 
+    get "/managers/search", to: "managers#search_student_and_room"
 
 
     resources :students

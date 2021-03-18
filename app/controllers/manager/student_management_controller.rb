@@ -93,6 +93,27 @@ class Manager::StudentManagementController < ApplicationController
     end
   end
 
+  def search_student
+    byebug
+    if params[:q] 
+      @students = Student.all.ransack(name_cont: params[:q]).result
+      if @students
+        respond_to do |format|
+          format.js {render partial: 'student_management_list', locals: { students: @students } } 
+        end
+      else
+        respond_to do |format|
+          format.json {render json: {message: 'Room not found'}, status: :bad_request}
+        end
+      end
+    elsif params[:q] == "" or params[:q] == nil
+      @student = Student.all
+      respond_to do |format|
+        format.js {render partial: 'student_management_list', locals: { students: @students } } 
+      end
+    end   
+  end
+
   private
 
   def student_params

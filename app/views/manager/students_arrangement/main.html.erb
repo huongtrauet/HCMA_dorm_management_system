@@ -4,18 +4,13 @@
     <div class="ui grid" style="height: height: calc(100vh - 58.72px); overflow: hidden">
       <div class="four wide column left" style="background-color: #edeff1; overflow: auto; height: calc(100vh - 58.72px)">
         <div class="title" style="margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center">
-          <div style="font-weight: bold; font-size: 1rem">Room list: </div>
-          <div style="background-color: #d8d8d8; border-radius:0.5rem; cursor: pointer; width: 2rem; height: 2rem; display: flex;justify-content: center;align-items: center;">
-            <img src="/assets/search.png" style="width: 1rem; height: 1rem">
+          <%# <div style="font-weight: bold; font-size: 1rem">Room list: </div> %>
+          <div class="ui icon input" style="width: 85%;margin: 0 auto ">
+            <input type="text" placeholder="Search..." name="q" id="q" class="form-control search-room-form" >
+            <i class="icon">
+              <img src="/assets/search.png" style="width: 1rem; height: 1rem; width: 1rem; top: 50%; position: absolute; transform: translateY(-50%);right: 0.7rem;">
+            </i> 
           </div>
-          <form class="ui fluid form" style= "width: 0; display: none">
-            <div class="field">
-              <input typetext" placeholder="First name">
-              <div class="ui pointing red basic label">
-                Please enter a value
-              </div>
-            </div>
-          </form>
         </div>
         <div id="room_list_arrangement">
         </div>
@@ -25,26 +20,13 @@
       </div>
       <div class="four wide column right" style="background-color: #edeff1; overflow: auto; height: calc(100vh - 58.72px)">
         <div class="header" style="margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center">
-        <div style="font-weight: bold; font-size: 1rem">Student list: </div>
-          <div style="
-            background-color: #d8d8d8;
-            border-radius:0.5rem; 
-            cursor: pointer; width: 2rem; 
-            height: 2rem; 
-            display: flex;
-            justify-content: center;
-            align-items: center;"
-          >
-            <img src="/assets/search.png" style="width: 1rem; height: 1rem">
+        <%# <div style="font-weight: bold; font-size: 1rem">Student list: </div> %>
+          <div class="ui icon input" style="width: 95%;margin: 0 auto ">
+            <input type="text" placeholder="Search..." name="q" id="q" class="form-control search-student-form" >
+            <i class="icon">
+              <img src="/assets/search.png" style="width: 1rem; height: 1rem; width: 1rem; top: 50%; position: absolute; transform: translateY(-50%);right: 0.7rem;">
+            </i> 
           </div>
-          <form class="ui fluid form" style= "width: 0; display: none">
-            <div class="field">
-              <input type="text" placeholder="First name">
-              <div class="ui pointing red basic label">
-                Please enter a value
-              </div>
-            </div>
-          </form>
         </div>
         <div class="students_list" id="pending_students_list" ondrop="dropRevert(event)" ondragover="allowDrop(event)" style="height: calc(100vh - 58.72px)">
         </div>
@@ -117,7 +99,7 @@
   //get all room
   $.ajax({
     type: "GET",
-    url: "room-management",
+    url: "students-arrangement/all-rooms-arrangement",
     success: function(result){
       $('#room_list_arrangement').html(result)
     }
@@ -146,9 +128,55 @@
       }
     })
   }
+  
+  // SEARCH ROOM
+$(document).on("turbolinks:load", function() {
+    $(".search-room-form").on("keyup", function() {
+      // $(".students").html("");
+      $('#room_list_arrangement').html("")
+      $.ajax({
+        type: "GET",
+        url: "/manager/students-arrangement/all-rooms-arrangement?q=" + this.value,
+        success: function(result){
+          $('#room_list_arrangement').html(result)
+          console.log('success' + result)
+        },
+        error: function (error){
+          console.log('error', error)
+        }
+      })
+    });
+  });
+
+    // SEARCH STUDENT
+  $(document).on("turbolinks:load", function() {
+    $(".search-student-form").on("keyup", function() {
+      // $(".students").html("");
+      $('#pending_students_list').html("")
+      $.ajax({
+        type: "GET",
+        url: "/manager/students-arrangement/all-pending-students-arrangement?q=" + this.value,
+        success: function(result){
+          $('#pending_students_list').html(result)
+          console.log('success' + result)
+        },
+        error: function (error){
+          console.log('error', error)
+        }
+      })
+    });
+  });
+
+
 </script>
 <style>
 .students_item{
   cursor: pointer;
 }
+
+            <div class="center row" id="search-room-form">
+                <%= text_field_tag :q, nil,
+                  class: "form-control search-room-form",
+                  placeholder: "Search ..." %>
+            </div>
 </style>

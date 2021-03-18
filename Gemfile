@@ -19,6 +19,7 @@ gem 'image_processing', '~> 1.7.1'
 gem'active_storage_validations','~>0.8'
 gem 'redis'
 gem 'pusher'
+gem 'ransack'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

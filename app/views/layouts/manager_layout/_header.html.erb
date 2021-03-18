@@ -31,14 +31,39 @@
             </div>
           </div>
         </div>
-        <div class="item">
-          <div class="ui icon input">
-            <input type="text" placeholder="Search...">
+        <%# <div class="item">
+          <div class="ui dropdown search-dropdown" style=" padding: 0.7rem !important;  border: solid 1px #dededf !important; width: 15rem; border-radius: 0.3rem">
+            <span class="text" style="color: #c7c7c7">Select Language</span>
+
+
             <i class="icon">
-            <img src="/assets/search.png" style="width: 1rem; height: 1rem">
-            </i>
+              <img src="/assets/search.png" style="width: 1rem; height: 1rem; width: 1rem; top: 50%; position: absolute; transform: translateY(-50%);right: 0.7rem;">
+            </i> 
+            <div class="menu">
+              <div class="item">Arabic</div>
+              <div class="item">Chinese</div>
+              <div class="item">Danish</div>
+              <div class="item">Dutch</div>
+              <div class="item">English</div>
+              <div class="item">French</div>
+              <div class="item">German</div>
+              <div class="item">Greek</div>
+              <div class="item">Hungarian</div>
+              <div class="item">Italian</div>
+              <div class="item">Japanese</div>
+              <div class="item">Korean</div>
+              <div class="item">Lithuanian</div>
+              <div class="item">Persian</div>
+              <div class="item">Polish</div>
+              <div class="item">Portuguese</div>
+              <div class="item">Russian</div>
+              <div class="item">Spanish</div>
+              <div class="item">Swedish</div>
+              <div class="item">Turkish</div>
+              <div class="item">Vietnamese</div>
+            </div>
           </div>
-        </div>
+        </div> %>
          <div class="ui item floating dropdown labeled" id="language_dropdown" style="background-color: #ffffff; border-bottom: 2px solid rgba(34, 36, 38, 0.15)">
           <span class="text">
             <% if I18n.locale == :en %>
@@ -113,6 +138,25 @@
     function readNoti(item){
       $(item).css("background-color", "white");
     }
+
+  $(document).on("turbolinks:load", function() {
+    $(".search-form-header").on("keyup", function() {
+      $(".students").html("");
+      $.ajax({
+        type: "GET",
+        url: "/manager/managers/search?q=" + this.value,
+        success: function(result){
+          $(".search-item").html(result.students[0].name)
+         console.log("students", result.students);
+         console.log("rooms", result.rooms);
+        },
+        error: function (error){
+          console.log('error', error)
+        }
+      })
+    });
+  });
+
     
 </script>
 <style>
