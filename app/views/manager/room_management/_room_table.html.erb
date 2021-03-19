@@ -1,0 +1,34 @@
+<% rooms.each_with_index do |room, index| %>
+  <tr>
+    <td>
+    <%= link_to "/manager/room-management/rooms/#{room.id}", style: "display: block; width: 100%", data: { turbolinks: false } do %>
+      <%= index + 1 %>
+    <% end %>
+    </td>
+    <td>
+    <%= link_to "/manager/room-management/rooms/#{room.id}", style: "display: block; width: 100%", data: { turbolinks: false } do %>
+      <%= room.room_name %>
+    <% end %>
+    </td>
+    <td>
+    <%= link_to "/manager/room-management/rooms/#{room.id}", style: "display: block; width: 100%", data: { turbolinks: false } do %>
+      <%= room.number_student %>
+    <% end %>
+    </td>
+    <td>
+    <%= link_to "/manager/room-management/rooms/#{room.id}", style: "display: block; width: 100%", data: { turbolinks: false } do %>
+      <%= room.max_number_student %>
+    <% end %>
+    </td>
+    <td>
+    <%= link_to "/manager/room-management/rooms/#{room.id}", style: "display: block; width: 100%", data: { turbolinks: false } do %>
+      <%= room.room_type %>
+    <% end %>
+    </td>
+    <td>
+    <%= link_to "/manager/room-management/rooms/#{room.id}", style: "display: block; width: 100%", data: { turbolinks: false } do %>
+      <a class="ui teal tag label teal_label" style="width: 5.7rem"><%= room.status %></a>
+    <% end %>
+    </td>
+  </tr>
+<% end %>

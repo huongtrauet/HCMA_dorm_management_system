@@ -15,7 +15,7 @@ class Manager::StudentManagementController < ApplicationController
       student_id_number = student_create_params[:student_id_number]
       new_params = student_create_params.merge(password: student_id_number, password_confirmation: student_id_number, channel: generate_channel).except(:student_id_number_confirm)
       @student = Student.new(new_params)
-      @student.student_profile = StudentProfile.new(email:"#{@student.student_id_number}@gmail.com", identity_card_number: @student.student_id_number)
+      @student.student_profile = StudentProfile.new(email:"#{@student.student_id_number}@gmail.com", identity_card_number: @student.student_id_number, name: @student.name)
     else
       redirect_to manager_student_management_path
     end
@@ -36,7 +36,7 @@ class Manager::StudentManagementController < ApplicationController
       student_id_number = student_create_params[:student_id_number]
       new_params = student_create_params.merge(password: student_id_number, password_confirmation: student_id_number, channel: generate_channel).except(:student_id_number_confirm)
       @student = Student.new(new_params)
-      @student.student_profile = StudentProfile.new(email:"#{@student.student_id_number}@gmail.com", identity_card_number: @student.student_id_number)
+      @student.student_profile = StudentProfile.new(email:"#{@student.student_id_number}@gmail.com", identity_card_number: @student.student_id_number, name: @student.name)
     else
       redirect_to manager_student_management_path
     end
@@ -94,12 +94,12 @@ class Manager::StudentManagementController < ApplicationController
   end
 
   def search_student
-    byebug
+    # byebug
     if params[:q] 
       @students = Student.all.ransack(name_cont: params[:q]).result
       if @students
         respond_to do |format|
-          format.js {render partial: 'student_management_list', locals: { students: @students } } 
+          format.js {render partial: 'student_table', locals: { students: @students } } 
         end
       else
         respond_to do |format|
@@ -109,7 +109,7 @@ class Manager::StudentManagementController < ApplicationController
     elsif params[:q] == "" or params[:q] == nil
       @student = Student.all
       respond_to do |format|
-        format.js {render partial: 'student_management_list', locals: { students: @students } } 
+        format.js {render partial: 'student_table', locals: { students: @students } } 
       end
     end   
   end

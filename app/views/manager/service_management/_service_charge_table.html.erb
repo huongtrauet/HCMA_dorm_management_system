@@ -1,0 +1,27 @@
+<% service_charges.each_with_index do |charge, index| %>
+  <tr onclick="showServiceChargeInfo(<%= charge.room_id %>, <%= charge.year %>, <%= charge.month %>, <%= charge.id %>, <%= index + 1%>)" id="tr_service_charge_<%= charge.id %>">
+    <td><%= index + 1 %></td>
+    <td><%= charge.room.room_name %></td>
+    <td><%= charge.month %></td>
+    <td><%= charge.electricity_price %></td>
+    <td><%= charge.water_price %></td>
+    <td><%= charge.total_price %></td>
+    <td>
+      <% if charge.status == "PAID" %>
+        <a class="ui teal tag label" style="width: 6.7rem"><%= charge.status %></a>
+      <% elsif charge.status == "UNPAID" %>
+        <a class="ui red tag label" style="width: 6.7rem"><%= charge.status %></a>
+      <% end  %>
+    </td> 
+    <td><%= charge.payer %></td>
+    <td style="display: none; z-index: 100; position absolute" class="checkbox_col" onclick="click()">
+      <div class="ui checkbox">
+        <input class="remind_checkbox" type="checkbox" name="example" onchange="onHandleCheckbox(this)">
+        <label></label>
+      </div>
+    </td>
+  </tr>
+<% end %>
+<script>
+  function click(){};
+</script>

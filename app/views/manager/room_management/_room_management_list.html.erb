@@ -7,8 +7,8 @@
       <button class="ui icon button" onclick="addRoom()">
         <i class="plus icon"></i>
       </button>
-      <div class="ui icon input">
-        <input type="text" placeholder="Search...">
+      <div class="ui icon input" style="">
+        <input type="text" placeholder="Name, status or type..." name="q" id="q" class="form-control search-room-form" >
         <i class="icon">
           <img src="/assets/search.png" style="width: 1rem; height: 1rem; width: 1rem; top: 50%; position: absolute; transform: translateY(-50%);right: 0.7rem;">
         </i> 
@@ -249,4 +249,22 @@
     $("#add_room_form").find('.error').removeClass('error');
     $('.ui.mini.modal.add_room').modal('hide');
   }
+  // SEARCH ROOM
+  $(document).on("turbolinks:load", function() {
+    $(".search-room-form").on("keyup", function() {
+      // $(".students").html("");
+      // $('#room_list').html("")
+      $.ajax({
+        type: "GET",
+        url: "/manager/room-management/find-room?q=" + this.value,
+        success: function(result){
+          $('#room_list').html(result)
+          console.log('success' + result)
+        },
+        error: function (error){
+          console.log('error', error)
+        }
+      })
+    });
+  });
 </script>

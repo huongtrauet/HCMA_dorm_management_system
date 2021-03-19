@@ -133,7 +133,7 @@
 $(document).on("turbolinks:load", function() {
     $(".search-room-form").on("keyup", function() {
       // $(".students").html("");
-      $('#room_list_arrangement').html("")
+      // $('#room_list_arrangement').html("")
       $.ajax({
         type: "GET",
         url: "/manager/students-arrangement/all-rooms-arrangement?q=" + this.value,
@@ -152,7 +152,7 @@ $(document).on("turbolinks:load", function() {
   $(document).on("turbolinks:load", function() {
     $(".search-student-form").on("keyup", function() {
       // $(".students").html("");
-      $('#pending_students_list').html("")
+      // $('#pending_students_list').html("")
       $.ajax({
         type: "GET",
         url: "/manager/students-arrangement/all-pending-students-arrangement?q=" + this.value,

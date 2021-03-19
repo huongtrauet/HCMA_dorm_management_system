@@ -15,7 +15,7 @@
     </thead>
     <tbody>
       <% @room_service_charges.each_with_index do |s, index| %>
-        <tr onclick="showServiceChargeInfo(<%= s.room_id %>, <%= s.year %>, <%= s.month %>, <%= s.id %>, <%= index %>)" id="tr_service_charge_<%= s.id %>">
+        <tr onclick="showServiceChargeInfo(<%= s.room_id %>, <%= s.year %>, <%= s.month %>, <%= s.id %>, <%= index+1%>)" id="tr_service_charge_<%= s.id %>">
           <td><%= index + 1 %></td>
           <td><%= s.month %></td>
           <td><%= s.electricity_price %></td>
@@ -155,6 +155,7 @@ function changePrice() {
     $('.ui.modal.first.service_charge_info').modal('show');
     $('#service_charge_edit_form').form('reset');
     $("#service_charge_edit_form").find('.error').removeClass('error');
+    console.log("show")
     $.ajax({
       type: "POST",
       url: `/manager/room-management/rooms/${room_id}/service-charge/${year}/${month}`,
@@ -196,17 +197,18 @@ function changePrice() {
     })
   }
 
-  function submitUpdateServiceCharge(){
+  function submitUpdateServiceCharge(e){
     let room_id = $('#room_id').val()
     let year = $('#year_edit_field').val();
     let month = $('#month_edit_field').val();
     let charge_id = $('#charge_id').val();
     console.log("room_id: " + room_id)
+    console.log("update sycyy")
     // $('#service_charge_edit_form').form('reset');
     $("#service_charge_edit_form").find('.error').removeClass('error');
     $('#show_info_modal').modal('hide');
     $('#edit_info_modal').modal('hide');
-    
+    e.preventDefault();
     $.ajax({
       type: "POST",
       url: `/manager/room-management/rooms/${room_id}/service-charge/${year}/${month}/update`,
@@ -225,7 +227,7 @@ function changePrice() {
       },
       success: function(result){
         console.log(result)
-        $('#tr_service_charge').html()
+        $(`#tr_service_charge_${charge_id}`).html(result)
       },
       error: function (error) {}
     })
@@ -233,7 +235,7 @@ function changePrice() {
 
   $('#service_charge_edit_form').off('submit').submit(function(e){
     if($('#service_charge_edit_form').form('is valid')){
-      submitUpdateServiceCharge();
+      submitUpdateServiceCharge(e);
     }
   })
 

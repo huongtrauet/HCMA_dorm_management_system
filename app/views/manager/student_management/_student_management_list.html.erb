@@ -355,12 +355,12 @@
 
   $(document).on("turbolinks:load", function() {
     $(".search-student-form").on("keyup", function() {
-      $('#students_list').html("")
+      // $('#student_list').html("")
       $.ajax({
         type: "GET",
         url: "/manager/student-management/students?q=" + this.value,
         success: function(result){
-          $('#students_list').html(result)
+          $('#student_list').html(result)
           console.log('success' + result)
         },
         error: function (error){

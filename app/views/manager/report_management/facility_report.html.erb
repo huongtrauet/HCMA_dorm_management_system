@@ -1,0 +1,50 @@
+<p id="notice"><%= notice %></p>
+<div class="room_management_show">
+  <div class="ui grid">
+    <div class="four wide column" style="padding-top: 5em">
+      <%= render partial: "report_management_sidebar", locals: {active: 'facility_report'} %>
+    </div>
+    <div class="twelve wide column">
+      <p>
+        Facility
+      </p>
+      <div id="complaint_report">
+        <div class="header" style="display: flex; justify-content: space-between;">
+          <div class="header_title">
+            <h3>Student Management: </h3>
+          </div>
+        </div>
+        <div class="footer_line" style="height: 1px; background-color: rgba(34,36,38,.15); margin-top: 0.5rem; margin-bottom: 1.5rem"></div>
+        <table class="ui very basic selectable table">
+          <thead>
+            <tr>
+              <th style="text-align: center">STT</th>
+              <th style="text-align: center">TITLE</th>
+              <th style="text-align: center">CONTENT</th>
+              <th style="text-align: center">STATUS</th>
+            </tr>
+          </thead>
+          <tbody id="members_list">
+            <tr>
+              <td style="text-align: center">1</td>
+              <td>
+                <p style="margin: 0 auto; word-wrap: break-word; max-width: 12rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+                  Khi nào về Sài Gòn cậu nhớ gọi cho tôi
+                </p>
+              </td>
+              <td>
+                <span style="margin: 0 auto; word-wrap: break-word; max-width: 30rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+                  Khi nào về Sài Gòn cậu nhớ gọi cho tôi Bất kể là mùa mưa hay mùa nắng Bất kể hoa chò bay, hay kèn hồng xinh xắn Mùa bão về, lênh láng nước khắp nơi Tôi hứa rồi, sẽ dẫn cậu đi chơi. Bằng chiếc xe máy xinh, hướng về khu LandMark Qua hẳn cầu Thủ Thiêm, nơi còn thừa bãi cát Mình sẽ thả diều￼, bay dưới ánh nắng chiều
+                </span>
+              </td>
+              <td style="text-align: center">APPROVE</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $("#manager_report_management_path").addClass("active");
+</script>

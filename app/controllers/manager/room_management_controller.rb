@@ -86,6 +86,26 @@ class Manager::RoomManagementController < ApplicationController
     end
   end
 
+  def find_room
+    if params[:q] 
+      @rooms = Room.where.not(id: 1).ransack(room_name_or_status_or_room_type_cont: params[:q]).result
+      if @rooms
+        respond_to do |format|
+          format.js {render partial: 'room_table', locals: { rooms: @rooms } } 
+        end
+      else
+        respond_to do |format|
+          format.json {render json: {message: 'Room not found'}, status: :bad_request}
+        end
+      end
+    elsif params[:q] == "" or params[:q] == nil
+      @rooms = Room.where.not(id: 1)
+      respond_to do |format|
+        format.js {render partial: 'room_table', locals: { rooms: @rooms } } 
+      end
+    end
+  end
+
   private
 
   def room_params

@@ -8,6 +8,7 @@
 Manager.create!(email: 'manager123@gmail.com', phone_number: "0972403331", password: '999999', password_confirmation: '999999', channel: "manager")
 Room.create!(room_name: 'A01', number_student: 1, max_number_student: 6, room_type: 'NORMAL', gender: "FEMALE")
 Room.create!(room_name: 'A02', number_student: 5, max_number_student: 6, room_type: 'VIP', gender: "MALE")
+Room.create!(room_name: 'A03', number_student: 5, max_number_student: 6, room_type: 'NORMAL', gender: "FEMALE")
 Student.create!(student_id_number: '11111111', password: '11111111', name: 'Huong Tra', channel: "1", room_id: 1)
 Student.create!(student_id_number: '22222222', password: '22222222', name: 'Huong Giang', channel: "2", room_id: 1)
 Student.create!(student_id_number: '33333333', password: '33333333', name: 'Huong Quynh', channel: "3", room_id: 1)
@@ -50,8 +51,33 @@ end
     status: "PAID",
     month: 1, 
     year: 2010, 
-    room_id: 1,
+    room_id: 2,
     payer: "Huong Tra",
     paid_at: DateTime.strptime("09/01/2009", "%m/%d/%Y") 
   )
 end
+
+5.times do 
+  ServiceCharge.create(
+    water_price: "10000",
+    electricity_price: "5000", 
+    total_price: "15000", 
+    status: "UNPAID",
+    month: 2, 
+    year: 2011, 
+    room_id: 3,
+    payer: "JOHN",
+    paid_at: DateTime.strptime("09/01/2009", "%m/%d/%Y") 
+  )
+end
+
+5.times do
+  ComplaintReport.create(
+    title: "Complaint report title",
+    description: "Khi nào về Sài Gòn cậu nhớ gọi cho tôi Bất kể là mùa mưa hay mùa nắng",
+    status: "PENDING",
+    student_id: 2
+  )
+end
+
+

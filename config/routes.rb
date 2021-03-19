@@ -12,7 +12,13 @@ Rails.application.routes.draw do
     post "/login", to: "manager_sessions#create"
     get "/logout", to: "manager_sessions#destroy"
     get "/students-arrangement", to: "students_arrangement#main"
+
     get "/service-management", to: "service_management#index"
+    post "/service-management/:id/:year/:month", to: "service_management#show_service_charge"
+    post "/service-management/:id/:year/:month/update", to: "service_management#update_service_charge"
+    # get "/service-management/find", to: "service_management#find_service_chare"
+    get "/service-management/filter", to: "service_management#filter"
+
 
     get "/post-management", to: "post_management#index"
     get "/post-management/show", to: "post_management#show"
@@ -44,7 +50,8 @@ Rails.application.routes.draw do
     get "/posts/:id", to: "homepage_management#show"
     post "/room-management/create", to: "room_management#create"
     post "/room-management/rooms/:room_id/service-charge/:year/:month", to: "service_management#show_service_charge"
-    post "/room-management/rooms/:room_id/service-charge/:year/:month/update", to: "service_management#update_service_charge"
+    post "/room-management/rooms/:room_id/service-charge/:year/:month/update", to: "service_management#update_room_service_charge"
+    get "/room-management/find-room", to: "room_management#find_room"
 
     post "/students-arrangement/remove-student", to: "students_arrangement#remove_student_from_room"
     post "/students-arrangement/add-student", to: "students_arrangement#add_student_to_room"
@@ -52,6 +59,11 @@ Rails.application.routes.draw do
     get "students-arrangement/all-pending-students-arrangement", to: "students_arrangement#search_pending_students_arrangement"
 
     get "/managers/search", to: "managers#search_student_and_room"
+
+    get "report-management/", to: "report_management#complaint_report"
+    get "report-management/complaint-reports", to: "report_management#complaint_report"
+    get "report-management/form-requests", to: "report_management#form_request"
+    get "report-management/facility-reports", to: "report_management#facility_report"
 
 
     resources :students

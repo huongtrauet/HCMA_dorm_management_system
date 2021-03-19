@@ -1,0 +1,14 @@
+<td><%= index %></td>
+<td><%= charge.room.room_name %></td>
+<td><%= charge.month %></td>
+<td><%= charge.electricity_price %></td>
+<td><%= charge.water_price %></td>
+<td><%= charge.total_price %></td>
+<td>
+  <% if charge.status == "PAID" %>
+    <a class="ui teal tag label" style="width: 6.7rem"><%= charge.status %></a>
+  <% elsif charge.status == "UNPAID" %>
+    <a class="ui red tag label" style="width: 6.7rem"><%= charge.status %></a>
+  <% end  %>
+</td> 
+<td><%= charge.payer %></td> 
