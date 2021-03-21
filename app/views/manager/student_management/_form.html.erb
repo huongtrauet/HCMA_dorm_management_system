@@ -42,16 +42,16 @@
                   </div>
                   <div class="required field field_line">
                     <label>Room</label>
-                    <select class="ui search dropdown">
-                    <% @rooms.each do |room|%>
-                      <option value="">State</option>
-                      <option value="AL">Alabama</option>
-                      <option value="AK">Alaska</option>
-                      <option value="AZ">Arizona</option>
-                      <option value="AR">Arkansas</option>
-                      <option value="CA">California</option>
-                    <% end %>
-                    </select>
+                    <div class="ui fluid search selection dropdown" id="select_room">
+                      <%= student.text_field :room_id, required: true, placeholder: "Select room", type: "hidden" %>
+                      <i class="dropdown icon"></i>
+                      <div class="default text">Select room</div>
+                      <div class="menu">
+                        <% @rooms.each do |room| %>
+                        <div class="item" data-value="<%= room.id %>"><%= room.room_name %></div>
+                        <% end %>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <%= student.fields_for :student_profile do |f| %>
@@ -124,4 +124,5 @@
   </div>
 </div>
 <script>
+  $('#select_room').dropdown()
 </script>

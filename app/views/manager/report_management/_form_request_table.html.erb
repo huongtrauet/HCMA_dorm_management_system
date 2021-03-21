@@ -1,0 +1,32 @@
+<% requests.each_with_index do |report, index| %>
+  <tr onclick="showReportInfo(<%= report.id %>)">
+    <td style="text-align: center"><%= index + 1 %></td>
+    <td>
+      <p style="margin: 0 auto; word-wrap: break-word; max-width: 12rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+        <%= report.form_type %>
+      </p>
+    </td>
+    <td>
+      <span style="margin: 0 auto; word-wrap: break-word; max-width: 30rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+        <%= report.description %>
+      </span>
+    </td>
+    <td>
+        <%= report.return_date %>
+    </td>
+    <td>
+      <span style="margin: 0 auto; word-wrap: break-word; max-width: 30rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+        <%= report.note %>
+      </span>
+    </td>
+    <td>
+      <% if report.status == "PENDING" %>
+        <a class="ui teal tag label" style="width: 7rem"><%= report.status %></a>
+      <% elsif report.status == "APPROVED" %>
+        <a class="ui blue tag label" style="width: 7rem"><%= report.status %></a>
+      <% elsif report.status == "REJECTED" %>
+        <a class="ui red tag label" style="width: 7rem"><%= report.status %></a>
+      <% end  %>
+    </td>
+  </tr>
+<% end %>

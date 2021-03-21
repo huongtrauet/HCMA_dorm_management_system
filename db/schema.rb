@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_15_165405) do
+ActiveRecord::Schema.define(version: 2021_03_21_033518) do
 
   create_table "complaint_reports", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "title", null: false
@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 2021_03_15_165405) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "student_id", null: false
+    t.string "reject_reason", default: "We are currently unable to process your request.Any questions please contact the management directly"
     t.index ["student_id"], name: "index_complaint_reports_on_student_id"
   end
 
@@ -41,16 +42,19 @@ ActiveRecord::Schema.define(version: 2021_03_15_165405) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "student_id", null: false
+    t.string "reject_reason", default: "We are currently unable to process your request.Any questions please contact the management directly"
     t.index ["student_id"], name: "index_facility_reports_on_student_id"
   end
 
   create_table "form_requests", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.integer "type", null: false
+    t.string "form_type", null: false
     t.string "description", null: false
     t.string "status", default: "PENDING", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "student_id", null: false
+    t.datetime "return_date", default: "2021-03-21 00:00:00"
+    t.string "note", default: "We are currently unable to process your request.Any questions please contact the management directly"
     t.index ["student_id"], name: "index_form_requests_on_student_id"
   end
 
@@ -73,6 +77,8 @@ ActiveRecord::Schema.define(version: 2021_03_15_165405) do
     t.string "receiver_type", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "noti_type", null: false
+    t.integer "report_id"
   end
 
   create_table "posts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|

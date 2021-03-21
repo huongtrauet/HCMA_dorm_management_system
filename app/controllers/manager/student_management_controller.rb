@@ -7,10 +7,10 @@ class Manager::StudentManagementController < ApplicationController
 
   def edit
     @student = Student.find(params[:id])
+    @rooms = Room.all
   end
 
   def create
-    byebug
     if(student_create_params[:student_id_number_confirm] == student_create_params[:student_id_number])
       student_id_number = student_create_params[:student_id_number]
       new_params = student_create_params.merge(password: student_id_number, password_confirmation: student_id_number, channel: generate_channel).except(:student_id_number_confirm)
@@ -52,7 +52,7 @@ class Manager::StudentManagementController < ApplicationController
   end
 
   def show
-    @student = Student.find_by(params[:id])
+    @student = Student.find(params[:id])
     @rooms = Room.all
     @student_profile = @student.student_profile
     if @student
@@ -67,12 +67,11 @@ class Manager::StudentManagementController < ApplicationController
   end
 
   def update
-    byebug
     @student = Student.find(params[:id])
-    if @student.update(student_params)
-      redirect_to manager_student_management_path
+    if @student.update(student_params.merge(name: params[:student][:student_profile_attributes][:name]))
+      redirect_back_or manager_student_management_path
     else
-      redirect_to manager_student_management_path
+      redirect_back_or manager_student_management_path
     end
   end
 
@@ -96,7 +95,7 @@ class Manager::StudentManagementController < ApplicationController
   def search_student
     # byebug
     if params[:q] 
-      @students = Student.all.ransack(name_cont: params[:q]).result
+      @students = Student.all.ransack(name_or_student_id_number_cont: params[:q]).result
       if @students
         respond_to do |format|
           format.js {render partial: 'student_table', locals: { students: @students } } 
@@ -117,7 +116,7 @@ class Manager::StudentManagementController < ApplicationController
   private
 
   def student_params
-    params.require(:student).permit(:student_id_number, :check_in_date, :check_out_date, student_profile_attributes: [:email, :class_name, :name, :date_of_birth, :identity_card_number, :address, :phone_number, :gender, :avatar])
+    params.require(:student).permit(:student_id_number, :check_in_date, :check_out_date, :room_id, student_profile_attributes: [:email, :class_name, :name, :date_of_birth, :identity_card_number, :address, :phone_number, :gender, :avatar])
   end
 
   def student_create_params

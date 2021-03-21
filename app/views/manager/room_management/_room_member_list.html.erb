@@ -39,7 +39,7 @@
         <tr onclick="showStudentInfo(<%= member.id %>)">
           <td><%= index + 1 %></td>
           <td><%= member.student_id_number %></td>
-          <td><%= member.name %></td>
+          <td><%= member.student_profile.name %></td>
           <td><%= member.student_profile.date_of_birth.to_date %></td>
           <td><%= member.student_profile.class_name %></td>
           <td><%= member.check_in_date %></td>

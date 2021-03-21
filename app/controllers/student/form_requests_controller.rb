@@ -4,11 +4,15 @@ class Student::FormRequestsController < StudentMainController
 
   # GET /form_requests or /form_requests.json
   def index
-    @form_requests = FormRequest.all
+    @form_requests = current_user.form_requests
   end
 
   # GET /form_requests/1 or /form_requests/1.json
   def show
+    @form_request = FormRequest.find(params[:id])
+    respond_to do |format|
+      format.json { render json: {form_request: @form_request}}
+    end
   end
 
   # GET /form_requests/new

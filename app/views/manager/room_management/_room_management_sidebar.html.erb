@@ -1,21 +1,30 @@
 <div class="room_sidebar">
   <div class="ui secondary vertical pointing menu">
     <% if active == 'member' %>
+      <%= link_to "Informations", "/manager/room-management/rooms/#{@room.id}/informations", class: "item", id: "room_information_btn", data: { turbolinks: false } %>
       <%= link_to "Members", "/manager/room-management/rooms/#{@room.id}/members", class: "item active", id: "room_member_btn", data: { turbolinks: false } %>
       <%= link_to "Service charges", "/manager/room-management/rooms/#{@room.id}/service-charges", class: "item", id: "room_service_charge_btn", data: { turbolinks: false } %>
       <%= link_to "Facilities", "/manager/room-management/rooms/#{@room.id}/facilities", class: "item", id: "room_facility_btn", data: { turbolinks: false } %>
     <% end %>
       
     <% if active == 'charge' %>
+      <%= link_to "Informations", "/manager/room-management/rooms/#{@room.id}/informations", class: "item", id: "room_information_btn", data: { turbolinks: false } %>
       <%= link_to "Members", "/manager/room-management/rooms/#{@room.id}/members", class: "item", id: "room_member_btn", data: { turbolinks: false } %>
       <%= link_to "Service charges", "/manager/room-management/rooms/#{@room.id}/service-charges", class: "item active", id: "room_service_charge_btn", data: { turbolinks: false } %>
       <%= link_to "Facilities", "/manager/room-management/rooms/#{@room.id}/facilities", class: "item", id: "room_facility_btn", data: { turbolinks: false } %>
     <% end %>
 
     <% if active == 'facility' %>
+      <%= link_to "Informations", "/manager/room-management/rooms/#{@room.id}/informations", class: "item", id: "room_information_btn", data: { turbolinks: false } %>
       <%= link_to "Members", "/manager/room-management/rooms/#{@room.id}/members", class: "item", id: "room_member_btn", data: { turbolinks: false } %>
       <%= link_to "Service charges", "/manager/room-management/rooms/#{@room.id}/service-charges", class: "item", id: "room_service_charge_btn", data: { turbolinks: false } %>
       <%= link_to "Facilities", "/manager/room-management/rooms/#{@room.id}/facilities", class: "item active", id: "room_facility_btn", data: { turbolinks: false } %>
+    <% end %>
+    <% if active == 'information' %>
+      <%= link_to "Informations", "/manager/room-management/rooms/#{@room.id}/informations", class: "item active", id: "room_information_btn", data: { turbolinks: false } %>
+      <%= link_to "Members", "/manager/room-management/rooms/#{@room.id}/members", class: "item", id: "room_member_btn", data: { turbolinks: false } %>
+      <%= link_to "Service charges", "/manager/room-management/rooms/#{@room.id}/service-charges", class: "item", id: "room_service_charge_btn", data: { turbolinks: false } %>
+      <%= link_to "Facilities", "/manager/room-management/rooms/#{@room.id}/facilities", class: "item", id: "room_facility_btn", data: { turbolinks: false } %>
     <% end %>
   </div>
 </div>

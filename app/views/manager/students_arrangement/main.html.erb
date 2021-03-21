@@ -4,9 +4,8 @@
     <div class="ui grid" style="height: height: calc(100vh - 58.72px); overflow: hidden">
       <div class="four wide column left" style="background-color: #edeff1; overflow: auto; height: calc(100vh - 58.72px)">
         <div class="title" style="margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center">
-          <%# <div style="font-weight: bold; font-size: 1rem">Room list: </div> %>
           <div class="ui icon input" style="width: 85%;margin: 0 auto ">
-            <input type="text" placeholder="Search..." name="q" id="q" class="form-control search-room-form" >
+            <input type="text" placeholder="Room type or name..." name="q" id="q" class="form-control search-room-form" >
             <i class="icon">
               <img src="/assets/search.png" style="width: 1rem; height: 1rem; width: 1rem; top: 50%; position: absolute; transform: translateY(-50%);right: 0.7rem;">
             </i> 
@@ -20,9 +19,8 @@
       </div>
       <div class="four wide column right" style="background-color: #edeff1; overflow: auto; height: calc(100vh - 58.72px)">
         <div class="header" style="margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center">
-        <%# <div style="font-weight: bold; font-size: 1rem">Student list: </div> %>
           <div class="ui icon input" style="width: 95%;margin: 0 auto ">
-            <input type="text" placeholder="Search..." name="q" id="q" class="form-control search-student-form" >
+            <input type="text" placeholder="Name or student id number..." name="q" id="q" class="form-control search-student-form" >
             <i class="icon">
               <img src="/assets/search.png" style="width: 1rem; height: 1rem; width: 1rem; top: 50%; position: absolute; transform: translateY(-50%);right: 0.7rem;">
             </i> 
@@ -44,17 +42,11 @@
     ev.dataTransfer.setData("text", ev.target.id);
 
   }
-
+  // add student
   function drop(ev) {
     ev.preventDefault();
     var data = ev.dataTransfer.getData("text");
     var count = document.querySelector('.room_member_list').childElementCount;
-
-    if(count < 6){
-      // document.querySelector('.room_member_list').appendChild(document.getElementById(data));
-      // console.log(data);
-      // document.querySelector(`#${data}`).classList.add("eight", "wide","column");
-    }
     $.ajax({
       type: "POST",
       url: "students-arrangement/add-student",
@@ -67,13 +59,14 @@
         document.querySelector('.room_member_list').appendChild(document.getElementById(data));
         console.log(data);
         document.querySelector(`#${data}`).classList.add("eight", "wide","column");
+        toastr.success("Add student successfully");
+        $('#room_current_member').html(result.room.number_student + "/" + result.room.max_number_student)
       },
       error: function(error){
         console.log(error)
         if(error.status == 400)
-          alert(error.responseJSON.message)
+          toastr.error("This room is full of students");
       }
-
     })
   }
   function dropRevert(ev){
@@ -88,7 +81,8 @@
       url: "students-arrangement/remove-student",
       data: {student_id: data.split("_")[1]},
       success: function(result){
-        console.log(result.message)
+        $('#room_current_member').html(result.room.number_student + "/" + result.room.max_number_student)
+        toastr.success("Removed student successfully");
       },
       error: function(result){
         console.log(result.message)

@@ -5,17 +5,25 @@
       <%= render partial: "report_management_sidebar", locals: {active: 'complaint_report'} %>
     </div>
     <div class="twelve wide column">
-      <p>
-        Complaint
-      </p>
-      <div id="complaint_report">
+      <div id="complaint_report" style="margin-top: 3rem">
         <div class="header" style="display: flex; justify-content: space-between;">
           <div class="header_title">
-            <h3>Student Management: </h3>
+            <h3>Complaint Report</h3>
           </div>
         </div>
         <div class="footer_line" style="height: 1px; background-color: rgba(34,36,38,.15); margin-top: 0.5rem; margin-bottom: 1.5rem"></div>
-        <table class="ui very basic selectable table">
+        <div class="ui tabular menu">
+          <a class="item active" id="pending_tab" onclick='findComplaintReportByStatus("PENDING")'>
+            Pending
+          </a>
+          <a class="item" id="approved_tab" onclick='findComplaintReportByStatus("APPROVED")'>
+            Approved
+          </a>
+          <a class="item" id="rejected_tab" onclick='findComplaintReportByStatus("REJECTED")'>
+            Rejected
+          </a>
+        </div>
+        <table class="ui very basic selectable table" style="margin-top: 2rem">
           <thead>
             <tr>
               <th style="text-align: center">STT</th>
@@ -24,60 +32,190 @@
               <th style="text-align: center">STATUS</th>
             </tr>
           </thead>
-          <tbody id="members_list">
-            <tr onclick="showReportInfo()">
-              <td style="text-align: center">1</td>
-              <td>
-                <p style="margin: 0 auto; word-wrap: break-word; max-width: 12rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
-                  Khi nào về Sài Gòn cậu nhớ gọi cho tôi
-                </p>
-              </td>
-              <td>
-                <span style="margin: 0 auto; word-wrap: break-word; max-width: 30rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
-                  Khi nào về Sài Gòn cậu nhớ gọi cho tôi Bất kể là mùa mưa hay mùa nắng Bất kể hoa chò bay, hay kèn hồng xinh xắn Mùa bão về, lênh láng nước khắp nơi Tôi hứa rồi, sẽ dẫn cậu đi chơi. Bằng chiếc xe máy xinh, hướng về khu LandMark Qua hẳn cầu Thủ Thiêm, nơi còn thừa bãi cát Mình sẽ thả diều￼, bay dưới ánh nắng chiều
-                </span>
-              </td>
-              <td style="text-align: center">APPROVE</td>
-            </tr>
+          <tbody id="reports_list">
+            <% @complaint_reports.each_with_index do |report, index| %>
+              <tr onclick="showReportInfo(<%= report.id %>)">
+                <td style="text-align: center"><%= index + 1 %></td>
+                <td>
+                  <p style="margin: 0 auto; word-wrap: break-word; max-width: 12rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+                    <%= report.title %>
+                  </p>
+                </td>
+                <td>
+                  <span style="margin: 0 auto; word-wrap: break-word; max-width: 30rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+                    <%= report.description %>
+                  </span>
+                </td>
+                <td>
+                  <% if report.status == "PENDING" %>
+                    <a class="ui teal tag label" style="width: 7rem"><%= report.status %></a>
+                  <% elsif report.status == "APPROVED" %>
+                    <a class="ui blue tag label" style="width: 7rem"><%= report.status %></a>
+                  <% elsif report.status == "REJECTED" %>
+                    <a class="ui red tag label" style="width: 7rem"><%= report.status %></a>
+                  <% end  %>
+                </td>
+              </tr>
+            <% end %>
           </tbody>
         </table>
       </div>
     </div>
   </div>
 </div>
-
-<div class="ui small modal report_info" id="show_info_modal">
+<%# MODAL SHOW INFO %>
+<div class="ui small first modal report_info" id="show_info_modal">
   <i class="close icon"></i>
-  <div class="header">
-    header
-  </div>
   <div class="content">
-    content
+    <h3 id="title_show"></h3>
+    <p id="description_show"></p>
+    <input type="hidden" id="report_id_show" value=""/>
   </div>
   <div class="actions" style="padding: 0.7rem 1rem;">
-    <div class="ui black deny button" onclick="closeModal()">
-      Cancel
+    <div class="ui black reject button">
+      Reject
     </div>
-    <div class="ui positive right labeled icon button edit">
-      Edit
-      <i class="arrow right icon"></i>
+    <div class="ui teal button" onclick="submitApprove()">
+      Approve
     </div>
   </div>
 </div>
-<script>
-   $("#manager_report_management_path").addClass("active");
-   function showReportInfo(){
-     $('.ui.small.modal.report_info').modal('show');
-     $.ajax({
-       type: "GET",
-       url: "manager/report-management/show-complaint-report", 
-       data: {},
-       success: function(result){
 
-       },
-       error: function (error) {
-         
-       }
-     })
-   }
+<%# DENY MODAL %>
+
+<div class="ui small second modal reject" id="show_info_modal">
+  <i class="close icon"></i>
+  <div class="header">Reject reason</div>
+  <div class="content ">
+    <form id="reject_form" name="reject_form">
+      <div class="ui form">
+        <div class="field">
+          <input type="hidden" id="report_id_reject" name="report_id"/>
+          <textarea name="reject_reason" placeholder= "We are currently unable to process your request. Any questions please contact the management directly" rows="5" value="" id="reject_reason"></textarea>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="actions" style="padding: 0.7rem 1rem;">
+    <div class="ui black cancel button">
+      Cancel
+    </div>
+    <div class="ui teal button" onclick="submitReject()">
+      Reject
+    </div>
+  </div>
+</div>
+
+<script>
+  $("#manager_report_management_path").addClass("active");
+  $('.coupled.modal')
+    .modal({
+      allowMultiple: false
+    })
+  ;
+  // attach events to buttons
+  $('.second.modal')
+    .modal('attach events', '.first.modal .reject')
+  ;
+
+  function showReportInfo(report_id){
+    $('.ui.small.first.modal.report_info').modal('show');
+  //  reset form phake
+  $('#reject_reason').val("")
+    $.ajax({
+      type: "GET",
+      url: `/manager/report-management/complaint-reports/${report_id}`, 
+      data: {
+        "id": report_id
+      },
+      success: function(result){
+        $('#title_show').html(result.complaint_report.title)
+        $('#description_show').html(result.complaint_report.description)
+        $('#report_id_show').val(result.complaint_report.id)
+        $('#report_id_reject').val(result.complaint_report.id)
+      },
+      error: function (error) {
+        console.log(error)
+      }
+    })
+  }
+
+  function findComplaintReportByStatus(status){
+    $.ajax({
+      type: "GET",
+      url: "/manager/report-management/complaint-reports/find-by-status",
+      data: { 
+        "status": status 
+      },
+      success: function(result){
+        console.log("success")
+        $("#reports_list").html(result)
+        if (status == "PENDING") {
+          $("#pending_tab").addClass("active");
+          $("#approved_tab").removeClass("active");
+          $("#rejected_tab").removeClass("active");
+        }
+        else if (status == "APPROVED"){
+          $("#pending_tab").removeClass("active");
+          $("#approved_tab").addClass("active");
+          $("#rejected_tab").removeClass("active");
+        }
+        else if (status == "REJECTED"){
+          $("#pending_tab").removeClass("active");
+          $("#approved_tab").removeClass("active");
+          $("#rejected_tab").addClass("active");
+        }
+      },
+      error: function (error) {
+
+      }
+
+      })
+  }
+
+  function submitReject(){
+    let report_id = $('#report_id_reject').val();
+    $.ajax({
+      type: "PUT",
+      url: `/manager/report-management/complaint-reports/${report_id}/reject`,
+      data: { 
+        "report": {
+          "id" : report_id,
+          "reject_reason": $("#reject_reason").val()
+        }
+      },
+      success: function(result){
+         toastr.success("Rejected successfully");
+        $('.ui.small.second.modal.reject').modal('hide');
+        $("#reports_list").html(result)
+      },
+      error: function (error) {
+        toastr.success(error.message)
+      }
+    })
+  }
+
+  function submitApprove(){
+    let report_id = $('#report_id_show').val();
+    $.ajax({
+      type: "PUT",
+      url: `/manager/report-management/complaint-reports/${report_id}/approve`,
+      data: { 
+        "report": {
+          "id" : report_id,
+        }
+      },
+      success: function(result){
+        toastr.success("Approved successfully");
+        $('.ui.small.first.modal.report_info').modal('hide');
+        $("#reports_list").html(result)
+
+      },
+      error: function (error) {
+        toastr.success(error.message)
+      }
+    })
+  }
+  
+    // show first now
 </script>

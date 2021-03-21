@@ -7,12 +7,6 @@
       <button class="ui icon button" onclick="addStudent()">
         <i class="plus icon"></i>
       </button>
-      <%# <div class="ui icon input">
-        <input type="text" placeholder="Search...">
-        <i class="icon">
-          <img src="/assets/search.png" style="width: 1rem; height: 1rem; width: 1rem; top: 50%; position: absolute; transform: translateY(-50%);right: 0.7rem;">
-        </i> 
-      </div> %>
       <div class="ui icon input">
         <input type="text" placeholder="Search..." name="q" id="q" class="form-control search-student-form" >
         <i class="icon">
@@ -29,8 +23,8 @@
         <th>MSSV</th>
         <th>HO VA TEN</th>
         <th>NGAY SINH</th>
+        <th>Phong</th>
         <th>LOP</th>
-        <th>QUE QUAN</th>
         <th>NGAY VAO</th>
         <th>ACTIVE</th>
       </tr>
@@ -40,17 +34,10 @@
         <tr onclick="showStudentInfo(<%= student.id %>)">
           <td><%= index + 1 %></td>
           <td><%= student.student_id_number %></td>
-          <% if student.student_profile %>
-            <td><%= student.student_profile.name %></td>
-            <td><%= student.student_profile.date_of_birth %></td>
-            <td><%= student.student_profile.class_name %></td>
-            <td><%= student.student_profile.address %></td>
-          <% else %>
-            <td>Nguyen Van A</td>
-            <td>01/01/2020</td>
-            <td>K62J</td>
-            <td>Ha Noi, Viet Nam</td>
-          <% end %>
+          <td><%= student.student_profile.name %></td>
+          <td><%= student.student_profile.date_of_birth %></td>
+          <td><%= student.room.room_name %></td>
+          <td><%= student.student_profile.class_name %></td>
           <td><%= student.check_in_date %></td>
           <td>
             <a class="ui teal tag label teal_label" style="width: 5.7rem">Active</a>
@@ -337,7 +324,7 @@
             },
             {
               type: 'match[student_id_number]',
-              prompt: 'Password mismatch'
+              prompt: 'Student id number mismatch'
             }
           ]
         }

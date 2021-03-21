@@ -41,7 +41,6 @@ class Manager < ApplicationRecord
   def remember
     self.remember_token
     update_attribute(:remember_digest, Manager.digest(remember_token))
-    debugger
   end
 
   def authenticated?(remember_token)

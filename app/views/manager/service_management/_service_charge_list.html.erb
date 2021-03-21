@@ -16,6 +16,7 @@
       <input type="hidden" name="room_name_filter" onchange="onHandleFilter(this)">
       <div class="default text">Phong</div>
       <div class="menu">
+        <div class="item" data-value="ALL">All</div>
         <% @rooms.each do |r|%>
           <div class="item" data-value="<%= r.id %>"><%= r.room_name %></div>
         <% end %>
@@ -25,9 +26,9 @@
       <input type="hidden" name="status_filter" onchange="onHandleFilter(this)">
       <div class="default text">Trang thai</div>
       <div class="menu">
+        <div class="item" data-value="ALL">All</div>
         <div class="item" data-value="PAID">Paid</div>
         <div class="item" data-value="UNPAID">Unpaid</div>
-        <div class="item" data-value="ALL">All</div>
       </div>
     </div>
     <div class="ui selection dropdown filter_item" id="min_charge">
@@ -35,8 +36,13 @@
       <i class="dropdown icon"></i>
       <div class="default text">Min charge</div>
       <div class="menu">
+        <div class="item" data-value="ALL">All</div>
         <div class="item" data-value="50000">50000</div>
         <div class="item" data-value="100000">100000</div>
+        <div class="item" data-value="200000">200000</div>
+        <div class="item" data-value="300000">300000</div>
+        <div class="item" data-value="400000">400000</div>
+        <div class="item" data-value="500000">500000</div>
       </div>
     </div>
     <div class="ui selection dropdown filter_item" id="max_charge">
@@ -44,8 +50,13 @@
       <i class="dropdown icon"></i>
       <div class="default text">Max charge</div>
       <div class="menu">
+        <div class="item" data-value="ALL">All</div>
         <div class="item" data-value="50000">50000</div>
         <div class="item" data-value="100000">100000</div>
+        <div class="item" data-value="200000">200000</div>
+        <div class="item" data-value="300000">300000</div>
+        <div class="item" data-value="400000">400000</div>
+        <div class="item" data-value="500000">500000</div>
       </div>
     </div>
   </div>
@@ -288,16 +299,20 @@
     })
    
     document.querySelectorAll('#max_charge .item').forEach(item => {
-      console.log(parseInt(document.querySelectorAll("input[name=min_charge]")[0].value))
-      if (parseInt(item.textContent) <= parseInt(document.querySelectorAll("input[name=min_charge]")[0].value)) {
-        item.classList.add("disabled")
+      item.classList.remove("disabled")
+      if(parseInt(document.querySelectorAll("input[name=min_charge]")[0].value) != 0 ){
+        if (parseInt(item.textContent) <= parseInt(document.querySelectorAll("input[name=min_charge]")[0].value)) {
+          item.classList.add("disabled")
+        } 
       }
     })
 
     document.querySelectorAll('#min_charge .item').forEach(item => {
-      console.log(item.textContent)
-      if (parseInt(item.textContent) >= parseInt(document.querySelectorAll("input[name=max_charge]")[0].value)) {
-        item.classList.add("disabled")
+      item.classList.remove("disabled")
+      if(parseInt(document.querySelectorAll("input[name=max_charge]")[0].value)){
+        if (parseInt(item.textContent) >= parseInt(document.querySelectorAll("input[name=max_charge]")[0].value)) {
+          item.classList.add("disabled")
+        }
       }
     })
   }

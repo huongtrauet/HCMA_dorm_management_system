@@ -12,16 +12,36 @@
         <th>Title</th>
         <th>Description</th>
         <th>Status</th>
+        <th>Note</th>
       </tr>
     </thead>
     <tbody>
-      <% for i in 0..5 do %>
-        <tr onclick="viewMoreComplaintReport()">
-          <td>1</td>
-          <td>Ve an ninh KTX</td>
-          <td>KTX quan ly long leo</td>
+      <% @complaint_reports.each_with_index do |report, index| %>
+        <tr onclick="viewMoreComplaintReport(<%= report.id %>)" id="report_<%= report.id %>">
+          <td><%= index + 1 %></td>
           <td>
-            <a class="ui teal tag label">Pending</a>
+           <span style="margin: 0 auto; word-wrap: break-word; max-width: 10rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+              <%= report.title %>
+            </span>
+          </td>
+          <td>
+            <span style="margin: 0 auto; word-wrap: break-word; max-width: 15rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+              <%= report.description %>
+            </span>
+          </td>
+          <td>
+            <span style="margin: 0 auto; word-wrap: break-word; max-width: 15rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+              <%= report.reject_reason %>
+            </span>
+          </td>
+          <td>
+            <% if report.status == "PENDING" %>
+              <a class="ui teal tag label" style="width: 7rem"><%= report.status %></a>
+            <% elsif report.status == "APPROVED" %>
+              <a class="ui blue tag label" style="width: 7rem"><%= report.status %></a>
+            <% elsif report.status == "REJECTED" %>
+              <a class="ui red tag label" style="width: 7rem"><%= report.status %></a>
+            <% end  %>
           </td>
         </tr>
       <% end %>
@@ -48,9 +68,13 @@
     </div>
   </div>
   <div class="ui modal" id="complaint_report_detail">
-    <div class="header">Header</div>
+    <div class="header">Complaint Report</div>
     <div class="content">
-      <p></p>
+      <h3 id="report_title_show"></h3>
+      <p><b>Content:</b></p>
+      <p id="report_description_show"></p>
+      <p><b>Note:</b></p>
+      <p id="report_note_show"></p>
     </div>
     <div class="actions">
       <div class="ui cancel button">Close</div>
@@ -61,7 +85,31 @@
   function addNewComplaintReport(){
     $('.new_complaint_report').modal('show');
   }
-  function viewMoreComplaintReport(){
+  function viewMoreComplaintReport(report_id){
     $('#complaint_report_detail').modal('show');
+    document.querySelector(`#report_${focusParam}`).classList.remove("active");
+    $.ajax({
+      type: "GET",
+      url: `/student/requests/complaint/${report_id}`,
+      data: {
+        "id": report_id
+      },
+      success: function(result){
+        console.log("success")
+        console.log(result.complaint_report.title)
+        $('#report_title_show').html(result.title)
+        $('#report_description_show').html(result.complaint_report.description)
+        $('#report_note_show').html(result.complaint_report.reject_reason)
+      },
+      error: function(error){
+
+      }
+    })
+  }
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const focusParam = urlParams.get('focus_id');
+  if (focusParam != null) {
+    document.querySelector(`#report_${focusParam}`).classList.add("active");
   }
 </script>

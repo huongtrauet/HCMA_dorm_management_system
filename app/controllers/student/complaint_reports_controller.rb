@@ -4,11 +4,17 @@ class Student::ComplaintReportsController < StudentMainController
 
   # GET /complaint_reports or /complaint_reports.json
   def index
-    @complaint_reports = ComplaintReport.all
+    @complaint_reports = ComplaintReport.all.where(student_id: current_user.id)
+    @complaint_reports = current_user.complaint_reports
+
   end
 
   # GET /complaint_reports/1 or /complaint_reports/1.json
   def show
+    @complaint_report = ComplaintReport.find(params[:id])
+    respond_to do |format|
+      format.json { render json: {complaint_report: @complaint_report}}
+    end
   end
 
   # GET /complaint_reports/new

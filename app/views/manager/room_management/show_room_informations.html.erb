@@ -1,0 +1,184 @@
+<p id="notice"><%= notice %></p>
+<div class="room_management_show">
+  <div class="ui grid">
+    <div class="four wide column" style="padding-top: 5em">
+      <%= render partial: "manager/room_management/room_management_sidebar", locals: {active: 'information'} %>
+    </div>
+    <div class="twelve wide column">
+      <div id="room_information" style="margin-left: 1rem; margin-top: 4rem; width: 80%;">
+        <form class="ui form segment" id="room_info_form" style="border: none; -webkit-box-shadow: none">
+          <input type="hidden" id="room_id" name="room_id" value="<%= @room.id %>"/>
+          <div class="two fields">
+            <div class="required ui field field_line" >
+              <div class="ui field" id="room_field_name">
+                <label for="room_name">Room name</label>
+                <input type="text" id="room_name" name="room_name" style="display:block" required placeholder="Room name" value="<%= @room.room_name %>" onfocusout="checkDuplicate(this)"/>
+              </div>
+            </div>
+            <div class="required field field_line">
+              <label>Type</label>
+              <div class="ui fluid search selection dropdown" id="select_room">
+                <input type="hidden" name="room_type" id="room_type" value="<%= @room.room_type%>" required placeholder="Select room type"/>
+                <i class="dropdown icon"></i>
+                <div class="default text"></div>
+                <div class="menu">
+                  <div class="item" data-value="NORMAL">NORMAL</div>
+                  <div class="item" data-value="VIP">VIP</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="two fields">
+            <div class="required field field_line">
+              <label>Gender</label>
+              <div class="ui fluid search selection dropdown" id="select_room">
+                <input type="hidden" name="gender" id="gender" value="<%= @room.gender %>" required placeholder="Select room type"/>
+                <i class="dropdown icon"></i>
+                <div class="default text"><%= @room.gender %></div>
+                <div class="menu">
+                  <div class="item" data-value="MALE">MALE</div>
+                  <div class="item" data-value="FEMALE">FEMALE</div>
+                </div>
+              </div>
+            </div>
+            <div class="required field field_line">
+              <label>Status</label>
+              <input type="text" name="status" required placeholder="Room name" disabled value="<%= @room.status%>"/>
+            </div>
+          </div>
+          <div class="two fields">
+            <div class="required field field_line">
+              <label>Number student</label>
+              <input type="text" name="number_student" required placeholder="Number student" disabled  value="<%= @room.number_student%>"/>
+            </div>
+            <div class="required field field_line">
+              <label>Max number student</label>
+              <input type="text" name="max_number_student" required placeholder="Max number student"value="<%= @room.max_number_student%>" />
+            </div>
+          </div>
+          <div class="ui dividing header">
+            Confirmation
+          </div>
+          <div class="ui checkbox">
+            <div class="field">
+            <input type="checkbox" name="confirmation_checkbox">
+            <label>You are sure that the information above is correct</label>
+          </div>
+          <div class="actions" style="display: flex; justify-content: flex-start; margin-top: 1rem;">
+            <button class="ui button">
+              Update
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $(".ui.fluid.search.selection.dropdown").dropdown()
+  $("#manager_room_management_path").addClass("active");
+  // show room info
+  function updateSubmit(){
+    let myRoomForm = document.getElementById('room_info_form');
+    let formData = new FormData(myRoomForm);  
+    let room_id = $("#room_id").val();
+    $.ajax({
+      type: "PUT",
+      url: `/manager/room_management/${room_id}/update`,
+      processData: false,
+      contentType: false,
+      mimeType: 'multipart/form-data',
+      data: formData,
+      success: function(result){
+        console.log("sbumit success")
+        toastr.success("Update successfully !!!")
+      },
+      error: function (error) {
+         toastr.error("Update successfully !!!")
+      }
+    })
+  }
+   async function checkDuplicate(){
+    current_name = document.querySelectorAll('input[name=room_name]')[0].value
+    let result
+    await $.ajax({
+      type: "POST",
+      url: "/manager/room-management/checkduplicate",
+      data: {
+        "room_name": current_name
+      },
+      success: function(_result){
+        console.log("not dup")
+        result = true
+      },
+      error: function (error) {
+        console.log(error)
+        if (error.responseJSON.is_duplicate == true) {
+          console.log("duplicate")
+          $('#room_field_name').find('.error').removeClass('error');
+          $('#room_field_name').addClass("error")
+          $('#room_field_name').append(`<div class="ui basic red pointing prompt label transition visible">This name has been taken</div>`)
+          result = false
+        }
+      }
+    })
+    return result
+  }
+
+  $('#room_info_form').off('submit').submit(async function(e){
+    e.preventDefault();
+    if($('#room_info_form').form('is valid')) {
+        updateSubmit()
+    }
+  })
+
+   $('#room_info_form')
+    .form({
+      fields: {
+        confirmation_checkbox: {
+          identifier: 'confirmation_checkbox',
+          rules: [
+            {
+              type: 'checked',
+              prompt: 'Please check this box for confirmation!!'
+            }
+          ]
+        },
+        room_name: {
+          identifier: 'room_type',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Please enter room type!!'
+            }
+          ]
+        },
+        room_type: {
+          identifier: 'room_type',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Please enter room type!!'
+            }
+          ]
+        },
+        max_number_student: {
+          identifier: 'max_number_student',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Please enter max number students !!'
+            },
+            {
+              type: 'integer[0..6]',
+              prompt: 'Max number students must be integer and greater than or equal to 0'
+            }
+          ]
+        }
+      },
+      inline: true,
+      on: 'blur'
+    })
+  ;
+  
+</script>

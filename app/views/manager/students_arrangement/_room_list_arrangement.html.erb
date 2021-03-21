@@ -29,7 +29,11 @@
     <div class="room_footer">
       <div class="ui grid">
         <div class="four wide column" style= "display: flex">
-          <img src="/assets/mars.png" style="height: 1.1rem; width: 1.1rem; margin-right: 0.4rem;"/>
+          <% if room.gender == "MALE" %>
+            <i class="male icon" style="font-size: 1.5rem"></i>
+          <% else %>
+            <i class="female icon" style="font-size: 1.5rem"></i>
+          <% end %>
           <span><%= room.room_type %></span>
         </div>
         <div class="three wide column">
@@ -37,8 +41,9 @@
         <div class="two wide column" style="">
         </div>
         <div class="seven wide column" style="display: flex">
-          <img src="/assets/group.png" style="width: 1.5rem; margin-right: 0.2rem "/>
-          <span><%= room.number_student %></span>
+          <%# <img src="/assets/group.png" style="width: 1.5rem; margin-right: 0.2rem "/> %>
+          <i class="user outline icon" style="font-size: 1.5rem"></i>
+          <span style="font-size: 1.4rem"><%= room.number_student %></span>
         </div>
       </div>
     </div>

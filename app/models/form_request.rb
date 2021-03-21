@@ -1,7 +1,7 @@
 class FormRequest < ApplicationRecord
   belongs_to :student
 
-  validates :type, presence: true, allow_nil: false
+  validates :form_type, presence: true, allow_nil: false
   validates :description, presence: true,
             length: {
               minimum: Settings.validations.form_request.description.min_length,

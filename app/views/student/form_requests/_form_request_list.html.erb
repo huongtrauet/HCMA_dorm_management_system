@@ -9,21 +9,39 @@
     <thead>
       <tr>
         <th>STT</th>
-        <th>Type</th>
-        <th>Title</th>
+        <th>Form type</th>
         <th>Description</th>
+        <th>Note</th>
         <th>Status</th>
       </tr>
     </thead>
     <tbody>
-      <% for i in 0..5 do %>
-        <tr onclick="viewMoreFormRequest()">
-          <td>1</td>
-          <td>Giay xac nhan o KTX</td>
-          <td>Ve an ninh KTX</td>
-          <td>KTX quan ly long leo</td>
+      <% @form_requests.each_with_index do |request, index| %>
+        <tr onclick="viewMoreFormRequest(<%= request.id %>)">
+          <td><%= index + 1 %></td>
           <td>
-            <a class="ui teal tag label">Pending</a>
+           <span style="margin: 0 auto; word-wrap: break-word; max-width: 10rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+              <%= request.form_type %>
+            </span>
+          </td>
+          <td>
+            <span style="margin: 0 auto; word-wrap: break-word; max-width: 15rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+              <%= request.description %>
+            </span>
+          </td>
+          <td>
+            <span style="margin: 0 auto; word-wrap: break-word; max-width: 15rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+              <%= request.note %>
+            </span>
+          </td>
+          <td>
+            <% if request.status == "PENDING" %>
+              <a class="ui teal tag label" style="width: 7rem"><%= request.status %></a>
+            <% elsif request.status == "APPROVED" %>
+              <a class="ui blue tag label" style="width: 7rem"><%= request.status %></a>
+            <% elsif request.status == "REJECTED" %>
+              <a class="ui red tag label" style="width: 7rem"><%= request.status %></a>
+            <% end  %>
           </td>
         </tr>
       <% end %>
@@ -63,9 +81,13 @@
     </div>
   </div>
   <div class="ui modal" id="form_request_detail">
-    <div class="header">Header</div>
+    <div class="header">Facility Report</div>
     <div class="content">
-      <p></p>
+      <h3 id="request_form_type_show"></h3>
+      <p><b>Content:</b></p>
+      <p id="request_description_show"></p>
+      <p><b>Note:</b></p>
+      <p id="request_note_show"></p>
     </div>
     <div class="actions">
       <div class="ui cancel button">Close</div>
@@ -79,7 +101,29 @@
   function addNewFormRequest(){
     $('#new_form_request').modal('show');
   }
-  function viewMoreFormRequest(){
+  function viewMoreFormRequest(request_id){
     $('#form_request_detail').modal('show');
+    $.ajax({
+      type: "GET",
+      url: `/student/requests/form/${request_id}`,
+      data: {
+        "id": request_id
+      },
+      success: function(result){
+        $('#request_form_type_show').html(result.form_request.form_type)
+        $('#request_description_show').html(result.form_request.description)
+        $('#request_note_show').html(result.form_request.note)
+      },
+      error: function(error){
+
+      }
+    })
+
+  }
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const focusParam = urlParams.get('focus_id');
+  if (focusParam != null) {
+    document.querySelector(`#report_${focusParam}`).classList.add("active");
   }
 </script>

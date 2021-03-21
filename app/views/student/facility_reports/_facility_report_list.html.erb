@@ -15,25 +15,32 @@
       </tr>
     </thead>
     <tbody>
-      <% @facility_reports.each_with_index do |item, index| %>
-        <tr onclick="viewMoreFacilityReport()">
+      <% @facility_reports.each_with_index do |report, index| %>
+        <tr onclick="viewMoreFacilityReport(<%= report.id %>)" id="report_<%= report.id %>" >
           <td><%= index + 1 %></td>
-          <td style="max-width: 20rem">
-            <span style="margin: 0 auto; word-wrap: break-word; max-width: 10rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
-                <%= item.title %>
-            </span>
-          </td>
-          <td style="max-width: 25rem">
-            <span style="margin: 0 auto; word-wrap: break-word; max-width: 20rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
-              <%= item.description %>
+          <td>
+           <span style="margin: 0 auto; word-wrap: break-word; max-width: 10rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+              <%= report.title %>
             </span>
           </td>
           <td>
-            <% if item.status == "PENDING" %>
-              <a class="ui tag label">Pending</a>
-            <% else %>
-              <a class="ui teal tag label">Approve</a>
-            <% end %>
+            <span style="margin: 0 auto; word-wrap: break-word; max-width: 15rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+              <%= report.description %>
+            </span>
+          </td>
+          <td>
+            <span style="margin: 0 auto; word-wrap: break-word; max-width: 15rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+              <%= report.reject_reason %>
+            </span>
+          </td>
+          <td>
+            <% if report.status == "PENDING" %>
+              <a class="ui teal tag label" style="width: 7rem"><%= report.status %></a>
+            <% elsif report.status == "APPROVED" %>
+              <a class="ui blue tag label" style="width: 7rem"><%= report.status %></a>
+            <% elsif report.status == "REJECTED" %>
+              <a class="ui red tag label" style="width: 7rem"><%= report.status %></a>
+            <% end  %>
           </td>
         </tr>
       <% end %>
@@ -63,9 +70,13 @@
   </div>
 
   <div class="ui modal" id="facility_report_detail">
-    <div class="header">Header</div>
+    <div class="header">Facility Report</div>
     <div class="content">
-      <p></p>
+      <h3 id="report_title_show"></h3>
+      <p><b>Content:</b></p>
+      <p id="report_description_show"></p>
+      <p><b>Note:</b></p>
+      <p id="report_note_show"></p>
     </div>
     <div class="actions">
       <div class="ui cancel button">Close</div>
@@ -77,8 +88,23 @@
     $('#new_facility_report').modal('show');
 
   }
-  function viewMoreFacilityReport(){
+  function viewMoreFacilityReport(report_id){
     $('#facility_report_detail').modal('show');
+    $.ajax({
+      type: "GET",
+      url: `/student/requests/facility/${report_id}`,
+      data: {
+        "id": report_id
+      },
+      success: function(result){
+        $('#report_title_show').html(result.facility_report.title)
+        $('#report_description_show').html(result.facility_report.description)
+        $('#report_note_show').html(result.facility_report.reject_reason)
+      },
+      error: function(error){
+
+      }
+    })
     
   }
 
@@ -149,5 +175,11 @@
         console.log('valid')
       }
     });
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const focusParam = urlParams.get('focus_id');
+  if (focusParam != null) {
+    document.querySelector(`#report_${focusParam}`).classList.add("active");
+  }
 
 </script>

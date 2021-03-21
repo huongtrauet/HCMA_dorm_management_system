@@ -10,6 +10,10 @@ class Student::FacilityReportsController < StudentMainController
 
   # GET /facility_reports/1 or /facility_reports/1.json
   def show
+    @facility_report = FacilityReport.find(params[:id])
+    respond_to do |format|
+      format.json { render json: {facility_report: @facility_report}}
+    end
   end
 
   # GET /facility_reports/new
@@ -23,7 +27,6 @@ class Student::FacilityReportsController < StudentMainController
 
   # POST /facility_reports or /facility_reports.json
   def create
-    byebug
     @facility_report = FacilityReport.new(facility_report_params.merge(student_id: current_user.id))
     if @facility_report.save
       if current_user.class.name == "Student"

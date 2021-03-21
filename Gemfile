@@ -20,6 +20,7 @@ gem'active_storage_validations','~>0.8'
 gem 'redis'
 gem 'pusher'
 gem 'ransack'
+gem 'jquery-rails'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

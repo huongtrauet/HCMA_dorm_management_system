@@ -11,7 +11,6 @@ class Manager::ServiceManagementController < ApplicationController
 
   # SERVICE CHARGE OF ROOM
   def room_service_charge
-    byebug
     @room_service_charges = ServiceCharge.where(room_id: params[:id]).order("year DESC").order("month DESC")
     respond_to do |format|
       format.json {render json: {object: @room_service_charges}}
@@ -71,19 +70,19 @@ class Manager::ServiceManagementController < ApplicationController
       @service_charges = @service_charges.where(status: filter_params[:status_filter]).order("year DESC").order("month DESC")
     end
 
-    if filter_params[:room_id_filter] != ""
+    if filter_params[:room_id_filter] != "" and filter_params[:room_id_filter] != "ALL"
       @service_charges = @service_charges.where(room_id: filter_params[:room_id_filter]).order("year DESC").order("month DESC")
     end
 
-    if filter_params[:month_filter] != ""
+    if filter_params[:month_filter] != "" and filter_params[:month_filter] != "ALL"
       @service_charges = @service_charges.where(month: filter_params[:month_filter]).order("year DESC").order("month DESC")
     end
 
-    if filter_params[:min_charge] != "0"
+    if filter_params[:min_charge] != "0" and filter_params[:min_charge] != "ALL"
       @service_charges = @service_charges.ransack(total_price_gteq: filter_params[:min_charge].to_f).result.order("year DESC").order("month DESC")
     end
 
-    if filter_params[:max_charge] != "0"
+    if filter_params[:max_charge] != "0" and filter_params[:max_charge] != "ALL"
       @service_charges = @service_charges.ransack(total_price_lteq: filter_params[:max_charge].to_f).result.order("year DESC").order("month DESC")
     end
     

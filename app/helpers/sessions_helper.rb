@@ -54,11 +54,15 @@ module SessionsHelper
     cookies.permanent.signed[:user_id] = user.id
     cookies.permanent.signed[:role] = user.class.name
     cookies.permanent.signed[:remember_token] = user.remember_token
-    debugger
   end
 
   def location
     session[:forwarding_url] = request.original_url if request.get?
+  end
+
+  def redirect_back_or default
+    redirect_to session[:forwarding_url] || default
+    session.delete :forwarding_url
   end
 
   # def find_student_by_student_id_number
