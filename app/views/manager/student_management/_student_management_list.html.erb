@@ -8,7 +8,7 @@
         <i class="plus icon"></i>
       </button>
       <div class="ui icon input">
-        <input type="text" placeholder="Search..." name="q" id="q" class="form-control search-student-form" >
+        <input type="text" placeholder="Name, id or status.." name="q" id="q" class="form-control search-student-form" >
         <i class="icon">
           <img src="/assets/search.png" style="width: 1rem; height: 1rem; width: 1rem; top: 50%; position: absolute; transform: translateY(-50%);right: 0.7rem;">
         </i> 
@@ -23,7 +23,7 @@
         <th>MSSV</th>
         <th>HO VA TEN</th>
         <th>NGAY SINH</th>
-        <th>Phong</th>
+        <th>PHONG</th>
         <th>LOP</th>
         <th>NGAY VAO</th>
         <th>ACTIVE</th>
@@ -35,10 +35,18 @@
           <td><%= index + 1 %></td>
           <td><%= student.student_id_number %></td>
           <td><%= student.student_profile.name %></td>
-          <td><%= student.student_profile.date_of_birth %></td>
+          <% if student.student_profile.date_of_birth %>
+            <td><%= student.student_profile.date_of_birth.to_date %></td>
+          <% else %>
+            <td></td>
+          <% end %>
           <td><%= student.room.room_name %></td>
           <td><%= student.student_profile.class_name %></td>
-          <td><%= student.check_in_date %></td>
+          <% if student.check_in_date %>
+            <td><%= student.check_in_date.to_date %></td>
+          <% else %>
+            <td></td>
+          <% end %>
           <td>
             <a class="ui teal tag label teal_label" style="width: 5.7rem">Active</a>
           </td>
@@ -58,41 +66,32 @@
                       <i class="icon address card outline"></i>
                     </div>
                     <div class="fourteen wide column" style="padding-bottom: 0!important">
-                      <%= student.student_id_number %>
+                    <%= student.student_id_number %>
                     </div>
                     <div class="two wide column" style="padding-bottom: 0!important">
                       <i class="icon check square outline"></i>
                     </div>
-                    <% if student.student_profile %>
-                      <div class="fourteen wide column" style="padding-bottom: 0!important">
-                        <%= student.student_profile.class_name %>
-                      </div>
-                      <div class="two wide column">
-                        <i class="icon envelope outline"></i>
-                      </div>
-                      <div class="fourteen wide column">
-                        <%= student.student_profile.email %>
-                      </div>
-                    <% else %>
-                      <div class="fourteen wide column" style="padding-bottom: 0!important">
-                        KKK
-                      </div>
-                      <div class="two wide column">
-                        <i class="icon envelope outline"></i>
-                      </div>
-                      <div class="fourteen wide column">
-                        email@gmail.com
-                      </div>
-                    <% end %>
+                    <div class="fourteen wide column" style="padding-bottom: 0!important">
+                      <%= student.student_profile.class_name %>
+                    </div>
+                    <div class="two wide column">
+                      <i class="icon envelope outline"></i>
+                    </div>
+                    <div class="fourteen wide column">
+                      <%= student.student_profile.email %>
+                    </div>
                   </div>
                 </div>
               </div>
               <div class="description eleven wide column">
-                <% if student.student_profile %>
                 <div class="ui header" style="margin-bottom: 2rem;"><%= student.student_profile.name %></div>
                 <div class="student-info ui grid">
                   <div class="three wide column"><b>Ngay sinh:</b></div>
-                  <div class="thirteen wide column"><%= student.student_profile.date_of_birth %></div>
+                  <% if student.student_profile.date_of_birth %>
+                    <div class="thirteen wide column"><%= student.student_profile.date_of_birth.to_date %></div>
+                  <% else %>
+                    <div class="thirteen wide column"></div>
+                  <% end %>
                   <div class="three wide column"><b>Gioi tinh:</b></div>
                   <div class="thirteen wide column"><%= student.student_profile.gender %></div>
                   <div class="three wide column"><b>Que quan:</b></div>
@@ -101,28 +100,18 @@
                   <div class="thirteen wide column"><%= student.student_profile.phone_number %></div>
                   <div class="three wide column"><b>So CMND:</b></div>
                   <div class="thirteen wide column"><%= student.student_profile.identity_card_number %></div>
-                <% else %>
-                  <div class="ui header" style="margin-bottom: 2rem;">Nguyen Van A</div>
-                  <div class="student-info ui grid">
-                  <div class="three wide column"><b>Ngay sinh:</b></div>
-                  <div class="thirteen wide column">01/01/2021</div>
-                  <div class="three wide column"><b>Gioi tinh:</b></div>
-                  <div class="thirteen wide column">nam</div>
-                  <div class="three wide column"><b>Que quan:</b></div>
-                  <div class="thirteen wide column">Ha Noi, Viet Nam</div>
-                  <div class="three wide column"><b>SDT:</b></div>
-                  <div class="thirteen wide column">19001234</div>
-                  <div class="three wide column"><b>So CMND:</b></div>
-                  <div class="thirteen wide column">123456789</div>
-                <% end %>
                   <div class="three wide column"><b>Ngay dang ky:</b></div>
-                  <div class="thirteen wide column">01/01/2021</div>
+                  <div class="thirteen wide column"><%= student.created_at.to_date %></div>
                   <div class="three wide column"><b>Ngay vao:</b></div>
-                  <div class="thirteen wide column">01/01/2021</div>
+                  <% if student.check_in_date %>
+                    <div class="thirteen wide column"><%= student.check_in_date.to_date %></div>
+                  <% else %>
+                    <div class="thirteen wide column"></div>
+                  <% end %>
                   <div class="three wide column"><b>Thoi gian gia han:</b></div>
-                  <div class="thirteen wide column">01/01/2021</div>
+                  <div class="thirteen wide column"><%= student.extended_time %></div>
                   <div class="three wide column"><b>Trang thai:</b></div>
-                  <div class="thirteen wide column">Active</div>
+                  <div class="thirteen wide column"><%= student.status %></div>
                 </div>
               </div>
             </div>
@@ -141,21 +130,21 @@
 
           </div>
         </div>
-        <div class="ui basic modal confirm-delete" id="confirm-delete-<%= student.id %>">
+        <div class="ui mini modal" id="confirm-delete-<%= student.id %>">
           <div class="ui icon header">
             <i class="archive icon"></i>
-            Archive Old Messages
+            Remove student
           </div>
           <div class="content">
-            <p>Your inbox is getting full, would you like us to enable automatic archiving of old messages?</p>
+            <p>Do you want to remove this student?</p>
           </div>
-          <div class="actions">
-            <div class="ui red basic cancel inverted button">
+          <div class="actions" style="display: flex; justify-content: center">
+            <div class="ui negative button">
               <i class="remove icon"></i>
               No
             </div>
             <%= link_to "/manager/student-management/#{student.id}/delete", method: :delete do %>
-              <div class="ui green ok inverted button">
+              <div class="ui positive right labeled icon button">
                 <i class="checkmark icon"></i>
                 Yes
               </div>
@@ -186,7 +175,7 @@
             </div>
           </div>
         </div>
-        <div class="field" style="margin: 1rem auto;">
+        <div class="field" id= "student_id_number_field" style="margin: 1rem auto;" onfocusout="checkDuplicate(this)">
           <div class="ui left corner labeled input" style="display: block;">
             <input type="text" placeholder="MSSV..." style="display:block; width: 100%" name="student_id_number" tabindex="-1">
             <div class="ui left corner label">
@@ -270,13 +259,45 @@
         }
       })
   }
+  
 
-  $('#add-form').unbind('submit').submit(function(e){
+  $('#add-form').off('submit').submit(async function(e){
+    e.preventDefault();
     if($('#add-form').form('is valid')) {
-      console.log('aaa')
-      addSubmit(e);
+      if (await checkDuplicate() == true){
+        console.log("is valid")
+        addSubmit(e)
+      }
     }
   })
+
+
+   async function checkDuplicate(){
+    student_id_number = document.querySelectorAll('input[name=student_id_number]')[0].value
+    let result
+    await $.ajax({
+      type: "POST",
+      url: "/manager/student-management/checkduplicate",
+      data: {
+        "student_id_number": student_id_number
+      },
+      success: function(_result){
+        console.log("not dup")
+        result = true
+      },
+      error: function (error) {
+        console.log(error)
+        if (error.responseJSON.is_duplicate == true) {
+          console.log("duplicate")
+          $('#student_id_number_field').find('.error').removeClass('error');
+          $('#student_id_number_field').addClass("error")
+          $('#student_id_number_field').append(`<div class="ui basic red pointing prompt label transition visible">This id number has been taken</div>`)
+          result = false
+        }
+      }
+    })
+    return result
+  }
 
   $('#add-form')
     .form({

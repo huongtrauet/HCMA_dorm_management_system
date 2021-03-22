@@ -1,5 +1,6 @@
 class Student::FormRequestsController < StudentMainController
   before_action :set_form_request, only: %i[ show edit update destroy ]
+  skip_before_action :verify_authenticity_token
   layout 'student_layout/student'
 
   # GET /form_requests or /form_requests.json
@@ -26,17 +27,16 @@ class Student::FormRequestsController < StudentMainController
 
   # POST /form_requests or /form_requests.json
   def create
-    @form_request = FormRequest.new(form_request_params)
-
-    respond_to do |format|
+    byebug
+    @form_request = FormRequest.new(form_request_params.merge(student_id: current_user.id))
       if @form_request.save
-        format.html { redirect_to @form_request, notice: "Form request was successfully created." }
-        format.json { render :show, status: :created, location: @form_request }
+        count = FormRequest.all.where(student_id: current_user.id).count
+        respond_to do |format|
+          format.js {render partial: 'form_request_line', locals: { request: @form_request, index: count } } 
+        end
       else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @form_request.errors, status: :unprocessable_entity }
+        format.json { render json: {message: "Created failed!!!"}, status: :bad_request}
       end
-    end
   end
 
   # PATCH/PUT /form_requests/1 or /form_requests/1.json
@@ -69,6 +69,6 @@ class Student::FormRequestsController < StudentMainController
 
     # Only allow a list of trusted parameters through.
     def form_request_params
-      params.require(:form_request).permit(:type)
+      params.require(:form_request).permit(:form_type, :description)
     end
 end

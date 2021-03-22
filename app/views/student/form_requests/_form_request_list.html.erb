@@ -15,7 +15,7 @@
         <th>Status</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody id="list_request">
       <% @form_requests.each_with_index do |request, index| %>
         <tr onclick="viewMoreFormRequest(<%= request.id %>)">
           <td><%= index + 1 %></td>
@@ -50,36 +50,32 @@
   <div class="ui modal" id="new_form_request">
     <div class="header">
       <span class="">Request form</span>
-      <span class="">
-        <div class="ui scrolling dropdown">
-          <input type="hidden" name="gender">
-          <div class="default text">Select choice</div>
-          <div class="menu">
-            <div class="item">Choice 1</div>
-            <div class="item">Choice 2</div>
+        <span class="">
+          <div class="ui scrolling dropdown">
+            <input type="hidden" id="form_type" value="The Confirmation of temporary residence">
+            <div class="default text">Select choice</div>
+            <div class="menu">
+              <div class="item active selected">The Confirmation of temporary residence</div>
+              <div class="item">Entrance card</div>
+            </div>
           </div>
-        </div>
-      </span>
+        </span>
     </div>
     <div class="content">
-      <div class="ui form">
-        <div class="field">
-          <label>Title</label>
-          <input type="text" placeholder="Enter title">
+      <form class="ui form segment" id="validate_description" style="border: none; -webkit-box-shadow: none">
+        <div class="ui form" id="request_form" style="margin-top:1rem">
+          <div class="field">
+            <label>Description</label>
+            <textarea placeholder="Enter description" id="description" name="description"></textarea>
+          </div>
         </div>
-      </div>
-      <div class="ui form" style="margin-top:1rem">
-        <div class="field">
-          <label>Description</label>
-          <textarea placeholder="Enter description"></textarea>
-        </div>
-      </div>
-      <%# <button class="ui approved primary basic button" style="margin: 1rem 0; float: right">Primary</button> %>
       <div class="actions" style="display: flex; justify-content: flex-end; margin-top: 1rem">
-        <div class="ui cancel button">Submit</div>
+        <div class="ui submit button">Submit</div>
       </div>
+      </form>
     </div>
   </div>
+
   <div class="ui modal" id="form_request_detail">
     <div class="header">Facility Report</div>
     <div class="content">
@@ -115,11 +111,73 @@
         $('#request_note_show').html(result.form_request.note)
       },
       error: function(error){
-
       }
     })
-
   }
+
+  function addSubmit(e) {
+    console.log("add submit")
+    e.preventDefault();
+    $.ajax({
+      type: "POST",
+      url: "/student/requests/form/create",
+      data: {
+        "form_request": {
+          "form_type": $("#form_type").val(),
+          description: $("#description").val()
+        }
+      },
+      success: function(result){
+        $('#validate_description').form('reset');
+        $("#validate_description").find('.error').removeClass('error');
+        $('#new_form_request').modal('hide');
+        document.querySelector('#list_request').append($.parseHTML(result))
+        toastr.success("Created request successfully!!")
+      },
+      error: function (error) {
+        // $("#add-form")[0].reset();
+        $('#add-form').form('reset');
+        alert(error.responseText);
+        console.log(error)
+        console.log("fails")
+      }
+    })
+  }
+
+
+  $('#validate_description').off('submit').submit(async function(e){
+    e.preventDefault();
+    if($('#validate_description').form('is valid')) {
+      addSubmit(e)
+    }
+  })
+
+  $('#validate_description')
+    .form({
+      fields: {
+        description: {
+          identifier: 'description',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Please enter description!'
+            },
+            {
+              type: 'minLength[5]',
+              prompt: 'Description must be more than 5 letters!'
+            },
+            {
+              type: 'maxLength[1000]',
+              prompt: 'Description must be less than 1000 letters!'
+            }
+          ]
+        },
+      },
+      inline: true,
+      on: 'blur'
+    })
+  ;
+
 
   const urlParams = new URLSearchParams(window.location.search);
   const focusParam = urlParams.get('focus_id');

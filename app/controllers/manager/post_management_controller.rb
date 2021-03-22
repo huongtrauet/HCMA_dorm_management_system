@@ -59,6 +59,26 @@ class Manager::PostManagementController < ApplicationController
     end
   end
 
+  def find_post
+    if params[:q] 
+      @posts = Post.all.ransack(title_or_status_or_writer_name_cont: params[:q]).result
+      if @posts
+        respond_to do |format|
+          format.js {render partial: 'post_table', locals: { posts: @posts } } 
+        end
+      else
+        respond_to do |format|
+          format.json {render json: {message: 'Room not found'}, status: :bad_request}
+        end
+      end
+    elsif params[:q] == "" or params[:q] == nil
+      @posts = Post.all
+      respond_to do |format|
+        format.js {render partial: 'post_table', locals: { posts: @posts } } 
+      end
+    end
+  end
+
 
   private
 

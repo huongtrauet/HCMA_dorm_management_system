@@ -95,6 +95,13 @@ class Manager::RoomManagementController < ManagerMainController
     end
   end
 
+  def room_number_student
+    @room = Room.find(params[:id])
+    respond_to do |format|
+      format.json {render json: {room: @room}, status: :ok}
+    end
+  end
+
   private
 
   def room_params

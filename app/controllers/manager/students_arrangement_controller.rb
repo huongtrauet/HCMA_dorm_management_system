@@ -9,7 +9,6 @@ class Manager::StudentsArrangementController < ManagerMainController
   def remove_student_from_room
     @student = Student.find(params[:student_id])
     @room = Room.find(@student.room_id)
-    @room.update(number_student: @room.number_student - 1)
     message = "You have been removed from your room, any questions please contact the management directly"
     @student.room.number_student = @student.room.number_student - 1
     if @student.update(room_id: 1, status: "PENDING")
@@ -29,7 +28,10 @@ class Manager::StudentsArrangementController < ManagerMainController
     @room = Room.find(params[:room_id])
     message = "You have been added to room #{@room.room_name}"
     if @room.number_student < @room.max_number_student 
-      if @room.update(number_student: @room.number_student + 1) && @student.update(room_id: @room.id, status: "ACTIVE")
+      if @student.update(room_id: @room.id, status: "ACTIVE")
+        if @student.check_in_date == nil
+          @student.update(check_in_date: DateTime.current.to_date)
+        end
         respond_to do |format|
           format.json {render json:{message: "Add student to room successfully!!", room: @room}, status: :ok }
         end

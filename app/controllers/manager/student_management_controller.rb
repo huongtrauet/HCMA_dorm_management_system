@@ -69,6 +69,7 @@ class Manager::StudentManagementController < ApplicationController
   def update
     @student = Student.find(params[:id])
     if @student.update(student_params.merge(name: params[:student][:student_profile_attributes][:name]))
+      flash[:success] = "Update success!!"
       redirect_back_or manager_student_management_path
     else
       redirect_back_or manager_student_management_path
@@ -95,7 +96,7 @@ class Manager::StudentManagementController < ApplicationController
   def search_student
     # byebug
     if params[:q] 
-      @students = Student.all.ransack(name_or_student_id_number_cont: params[:q]).result
+      @students = Student.all.ransack(name_or_student_id_number_or_status_cont: params[:q]).result
       if @students
         respond_to do |format|
           format.js {render partial: 'student_table', locals: { students: @students } } 
@@ -111,6 +112,19 @@ class Manager::StudentManagementController < ApplicationController
         format.js {render partial: 'student_table', locals: { students: @students } } 
       end
     end   
+  end
+
+  def check_duplicate_student
+    @student = Student.find_by(student_id_number: params[:student_id_number])
+    if @student
+      respond_to do |format|
+        format.json { render json: {is_duplicate:true},  status: :bad_request } 
+      end
+    else
+      respond_to do |format|
+        format.json { render json: {is_duplicate:false} } 
+      end
+    end
   end
 
   private

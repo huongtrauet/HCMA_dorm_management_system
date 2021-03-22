@@ -5,6 +5,7 @@ class CreateStudents < ActiveRecord::Migration[6.0]
       t.string :name, null: false
       t.datetime :check_in_date
       t.datetime :check_out_date
+      t.integer :extended_time, null: true, default: 6
 
       t.timestamps
     end

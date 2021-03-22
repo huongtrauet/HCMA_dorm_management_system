@@ -26,6 +26,8 @@ Rails.application.routes.draw do
     post "/post-management/update", to: "post_management#update"
     post "/post-management/", to: "post_management#change_post_status"
     post "/post-management/restore", to: "post_management#restore"
+    get "/post-management/find-post", to: "post_management#find_post"
+
 
     get "/student-management", to: "student_management#index"
     get "/student-management/students", to: "student_management#search_student"
@@ -37,6 +39,7 @@ Rails.application.routes.draw do
     get  "/student-management/:id", to: "student_management#edit"
     patch  "/student-management/:id/update", to: "student_management#update"
     delete  "/student-management/:id/delete", to: "student_management#destroy"
+    post "/student-management/checkduplicate", to: "student_management#check_duplicate_student"
     # get "/student-management/find-student", to: "student_management#find_student"
     
     get "/room-management/", to: "room_management#index"
@@ -54,6 +57,7 @@ Rails.application.routes.draw do
     post "/room-management/rooms/:room_id/service-charge/:year/:month", to: "service_management#show_service_charge"
     post "/room-management/rooms/:room_id/service-charge/:year/:month/update", to: "service_management#update_room_service_charge"
     get "/room-management/find-room", to: "room_management#find_room"
+    get "/room-management/:id/number-student", to: "room_management#room_number_student"
 
     post "/students-arrangement/remove-student", to: "students_arrangement#remove_student_from_room"
     post "/students-arrangement/add-student", to: "students_arrangement#add_student_to_room"
@@ -100,6 +104,7 @@ Rails.application.routes.draw do
 
     get "/requests/form", to: "form_requests#index"
     get "/requests/form/:id", to: "form_requests#show"
+    post "/requests/form/create", to: "form_requests#create"
 
     get "/requests/complaint", to: "complaint_reports#index"
     get "/requests/complaint/:id", to: "complaint_reports#show"

@@ -55,12 +55,21 @@
         room_id: $("#room_id_input").val()
       },
       success: function(result){
-        console.log(result.message)
         document.querySelector('.room_member_list').appendChild(document.getElementById(data));
-        console.log(data);
         document.querySelector(`#${data}`).classList.add("eight", "wide","column");
         toastr.success("Add student successfully");
-        $('#room_current_member').html(result.room.number_student + "/" + result.room.max_number_student)
+        $.ajax({
+          type: "GET",
+          url: `room-management/${result.room.id}/number-student`,
+          success: function(result){
+            $('#room_current_member').html(result.room.number_student + "/" + result.room.max_number_student)
+            $(`#room_member_card_${result.room.id}`).html(result.room.number_student + "/" + result.room.max_number_student)
+          },
+          error: function (error) {
+
+          }
+        })
+        
       },
       error: function(error){
         console.log(error)
@@ -81,8 +90,19 @@
       url: "students-arrangement/remove-student",
       data: {student_id: data.split("_")[1]},
       success: function(result){
-        $('#room_current_member').html(result.room.number_student + "/" + result.room.max_number_student)
         toastr.success("Removed student successfully");
+        $.ajax({
+          type: "GET",
+          url: `room-management/${result.room.id}/number-student`,
+          success: function(result){
+            $('#room_current_member').html(result.room.number_student + "/" + result.room.max_number_student)
+            $(`#room_member_card_${result.room.id}`).html(result.room.number_student + "/" + result.room.max_number_student)
+          },
+          error: function (error) {
+
+          }
+        })
+
       },
       error: function(result){
         console.log(result.message)
@@ -168,9 +188,4 @@ $(document).on("turbolinks:load", function() {
   cursor: pointer;
 }
 
-            <div class="center row" id="search-room-form">
-                <%= text_field_tag :q, nil,
-                  class: "form-control search-room-form",
-                  placeholder: "Search ..." %>
-            </div>
 </style>

@@ -2,9 +2,17 @@
   <td><%= index %></td>
   <td><%= member.student_id_number %></td>
   <td><%= member.name %></td>
-  <td><%= member.student_profile.date_of_birth.to_date %></td>
+  <% if member.student_profile.date_of_birth %>
+    <td><%= member.student_profile.date_of_birth.to_date %></td>
+  <% else %>
+    <td></td>
+  <% end %>
   <td><%= member.student_profile.class_name %></td>
-  <td><%= member.check_in_date %></td>
+  <% if member.check_in_date %>
+    <td><%= member.check_in_date.to_date %></td>
+  <% else %>
+    <td></td>
+  <% end %>
   <td>
     <% if member.status == "ACTIVE" %>
       <a class="ui teal tag label teal_label" style="width: 5.7rem">Active</a>

@@ -19,5 +19,5 @@ class Room < ApplicationRecord
                           message: "Max number students must be integer and greater than or equal to 0"
             }
   validates :room_type, presence: true, allow_nil: false, inclusion: { in: ['NORMAL', 'VIP']}
-  validates :status, presence: true, allow_nil: false, inclusion: { in: ['READY', 'MAINTAINING', 'USING']}
+  validates :status, presence: true, allow_nil: false, inclusion: { in: ['PENDING', 'UNFILLED','FULL']}
 end

@@ -2,18 +2,19 @@
   <tr onclick="showStudentInfo(<%= student.id %>)">
     <td><%= index + 1 %></td>
     <td><%= student.student_id_number %></td>
-    <% if student.student_profile %>
-      <td><%= student.student_profile.name %></td>
-      <td><%= student.student_profile.date_of_birth %></td>
-      <td><%= student.student_profile.class_name %></td>
-      <td><%= student.student_profile.address %></td>
+    <td><%= student.student_profile.name %></td>
+    <% if student.student_profile.date_of_birth %>
+      <td><%= student.student_profile.date_of_birth.to_date %></td>
     <% else %>
-      <td>Nguyen Van A</td>
-      <td>01/01/2020</td>
-      <td>K62J</td>
-      <td>Ha Noi, Viet Nam</td>
+      <td></td>
     <% end %>
-    <td><%= student.check_in_date %></td>
+    <td><%= student.student_profile.class_name %></td>
+    <td><%= student.student_profile.address %></td>
+    <% if student.check_in_date%>
+      <td><%= student.check_in_date.to_date %></td>
+    <% else %>
+      <td></td>
+    <% end %>
     <td>
       <a class="ui teal tag label teal_label" style="width: 5.7rem">Active</a>
     </td>
@@ -63,41 +64,34 @@
           </div>
         </div>
         <div class="description eleven wide column">
-          <% if student.student_profile %>
           <div class="ui header" style="margin-bottom: 2rem;"><%= student.student_profile.name %></div>
           <div class="student-info ui grid">
-            <div class="three wide column"><b>Ngay sinh:</b></div>
-            <div class="thirteen wide column"><%= student.student_profile.date_of_birth %></div>
-            <div class="three wide column"><b>Gioi tinh:</b></div>
-            <div class="thirteen wide column"><%= student.student_profile.gender %></div>
-            <div class="three wide column"><b>Que quan:</b></div>
-            <div class="thirteen wide column"><%= student.student_profile.address %></div>
-            <div class="three wide column"><b>SDT:</b></div>
-            <div class="thirteen wide column"><%= student.student_profile.phone_number %></div>
-            <div class="three wide column"><b>So CMND:</b></div>
-            <div class="thirteen wide column"><%= student.student_profile.identity_card_number %></div>
+          <div class="three wide column"><b>Ngay sinh:</b></div>
+          <% if student.student_profile.date_of_birth %>
+            <div class="thirteen wide column"><%= student.student_profile.date_of_birth.to_date %></div>
           <% else %>
-            <div class="ui header" style="margin-bottom: 2rem;">Nguyen Van A</div>
-            <div class="student-info ui grid">
-            <div class="three wide column"><b>Ngay sinh:</b></div>
-            <div class="thirteen wide column">01/01/2021</div>
-            <div class="three wide column"><b>Gioi tinh:</b></div>
-            <div class="thirteen wide column">nam</div>
-            <div class="three wide column"><b>Que quan:</b></div>
-            <div class="thirteen wide column">Ha Noi, Viet Nam</div>
-            <div class="three wide column"><b>SDT:</b></div>
-            <div class="thirteen wide column">19001234</div>
-            <div class="three wide column"><b>So CMND:</b></div>
-            <div class="thirteen wide column">123456789</div>
+            <div class="thirteen wide column"></div>
           <% end %>
-            <div class="three wide column"><b>Ngay dang ky:</b></div>
-            <div class="thirteen wide column">01/01/2021</div>
-            <div class="three wide column"><b>Ngay vao:</b></div>
-            <div class="thirteen wide column">01/01/2021</div>
-            <div class="three wide column"><b>Thoi gian gia han:</b></div>
-            <div class="thirteen wide column">01/01/2021</div>
-            <div class="three wide column"><b>Trang thai:</b></div>
-            <div class="thirteen wide column">Active</div>
+          <div class="three wide column"><b>Gioi tinh:</b></div>
+          <div class="thirteen wide column"><%= student.student_profile.gender %></div>
+          <div class="three wide column"><b>Que quan:</b></div>
+          <div class="thirteen wide column"><%= student.student_profile.address %></div>
+          <div class="three wide column"><b>SDT:</b></div>
+          <div class="thirteen wide column"><%= student.student_profile.phone_number %></div>
+          <div class="three wide column"><b>So CMND:</b></div>
+          <div class="thirteen wide column"><%= student.student_profile.identity_card_number %></div>
+          <div class="three wide column"><b>Ngay dang ky:</b></div>
+          <div class="thirteen wide column"><%= student.created_at.to_date %></div>
+          <div class="three wide column"><b>Ngay vao:</b></div>
+          <% if student.check_in_date %>
+            <div class="thirteen wide column"><%= student.check_in_date.to_date %></div>
+          <% else %>
+            <div class="thirteen wide column"></div>
+          <% end %>
+          <div class="three wide column"><b>Thoi gian gia han:</b></div>
+          <div class="thirteen wide column"><%= student.extended_time %></div>
+          <div class="three wide column"><b>Trang thai:</b></div>
+          <div class="thirteen wide column"><%= student.status %></div>
           </div>
         </div>
       </div>
@@ -119,10 +113,10 @@
   <div class="ui basic modal confirm-delete" id="confirm-delete-<%= student.id %>">
     <div class="ui icon header">
       <i class="archive icon"></i>
-      Archive Old Messages
+      Remove student
     </div>
     <div class="content">
-      <p>Your inbox is getting full, would you like us to enable automatic archiving of old messages?</p>
+      <p>Do you want to remove this student?</p>
     </div>
     <div class="actions">
       <div class="ui red basic cancel inverted button">

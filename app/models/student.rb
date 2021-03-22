@@ -1,4 +1,6 @@
 class Student < ApplicationRecord
+  # before_update :update_number_student, :if => :room_id?
+  # after_update :update_number_student,:if => :room_id?
   attr_accessor :remember_token
   belongs_to :room
   has_one :student_profile, dependent: :destroy
@@ -50,6 +52,32 @@ class Student < ApplicationRecord
     SecureRandom.urlsafe_base64
   end
 
+  after_update do
+    room_after = Room.find(self.room.id)
+    room_after.update(number_student: room_after.students.count)
+    if room_after.number_student < room_after.max_number_student
+      room_after.update(status: "NOT FULL")
+    elsif room_after.number_student == room_after.max_number_student
+      room_after.update(status: "FULL")
+    end
+    room_before = Room.find(self.room_id_before_last_save)
+    room_before.update(number_student: room_before.students.count)
+    if room_before.number_student < room_before.max_number_student
+      room_before.update(status: "NOT FULL")
+    elsif room_before.number_student == room_before.max_number_student
+      room_before.update(status: "FULL")
+    end
+  end
+
+  after_destroy do
+    room = Room.find(self.room_id)
+    room.update(number_student: room.students.count)
+    if room.number_student < room.max_number_student
+      room.update(status: "NOT FULL")
+    elsif room.number_student == room.max_number_student
+      room.update(status: "FULL")
+    end
+  end
   class << self
     def digest(string)
       cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :

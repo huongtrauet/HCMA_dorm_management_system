@@ -19,7 +19,7 @@ ActiveRecord::Schema.define(version: 2021_03_21_033518) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "student_id", null: false
-    t.string "reject_reason", default: "We are currently unable to process your request.Any questions please contact the management directly"
+    t.string "reject_reason"
     t.index ["student_id"], name: "index_complaint_reports_on_student_id"
   end
 
@@ -42,7 +42,7 @@ ActiveRecord::Schema.define(version: 2021_03_21_033518) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "student_id", null: false
-    t.string "reject_reason", default: "We are currently unable to process your request.Any questions please contact the management directly"
+    t.string "reject_reason"
     t.index ["student_id"], name: "index_facility_reports_on_student_id"
   end
 
@@ -53,8 +53,8 @@ ActiveRecord::Schema.define(version: 2021_03_21_033518) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "student_id", null: false
-    t.datetime "return_date", default: "2021-03-21 00:00:00"
-    t.string "note", default: "We are currently unable to process your request.Any questions please contact the management directly"
+    t.datetime "return_date", default: "2021-03-22 00:00:00"
+    t.string "note"
     t.index ["student_id"], name: "index_form_requests_on_student_id"
   end
 
@@ -100,7 +100,7 @@ ActiveRecord::Schema.define(version: 2021_03_21_033518) do
     t.string "room_type", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "status", default: "READY"
+    t.string "status", default: "UNFILLED"
     t.string "gender"
     t.index ["room_name"], name: "index_rooms_on_room_name", unique: true
   end
@@ -122,19 +122,18 @@ ActiveRecord::Schema.define(version: 2021_03_21_033518) do
 
   create_table "student_profiles", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "email", null: false
-    t.string "class_name", default: "WAITING", null: false
-    t.string "name", default: "WAITING", null: false
-    t.datetime "date_of_birth", default: "2001-01-01 00:00:00", null: false
-    t.string "identity_card_number", null: false
-    t.string "address", default: "WAITING", null: false
-    t.string "phone_number", default: "0972403331", null: false
-    t.string "gender", default: "MALE", null: false
+    t.string "class_name"
+    t.string "name", null: false
+    t.datetime "date_of_birth"
+    t.string "identity_card_number"
+    t.string "address"
+    t.string "phone_number"
+    t.string "gender"
     t.string "avatar"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "student_id", null: false
     t.index ["email"], name: "index_student_profiles_on_email", unique: true
-    t.index ["identity_card_number"], name: "index_student_profiles_on_identity_card_number", unique: true
     t.index ["student_id"], name: "index_student_profiles_on_student_id"
   end
 
@@ -143,6 +142,7 @@ ActiveRecord::Schema.define(version: 2021_03_21_033518) do
     t.string "name", null: false
     t.datetime "check_in_date"
     t.datetime "check_out_date"
+    t.integer "extended_time", default: 6
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "room_id", default: 1, null: false

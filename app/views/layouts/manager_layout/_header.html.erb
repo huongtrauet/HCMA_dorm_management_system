@@ -32,39 +32,6 @@
             </div>
           </div>
         </div>
-        <%# <div class="item">
-          <div class="ui dropdown search-dropdown" style=" padding: 0.7rem !important;  border: solid 1px #dededf !important; width: 15rem; border-radius: 0.3rem">
-            <span class="text" style="color: #c7c7c7">Select Language</span>
-
-
-            <i class="icon">
-              <img src="/assets/search.png" style="width: 1rem; height: 1rem; width: 1rem; top: 50%; position: absolute; transform: translateY(-50%);right: 0.7rem;">
-            </i> 
-            <div class="menu">
-              <div class="item">Arabic</div>
-              <div class="item">Chinese</div>
-              <div class="item">Danish</div>
-              <div class="item">Dutch</div>
-              <div class="item">English</div>
-              <div class="item">French</div>
-              <div class="item">German</div>
-              <div class="item">Greek</div>
-              <div class="item">Hungarian</div>
-              <div class="item">Italian</div>
-              <div class="item">Japanese</div>
-              <div class="item">Korean</div>
-              <div class="item">Lithuanian</div>
-              <div class="item">Persian</div>
-              <div class="item">Polish</div>
-              <div class="item">Portuguese</div>
-              <div class="item">Russian</div>
-              <div class="item">Spanish</div>
-              <div class="item">Swedish</div>
-              <div class="item">Turkish</div>
-              <div class="item">Vietnamese</div>
-            </div>
-          </div>
-        </div> %>
          <div class="ui item floating dropdown labeled" id="language_dropdown" style="background-color: #ffffff; border-bottom: 2px solid rgba(34, 36, 38, 0.15)">
           <span class="text">
             <% if I18n.locale == :en %>
@@ -88,57 +55,55 @@
     </div>
   </div>
   <script>
-  $(document).on('click', '#language_dropdown', function(){
-    $('#language_dropdown').dropdown('show');
-  });
-  console.log("123")
-  const current_url = window.location.pathname
-  console.log(current_url)
-  if (current_url.indexOf("/manager/students-arrangement") != -1) {
-    $("#manager_students_arrangement_path").addClass("active");
-  }
-  else if (current_url.indexOf("/manager/homepage") != -1){
-    $("#manager_home_path").addClass("active");
-  }
-  else if (current_url.indexOf("/manager/post-management") != -1){
-    $("#manager_post_management_path").addClass("active");
-  }
-  else if (current_url.indexOf("/manager/student-management") != -1){
-    $("#manager_student_management_path").addClass("active");
-  }
-  else if (current_url.indexOf("/manager/room-management") != -1){
-    $("#manager_room_management_path").addClass("active");
-  }
-  else if (current_url.indexOf("/manager/service-management") != -1){
-    $("#manager_service_management_path").addClass("active");
-  }
-  else if (current_url.indexOf("students") != -1){
-    $("#home_path").addClass("active");
-  }
-    
-  function showNotiList(){
-    $('#noti_button').dropdown();
-  }
+    $(document).on('click', '#language_dropdown', function(){
+      $('#language_dropdown').dropdown('show');
+    });
+    const current_url = window.location.pathname
+    if (current_url.indexOf("/manager/students-arrangement") != -1) {
+      $("#manager_students_arrangement_path").addClass("active");
+    }
+    else if (current_url.indexOf("/manager/homepage") != -1 || current_url.indexOf("/manager/posts") != -1){
+      $("#manager_home_path").addClass("active");
+    }
+    else if (current_url.indexOf("/manager/post-management") != -1){
+      $("#manager_post_management_path").addClass("active");
+    }
+    else if (current_url.indexOf("/manager/student-management") != -1){
+      $("#manager_student_management_path").addClass("active");
+    }
+    else if (current_url.indexOf("/manager/room-management") != -1){
+      $("#manager_room_management_path").addClass("active");
+    }
+    else if (current_url.indexOf("/manager/service-management") != -1){
+      $("#manager_service_management_path").addClass("active");
+    }
+    else if (current_url.indexOf("students") != -1){
+      $("#home_path").addClass("active");
+    }
+      
+    function showNotiList(){
+      $('#noti_button').dropdown();
+    }
   </script>
 <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
 <script>
-    let current_channel = document.querySelector("#current_channel").value;
-    Pusher.logToConsole = true;
+  let current_channel = document.querySelector("#current_channel").value;
+  Pusher.logToConsole = true;
 
-    var pusher = new Pusher('29056021d38b15b42578', {
-      cluster: 'ap1',
-      encrypted: true
-    });
-    var channel = pusher.subscribe(current_channel);
-    channel.bind('new', function(data) {
-      alert(JSON.stringify(data.notification.message));
-      $('#list_noti').prepend(`<div class="item noti_item" style="width: 20rem; height: 4.5rem; background-color: #e0e1e2" onclick="readNoti(this)">
-                                <p style="width: 17rem; max-height: 4.5rem; overflow: hidden;text-overflow: ellipsis;word-wrap: break-word;-webkit-line-clamp: 2;-webkit-box-orient: vertical;line-height: 1.5rem;  white-space: pre-wrap; display: -webkit-box">${data.notification.message}</p>
-                              </div>`)
-    });
-    function readNoti(item){
-      $(item).css("background-color", "white");
-    }
+  var pusher = new Pusher('29056021d38b15b42578', {
+    cluster: 'ap1',
+    encrypted: true
+  });
+  var channel = pusher.subscribe(current_channel);
+  channel.bind('new', function(data) {
+    alert(JSON.stringify(data.notification.message));
+    $('#list_noti').prepend(`<div class="item noti_item" style="width: 20rem; height: 4.5rem; background-color: #e0e1e2" onclick="readNoti(this)">
+                              <p style="width: 17rem; max-height: 4.5rem; overflow: hidden;text-overflow: ellipsis;word-wrap: break-word;-webkit-line-clamp: 2;-webkit-box-orient: vertical;line-height: 1.5rem;  white-space: pre-wrap; display: -webkit-box">${data.notification.message}</p>
+                            </div>`)
+  });
+  function readNoti(item){
+    $(item).css("background-color", "white");
+  }
 
   $(document).on("turbolinks:load", function() {
     $(".search-form-header").on("keyup", function() {
@@ -148,17 +113,13 @@
         url: "/manager/managers/search?q=" + this.value,
         success: function(result){
           $(".search-item").html(result.students[0].name)
-         console.log("students", result.students);
-         console.log("rooms", result.rooms);
         },
         error: function (error){
           console.log('error', error)
         }
       })
     });
-  });
-
-    
+  }); 
 </script>
 <style>
 .active.selected {

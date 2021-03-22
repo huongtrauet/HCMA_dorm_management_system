@@ -1,5 +1,6 @@
 <div class="post_management_list">
   <div class="header" style="display: flex; justify-content: space-between;">
+    <input type="hidden" id="selected_post_id" value=""/>
     <div class="header_title">
       <h3>Post Management: </h3>
     </div>
@@ -7,8 +8,8 @@
       <button class="ui icon button" onclick="addPost()">
         <i class="plus icon"></i>
       </button>
-      <div class="ui icon input">
-        <input type="text" placeholder="Search...">
+      <div class="ui icon input" style="">
+        <input type="text" placeholder="Name, status or type..." name="q" id="q" class="form-control search-post-form" >
         <i class="icon">
           <img src="/assets/search.png" style="width: 1rem; height: 1rem; width: 1rem; top: 50%; position: absolute; transform: translateY(-50%);right: 0.7rem;">
         </i> 
@@ -32,24 +33,24 @@
       <% @posts.each_with_index do |post, index|%>  
         <tr>
             <td onclick="showPost(<%= post.id %>)"><%= index + 1 %></td>
-            <td style="max-width: 25rem" onclick="showPost(<%= post.id %>)">
-              <span style="margin: 0 auto; word-wrap: break-word; max-width: 10rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+            <td style="width: 20rem" onclick="showPost(<%= post.id %>)">
+              <span style="margin: 0 auto; word-wrap: break-word; max-width: 16rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
                 <%= post.title %>
               </span>
             </td onclick="showPost(<%= post.id %>)">
             <td style="max-width: 25rem"onclick="showPost(<%= post.id %>)">
-              <span style="margin: 0 auto; word-wrap: break-word; max-width: 20rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+              <span style="margin: 0 auto; word-wrap: break-word; max-width: 26rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
                 <%= post.content.html_safe %>
               </span>
             </td>
-            <td onclick="showPost(<%= post.id %>)"><%= post.created_at %></td>
+            <td onclick="showPost(<%= post.id %>)"><%= post.created_at.to_date %></td>
             <td onclick="showPost(<%= post.id %>)"><%= post.writer_name %></td>
             <td onclick="showPost(<%= post.id %>)" id="post_status_<%= post.id%>"><%= post.status%></td>
             <td id="post_actions_<%= post.id%>">
               <% if post.status == "POSTED" %>
-                <i class="trash alternate outline icon" id="delete_post_<%= post.id %>" onclick="changePostStatus(<%= post.id %>)"></i>
+                <i class="trash alternate outline icon" id="delete_post_<%= post.id %>" onclick="confirmChangePostStatus(<%= post.id %>, 'POSTED')"></i>
               <% elsif post.status == "DELETED" %>
-                <i class="window restore outline icon" id="delete_post_<%= post.id %>" onclick="changePostStatus(<%= post.id %>)"></i>
+                <i class="window restore outline icon" id="delete_post_<%= post.id %>" onclick="confirmChangePostStatus(<%= post.id %>, 'DELETED')"></i>
               <% end %>
             </td>
         </tr>
@@ -60,11 +61,11 @@
               <%# <div class="content" style=""><img style="width: 50%; margin: 0 auto; display: block;"/></div> %>
               <div class="content" style="margin-top: 2rem"><%= post.content.html_safe %></div>
               <% if post.images.length == 1 %>
-              <div class="picture" style="width: 100%; height: 50rem; margin: 0 auto; display: flex">
+              <div class="picture" style="width: 100%; height: 50rem; margin: 0 auto; display: flex;">
                 <div style="background-image: url(<%= image_path post.images[0].url %>); width: 100%; height: 100%; margin: 0 auto; background-repeat: no-repeat; background-position: top;"></div>
               </div>
               <% elsif post.images.length > 1 %>
-                <div class="picture" style="width: 100%; height: 25rem; margin: 0 auto; display: flex">
+                <div class="picture" style="width: 100%; height: 25rem; margin: 0 auto; display: flex; margin-top: 2rem;">
                   <div style="background-image: url(<%= image_path post.images[0].url %>); width: 50%; height: 100%; margin: 0 auto; background-repeat: no-repeat; background-position: cover; "></div>
                   <div style="width: 50%; height: 100%; position: relative" >
                     <div style="background-image: url(<%= image_path post.images[1].url %>); width: 100%; height: 100%; margin: 0 auto; background-repeat: no-repeat; background-position: cover; "></div>
@@ -90,17 +91,17 @@
             </div>
           </div>
         </div>
-        <div class="ui longer  modal second scrolling" id="show_modal_second_<%= post.id %>">
+        <div class="ui longer small  modal second scrolling" id="show_modal_second_<%= post.id %>">
           <div class="header">
             Edit my post
           </div>
-          <form id="myEditForm_<%= post.id %>" multipart="true" name="myEditForm" class="ui form segment">
-            <div class="ui form" style="padding: 1rem">
+          <form id="myEditForm_<%= post.id %>" multipart="true" name="myEditForm" class="ui form segment" style="border: none; -webkit-box-shadow: none;">
+            <div style="padding: 1rem">
               <div style="max-width: 0; max-height: 0; overflow: hidden;">
                 <input autofocus="true" type="hidden" name="id" value="<%= post.id %>" />
               </div>
               <div class="field">
-                <textarea name="title" rows="2" placeholder="Enter title"><%= post.title %></textarea>
+                <textarea name="title" rows="5" placeholder="Enter title"><%= post.title %></textarea>
               </div>
               <div class="field" onfocusout="validateContent('content_edit_field')" id="content_edit_field<%= post.id %>">
                 <textarea type="file" name="content" id="editor_<%= post.id %>">
@@ -137,17 +138,17 @@
   </table>
 </div>
 
-<div class="ui longer modal add">
+<div class="ui longer small modal add">
   <div class="header">
     Create a new post
   </div>
-  <form id="myForm" multipart="true" name="myForm" class="ui form segment" >
+  <form id="myForm" multipart="true" name="myForm" class="ui form segment" style="border: none; -webkit-box-shadow: none; margin-top: 0">
     <div class="ui form" style="padding: 1rem">
       <div style="max-width: 0; max-height: 0; overflow: hidden;">
         <input autofocus="true" />
       </div>
       <div class="field">
-        <textarea name="title" placeholder="Enter title" rows="2"></textarea>
+        <textarea name="title" placeholder="Enter title" rows="5"></textarea>
       </div>
       <div class="field" id="content_field" onfocusout="validateContent('content_field')">
         <textarea id="editor" name="content"></textarea>
@@ -161,13 +162,13 @@
         <div class="ui special cards" id="preview_image"> 
           <div class="card" style="height: 20rem", id="preview_image_card">
             <input type="file" class="inputfile" id="embedpollfileinput1" onchange="generatePreviewImage(this)" style="width: 100%; height: 100%" multiple="true" accept="image/png, image/jpeg" name="images_input" />
-            <label for="embedpollfileinput1" class="ui button" style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center">
+            <label for="embedpollfileinput1" class="ui button" style="margin: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center">
               <i class="ui plus icon"></i>
             </label>
           </div>
         </div>
       </div>
-      <div class="actions" style="float: right">
+      <div class="actions" style="float: right; margin-top: 1rem;">
         <button class="ui cancel button" onclick="cancelCreatePost()">
           Cancel
         </button>
@@ -175,6 +176,26 @@
       </div>
     </div>
   </form>
+</div>
+<div class="ui mini modal confirm_delete_post">
+  <div class="header">Delete this post</div>
+  <div class="content">
+    <p>Are you sure to delete this post</p>
+  </div>
+  <div class="actions">
+    <div class="ui appove button" onclick="changePostStatus()">Approve</div>
+    <div class="ui cancel button">Cancel</div>
+  </div>
+</div>
+<div class="ui mini modal confirm_restore_post">
+  <div class="header">Restore this post</div>
+  <div class="content">
+    <p>Are you sure to restore this post</p>
+  </div>
+  <div class="actions">
+    <div class="ui appove button" onclick="changePostStatus()">Approve</div>
+    <div class="ui cancel button">Cancel</div>
+  </div>
 </div>
 
 <style>
@@ -201,23 +222,31 @@ $(document).ready(function(){
     on: 'hover'
   });
 
-  function changePostStatus(post_id) {
-    var r = confirm("Press a button!");
-    if (r == true) {
+  function confirmChangePostStatus(post_id, post_status){
+    $('#selected_post_id').val(post_id)
+    if (post_status =="POSTED") {
+      $(".ui.mini.modal.confirm_delete_post").modal('show');
+    }
+    else{
+      $(".ui.mini.modal.confirm_restore_post").modal('show');
+    }
+  }
+
+  function changePostStatus() {
+      let selected_post_id = $("#selected_post_id").val()
+      $(".ui.mini.modal.confirm_delete_post").modal('hide');
+      $(".ui.mini.modal.confirm_restore_post").modal('hide');
       $.ajax({
         type:"POST",
         url:"/manager/post-management/",
         dataType:"json",
-        data: {id: post_id},
+        data: {id: selected_post_id},
         success:function(result){
-          alert(result.message);
-          document.getElementById(`post_status_${post_id}`).innerHTML = result.status;
-          document.getElementById(`post_actions_${post_id}`).innerHTML = `<i class='${result.status == 'POSTED' ?  'trash alternate' : 'window restore' } outline icon' onclick='changePostStatus(${post_id})'></i>`;
+          document.getElementById(`post_status_${selected_post_id}`).innerHTML = result.status;
+          document.getElementById(`post_actions_${selected_post_id}`).innerHTML = `<i class='${result.status == 'POSTED' ?  'trash alternate' : 'window restore' } outline icon' onclick="confirmChangePostStatus(${selected_post_id}, '${result.status}')"></i>`;
+          toastr.success(result.message);
         }
       })
-    } else {
-
-    }
   }
 
   var isCreated = []
@@ -275,7 +304,7 @@ $(document).ready(function(){
   ;
   // attach events to buttons
   function addPost() {
-    $('.ui.longer.modal.add').modal('show');
+    $('.ui.longer.small.modal.add').modal('show');
     $('#myForm').form('reset');
   }
   // CKEDITOR.replace('content',{ toolbar :[ ['Subscript','Superscript'] ], height: '35px', width: '100%' });
@@ -294,7 +323,7 @@ $(document).ready(function(){
     image_index = image.getAttribute('item_index')
     console.log(images)
     for (let i = 0; i < image.files.length; i++) {
-      $(`#preview_image_edit_${image_index}`).append(`<div class='card' style="max-height: 20rem" id="image_edit_${i}">
+      $(`#preview_image_edit_${image_index}`).append(`<div class='card' style="height: 20rem" id="image_edit_${i}">
                                 <i class="ui window close outline icon" style="position: absolute; top: 0.5rem; right: 0.5rem; cursor: pointer;", onclick="removeImage(this)"></i>
                                 <img style="width: 100%; height: 100%;" src='${URL.createObjectURL(image.files[i])}' />
                                 </div>`)
@@ -318,17 +347,11 @@ $(document).ready(function(){
     // uploadFile(image.files[0])
 
     for (let i = 0; i < image.files.length; i++) {
-      $('#preview_image').append(`<div class='card' style="max-height: 20rem" id="image_${index}">
+      $('#preview_image').append(`<div class='card' style="height: 20rem" id="image_${index}">
                                 <i class="ui window close outline icon" style="position: absolute; top: 0.5rem; right: 0.5rem; cursor: pointer;", onclick="removeImage(this)"></i>
                                 <img style="width: 100%; height: 100%;" src='${URL.createObjectURL(image.files[i])}' />
                                 </div>`)
     }
-    // $('#preview_image').append(`<div class="card" style="height: 20rem", id="preview_image_card">
-    //         <input type="file" class="inputfile" id="embedpollfileinput" onchange="generatePreviewImage(this)" style="width: 100%; height: 100%" multiple/>
-    //         <label for="embedpollfileinput" class="ui button" style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center">
-    //           <i class="ui plus icon"></i>
-    //         </label>
-    //       </div>`)
     let myFormImage = document.getElementById('myForm');
     let formDataImage = new FormData(myForm);
     index++;
@@ -350,6 +373,7 @@ $(document).ready(function(){
   }
 
   function createSubmit(e){
+    e.preventDefault();
     let formdatapost = new FormData(document.getElementById('myForm'));
     let images = formData.getAll('images');
     for (let i = 0; i < images.length; i++) {
@@ -357,11 +381,9 @@ $(document).ready(function(){
     }
     formdatapost.delete('images_input')
     formdatapost.delete('content')
-    // console.log(formdatapost.get('content'))
     x = document.querySelector('[role="textbox"]');
     var post_content = x.innerHTML
     formdatapost.append('content', post_content)
-    // e.preventDefault();
 
     $.ajax({
       type: "POST",
@@ -372,7 +394,7 @@ $(document).ready(function(){
       mimeType: 'multipart/form-data',
       data: formdatapost,
       success: function(result){
-        // console.log(result)
+        console.log(result)
         $('#myForm').form('reset');
         $('.ui.longer.modal.add').find('.error').removeClass('error');
         $('.ui.longer.modal.add').modal('hide')
@@ -399,7 +421,7 @@ $(document).ready(function(){
     }
   }
 
-  $('#myForm').unbind('submit').submit(function(e){
+  $('#myForm').off('submit').submit(function(e){
     if($('#myForm').form('is valid')) {
       console.log('form work')
       createSubmit(e);
@@ -423,6 +445,24 @@ $(document).ready(function(){
     }
   })
 
+
+  // Search
+
+  $(document).on("turbolinks:load", function() {
+    $(".search-post-form").on("keyup", function() {
+      $.ajax({
+        type: "GET",
+        url: "/manager/post-management/find-post?q=" + this.value,
+        success: function(result){
+          $('#post_list').html(result)
+          console.log('success' + result)
+        },
+        error: function (error){
+          console.log('error', error)
+        }
+      })
+    });
+  });
   //VALIDATION
 
    $('#myForm')
@@ -513,5 +553,8 @@ $(document).ready(function(){
 .card {
       width: 30% !important;
       float: left;
+    }
+    .dimmer {
+      padding-top: 4rem !important;
     }
 </style>
