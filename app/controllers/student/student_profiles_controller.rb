@@ -1,7 +1,7 @@
 class Student::StudentProfilesController < StudentMainController
   layout 'student_layout/student'
-  before_action :set_student_profile, only: %i[ show edit update destroy ]
   before_action :logged_in_student
+  skip_before_action :verify_authenticity_token
 
   # GET /student_profiles or /student_profiles.json
   def index
@@ -20,7 +20,7 @@ class Student::StudentProfilesController < StudentMainController
 
   # GET /student_profiles/1/edit
   def edit
-    @student_profile = StudentProfile.new
+    @student = Student.find(params[:id])
   end
 
   # POST /student_profiles or /student_profiles.json
@@ -32,9 +32,33 @@ class Student::StudentProfilesController < StudentMainController
   end
 
   def update
-    @student = current_user
-    if @student.update(student_profile_params)
-      redirect_to "/"
+    if current_user.student_profile.update(student_params[:student_profile_attributes])
+      respond_to do |format|
+        format.json {render json: {message: "Update your profile successfully!!"}, status: :ok}
+      end
+    else
+      respond_to do |format|
+        format.json {render json: {message: "Update your profile failed!!"}, status: :bad_request}
+      end
+    end
+  end
+
+  def update_avatar
+    current_user.student_profile.update_attribute(:avatar, params[:avatar])
+    respond_to do |format|
+      format.json { render json: {message: "Update avatar successfully!!"}, status: :ok}
+    end
+  end
+
+  def reset_ava
+    if current_user.student_profile.update_attribute(:avatar, nil)
+      respond_to do |format|
+        format.json { render json: {message: "Reset avatar successfully!!"}, status: :ok}
+      end
+    else
+      respond_to do |format|
+        format.json { render json: {message: "Reset avatar failed!!"}, status: :bad_request}
+      end
     end
   end
 
@@ -57,5 +81,8 @@ class Student::StudentProfilesController < StudentMainController
     def student_profile_params
       # params.fetch(:student_profile, {})
       params.require(:student_profile).permit :email, :class_name, :name, :date_of_birth, :identity_card_number, :address, :phone_number, :gender
+    end
+    def student_params
+      params.require(:student).permit(student_profile_attributes: [:email, :class_name, :date_of_birth, :identity_card_number, :address, :phone_number, :gender])
     end
 end

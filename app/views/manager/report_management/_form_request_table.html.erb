@@ -1,23 +1,18 @@
 <% requests.each_with_index do |report, index| %>
-  <tr onclick="showReportInfo(<%= report.id %>)">
+  <tr onclick="showReportInfo(<%= report.id %>)" id="report_<%= report.id %>">
     <td style="text-align: center"><%= index + 1 %></td>
     <td>
-      <p style="margin: 0 auto; word-wrap: break-word; max-width: 12rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+      <p style="text-align: center;margin: 0 auto; word-wrap: break-word; width: 12rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
         <%= report.form_type %>
       </p>
     </td>
     <td>
-      <span style="margin: 0 auto; word-wrap: break-word; max-width: 30rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+      <span style="text-align: center;margin: 0 auto; word-wrap: break-word; width: 20rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
         <%= report.description %>
       </span>
     </td>
-    <td>
-        <%= report.return_date %>
-    </td>
-    <td>
-      <span style="margin: 0 auto; word-wrap: break-word; max-width: 30rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
-        <%= report.note %>
-      </span>
+    <td style="text-align: center;">
+        <%= report.return_date.to_date %>
     </td>
     <td>
       <% if report.status == "PENDING" %>

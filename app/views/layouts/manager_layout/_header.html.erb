@@ -1,13 +1,16 @@
   <div class="manager_header">
     <div class="ui secondary pointing menu">
       <% if logged_in? %>
-        <%= link_to "Home", manager_homepage_path, class: "item", id: "manager_home_path", data: { turbolinks: false } %>
+        <%= link_to manager_homepage_path, class: "item", id: "manager_home_path", data: { turbolinks: false } do %>
+          <img src="/assets/HCMA-LOGO.jpeg" style="width: 8rem"/>
+        <% end %>
         <%= link_to "Posts", manager_post_management_path, class: "item", id: "manager_post_management_path", data: { turbolinks: false } %>
         <%= link_to "Student arrangement", manager_students_arrangement_path, class: "item", id: "manager_students_arrangement_path", data: { turbolinks: false } %>
         <%= link_to "Students", manager_student_management_path, class: "item", id: "manager_student_management_path", data: { turbolinks: false } %>
         <%= link_to "Rooms", manager_room_management_path, class: "item", id: "manager_room_management_path", data: { turbolinks: false } %>
         <%= link_to "Services", manager_service_management_path, class: "item", id: "manager_service_management_path", data: { turbolinks: false } %>
         <%= link_to "Reports", manager_report_management_path, class: "item", id: "manager_report_management_path", data: { turbolinks: false } %>
+        <%= link_to "Building", manager_building_management_path, class: "item", id: "manager_building_management_path", data: { turbolinks: false } %>
 
       <% else %>
         <%= link_to "Home", manager_homepage_path, class: "item", id: "manager_homepage_path", data: { turbolinks: false } %>
@@ -15,20 +18,29 @@
       <div class="right menu">
         <div class="ui floating labeled icon dropdown button" style="position: relative; background-color: #ffffff" id="noti_button" >
           <img src="/assets/bell.png" style="width: 1.5rem; height: 1.5rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)" onclick="showNotiList()"/>
-          <div class="floating ui red label" style="top: 0.5rem; left: 3rem; padding: 0.3rem; border-radius: 0.2rem;">22</div>
-          <div class="menu">
+          <% if current_user.notifications.where(is_read: 'false').count != 0 %>
+            <div id="unread" class="floating ui red label" style="top: 0.5rem; left: 3rem; padding: 0.3rem; border-radius: 0.2rem;"><%= current_user.notifications.where(is_read: 'false').count %></div>
+          <% end %>
+          <div class="menu" >
             <h3 style="margin: 1rem;">Thong bao</h3>
-            <div id="list_noti">
-              <div class="item noti_item" style="width: 20rem; height: 4.5rem" id="first_item" >
-                Important
-              </div>
-              <div class="item noti_item" style="width: 20rem; height: 4.5rem">
-                Announcement
-              </div>
-              <div class="item noti_item" >
-                <p style="width: 17rem; max-height: 4.5rem; overflow: hidden;text-overflow: ellipsis;word-wrap: break-word;-webkit-line-clamp: 2;-webkit-box-orient: vertical;line-height: 1.5rem;  white-space: pre-wrap; display: -webkit-box">Discussio nDi scussionDis cussio nDiscu ssionDiscuss ionDiscussionDiscuss ionDiscussionDiscussionDiscussionDiscussionDiscussion
-                </p>
-              </div>
+            <div id="list_noti" style="max-height: 30rem; overflow: auto;">
+              <% if current_user.notifications.length > 0 %>
+                <% current_user.notifications.order("created_at DESC").each do |notification| %>
+                  <div class="item noti_item" style="width: 20rem; height: 4.5rem">
+                    <% if notification.noti_type == "create_complaint_report" %>
+                      <%= link_to notification.message, "/manager/report-management/complaint-reports?focus_id=#{notification.report_id}&page=#{notification.page}", style: "width: 17rem; height: 4.5rem; overflow: hidden;text-overflow: ellipsis;word-wrap: break-word;-webkit-line-clamp: 2;-webkit-box-orient: vertical;line-height: 2.25rem;  white-space: pre-wrap; display: flex; align-items: center", data: { turbolinks: false } %>
+                    <% elsif notification.noti_type == "create_facility_report" %>
+                      <%= link_to notification.message, "/manager/report-management/facility-reports?focus_id=#{notification.report_id}", style: "width: 17rem; height: 4.5rem; overflow: hidden;text-overflow: ellipsis;word-wrap: break-word;-webkit-line-clamp: 2;-webkit-box-orient: vertical;line-height: 2.25rem;  white-space: pre-wrap; display: flex; align-items: center", data: { turbolinks: false } %>
+                    <% elsif notification.noti_type == "create_form_request" %>
+                      <%= link_to notification.message, "/manager/report-management/form-requests?focus_id=#{notification.report_id}", style: "width: 17rem; height: 4.5rem; overflow: hidden;text-overflow: ellipsis;word-wrap: break-word;-webkit-line-clamp: 2;-webkit-box-orient: vertical;line-height: 2.25rem;  white-space: pre-wrap; display: flex; align-items: center", data: { turbolinks: false } %>
+                    <% end %>
+                  </div>
+                <% end %>
+              <% elsif current_user.notifications.length == 0 %>
+                <div class="item noti_item" style="width: 20rem; height: 4.5rem" id="no_notification">
+                  <div class="" style= "width: 17rem; height: 4.5rem; overflow: hidden;text-overflow: ellipsis;word-wrap: break-word;-webkit-line-clamp: 2;-webkit-box-orient: vertical;line-height: 2.25rem;  white-space: pre-wrap; display: flex; align-items: center">Khong co thong bao nao</div>
+                </div>
+              <% end %>
             </div>
           </div>
         </div>
@@ -62,9 +74,9 @@
     if (current_url.indexOf("/manager/students-arrangement") != -1) {
       $("#manager_students_arrangement_path").addClass("active");
     }
-    else if (current_url.indexOf("/manager/homepage") != -1 || current_url.indexOf("/manager/posts") != -1){
-      $("#manager_home_path").addClass("active");
-    }
+    // else if (current_url.indexOf("/manager/homepage") != -1 || current_url.indexOf("/manager/posts") != -1){
+    //   $("#manager_home_path").addClass("active");
+    // }
     else if (current_url.indexOf("/manager/post-management") != -1){
       $("#manager_post_management_path").addClass("active");
     }
@@ -96,10 +108,34 @@
   });
   var channel = pusher.subscribe(current_channel);
   channel.bind('new', function(data) {
-    alert(JSON.stringify(data.notification.message));
-    $('#list_noti').prepend(`<div class="item noti_item" style="width: 20rem; height: 4.5rem; background-color: #e0e1e2" onclick="readNoti(this)">
-                              <p style="width: 17rem; max-height: 4.5rem; overflow: hidden;text-overflow: ellipsis;word-wrap: break-word;-webkit-line-clamp: 2;-webkit-box-orient: vertical;line-height: 1.5rem;  white-space: pre-wrap; display: -webkit-box">${data.notification.message}</p>
-                            </div>`)
+    // alert(JSON.stringify(data.notification.message));
+    // $('#list_noti').prepend(`<div class="item noti_item" style="width: 20rem; height: 4.5rem; background-color: #e0e1e2" onclick="readNoti(this)">
+    //                           <p style="width: 17rem; max-height: 4.5rem; overflow: hidden;text-overflow: ellipsis;word-wrap: break-word;-webkit-line-clamp: 2;-webkit-box-orient: vertical;line-height: 1.5rem;  white-space: pre-wrap; display: -webkit-box">${data.notification.message}</p>
+    //                         </div>`)
+
+    if(data.notification.noti_type == "create_complaint_report")
+      $('#list_noti').prepend(`<div class="item noti_item" style="width: 20rem; height: 4.5rem">
+                            <a href="/manager/report-management/complaint-reports?focus_id=${data.notification.report_id}" data-turbolinks="false" style="width: 17rem; height: 4.5rem; overflow: hidden;text-overflow: ellipsis;word-wrap: break-word;-webkit-line-clamp: 2;-webkit-box-orient: vertical;line-height: 2.25rem;  white-space: pre-wrap; display: flex; align-items: center">${data.notification.message}</a>
+                            </div`)
+    else if (data.notification.noti_type == "create_facility_report")
+      $('#list_noti').prepend(`<div class="item noti_item" style="width: 20rem; height: 4.5rem">
+                            <a href="/manager/report-management/facility-reports?focus_id=${data.notification.report_id}" data-turbolinks="false" style= "width: 17rem; height: 4.5rem; overflow: hidden;text-overflow: ellipsis;word-wrap: break-word;-webkit-line-clamp: 2;-webkit-box-orient: vertical;line-height: 2.25rem;  white-space: pre-wrap; display: flex; align-items: center">${data.notification.message}</a>
+                            </div`)
+    else if (data.notification.noti_type == "create_form_request")
+      $('#list_noti').prepend(`<div class="item noti_item" style="width: 20rem; height: 4.5rem">
+                            <a href="/manager/report-management/form-requests?focus_id=${data.notification.report_id}" data-turbolinks="false" style="width: 17rem; height: 4.5rem; overflow: hidden;text-overflow: ellipsis;word-wrap: break-word;-webkit-line-clamp: 2;-webkit-box-orient: vertical;line-height: 2.25rem;  white-space: pre-wrap; display: flex; align-items: center">${data.notification.message}</a>
+                            </div`)
+    $("#no_notification").remove();
+     $.ajax({
+          type: 'GET',
+          url: '/notifications/unread',
+          success: function(result){
+            $("#unread").html(result.unread)
+          }, 
+          error: function (error) {
+
+          }
+        })
   });
   function readNoti(item){
     $(item).css("background-color", "white");

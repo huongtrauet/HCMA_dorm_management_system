@@ -9,29 +9,25 @@
     <thead>
       <tr>
         <th>STT</th>
+        <th>Ngay gui</th>
         <th>Title</th>
         <th>Description</th>
-        <th>Note</th>
         <th>Status</th>
       </tr>
     </thead>
     <tbody>
       <% @facility_reports.each_with_index do |report, index| %>
         <tr onclick="viewMoreFacilityReport(<%= report.id %>)" id="report_<%= report.id %>" >
-          <td><%= index + 1 %></td>
+          <td><%= index + 1 + (@page - 1)*Settings.pagination %></td>
+          <td style="width: 10rem"><%= report.created_at.to_date %></>
           <td>
-           <span style="margin: 0 auto; word-wrap: break-word; max-width: 10rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+           <span style="margin: 0 auto; word-wrap: break-word; width: 15rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
               <%= report.title %>
             </span>
           </td>
           <td>
-            <span style="margin: 0 auto; word-wrap: break-word; max-width: 15rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+            <span style="margin: 0 auto; word-wrap: break-word; width: 20rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
               <%= report.description %>
-            </span>
-          </td>
-          <td>
-            <span style="margin: 0 auto; word-wrap: break-word; max-width: 15rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
-              <%= report.reject_reason %>
             </span>
           </td>
           <td>
@@ -47,9 +43,12 @@
       <% end %>
     </tbody>
   </table>
+  <div class="mt-4" style="float: right">
+    <%= paginate @facility_reports, turbolinks: false %>
+  </div>
   <div class="ui modal" id="new_facility_report">
     <div class="header">Facility Report</div>
-    <form id="facility_report_create_form" style="padding: 1.5rem;">
+    <form id="facility_report_create_form" style="padding: 1.5rem; " class="form ui segment">
       <div class="content" >
         <div class="ui form">
           <div class="field">
@@ -73,6 +72,7 @@
   <div class="ui modal" id="facility_report_detail">
     <div class="header">Facility Report</div>
     <div class="content">
+      <b id="created_date"></b>
       <h3 id="report_title_show"></h3>
       <p><b>Content:</b></p>
       <p id="report_description_show"></p>
@@ -85,11 +85,20 @@
   </div>
 </div>
 <script>
+  const urlParams = new URLSearchParams(window.location.search);
+  const focusParam = urlParams.get('focus_id');
+  if (document.querySelector(`#report_${focusParam}`)) {
+    document.querySelector(`#report_${focusParam}`).classList.add("active");
+  }
+
   function addNewFacilityReport(){
     $('#new_facility_report').modal('show');
 
   }
   function viewMoreFacilityReport(report_id){
+    if(document.querySelector(`#report_${focusParam}`)) {
+      document.querySelector(`#report_${focusParam}`).classList.remove("active");
+    }
     $('#facility_report_detail').modal('show');
     $.ajax({
       type: "GET",
@@ -98,6 +107,8 @@
         "id": report_id
       },
       success: function(result){
+        let date = new Date(result.facility_report.created_at)
+        $('#created_date').html(`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`)
         $('#report_title_show').html(result.facility_report.title)
         $('#report_description_show').html(result.facility_report.description)
         $('#report_note_show').html(result.facility_report.reject_reason)
@@ -109,9 +120,8 @@
     
   }
 
-  function addSubmit(){
-
-    console.log(document.querySelector('#title').value)
+  function addSubmit(e){
+    e.preventDefault();
     $.ajax({
       type: "POST",
       url:"/student/facility-reports/create",
@@ -122,7 +132,11 @@
        },
       },
       success:function(result){
-        alert(result.message);
+        window.localStorage.setItem('new_facility_report', result.message);
+        window.location = '/student/requests/facility'
+      },
+      error: function(error){
+        toastr.error(error.responseJSON.message)
       }
     })
 
@@ -141,11 +155,11 @@
               prompt: 'Please enter title!'
             },
             {
-              type: 'minLength[2]',
-              prompt: 'Student name must be more than 2 letters!'
+              type: 'minLength[5]',
+              prompt: 'Student name must be more than 5 letters!'
             },
             {
-              type: 'maxLength[1000]',
+              type: 'maxLength[100]',
               prompt: 'Student name must be less than 100 letters!'
             }
           ]
@@ -158,8 +172,8 @@
               prompt: 'Please enter description!'
             },
             {
-              type: 'minLength[2]',
-              prompt: 'Student name must be more than 2 letters!'
+              type: 'minLength[5]',
+              prompt: 'Student name must be more than 5 letters!'
             },
             {
               type: 'maxLength[1000]',
@@ -167,20 +181,16 @@
             }
           ]
         }
-      }
+      },
+      inline: true,
+      on: 'blur'
     });
 
     $('#facility_report_create_form').off('submit').submit(function(e){
       if ($('#facility_report_create_form').form('is valid')){
-        addSubmit()
-        console.log('valid')
+        addSubmit(e)
       }
     });
 
-  const urlParams = new URLSearchParams(window.location.search);
-  const focusParam = urlParams.get('focus_id');
-  if (focusParam != null) {
-    document.querySelector(`#report_${focusParam}`).classList.add("active");
-  }
 
 </script>

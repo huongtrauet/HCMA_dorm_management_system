@@ -1,8 +1,10 @@
 class Manager::StudentManagementController < ApplicationController
   layout 'manager_layout/manager'
   skip_before_action :verify_authenticity_token
+  before_action :logged_in_manager
+
   def index
-    @students = Student.all
+    @students = Student.all.page(params[:page])
   end
 
   def edit
@@ -94,7 +96,6 @@ class Manager::StudentManagementController < ApplicationController
   end
 
   def search_student
-    # byebug
     if params[:q] 
       @students = Student.all.ransack(name_or_student_id_number_or_status_cont: params[:q]).result
       if @students

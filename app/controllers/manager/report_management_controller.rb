@@ -1,16 +1,17 @@
 class Manager::ReportManagementController < ApplicationController
   layout 'manager_layout/manager'
   skip_before_action :verify_authenticity_token
+  before_action :logged_in_manager
   # all room in room_management
 
 
   # COMPLAINT
   def complaint_report
-    @complaint_reports = ComplaintReport.where(status: "PENDING")
+    @complaint_reports = ComplaintReport.where(status: "PENDING").page(params[:page])
   end
 
   def find_complaint_report_by_status
-    @complaint_reports = ComplaintReport.where(status: params[:status])
+    @complaint_reports = ComplaintReport.where(status: params[:status]).page(params[:page])
     respond_to do |format|
       format.js {render partial: 'report_table', locals: { reports: @complaint_reports } } 
     end
@@ -21,6 +22,24 @@ class Manager::ReportManagementController < ApplicationController
     respond_to do |format|
       format.json { render json: {complaint_report: @complaint_report}}
     end
+  end
+
+  def approved_complaint_report
+    @complaint_reports = ComplaintReport.where(status: "APPROVED").page(params[:page])
+    @page = 1 if params[:page].blank?
+    @page = params[:page].to_i if params[:page].present?
+  end
+
+  def pending_complaint_report
+    @complaint_reports = ComplaintReport.where(status: "PENDING").page(params[:page])
+    @page = 1 if params[:page].blank?
+    @page = params[:page].to_i if params[:page].present?
+  end
+
+  def rejected_complaint_report
+    @complaint_reports = ComplaintReport.where(status: "REJECTED").page(params[:page])
+    @page = 1 if params[:page].blank?
+    @page = params[:page].to_i if params[:page].present?
   end
 
   def deny_complaint_report
@@ -64,7 +83,7 @@ class Manager::ReportManagementController < ApplicationController
   # FACILITY
 
   def facility_report
-    @facility_reports = FacilityReport.where(status: "PENDING")
+    @facility_reports = FacilityReport.where(status: "PENDING").page(params[:page])
   end
 
   def show_facility_report
@@ -72,6 +91,24 @@ class Manager::ReportManagementController < ApplicationController
     respond_to do |format|
       format.json { render json: {facility_report: @facility_report}}
     end
+  end
+
+  def approved_facility_report
+    @facility_reports = FacilityReport.where(status: "APPROVED").page(params[:page])
+    @page = 1 if params[:page].blank?
+    @page = params[:page].to_i if params[:page].present?
+  end
+
+  def pending_facility_report
+    @facility_reports = FacilityReport.where(status: "PENDING").page(params[:page])
+    @page = 1 if params[:page].blank?
+    @page = params[:page].to_i if params[:page].present?
+  end
+
+  def rejected_facility_report
+    @facility_reports = FacilityReport.where(status: "REJECTED").page(params[:page])
+    @page = 1 if params[:page].blank?
+    @page = params[:page].to_i if params[:page].present?
   end
 
   def reject_facility_report
@@ -94,7 +131,7 @@ class Manager::ReportManagementController < ApplicationController
   end
 
   def find_facility_report_by_status
-    @facility_reports = FacilityReport.where(status: params[:status])
+    @facility_reports = FacilityReport.where(status: params[:status]).page(params[:page])
     respond_to do |format|
       format.js {render partial: 'report_table', locals: { reports: @facility_reports } } 
     end
@@ -123,7 +160,7 @@ class Manager::ReportManagementController < ApplicationController
   # REQUEST FORM
 
   def form_request
-    @form_requests = FormRequest.where(status: "PENDING")
+    @form_requests = FormRequest.where(status: "PENDING").page(params[:page])
   end
 
 
@@ -132,6 +169,24 @@ class Manager::ReportManagementController < ApplicationController
     respond_to do |format|
       format.json { render json: {form_request: @form_request}}
     end
+  end
+
+  def approved_form_request
+    @form_requests = FormRequest.where(status: "APPROVED").page(params[:page])
+    @page = 1 if params[:page].blank?
+    @page = params[:page].to_i if params[:page].present?
+  end
+
+  def pending_form_request
+    @form_requests = FormRequest.where(status: "PENDING").page(params[:page])
+    @page = 1 if params[:page].blank?
+    @page = params[:page].to_i if params[:page].present?
+  end
+
+  def rejected_form_request
+    @form_requests = FormRequest.where(status: "REJECTED").page(params[:page])
+    @page = 1 if params[:page].blank?
+    @page = params[:page].to_i if params[:page].present?
   end
 
   def reject_form_request
@@ -154,7 +209,7 @@ class Manager::ReportManagementController < ApplicationController
   end
 
   def find_form_request_by_status
-    @form_requests = FormRequest.where(status: params[:status])
+    @form_requests = FormRequest.where(status: params[:status]).page(params[:page])
     respond_to do |format|
       format.js {render partial: 'form_request_table', locals: { requests: @form_requests } } 
     end

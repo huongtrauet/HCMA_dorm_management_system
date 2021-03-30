@@ -9,29 +9,25 @@
     <thead>
       <tr>
         <th>STT</th>
+        <th>Ngay gui</th>
         <th>Title</th>
         <th>Description</th>
-        <th>Note</th>
         <th>Status</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody id="report_list">
       <% @complaint_reports.each_with_index do |report, index| %>
         <tr onclick="viewMoreComplaintReport(<%= report.id %>)" id="report_<%= report.id %>">
-          <td><%= index + 1 %></td>
+          <td><%= index + 1 + (@page - 1)*Settings.pagination %></td>
+          <td style="width: 10rem"><%= report.created_at.to_date %></td>
           <td>
-           <span style="margin: 0 auto; word-wrap: break-word; max-width: 10rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+           <span style="margin: 0 auto; word-wrap: break-word; max-width: 15rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
               <%= report.title %>
             </span>
           </td>
           <td>
-            <span style="margin: 0 auto; word-wrap: break-word; max-width: 15rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+            <span style="margin: 0 auto; word-wrap: break-word; max-width: 20rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
               <%= report.description %>
-            </span>
-          </td>
-          <td>
-            <span style="margin: 0 auto; word-wrap: break-word; max-width: 15rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
-              <%= report.reject_reason %>
             </span>
           </td>
           <td>
@@ -47,29 +43,36 @@
       <% end %>
     </tbody>
   </table>
-  <div class="ui modal new_complaint_report">
-    <div class="header">New complaint report</div>
-    <div class="content">
-      <div class="ui form">
-        <div class="field">
-          <label>Title</label>
-          <input type="text" placeholder="Enter title">
+   <div class="mt-4" style="float: right">
+    <%= paginate @complaint_reports, turbolinks: false %>
+  </div>
+  <div class="ui modal" id="new_complaint_report">
+    <div class="header">New Complaint Report</div>
+    <form id="complaint_report_create_form" style="padding: 1.5rem;">
+      <div class="content" >
+        <div class="ui form">
+          <div class="field">
+            <label>Title</label>
+            <input type="text" placeholder="Enter title" name="title" id="title">
+          </div>
         </div>
-      </div>
-      <div class="ui form" style="margin-top:1rem">
-        <div class="field">
-          <label>Description</label>
-          <textarea placeholder="Enter description"></textarea>
+        <div class="ui form" style="margin-top:1rem">
+          <div class="field">
+            <label>Description</label>
+            <textarea placeholder="Enter description" name="description" id="description"></textarea>
+          </div>
         </div>
       </div>
       <div class="actions" style="display: flex; justify-content: flex-end; margin-top: 1rem">
-        <div class="ui cancel button">Submit</div>
+        <div class="ui submit button">Submit</div>
       </div>
-    </div>
+    </form>
   </div>
+
   <div class="ui modal" id="complaint_report_detail">
     <div class="header">Complaint Report</div>
     <div class="content">
+      <b id="created_date"></b>
       <h3 id="report_title_show"></h3>
       <p><b>Content:</b></p>
       <p id="report_description_show"></p>
@@ -83,11 +86,13 @@
 </div>
 <script>
   function addNewComplaintReport(){
-    $('.new_complaint_report').modal('show');
+    $('#new_complaint_report').modal('show');
   }
   function viewMoreComplaintReport(report_id){
     $('#complaint_report_detail').modal('show');
-    document.querySelector(`#report_${focusParam}`).classList.remove("active");
+    if(focusParam) {
+      document.querySelector(`#report_${focusParam}`).classList.remove("active");
+    }
     $.ajax({
       type: "GET",
       url: `/student/requests/complaint/${report_id}`,
@@ -97,15 +102,89 @@
       success: function(result){
         console.log("success")
         console.log(result.complaint_report.title)
-        $('#report_title_show').html(result.title)
+        let date = new Date(result.complaint_report.created_at)
+        $('#created_date').html(`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`)
+        $('#report_title_show').html(result.complaint_report.title)
         $('#report_description_show').html(result.complaint_report.description)
         $('#report_note_show').html(result.complaint_report.reject_reason)
       },
       error: function(error){
-
+        console.log("error")
       }
     })
   }
+
+
+   function addSubmit(e){
+    $('#new_complaint_report').modal('hide');
+    e.preventDefault();
+    $.ajax({
+      type: "POST",
+      url:"/student/complaint-reports/create",
+      data: {
+        "complaint_report": {
+          "title": document.querySelector('#title').value,
+          "description": document.querySelector('#description').value
+       },
+      },
+      success:function(result){
+        window.localStorage.setItem('new_complaint_report', result.message)
+        window.location = "/student/requests/complaint"
+      },
+      error: function(error){
+        toastr.error(error.responseJSON.message)
+      }
+    })
+  }
+
+  $('#complaint_report_create_form').off('submit').submit(function(e){
+    if ($('#complaint_report_create_form').form('is valid')){
+      addSubmit(e)
+      console.log('valid')
+    }
+  });
+
+  $('#complaint_report_create_form')
+    .form({
+      fields:{
+        title: {
+          identifer: 'title',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Please enter title!'
+            },
+            {
+              type: 'minLength[5]',
+              prompt: 'Student name must be more than 5 letters!'
+            },
+            {
+              type: 'maxLength[100]',
+              prompt: 'Student name must be less than 100 letters!'
+            }
+          ]
+        },
+        description: {
+          identifer: 'description',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Please enter description!'
+            },
+            {
+              type: 'minLength[5]',
+              prompt: 'Student name must be more than 5 letters!'
+            },
+            {
+              type: 'maxLength[1000]',
+              prompt: 'Student name must be less than 1000 letters!'
+            }
+          ]
+        }
+      },
+      inline: true,
+      on: 'blur'
+    });
 
   const urlParams = new URLSearchParams(window.location.search);
   const focusParam = urlParams.get('focus_id');

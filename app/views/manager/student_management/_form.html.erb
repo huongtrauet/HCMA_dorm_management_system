@@ -40,10 +40,10 @@
                     <%= student.label :student_id_number %>
                     <%= student.text_field :student_id_number, class: "input", required: true, placeholder: "Student it number" %>
                   </div>
-                  <div class="required field field_line">
+                  <div class="field field_line">
                     <label>Room</label>
                     <div class="ui fluid search selection dropdown" id="select_room">
-                      <%= student.text_field :room_id, required: true, placeholder: "Select room", type: "hidden" %>
+                      <%= student.text_field :room_id, placeholder: "Select room", type: "hidden" %>
                       <i class="dropdown icon"></i>
                       <div class="default text">Select room</div>
                       <div class="menu">
@@ -65,31 +65,31 @@
                         <label>Class name</label>
                         <%= f.text_field :class_name, class: "input", required: true, placeholder: "Clas name" %>
                       </div>
-                      <div class="required field">
+                      <div class="field">
                         <label>Email</label>
-                        <%= f.text_field :email, class: "input", required: true, placeholder: "Email" %>
+                        <%= f.text_field :email, class: "input", placeholder: "Email" %>
                       </div>
                     </div>
                   </div>
                   <div class="fields field_line">
-                    <div class="required eight wide field">
+                    <div class="eight wide field">
                       <label>Identity Card Number</label>
-                      <%= f.text_field :identity_card_number, class: "input",  required: true, maxlength: "16", placeholder: "Identity card number" %>
+                      <%= f.text_field :identity_card_number, class: "input", maxlength: "16", placeholder: "Identity card number" %>
                     </div>
-                    <div class="required eight wide field">
+                    <div class="eight wide field">
                       <label>Date of Birth</label>
-                      <%= f.date_field :date_of_birth, class: "input date", data: {provide: "datepicker"}, required: true%>
+                      <%= f.date_field :date_of_birth, class: "input date", data: {provide: "datepicker"}%>
                     </div>
                   </div>
-                  <div class="required field field_line">
+                  <div class="field field_line">
                     <label>Address</label>
-                    <%= f.text_field :address, class: "input", required: true, placeholder: "Address" %>
+                    <%= f.text_field :address, class: "input", placeholder: "Address" %>
                   </div>
                   <div class="field field_line">
                     <div class="two fields">
-                      <div class="required field">
+                      <div class="field">
                         <label>Phone number</label>
-                        <%= f.text_field :phone_number, class: "input", required: true, placeholder: "Phone number" %>
+                        <%= f.text_field :phone_number, class: "input", placeholder: "Phone number" %>
                       </div>
                       <div class="field">    
                         <%= f.label :gender %>

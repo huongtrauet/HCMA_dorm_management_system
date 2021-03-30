@@ -64,6 +64,9 @@
       <% end %>
     </tbody>
   </table>
+  <div class="mt-4" style="float: right">
+    <%= paginate @rooms, turbolinks: false %>
+  </div>
 </div>
 
 <div class="ui mini modal add_room">

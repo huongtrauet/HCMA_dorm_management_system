@@ -47,9 +47,15 @@
           <% else %>
             <td></td>
           <% end %>
+          <% if student.status == "PENDING" %>
+          <td>
+            <a class="ui tag label" style="width: 5.7rem">Pending</a>
+          </td>
+          <% elsif student.status == "ACTIVE" %>
           <td>
             <a class="ui teal tag label teal_label" style="width: 5.7rem">Active</a>
           </td>
+          <% end %>
         </tr>
         <div class="ui modal" id= "student_info_<%= student.id %>">
           <i class="close icon"></i>
@@ -127,7 +133,6 @@
               Edit
               <i class="arrow right icon"></i>
             <% end %>
-
           </div>
         </div>
         <div class="ui mini modal" id="confirm-delete-<%= student.id %>">
@@ -154,6 +159,9 @@
       <% end %>
     </tbody>
   </table>
+  <div class="mt-4" style="float: right">
+    <%= paginate @students, turbolinks: false %>
+  </div>
 </div>
 
 <div class="ui mini modal add_student">
@@ -240,7 +248,7 @@
         mimeType: 'multipart/form-data',
         data: formData,
         success: function(result){
-          alert("Tao sinh vien thang cong nha!");
+          alert("Tao tai khoan hoc vien thang cong!");
           // $("#add-form")[0].reset();
           $('#add-form').form('reset');
           $("#add-form").find('.error').removeClass('error');

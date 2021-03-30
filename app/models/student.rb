@@ -26,8 +26,8 @@ class Student < ApplicationRecord
             length: {
               minimum: Settings.validations.student.student_id_number.min_length,
               maximum: Settings.validations.student.student_id_number.max_length,
-              too_short: "ma sinh vien qua ngan",
-              too_long: "ma sinh vien qua dai"
+              too_short: "ma hoc vien qua ngan",
+              too_long: "ma hoc vien qua dai"
             },
             uniqueness: {
               # object = person object being validated
@@ -67,6 +67,7 @@ class Student < ApplicationRecord
     elsif room_before.number_student == room_before.max_number_student
       room_before.update(status: "FULL")
     end
+
   end
 
   after_destroy do

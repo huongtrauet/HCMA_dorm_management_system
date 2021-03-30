@@ -5,7 +5,9 @@ class Student::FormRequestsController < StudentMainController
 
   # GET /form_requests or /form_requests.json
   def index
-    @form_requests = current_user.form_requests
+    @form_requests = current_user.form_requests.order("created_at DESC").page(params[:page])
+    @page = 1 if params[:page].blank?
+    @page = params[:page].to_i if params[:page].present?
   end
 
   # GET /form_requests/1 or /form_requests/1.json
@@ -27,15 +29,19 @@ class Student::FormRequestsController < StudentMainController
 
   # POST /form_requests or /form_requests.json
   def create
-    byebug
     @form_request = FormRequest.new(form_request_params.merge(student_id: current_user.id))
       if @form_request.save
         count = FormRequest.all.where(student_id: current_user.id).count
+        if current_user.class.name == "Student"
+          Notification.create(message: "#{current_user.name} created new form request", sender: current_user, receiver: Manager.first, noti_type: "create_form_request", report_id: @form_request.id )
+        end
         respond_to do |format|
-          format.js {render partial: 'form_request_line', locals: { request: @form_request, index: count } } 
+          format.json {render json: {message: "Created new form request successfully!!"}, status: :ok} 
         end
       else
-        format.json { render json: {message: "Created failed!!!"}, status: :bad_request}
+        respond_to do |format|
+          format.json { render json: {message: "Created new form request failed!!!"}, status: :bad_request}
+        end
       end
   end
 

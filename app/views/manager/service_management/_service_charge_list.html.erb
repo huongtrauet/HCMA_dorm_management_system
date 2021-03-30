@@ -126,6 +126,9 @@
       <% end %>
     </tbody>
   </table>
+  <div class="mt-4" style="float: right;">
+    <%= paginate @service_charges, turbolinks: false %>
+  </div>
 </div>
 
 <div class="ui first modal service_charge_info" id="show_info_modal">

@@ -1,6 +1,7 @@
 class Manager::PostManagementController < ApplicationController
   layout 'manager_layout/manager'
   skip_before_action :verify_authenticity_token
+  before_action :logged_in_manager
 
   def show
     @post = Post.find(params[:id])
@@ -14,7 +15,6 @@ class Manager::PostManagementController < ApplicationController
   end
 
   def create
-    # byebug
     _params = create_post_params.merge(manager_id: 1, status: 'POSTED')
     @post = Post.new(_params)
     @post_management = Post.new
@@ -22,7 +22,6 @@ class Manager::PostManagementController < ApplicationController
       respond_to do |format|
         format.js {render partial: 'list_post_item', locals: { post: @post, index: Post.all.count, post_management: @post_management } } 
       end
-      # redirect_to manager_post_management_path
     else
       render :new
     end
@@ -39,7 +38,7 @@ class Manager::PostManagementController < ApplicationController
 
   def index
     @post_management = Post.new
-    @posts = Post.all
+    @posts = Post.all.page(params[:page])
   end
 
   def change_post_status

@@ -2,7 +2,8 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: https://sass-lang.com/
 .student_session.new {
-  .right_column {
+    padding-top: 4rem;
+    .right_column {
     width: 50%;
     position: absolute;
     top: 50%;
@@ -11,9 +12,7 @@
     .logo_image {
       width: 70%;
       height: 70% !important;
-      margin-left: 3.5em;
       margin-bottom: 2em;
-
   };
   }
   .title {

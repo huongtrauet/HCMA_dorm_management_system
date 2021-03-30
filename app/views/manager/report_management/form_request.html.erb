@@ -13,13 +13,13 @@
         </div>
         <div class="footer_line" style="height: 1px; background-color: rgba(34,36,38,.15); margin-top: 0.5rem; margin-bottom: 1.5rem"></div>
         <div class="ui tabular menu">
-          <a class="item active" id="pending_tab" onclick='findComplaintReportByStatus("PENDING")'>
+          <a class="item active" id="pending_tab" href="/manager/report-management/form-requests/pending">
             Pending
           </a>
-          <a class="item" id="approved_tab" onclick='findComplaintReportByStatus("APPROVED")'>
+          <a class="item" id="approved_tab" href="/manager/report-management/form-requests/approved">
             Approved
           </a>
-          <a class="item" id="rejected_tab" onclick='findComplaintReportByStatus("REJECTED")'>
+          <a class="item" id="rejected_tab" href="/manager/report-management/form-requests/rejected">
             Rejected
           </a>
         </div>
@@ -30,33 +30,27 @@
               <th style="text-align: center">TYPE</th>
               <th style="text-align: center">CONTENT</th>
               <th style="text-align: center">NGAY HEN</th>
-              <th style="text-align: center">NOTE</th>
-              <th style="text-align: center">STATUS</th>
+              <th style="text-align: right">STATUS</th>
             </tr>
           </thead>
           <tbody id="reports_list">
             <% @form_requests.each_with_index do |report, index| %>
-              <tr onclick="showReportInfo(<%= report.id %>)">
+              <tr onclick="showReportInfo(<%= report.id %>)" id="report_<%= report.id %>">
                 <td style="text-align: center"><%= index + 1 %></td>
                 <td>
-                  <p style="margin: 0 auto; word-wrap: break-word; max-width: 12rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+                  <p style="text-align: center;margin: 0 auto; word-wrap: break-word; width: 12rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
                     <%= report.form_type %>
                   </p>
                 </td>
                 <td>
-                  <span style="margin: 0 auto; word-wrap: break-word; max-width: 30rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+                  <span style="text-align: center;margin: 0 auto; word-wrap: break-word; width: 12rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
                     <%= report.description %>
                   </span>
                 </td>
-                <td>
-                    <%= report.return_date %>
+                <td style="text-align: center">
+                    <%= report.return_date.to_date %>
                 </td>
-                <td>
-                  <span style="margin: 0 auto; word-wrap: break-word; max-width: 30rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
-                    <%= report.note %>
-                  </span>
-                </td>
-                <td>
+                <td style="text-align: right">
                   <% if report.status == "PENDING" %>
                     <a class="ui teal tag label" style="width: 7rem"><%= report.status %></a>
                   <% elsif report.status == "APPROVED" %>
@@ -69,6 +63,9 @@
             <% end %>
           </tbody>
         </table>
+        <div class="mt-4" style="float: right">
+          <%= paginate @form_requests, turbolinks: false %>
+        </div>
       </div>
     </div>
   </div>
@@ -267,5 +264,10 @@
     })
   }
   
+  const urlParams = new URLSearchParams(window.location.search);
+  const focusParam = urlParams.get('focus_id');
+  if (focusParam != null) {
+    document.querySelector(`#report_${focusParam}`).classList.add("active");
+  }
     // show first now
 </script>

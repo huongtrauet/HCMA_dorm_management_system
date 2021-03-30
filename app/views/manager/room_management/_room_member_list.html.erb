@@ -40,7 +40,9 @@
           <td><%= index + 1 %></td>
           <td><%= member.student_id_number %></td>
           <td><%= member.student_profile.name %></td>
-          <td><%= member.student_profile.date_of_birth.to_date %></td>
+          <% if member.student_profile.date_of_birth %>
+            <td><%= member.student_profile.date_of_birth.to_date %></td>
+          <% end %>
           <td><%= member.student_profile.class_name %></td>
           <% if member.check_in_date %>
             <td><%= member.check_in_date.to_date %></td>
@@ -236,7 +238,7 @@
         mimeType: 'multipart/form-data',
         data: formData,
         success: function(result){
-          alert("Tao sinh vien thang cong nha!");
+          alert("Tao tai khoan hoc vien thang cong nha!");
           // $("#add-form")[0].reset();
           $('#add-form').form('reset');
           $("#add-form").find('.error').removeClass('error');

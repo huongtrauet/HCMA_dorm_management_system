@@ -9,32 +9,28 @@
     <thead>
       <tr>
         <th>STT</th>
+        <th>Ngay gui</th>
         <th>Form type</th>
         <th>Description</th>
-        <th>Note</th>
-        <th>Status</th>
+        <th style="text-align: center">Status</th>
       </tr>
     </thead>
     <tbody id="list_request">
       <% @form_requests.each_with_index do |request, index| %>
-        <tr onclick="viewMoreFormRequest(<%= request.id %>)">
-          <td><%= index + 1 %></td>
+        <tr onclick="viewMoreFormRequest(<%= request.id %>)" id="report_<%= request.id %>">
+          <td><%= index + 1 + (@page - 1)*Settings.pagination %></td>
+          <td style="width: 10rem"><%= request.created_at.to_date %></td>
           <td>
-           <span style="margin: 0 auto; word-wrap: break-word; max-width: 10rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+           <span style="margin: 0 auto; word-wrap: break-word; width: 15rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
               <%= request.form_type %>
             </span>
           </td>
           <td>
-            <span style="margin: 0 auto; word-wrap: break-word; max-width: 15rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+            <span style="margin: 0 auto; word-wrap: break-word; max-width: 20rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
               <%= request.description %>
             </span>
           </td>
-          <td>
-            <span style="margin: 0 auto; word-wrap: break-word; max-width: 15rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
-              <%= request.note %>
-            </span>
-          </td>
-          <td>
+          <td style="text-align: right">
             <% if request.status == "PENDING" %>
               <a class="ui teal tag label" style="width: 7rem"><%= request.status %></a>
             <% elsif request.status == "APPROVED" %>
@@ -47,6 +43,9 @@
       <% end %>
     </tbody>
   </table>
+   <div class="mt-4" style="float: right">
+    <%= paginate @form_requests, turbolinks: false %>
+  </div>
   <div class="ui modal" id="new_form_request">
     <div class="header">
       <span class="">Request form</span>
@@ -79,6 +78,7 @@
   <div class="ui modal" id="form_request_detail">
     <div class="header">Facility Report</div>
     <div class="content">
+      <b id="created_date"></b>
       <h3 id="request_form_type_show"></h3>
       <p><b>Content:</b></p>
       <p id="request_description_show"></p>
@@ -98,6 +98,9 @@
     $('#new_form_request').modal('show');
   }
   function viewMoreFormRequest(request_id){
+    if(focusParam) {
+      document.querySelector(`#report_${focusParam}`).classList.remove("active");
+    }
     $('#form_request_detail').modal('show');
     $.ajax({
       type: "GET",
@@ -106,7 +109,9 @@
         "id": request_id
       },
       success: function(result){
-        $('#request_form_type_show').html(result.form_request.form_type)
+        let date = new Date(result.form_request.created_at)
+        $('#created_date').html(`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`)
+        $('#request_form_type_show').html(result.form_request.form_type);
         $('#request_description_show').html(result.form_request.description)
         $('#request_note_show').html(result.form_request.note)
       },
@@ -116,30 +121,24 @@
   }
 
   function addSubmit(e) {
-    console.log("add submit")
+    $('#new_form_request').modal('hide');
+    let form_type = $("#form_type").val()
     e.preventDefault();
     $.ajax({
       type: "POST",
       url: "/student/requests/form/create",
       data: {
         "form_request": {
-          "form_type": $("#form_type").val(),
+          "form_type": form_type[0].toUpperCase() + form_type.substring(1, form_type.length),
           description: $("#description").val()
         }
       },
       success: function(result){
-        $('#validate_description').form('reset');
-        $("#validate_description").find('.error').removeClass('error');
-        $('#new_form_request').modal('hide');
-        document.querySelector('#list_request').append($.parseHTML(result))
-        toastr.success("Created request successfully!!")
+        window.localStorage.setItem('new_form_request', result.message);
+        window.location = '/student/requests/form'
       },
       error: function (error) {
-        // $("#add-form")[0].reset();
-        $('#add-form').form('reset');
-        alert(error.responseText);
-        console.log(error)
-        console.log("fails")
+        toastr.error(error.responseJSON.message);
       }
     })
   }

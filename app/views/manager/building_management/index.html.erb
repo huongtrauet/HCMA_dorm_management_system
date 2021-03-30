@@ -1,0 +1,13 @@
+<div class="student_management" style="padding-top: 2rem; width: 80%; margin: 0 auto">
+  <h5>Building</h5>
+  <div class="ui grid" style="margin-top: 1.5rem">
+    <div class="doubling six column row">
+      <% (1..18).each do |i| %>
+        <div class="column" style="text-align: center; border: 3px solid #f4810b; border-radius: 0.5rem; margin: 3rem 1rem" >
+          <i class="building outline icon" style="color: #f4810b; font-size: 6rem; display: inline; background-color: #ffffff"></i>
+          <p style="text-align: center; margin-top: 1rem; font-size: 1.5rem; color: #969696"><b>A<%= i + 1 %></b></p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

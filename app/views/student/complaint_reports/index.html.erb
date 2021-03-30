@@ -13,4 +13,8 @@
 </div>
 <script>
   $("#complaint_report_btn").addClass("active");
+  if (localStorage.getItem("new_complaint_report")) {
+    toastr.success(localStorage.getItem("new_complaint_report"))
+    localStorage.removeItem("new_complaint_report")
+  }
 </script>

@@ -11,7 +11,7 @@ validations:
   complaint_reports:
     title:
       min_length: 5
-      max_length: 500
+      max_length: 100
     description:
       min_length: 5
       max_length: 1000
@@ -24,7 +24,7 @@ validations:
   facility_reports:
     title:
       min_length: 5
-      max_length: 500
+      max_length: 100
     description:
       min_length: 5
       max_length: 1000
@@ -78,3 +78,4 @@ validations:
       max_length: 100
     image:
       less_than: 5.megabytes
+pagination: 5

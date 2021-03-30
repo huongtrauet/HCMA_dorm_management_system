@@ -2,7 +2,6 @@ module SessionsHelper
   def log_in user
     session[:user_id] = user.id
     session[:role] = user.class.name
-    # byebug
   end
 
   def current_user
@@ -49,7 +48,6 @@ module SessionsHelper
   # end
 
   def remember(user)
-    # byebug
     user.remember
     cookies.permanent.signed[:user_id] = user.id
     cookies.permanent.signed[:role] = user.class.name

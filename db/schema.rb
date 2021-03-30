@@ -10,12 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_21_033518) do
+ActiveRecord::Schema.define(version: 2021_03_29_165326) do
+
+  create_table "buildings", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "complaint_reports", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "title", null: false
     t.string "description", null: false
     t.string "status", default: "PENDING", null: false
+    t.integer "index", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "student_id", null: false
@@ -39,6 +46,7 @@ ActiveRecord::Schema.define(version: 2021_03_21_033518) do
     t.string "title", null: false
     t.string "description", null: false
     t.string "status", default: "PENDING", null: false
+    t.integer "index", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "student_id", null: false
@@ -50,10 +58,11 @@ ActiveRecord::Schema.define(version: 2021_03_21_033518) do
     t.string "form_type", null: false
     t.string "description", null: false
     t.string "status", default: "PENDING", null: false
+    t.integer "index", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "student_id", null: false
-    t.datetime "return_date", default: "2021-03-22 00:00:00"
+    t.datetime "return_date", default: "2021-03-30 00:00:00"
     t.string "note"
     t.index ["student_id"], name: "index_form_requests_on_student_id"
   end
@@ -75,6 +84,8 @@ ActiveRecord::Schema.define(version: 2021_03_21_033518) do
     t.integer "receiver_id", null: false
     t.string "sender_type", null: false
     t.string "receiver_type", null: false
+    t.boolean "is_read", default: false, null: false
+    t.integer "page"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "noti_type", null: false
@@ -102,6 +113,8 @@ ActiveRecord::Schema.define(version: 2021_03_21_033518) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "status", default: "UNFILLED"
     t.string "gender"
+    t.bigint "building_id", null: false
+    t.index ["building_id"], name: "index_rooms_on_building_id"
     t.index ["room_name"], name: "index_rooms_on_room_name", unique: true
   end
 
@@ -159,6 +172,7 @@ ActiveRecord::Schema.define(version: 2021_03_21_033518) do
   add_foreign_key "facility_reports", "students"
   add_foreign_key "form_requests", "students"
   add_foreign_key "posts", "managers"
+  add_foreign_key "rooms", "buildings"
   add_foreign_key "service_charges", "rooms"
   add_foreign_key "student_profiles", "students"
   add_foreign_key "students", "rooms"

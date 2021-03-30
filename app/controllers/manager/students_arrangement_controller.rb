@@ -1,6 +1,8 @@
 class Manager::StudentsArrangementController < ManagerMainController
   layout 'manager_layout/manager'
   skip_before_action :verify_authenticity_token
+  before_action :logged_in_manager
+
 
   def main
     

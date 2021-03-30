@@ -13,13 +13,13 @@
         </div>
         <div class="footer_line" style="height: 1px; background-color: rgba(34,36,38,.15); margin-top: 0.5rem; margin-bottom: 1.5rem"></div>
         <div class="ui tabular menu">
-          <a class="item active" id="pending_tab" onclick='findComplaintReportByStatus("PENDING")'>
+          <a class="item active" id="pending_tab" href="/manager/report-management/complaint-reports/pending">
             Pending
           </a>
-          <a class="item" id="approved_tab" onclick='findComplaintReportByStatus("APPROVED")'>
+          <a class="item" id="approved_tab" href="/manager/report-management/complaint-reports/approved">
             Approved
           </a>
-          <a class="item" id="rejected_tab" onclick='findComplaintReportByStatus("REJECTED")'>
+          <a class="item" id="rejected_tab" href="/manager/report-management/complaint-reports/rejected">
             Rejected
           </a>
         </div>
@@ -29,24 +29,24 @@
               <th style="text-align: center">STT</th>
               <th style="text-align: center">TITLE</th>
               <th style="text-align: center">CONTENT</th>
-              <th style="text-align: center">STATUS</th>
+              <th style="text-align: right">STATUS</th>
             </tr>
           </thead>
           <tbody id="reports_list">
             <% @complaint_reports.each_with_index do |report, index| %>
-              <tr onclick="showReportInfo(<%= report.id %>)">
+              <tr onclick="showReportInfo(<%= report.id %>)" id="report_<%= report.id %>">
                 <td style="text-align: center"><%= index + 1 %></td>
                 <td>
-                  <p style="margin: 0 auto; word-wrap: break-word; max-width: 12rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+                  <p style="text-align: center;margin: 0 auto; word-wrap: break-word; width: 12rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
                     <%= report.title %>
                   </p>
                 </td>
                 <td>
-                  <span style="margin: 0 auto; word-wrap: break-word; max-width: 30rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+                  <span style="text-align: center;margin: 0 auto; word-wrap: break-word; width: 30rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
                     <%= report.description %>
                   </span>
                 </td>
-                <td>
+                <td style="text-align: right">
                   <% if report.status == "PENDING" %>
                     <a class="ui teal tag label" style="width: 7rem"><%= report.status %></a>
                   <% elsif report.status == "APPROVED" %>
@@ -59,6 +59,9 @@
             <% end %>
           </tbody>
         </table>
+        <div class="mt-4" style="float: right" id="pagination">
+          <%= paginate @complaint_reports, turbolinks: false, remove: true %>
+        </div>
       </div>
     </div>
   </div>
@@ -150,6 +153,7 @@
       success: function(result){
         console.log("success")
         $("#reports_list").html(result)
+        $("#pagination").html(`<%= j paginate @complaint_reports, turbolinks: false, remove: true %>`)
         if (status == "PENDING") {
           $("#pending_tab").addClass("active");
           $("#approved_tab").removeClass("active");
@@ -215,6 +219,12 @@
         toastr.success(error.message)
       }
     })
+  }
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const focusParam = urlParams.get('focus_id');
+  if (focusParam != null) {
+    document.querySelector(`#report_${focusParam}`).classList.add("active");
   }
   
     // show first now

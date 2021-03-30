@@ -4,6 +4,7 @@ class CreateFormRequests < ActiveRecord::Migration[6.0]
       t.string :form_type, null: false
       t.string :description, null: false
       t.string :status, null: false, default: "PENDING"
+      t.integer :index, null: false
 
       t.timestamps
     end

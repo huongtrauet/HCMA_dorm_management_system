@@ -1,15 +1,13 @@
 class Manager::ServiceManagementController < ApplicationController
   layout 'manager_layout/manager'
   skip_before_action :verify_authenticity_token
+  before_action :logged_in_manager
+
   def index
-    @service_charges = ServiceCharge.all.order("year DESC").order("month DESC")
+    @service_charges = ServiceCharge.all.order("year DESC").order("month DESC").page(params[:page])
     @rooms = Room.all.select(:id, :room_name)
-    # respond_to do |format|
-    #   format.json {render json: {object: @service_charges}}
-    # end
   end
 
-  # SERVICE CHARGE OF ROOM
   def room_service_charge
     @room_service_charges = ServiceCharge.where(room_id: params[:id]).order("year DESC").order("month DESC")
     respond_to do |format|
@@ -17,7 +15,6 @@ class Manager::ServiceManagementController < ApplicationController
     end
   end
 
-  #LIST SERVICE CHARGE
   def show_service_charge
     @service_charge = ServiceCharge.find(params[:charge_id])
     @room = @service_charge.room
@@ -34,7 +31,6 @@ class Manager::ServiceManagementController < ApplicationController
 
   # UPDATE SERVICE CHARGE IN ROOM MANAGEMENT
   def update_room_service_charge
-    # byebug
     @service_charge = ServiceCharge.find(service_charge_params[:charge_id])
     if @service_charge.update(service_charge_params.except(:charge_id, :index))
       respond_to do |format|

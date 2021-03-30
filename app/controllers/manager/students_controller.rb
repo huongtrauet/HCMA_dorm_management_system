@@ -1,6 +1,8 @@
 class Manager::StudentsController < ManagerMainController
   layout 'student_layout/student'
   before_action :set_student, only: %i[ show edit update destroy ]
+  before_action :logged_in_manager
+
 
   # GET /students or /students.json
   def index

@@ -19,4 +19,13 @@ class ApplicationController < ActionController::Base
     flash[:error] = t "users.new.login"
     redirect_to student_login_url
   end
+
+  def logged_in_manager
+    return if logged_in?
+
+    location
+    flash[:error] = t "users.new.login"
+    redirect_to manager_login_url
+  end
+
 end

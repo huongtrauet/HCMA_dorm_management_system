@@ -3,7 +3,9 @@ class Student::ServiceChargesController < StudentMainController
 
   # GET /service_charges or /service_charges.json
   def index
-    @service_charges = ServiceCharge.all
+    @service_charges = ServiceCharge.all.where(room_id: current_user.room.id)
+    @service_charges = @service_charges.order("year DESC").order("month DESC").page(params[:page])
+    @rooms = Room.all.select(:id, :room_name)
   end
 
   # GET /service_charges/1 or /service_charges/1.json

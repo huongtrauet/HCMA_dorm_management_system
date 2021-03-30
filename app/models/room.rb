@@ -2,6 +2,7 @@ class Room < ApplicationRecord
   has_many :service_charges, dependent: :destroy
   has_many :facilities, dependent: :destroy
   has_many :students
+  belongs_to :building
 
   validates :room_name, presence: true, allow_nil: false, uniqueness: {
                                                               case_sensitive: true, 

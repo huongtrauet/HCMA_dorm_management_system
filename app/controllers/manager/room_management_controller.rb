@@ -3,7 +3,7 @@ class Manager::RoomManagementController < ManagerMainController
   skip_before_action :verify_authenticity_token
   # all room in room_management
   def index
-    @rooms = Room.where.not(id: 1)
+    @rooms = Room.where.not(id: 1).page(params[:page])
   end
 
   def update

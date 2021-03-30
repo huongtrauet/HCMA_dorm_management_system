@@ -68,25 +68,33 @@ Rails.application.routes.draw do
 
     get "/report-management/", to: "report_management#complaint_report"
     get "/report-management/complaint-reports", to: "report_management#complaint_report"
+    get "/report-management/complaint-reports/pending", to: "report_management#pending_complaint_report"
+    get "/report-management/complaint-reports/approved", to: "report_management#approved_complaint_report"
+    get "/report-management/complaint-reports/rejected", to: "report_management#rejected_complaint_report"
     get "/report-management/complaint-reports/find-by-status", to: "report_management#find_complaint_report_by_status"
     get "/report-management/complaint-reports/:id", to: "report_management#show_complaint_report" 
     put "/report-management/complaint-reports/:id/reject", to: "report_management#deny_complaint_report"
     put "/report-management/complaint-reports/:id/approve", to: "report_management#approve_complaint_report"
 
     get "/report-management/facility-reports", to: "report_management#facility_report"
+    get "/report-management/facility-reports/pending", to: "report_management#pending_facility_report"
+    get "/report-management/facility-reports/approved", to: "report_management#approved_facility_report"
+    get "/report-management/facility-reports/rejected", to: "report_management#rejected_facility_report"
     get "/report-management/facility-reports/find-by-status", to: "report_management#find_facility_report_by_status"
     get "/report-management/facility-reports/:id", to: "report_management#show_facility_report"
     put "/report-management/facility-reports/:id/reject", to: "report_management#reject_facility_report"
     put "/report-management/facility-reports/:id/approve", to: "report_management#approve_facility_report"
 
     get "/report-management/form-requests", to: "report_management#form_request"
+    get "/report-management/form-requests/pending", to: "report_management#pending_form_request"
+    get "/report-management/form-requests/approved", to: "report_management#approved_form_request"
+    get "/report-management/form-requests/rejected", to: "report_management#rejected_form_request"
     get "/report-management/form-requests/find-by-status", to: "report_management#find_form_request_by_status"
     get "/report-management/form-requests/:id", to: "report_management#show_form_request"
     put "/report-management/form-requests/:id/reject", to: "report_management#reject_form_request"
     put "/report-management/form-requests/:id/approve", to: "report_management#approve_form_request"
 
-
-
+    get "/building-management/", to: "building_management#index"
 
     resources :students
     resources :managers
@@ -101,6 +109,7 @@ Rails.application.routes.draw do
 
     get "/requests/facility", to: "facility_reports#index"
     get "/requests/facility/:id", to: "facility_reports#show"
+    post "/facility-reports/create", to: "facility_reports#create"
 
     get "/requests/form", to: "form_requests#index"
     get "/requests/form/:id", to: "form_requests#show"
@@ -108,7 +117,21 @@ Rails.application.routes.draw do
 
     get "/requests/complaint", to: "complaint_reports#index"
     get "/requests/complaint/:id", to: "complaint_reports#show"
-    post "/facility-reports/create", to: "facility_reports#create"
+    post "/complaint-reports/create", to: "complaint_reports#create"
+
+    get "/room/member/show/", to: "rooms#show_member"
+
+    post "/student-profile/update-avatar/", to: "student_profiles#update_avatar"
+    put "/student-profile/reset-ava", to:"student_profiles#reset_ava"
+    put "/student-profile/update", to:"student_profiles#update"
+
+    get "/my-room/", to: "rooms#room_member"
+    get "/my-room/members", to: "rooms#room_member"
+    get "/my-room/services", to: "rooms#room_service_charge"
+
+
+
+
     resources :student_profiles
     resources :rooms
     resources :requests
@@ -119,4 +142,6 @@ Rails.application.routes.draw do
     resources :facilities
     resources :service_charges
   end
+
+  get "/notifications/unread", to: "notifications#count_unread_noti"
 end

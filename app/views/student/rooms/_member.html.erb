@@ -4,66 +4,53 @@
   </h3>
   <div class="content">
     <div class="ui special cards">
-      <% for i in 0..5 %>
-        <div class="card">
-          <div class="blurring dimmable image">
-            <div class="ui dimmer">
-              <div class="content">
-                <div class="center">
-                  <div class="ui inverted button" onclick="viewMore()">View more</div>
+      <% if @members != nil  %>
+        <% @members.each do |member| %>
+          <div class="card">
+            <div class="blurring dimmable image">
+              <div class="ui dimmer">
+                <div class="content">
+                  <div class="center">
+                    <div class="ui inverted button" onclick="viewMore(<%= member.id %>)">View more</div>
+                  </div> 
                 </div>
               </div>
+              <% if member.student_profile.avatar.url %>
+                <img src="<%= member.student_profile.avatar.url %>" style="height: 18rem">
+              <% else %>
+                <img src="/assets/profile.png" style="height: 18rem">
+              <% end %>
             </div>
-            <img src="/assets/ava.jpg">
-          </div>
-          <div class="content">
-            <div class="header">Nguyen Thi Huong Tra (xinh dep)</div>
-            <div class="meta">
-              <span class="date">K62J</span>
+            <div class="content">
+              <div class="header"><%= member.name %></div>
+              <div class="meta">
+                <span class="date"><%= member.student_profile.class_name %></span>
+              </div>
             </div>
           </div>
-          <div class="extra content">
-            <a>
-              <i class="users icon"></i>
-              2 Members
-            </a>
-          </div>
-        </div>
+        <% end %>
       <% end %>
       <div class="ui modal">
         <i class="close icon"></i>
-        <div class="header">
-          Nguyễn Thị Hương Trà
-        </div>
-        <div class="image content">
+        <div class="header" id="student_name"></div>
+        <div class="image content" style="padding-bottom: 3rem;">
           <div class="ui medium image">
-            <img src="/assets/ava.jpg">
+            <img id="student_ava" src="/assets/ava.jpg">
           </div>
           <div class="description" style="width: 100%">
             <div class="ui grid">
-              <div class="four wide column">Ma sinh vien: </div>
-              <div class="twelve wide column">17021070</div>
+              <div class="four wide column">Ma hoc vien: </div>
+              <div class="twelve wide column" id="student_id_number"></div>
               <div class="four wide column">Ngay sinh: </div>
-              <div class="twelve wide column">21/11/1999</div>
+              <div class="twelve wide column" id="date_of_birth"></div>
               <div class="four wide column">So dien thoai: </div>
-              <div class="twelve wide column">0972403331</div>
+              <div class="twelve wide column" id="phone_number"></div>
               <div class="four wide column">Que quan: </div>
-              <div class="twelve wide column">Nghe An</div>
+              <div class="twelve wide column" id="address"></div>
               <div class="four wide column">Gioi tinh: </div>
-              <div class="twelve wide column">Nu</div>
+              <div class="twelve wide column" id="gender"></div>
             </div>
           </div>
-        </div>
-        <div class="actions">
-          <div class="ui positive right labeled icon button basic" style="color: #246966!important; border-color: #246966!important">
-            Next
-            <i class="right arrow icon"></i>
-          </div>
-
-          <%# <button class="ui right labeled icon button">
-            <i class="right arrow icon"></i>
-            Next
-          </button> %>
         </div>
       </div>
     </div>
@@ -74,7 +61,31 @@
   $('.special.cards .card .image').dimmer({
     on: 'hover'
   });
-  function viewMore(){
+  function viewMore(student_id){
+    $.ajax({
+      type: "GET",
+      url: "/student/room/member/show",
+      data: { 
+        id: student_id
+      }, 
+      success: function(result){
+        console.log(result.student_profile)
+        let date = new Date(result.student_profile.date_of_birth)
+        $('#student_name').html(result.student.name)
+        $('#student_id_number').html(result.student.student_id_number)
+        $('#date_of_birth').html(`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`)
+        $('#phone_number').html(result.student_profile.phone_number)
+        $('#address').html(result.student_profile.address)
+        $('#gender').html(result.student_profile.gender)
+        // document.getElementById("student_ava").src = result.student_profile.avatar
+        
+        $("#student_ava").attr("src", result.student_profile.avatar.url ? result.student_profile.avatar.url : '/assets/profile.png');
+
+      },
+      error: function (error){
+
+      }
+    })
     $('.ui.modal')
   .modal('show')
 ;

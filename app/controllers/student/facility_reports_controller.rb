@@ -5,7 +5,9 @@ class Student::FacilityReportsController < StudentMainController
 
   # GET /facility_reports or /facility_reports.json
   def index
-    @facility_reports = current_user.facility_reports
+    @facility_reports = current_user.facility_reports.order("created_at DESC").page(params[:page])
+    @page = 1 if params[:page].blank?
+    @page = params[:page].to_i if params[:page].present?
   end
 
   # GET /facility_reports/1 or /facility_reports/1.json
@@ -29,20 +31,18 @@ class Student::FacilityReportsController < StudentMainController
   def create
     @facility_report = FacilityReport.new(facility_report_params.merge(student_id: current_user.id))
     if @facility_report.save
+      index = FacilityReport.all.where(student_id: current_user.id).count
       if current_user.class.name == "Student"
-        Notification.create(message: "#{current_user.name} created new facility report", sender: current_user, receiver: Manager.first )
+        Notification.create(message: "#{current_user.name} created new facility report", sender: current_user, receiver: Manager.first, noti_type: "create_facility_report", report_id: @facility_report.id )
+      end
+      respond_to do |format|
+        format.json {render json: {message: "Created new facility report successfully!!"}, status: :ok} 
       end
     else
+      respond_to do |format|
+        format.json {render json: {message: "Sorry, created facility report failed!"}, status: :bad_request} 
+      end
     end
-    # respond_to do |format|
-    #   if @facility_report.save
-    #     format.html { redirect_to @facility_report, notice: "Facility report was successfully created." }
-    #     format.json { render :show, status: :created, location: @facility_report }
-    #   else
-    #     format.html { render :new, status: :unprocessable_entity }
-    #     format.json { render json: @facility_report.errors, status: :unprocessable_entity }
-    #   end
-    # end
   end
 
   # PATCH/PUT /facility_reports/1 or /facility_reports/1.json
