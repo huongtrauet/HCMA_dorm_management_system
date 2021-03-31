@@ -18,4 +18,12 @@ module ApplicationHelper
     end
     flash_messages.join("\n").html_safe
   end
+
+  def time_ago time
+    time_ago_in_words(time)
+  end
+
+  def remove_html_tag html
+    html.gsub('<h1>', '').gsub('</h1>', '').gsub('<h2>', '').gsub('</h2>', '').gsub('<i>', '').gsub('</i>', '').gsub('<b>', '').gsub('</b>', '').gsub('<strong>', '').gsub('</strong>', '')
+  end
 end

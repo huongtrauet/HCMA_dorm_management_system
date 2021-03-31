@@ -16,151 +16,157 @@
     </div>
   </div>
   <div class="footer_line" style="height: 1px; background-color: rgba(34,36,38,.15); margin-top: 0.5rem; margin-bottom: 1.5rem"></div>
-  <table class="ui very basic selectable table">
-    <thead>
-      <tr>
-        <th>STT</th>
-        <th>MSSV</th>
-        <th>HO VA TEN</th>
-        <th>NGAY SINH</th>
-        <th>PHONG</th>
-        <th>LOP</th>
-        <th>NGAY VAO</th>
-        <th>ACTIVE</th>
-      </tr>
-    </thead>
-    <tbody id="student_list"> 
-      <% @students.each_with_index do | student, index|%>
-        <tr onclick="showStudentInfo(<%= student.id %>)">
-          <td><%= index + 1 %></td>
-          <td><%= student.student_id_number %></td>
-          <td><%= student.student_profile.name %></td>
-          <% if student.student_profile.date_of_birth %>
-            <td><%= student.student_profile.date_of_birth.to_date %></td>
-          <% else %>
-            <td></td>
-          <% end %>
-          <td><%= student.room.room_name %></td>
-          <td><%= student.student_profile.class_name %></td>
-          <% if student.check_in_date %>
-            <td><%= student.check_in_date.to_date %></td>
-          <% else %>
-            <td></td>
-          <% end %>
-          <% if student.status == "PENDING" %>
-          <td>
-            <a class="ui tag label" style="width: 5.7rem">Pending</a>
-          </td>
-          <% elsif student.status == "ACTIVE" %>
-          <td>
-            <a class="ui teal tag label teal_label" style="width: 5.7rem">Active</a>
-          </td>
-          <% end %>
+  <div  id="student_list">
+    <table class="ui very basic selectable table">
+      <thead>
+        <tr>
+          <th>STT</th>
+          <th>MSSV</th>
+          <th>HO VA TEN</th>
+          <th>NGAY SINH</th>
+          <th>PHONG</th>
+          <th>LOP</th>
+          <th>NGAY VAO</th>
+          <th>ACTIVE</th>
         </tr>
-        <div class="ui modal" id= "student_info_<%= student.id %>">
-          <i class="close icon"></i>
-          <div class="header">
-            Student profiles
-          </div>
-          <div class="image content">
-            <div class="ui grid">
-              <div class="five wide column">
-                <div class="" style="width: 15rem; margin: 0 auto;">
-                  <img src="/assets/ava.jpg" style="width: 15rem; height: 15rem; margin: 0 auto;">
-                  <div class="sub-info ui grid" style="padding-top: 1rem">
-                    <div class="two wide column" style="padding-bottom: 0!important">
-                      <i class="icon address card outline"></i>
-                    </div>
-                    <div class="fourteen wide column" style="padding-bottom: 0!important">
-                    <%= student.student_id_number %>
-                    </div>
-                    <div class="two wide column" style="padding-bottom: 0!important">
-                      <i class="icon check square outline"></i>
-                    </div>
-                    <div class="fourteen wide column" style="padding-bottom: 0!important">
-                      <%= student.student_profile.class_name %>
-                    </div>
-                    <div class="two wide column">
-                      <i class="icon envelope outline"></i>
-                    </div>
-                    <div class="fourteen wide column">
-                      <%= student.student_profile.email %>
+      </thead>
+      <tbody> 
+        <% @students.each_with_index do | student, index|%>
+          <tr onclick="showStudentInfo(<%= student.id %>)">
+            <td><%= index + 1 + (@page - 1)*Settings.pagination %></td>
+            <td><%= student.student_id_number %></td>
+            <td><%= student.student_profile.name %></td>
+            <% if student.student_profile.date_of_birth %>
+              <td><%= student.student_profile.date_of_birth.to_date %></td>
+            <% else %>
+              <td></td>
+            <% end %>
+            <td><%= student.room.room_name %></td>
+            <td><%= student.student_profile.class_name %></td>
+            <% if student.check_in_date %>
+              <td><%= student.check_in_date.to_date %></td>
+            <% else %>
+              <td></td>
+            <% end %>
+            <% if student.status == "PENDING" %>
+            <td>
+              <a class="ui tag label" style="width: 5.7rem">Pending</a>
+            </td>
+            <% elsif student.status == "ACTIVE" %>
+            <td>
+              <a class="ui teal tag label teal_label" style="width: 5.7rem">Active</a>
+            </td>
+            <% end %>
+          </tr>
+          <div class="ui modal" id= "student_info_<%= student.id %>">
+            <i class="close icon"></i>
+            <div class="header">
+              Student profiles
+            </div>
+            <div class="image content">
+              <div class="ui grid">
+                <div class="five wide column">
+                  <div class="" style="width: 15rem; margin: 0 auto;">
+                    <% if student.student_profile.avatar.url != nil %>
+                      <img style="width: 15rem; height: 15rem; margin: 0 auto;"  src="<%= student.student_profile.avatar.url %>">
+                    <% else %>
+                      <img src="/assets/profile.png" style="width: 15rem; height: 15rem; margin: 0 auto;">
+                    <% end %>
+                    <div class="sub-info ui grid" style="padding-top: 1rem">
+                      <input type="hidden" name="student_id" id="student_id" value="<%= student.id%>" />
+                      <div class="two wide column" style="padding-bottom: 0!important">
+                        <i class="icon address card outline"></i>
+                      </div>
+                      <div class="fourteen wide column" style="padding-bottom: 0!important">
+                      <%= student.student_id_number %>
+                      </div>
+                      <div class="two wide column" style="padding-bottom: 0!important">
+                        <i class="icon check square outline"></i>
+                      </div>
+                      <div class="fourteen wide column" style="padding-bottom: 0!important">
+                        <%= student.student_profile.class_name %>
+                      </div>
+                      <div class="two wide column">
+                        <i class="icon envelope outline"></i>
+                      </div>
+                      <div class="fourteen wide column">
+                        <%= student.student_profile.email %>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="description eleven wide column">
-                <div class="ui header" style="margin-bottom: 2rem;"><%= student.student_profile.name %></div>
-                <div class="student-info ui grid">
-                  <div class="three wide column"><b>Ngay sinh:</b></div>
-                  <% if student.student_profile.date_of_birth %>
-                    <div class="thirteen wide column"><%= student.student_profile.date_of_birth.to_date %></div>
-                  <% else %>
-                    <div class="thirteen wide column"></div>
-                  <% end %>
-                  <div class="three wide column"><b>Gioi tinh:</b></div>
-                  <div class="thirteen wide column"><%= student.student_profile.gender %></div>
-                  <div class="three wide column"><b>Que quan:</b></div>
-                  <div class="thirteen wide column"><%= student.student_profile.address %></div>
-                  <div class="three wide column"><b>SDT:</b></div>
-                  <div class="thirteen wide column"><%= student.student_profile.phone_number %></div>
-                  <div class="three wide column"><b>So CMND:</b></div>
-                  <div class="thirteen wide column"><%= student.student_profile.identity_card_number %></div>
-                  <div class="three wide column"><b>Ngay dang ky:</b></div>
-                  <div class="thirteen wide column"><%= student.created_at.to_date %></div>
-                  <div class="three wide column"><b>Ngay vao:</b></div>
-                  <% if student.check_in_date %>
-                    <div class="thirteen wide column"><%= student.check_in_date.to_date %></div>
-                  <% else %>
-                    <div class="thirteen wide column"></div>
-                  <% end %>
-                  <div class="three wide column"><b>Thoi gian gia han:</b></div>
-                  <div class="thirteen wide column"><%= student.extended_time %></div>
-                  <div class="three wide column"><b>Trang thai:</b></div>
-                  <div class="thirteen wide column"><%= student.status %></div>
+                <div class="description eleven wide column">
+                  <div class="ui header" style="margin-bottom: 2rem;"><%= student.student_profile.name %></div>
+                  <div class="student-info ui grid">
+                    <div class="three wide column"><b>Ngay sinh:</b></div>
+                    <% if student.student_profile.date_of_birth %>
+                      <div class="thirteen wide column"><%= student.student_profile.date_of_birth.to_date %></div>
+                    <% else %>
+                      <div class="thirteen wide column"></div>
+                    <% end %>
+                    <div class="three wide column"><b>Gioi tinh:</b></div>
+                    <div class="thirteen wide column"><%= student.student_profile.gender %></div>
+                    <div class="three wide column"><b>Que quan:</b></div>
+                    <div class="thirteen wide column"><%= student.student_profile.address %></div>
+                    <div class="three wide column"><b>SDT:</b></div>
+                    <div class="thirteen wide column"><%= student.student_profile.phone_number %></div>
+                    <div class="three wide column"><b>So CMND:</b></div>
+                    <div class="thirteen wide column"><%= student.student_profile.identity_card_number %></div>
+                    <div class="three wide column"><b>Ngay dang ky:</b></div>
+                    <div class="thirteen wide column"><%= student.created_at.to_date %></div>
+                    <div class="three wide column"><b>Ngay vao:</b></div>
+                    <% if student.check_in_date %>
+                      <div class="thirteen wide column"><%= student.check_in_date.to_date %></div>
+                    <% else %>
+                      <div class="thirteen wide column"></div>
+                    <% end %>
+                    <div class="three wide column"><b>Thoi gian gia han:</b></div>
+                    <div class="thirteen wide column"><%= student.extended_time %></div>
+                    <div class="three wide column"><b>Trang thai:</b></div>
+                    <div class="thirteen wide column"><%= student.status %></div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="actions" style="padding: 0.7rem 1rem;">
-            <div class="ui black cancel button">
-              Cancel
-            </div>
-            <button class="ui youtube button" style="background-color: #db2828" onclick="deleteStudent(<%= student.id %>)">
-              Delete
-            </button>
-            <%= link_to "/manager/student-management/#{student.id}/edit", class: "ui positive right labeled icon button", data: { turbolinks: false } do %>
-              Edit
-              <i class="arrow right icon"></i>
-            <% end %>
-          </div>
-        </div>
-        <div class="ui mini modal" id="confirm-delete-<%= student.id %>">
-          <div class="ui icon header">
-            <i class="archive icon"></i>
-            Remove student
-          </div>
-          <div class="content">
-            <p>Do you want to remove this student?</p>
-          </div>
-          <div class="actions" style="display: flex; justify-content: center">
-            <div class="ui negative button">
-              <i class="remove icon"></i>
-              No
-            </div>
-            <%= link_to "/manager/student-management/#{student.id}/delete", method: :delete do %>
-              <div class="ui positive right labeled icon button">
-                <i class="checkmark icon"></i>
-                Yes
+            <div class="actions" style="padding: 0.7rem 1rem;">
+              <div class="ui black cancel button">
+                Cancel
               </div>
-            <% end %>
+              <button class="ui youtube button" style="background-color: #db2828" onclick="deleteStudent(<%= student.id %>)">
+                Delete
+              </button>
+              <button class="ui positive right labeled icon button" style="color: #ffffff !important" onclick="editStudent()">
+                Edit
+              </button>
+            </div>
           </div>
-        </div>
-      <% end %>
-    </tbody>
-  </table>
-  <div class="mt-4" style="float: right">
-    <%= paginate @students, turbolinks: false %>
+          <div class="ui mini modal" id="confirm-delete-<%= student.id %>">
+            <div class="ui icon header">
+              <i class="archive icon"></i>
+              Remove student
+            </div>
+            <div class="content">
+              <p>Do you want to remove this student?</p>
+            </div>
+            <div class="actions" style="display: flex; justify-content: center">
+              <div class="ui negative button">
+                <i class="remove icon"></i>
+                No
+              </div>
+              <%= link_to "/manager/student-management/#{student.id}/delete", method: :delete do %>
+                <div class="ui positive right labeled icon button">
+                  <i class="checkmark icon"></i>
+                  Yes
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </tbody>
+    </table>
+    <div class="mt-4" style="float: right">
+      <%= paginate @students, turbolinks: false %>
+    </div>
   </div>
 </div>
 
@@ -216,6 +222,15 @@
     CKEDITOR.replace( 'editor' );
 </script>
 <script>
+
+  function editStudent(){
+    let member_id = $('#student_id').val()
+    forwarding_url = document.location.href;
+    document.cookie = `forwarding_url=${forwarding_url}`;
+    console.log(document.cookie)
+    window.location.href= `/manager/student-management/${member_id}/edit`
+  }
+
   function deleteStudent(student_id){
       $(`#confirm-delete-${student_id}`)
     .modal('show')
@@ -248,22 +263,11 @@
         mimeType: 'multipart/form-data',
         data: formData,
         success: function(result){
-          alert("Tao tai khoan hoc vien thang cong!");
-          // $("#add-form")[0].reset();
-          $('#add-form').form('reset');
-          $("#add-form").find('.error').removeClass('error');
-          $('.ui.mini.modal.add_student').modal('hide');
-          console.log(result)
-          let result_html = document.createElement('tr')
-          result_html.innerHTML = result
-          document.querySelector('#student_list').append(result_html)
+          window.localStorage.setItem('new_student', JSON.parse(result).message)
+          window.location = '/manager/student-management'
         },
         error: function (error) {
-          // $("#add-form")[0].reset();
-          $('#add-form').form('reset');
-          alert(error.responseText);
-          console.log(error)
-          console.log("fails")
+          toastr.error(JSON.parse(error.responseText).message)
         }
       })
   }
@@ -374,15 +378,22 @@
       // $('#student_list').html("")
       $.ajax({
         type: "GET",
-        url: "/manager/student-management/students?q=" + this.value,
+        url: "/manager/student-management/search-students?q=" + this.value,
         success: function(result){
           $('#student_list').html(result)
-          console.log('success' + result)
         },
         error: function (error){
-          console.log('error', error)
+          if(error.responseJSON.is_all) {
+            window.location = '/manager/student-management'
+          }
         }
       })
     });
   });
 </script>
+
+<style>
+.ui.dimmer.modals.page {
+  padding-top: 7rem
+}
+</style>

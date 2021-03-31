@@ -42,6 +42,8 @@
           <td><%= member.student_profile.name %></td>
           <% if member.student_profile.date_of_birth %>
             <td><%= member.student_profile.date_of_birth.to_date %></td>
+          <% else %>
+            <td></td>
           <% end %>
           <td><%= member.student_profile.class_name %></td>
           <% if member.check_in_date %>
@@ -71,7 +73,7 @@
     <div class="ui grid">
       <div class="five wide column">
         <div class="" style="width: 15rem; margin: 0 auto;">
-          <img src="/assets/ava.jpg" style="width: 15rem; height: 15rem; margin: 0 auto;">
+          <img src="/assets/ava.jpg" id="ava_img" style="width: 15rem; height: 15rem; margin: 0 auto;">
           <div class="sub-info ui grid" style="padding-top: 1rem">
             <div class="two wide column" style="padding-bottom: 0!important">
               <i class="icon address card outline"></i>
@@ -208,6 +210,12 @@
         $('#check_out_date').html(result.student.check_out_date)
         $('#status').html(result.student.status)
         $('#member_id').val(member_id)
+        if (result.student_profile.avatar.url) {
+          document.getElementById('ava_img').src = result.student_profile.avatar.url;
+        }
+        else{
+          document.getElementById('ava_img').src = "/assets/profile.png"
+        }
       },
       error: function (error) {
         alert(error.message)
@@ -217,6 +225,9 @@
 
   function editMemberInfo() {
     let member_id = $('#member_id').val()
+    forwarding_url = document.location.href;
+    document.cookie = `forwarding_url=${forwarding_url}`;
+    console.log(document.cookie)
     window.location.href= `/manager/student-management/${member_id}/edit`
   }
   function addStudent() {

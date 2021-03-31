@@ -1,3 +1,10 @@
 <div class="student_management" style="padding-top: 2rem;">
   <%= render('student_management_list') %>
 </div>
+
+<script>
+  if(localStorage.getItem('new_student')){
+    toastr.success(localStorage.getItem('new_student'))
+    localStorage.removeItem('new_student')
+  }
+</script>

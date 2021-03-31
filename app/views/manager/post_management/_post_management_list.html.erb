@@ -32,7 +32,7 @@
     <tbody id="post_list">
       <% @posts.each_with_index do |post, index|%>  
         <tr>
-          <td onclick="showPost(<%= post.id %>)"><%= index + 1 %></td>
+          <td onclick="showPost(<%= post.id %>)"><%= index + 1 + (@page - 1)*Settings.pagination %></td>
           <td style="width: 20rem" onclick="showPost(<%= post.id %>)">
             <span style="margin: 0 auto; word-wrap: break-word; max-width: 16rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
               <%= post.title %>
@@ -40,7 +40,7 @@
           </td onclick="showPost(<%= post.id %>)">
           <td style="max-width: 25rem"onclick="showPost(<%= post.id %>)">
             <span style="margin: 0 auto; word-wrap: break-word; max-width: 26rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
-              <%= post.content.html_safe %>
+              <%= remove_html_tag(post.content).html_safe %>
             </span>
           </td>
           <td onclick="showPost(<%= post.id %>)"><%= post.created_at.to_date %></td>
@@ -137,7 +137,7 @@
     </tbody>
   </table>
   <div class="mt-4" style="float: right">
-    <%= paginate @posts %>
+    <%= paginate @posts, turbolinks: false %>
   </div>
 </div>
 
@@ -397,17 +397,11 @@ $(document).ready(function(){
       mimeType: 'multipart/form-data',
       data: formdatapost,
       success: function(result){
-        console.log(result)
-        $('#myForm').form('reset');
-        $('.ui.longer.modal.add').find('.error').removeClass('error');
-        $('.ui.longer.modal.add').modal('hide')
-        let result_html = document.createElement('tr')
-        result_html.innerHTML = result
-        document.querySelector('#post_list').append(result_html)
+        window.localStorage.setItem('new_post', result.message)
+        window.location = "/manager/post-management"
       },
       error: function (error) {
-        console.log(error)
-        console.log("fails")
+        toastr.error('Created post failed')
       }
     })
   }
@@ -441,7 +435,7 @@ $(document).ready(function(){
     
   }
 
-   $('#myEditForm_1').unbind('submit').submit(function(e){
+   $('#myEditForm_1').off('submit').submit(function(e){
      console.log("myEditForm")
     if($('#myEditForm_1').form('is valid')) {
       updateSubmit(e);

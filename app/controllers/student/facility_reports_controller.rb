@@ -29,11 +29,13 @@ class Student::FacilityReportsController < StudentMainController
 
   # POST /facility_reports or /facility_reports.json
   def create
-    @facility_report = FacilityReport.new(facility_report_params.merge(student_id: current_user.id))
+    last_index = current_user.facility_reports.last.index
+    @facility_report = FacilityReport.new(facility_report_params.merge(student_id: current_user.id, index: last_index + 1))
     if @facility_report.save
       index = FacilityReport.all.where(student_id: current_user.id).count
+      page = (FacilityReport.where(status: 'PENDING').count.to_f / Settings.pagination).ceil
       if current_user.class.name == "Student"
-        Notification.create(message: "#{current_user.name} created new facility report", sender: current_user, receiver: Manager.first, noti_type: "create_facility_report", report_id: @facility_report.id )
+        Notification.create(message: "#{current_user.name} created new facility report", sender: current_user, receiver: Manager.first, noti_type: "create_facility_report", report_id: @facility_report.id, page: page )
       end
       respond_to do |format|
         format.json {render json: {message: "Created new facility report successfully!!"}, status: :ok} 

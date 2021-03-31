@@ -1,134 +1,155 @@
-<% students.each_with_index do | student, index |%>
-  <tr onclick="showStudentInfo(<%= student.id %>)">
-    <td><%= index + 1 %></td>
-    <td><%= student.student_id_number %></td>
-    <td><%= student.student_profile.name %></td>
-    <% if student.student_profile.date_of_birth %>
-      <td><%= student.student_profile.date_of_birth.to_date %></td>
-    <% else %>
-      <td></td>
-    <% end %>
-    <td><%= student.student_profile.class_name %></td>
-    <td><%= student.student_profile.address %></td>
-    <% if student.check_in_date%>
-      <td><%= student.check_in_date.to_date %></td>
-    <% else %>
-      <td></td>
-    <% end %>
-    <td>
-      <a class="ui teal tag label teal_label" style="width: 5.7rem">Active</a>
-    </td>
-  </tr>
-  <div class="ui modal" id= "student_info_<%= student.id %>">
-    <i class="close icon"></i>
-    <div class="header">
-      Student profiles
-    </div>
-    <div class="image content">
-      <div class="ui grid">
-        <div class="five wide column">
-          <div class="" style="width: 15rem; margin: 0 auto;">
-            <img src="/assets/ava.jpg" style="width: 15rem; height: 15rem; margin: 0 auto;">
-            <div class="sub-info ui grid" style="padding-top: 1rem">
-              <div class="two wide column" style="padding-bottom: 0!important">
-                <i class="icon address card outline"></i>
-              </div>
-              <div class="fourteen wide column" style="padding-bottom: 0!important">
-                <%= student.student_id_number %>
-              </div>
-              <div class="two wide column" style="padding-bottom: 0!important">
-                <i class="icon check square outline"></i>
-              </div>
-              <% if student.student_profile %>
-                <div class="fourteen wide column" style="padding-bottom: 0!important">
-                  <%= student.student_profile.class_name %>
+<table class="ui very basic selectable table">
+  <thead>
+    <tr>
+      <th>STT</th>
+      <th>MSSV</th>
+      <th>HO VA TEN</th>
+      <th>NGAY SINH</th>
+      <th>PHONG</th>
+      <th>LOP</th>
+      <th>NGAY VAO</th>
+      <th>ACTIVE</th>
+    </tr>
+  </thead>
+  <tbody id="student_list"> 
+    <% students.each_with_index do | student, index |%>
+      <tr onclick="showStudentInfo(<%= student.id %>)">
+        <td><%= index + 1 %></td>
+        <td><%= student.student_id_number %></td>
+        <td><%= student.student_profile.name %></td>
+        <% if student.student_profile.date_of_birth %>
+          <td><%= student.student_profile.date_of_birth.to_date %></td>
+        <% else %>
+          <td></td>
+        <% end %>
+        <td><%= student.student_profile.class_name %></td>
+        <td><%= student.student_profile.address %></td>
+        <% if student.check_in_date%>
+          <td><%= student.check_in_date.to_date %></td>
+        <% else %>
+          <td></td>
+        <% end %>
+        <td>
+          <a class="ui teal tag label teal_label" style="width: 5.7rem">Active</a>
+        </td>
+      </tr>
+      <div class="ui modal" id= "student_info_<%= student.id %>">
+        <i class="close icon"></i>
+        <div class="header">
+          Student profiles
+        </div>
+        <div class="image content">
+          <div class="ui grid">
+            <div class="five wide column">
+              <div class="" style="width: 15rem; margin: 0 auto;">
+                <img src="/assets/ava.jpg" style="width: 15rem; height: 15rem; margin: 0 auto;">
+                <div class="sub-info ui grid" style="padding-top: 1rem">
+                  <div class="two wide column" style="padding-bottom: 0!important">
+                    <i class="icon address card outline"></i>
+                  </div>
+                  <div class="fourteen wide column" style="padding-bottom: 0!important">
+                    <%= student.student_id_number %>
+                  </div>
+                  <div class="two wide column" style="padding-bottom: 0!important">
+                    <i class="icon check square outline"></i>
+                  </div>
+                  <% if student.student_profile %>
+                    <div class="fourteen wide column" style="padding-bottom: 0!important">
+                      <%= student.student_profile.class_name %>
+                    </div>
+                    <div class="two wide column">
+                      <i class="icon envelope outline"></i>
+                    </div>
+                    <div class="fourteen wide column">
+                      <%= student.student_profile.email %>
+                    </div>
+                  <% else %>
+                    <div class="fourteen wide column" style="padding-bottom: 0!important">
+                      KKK
+                    </div>
+                    <div class="two wide column">
+                      <i class="icon envelope outline"></i>
+                    </div>
+                    <div class="fourteen wide column">
+                      email@gmail.com
+                    </div>
+                  <% end %>
                 </div>
-                <div class="two wide column">
-                  <i class="icon envelope outline"></i>
-                </div>
-                <div class="fourteen wide column">
-                  <%= student.student_profile.email %>
-                </div>
+              </div>
+            </div>
+            <div class="description eleven wide column">
+              <div class="ui header" style="margin-bottom: 2rem;"><%= student.student_profile.name %></div>
+              <div class="student-info ui grid">
+              <div class="three wide column"><b>Ngay sinh:</b></div>
+              <% if student.student_profile.date_of_birth %>
+                <div class="thirteen wide column"><%= student.student_profile.date_of_birth.to_date %></div>
               <% else %>
-                <div class="fourteen wide column" style="padding-bottom: 0!important">
-                  KKK
-                </div>
-                <div class="two wide column">
-                  <i class="icon envelope outline"></i>
-                </div>
-                <div class="fourteen wide column">
-                  email@gmail.com
-                </div>
+                <div class="thirteen wide column"></div>
               <% end %>
+              <div class="three wide column"><b>Gioi tinh:</b></div>
+              <div class="thirteen wide column"><%= student.student_profile.gender %></div>
+              <div class="three wide column"><b>Que quan:</b></div>
+              <div class="thirteen wide column"><%= student.student_profile.address %></div>
+              <div class="three wide column"><b>SDT:</b></div>
+              <div class="thirteen wide column"><%= student.student_profile.phone_number %></div>
+              <div class="three wide column"><b>So CMND:</b></div>
+              <div class="thirteen wide column"><%= student.student_profile.identity_card_number %></div>
+              <div class="three wide column"><b>Ngay dang ky:</b></div>
+              <div class="thirteen wide column"><%= student.created_at.to_date %></div>
+              <div class="three wide column"><b>Ngay vao:</b></div>
+              <% if student.check_in_date %>
+                <div class="thirteen wide column"><%= student.check_in_date.to_date %></div>
+              <% else %>
+                <div class="thirteen wide column"></div>
+              <% end %>
+              <div class="three wide column"><b>Thoi gian gia han:</b></div>
+              <div class="thirteen wide column"><%= student.extended_time %></div>
+              <div class="three wide column"><b>Trang thai:</b></div>
+              <div class="thirteen wide column"><%= student.status %></div>
+              </div>
             </div>
           </div>
         </div>
-        <div class="description eleven wide column">
-          <div class="ui header" style="margin-bottom: 2rem;"><%= student.student_profile.name %></div>
-          <div class="student-info ui grid">
-          <div class="three wide column"><b>Ngay sinh:</b></div>
-          <% if student.student_profile.date_of_birth %>
-            <div class="thirteen wide column"><%= student.student_profile.date_of_birth.to_date %></div>
-          <% else %>
-            <div class="thirteen wide column"></div>
-          <% end %>
-          <div class="three wide column"><b>Gioi tinh:</b></div>
-          <div class="thirteen wide column"><%= student.student_profile.gender %></div>
-          <div class="three wide column"><b>Que quan:</b></div>
-          <div class="thirteen wide column"><%= student.student_profile.address %></div>
-          <div class="three wide column"><b>SDT:</b></div>
-          <div class="thirteen wide column"><%= student.student_profile.phone_number %></div>
-          <div class="three wide column"><b>So CMND:</b></div>
-          <div class="thirteen wide column"><%= student.student_profile.identity_card_number %></div>
-          <div class="three wide column"><b>Ngay dang ky:</b></div>
-          <div class="thirteen wide column"><%= student.created_at.to_date %></div>
-          <div class="three wide column"><b>Ngay vao:</b></div>
-          <% if student.check_in_date %>
-            <div class="thirteen wide column"><%= student.check_in_date.to_date %></div>
-          <% else %>
-            <div class="thirteen wide column"></div>
-          <% end %>
-          <div class="three wide column"><b>Thoi gian gia han:</b></div>
-          <div class="thirteen wide column"><%= student.extended_time %></div>
-          <div class="three wide column"><b>Trang thai:</b></div>
-          <div class="thirteen wide column"><%= student.status %></div>
+        <div class="actions" style="padding: 0.7rem 1rem;">
+          <div class="ui black cancel button">
+            Cancel
           </div>
-        </div>
-      </div>
-    </div>
-    <div class="actions" style="padding: 0.7rem 1rem;">
-      <div class="ui black cancel button">
-        Cancel
-      </div>
-      <button class="ui youtube button" style="background-color: #db2828" onclick="deleteStudent(<%= student.id %>)">
-        Delete
-      </button>
-      <%= link_to "/manager/student-management/#{student.id}/edit", class: "ui positive right labeled icon button", data: { turbolinks: false } do %>
-        Edit
-        <i class="arrow right icon"></i>
-      <% end %>
+          <button class="ui youtube button" style="background-color: #db2828" onclick="deleteStudent(<%= student.id %>)">
+            Delete
+          </button>
+          <%= link_to "/manager/student-management/#{student.id}/edit", class: "ui positive right labeled icon button", data: { turbolinks: false } do %>
+            Edit
+            <i class="arrow right icon"></i>
+          <% end %>
 
-    </div>
-  </div>
-  <div class="ui basic modal confirm-delete" id="confirm-delete-<%= student.id %>">
-    <div class="ui icon header">
-      <i class="archive icon"></i>
-      Remove student
-    </div>
-    <div class="content">
-      <p>Do you want to remove this student?</p>
-    </div>
-    <div class="actions">
-      <div class="ui red basic cancel inverted button">
-        <i class="remove icon"></i>
-        No
-      </div>
-      <%= link_to "/manager/student-management/#{student.id}/delete", method: :delete do %>
-        <div class="ui green ok inverted button">
-          <i class="checkmark icon"></i>
-          Yes
         </div>
-      <% end %>
-    </div>
+      </div>
+      <div class="ui basic modal confirm-delete" id="confirm-delete-<%= student.id %>">
+        <div class="ui icon header">
+          <i class="archive icon"></i>
+          Remove student
+        </div>
+        <div class="content">
+          <p>Do you want to remove this student?</p>
+        </div>
+        <div class="actions">
+          <div class="ui red basic cancel inverted button">
+            <i class="remove icon"></i>
+            No
+          </div>
+          <%= link_to "/manager/student-management/#{student.id}/delete", method: :delete do %>
+            <div class="ui green ok inverted button">
+              <i class="checkmark icon"></i>
+              Yes
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </tbody>
+</table>
+<% if is_full %>
+  <div class="mt-4" style="float: right">
+    <%= paginate students, remote: true, :params => { :controller => 'student_management', :action => 'index' } %>
   </div>
 <% end %>

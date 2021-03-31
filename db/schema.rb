@@ -62,7 +62,7 @@ ActiveRecord::Schema.define(version: 2021_03_29_165326) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "student_id", null: false
-    t.datetime "return_date", default: "2021-03-30 00:00:00"
+    t.datetime "return_date", default: "2021-03-31 00:00:00"
     t.string "note"
     t.index ["student_id"], name: "index_form_requests_on_student_id"
   end

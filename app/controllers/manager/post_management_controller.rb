@@ -20,10 +20,12 @@ class Manager::PostManagementController < ApplicationController
     @post_management = Post.new
     if @post.save
       respond_to do |format|
-        format.js {render partial: 'list_post_item', locals: { post: @post, index: Post.all.count, post_management: @post_management } } 
+        format.json {render json: {message: 'Created post successfully'}, status: :ok } 
       end
     else
-      render :new
+      respond_to do |format|
+        format.json {render json: {message: 'Created post fail'}, status: :bad_request } 
+      end
     end
   end
 
@@ -38,7 +40,9 @@ class Manager::PostManagementController < ApplicationController
 
   def index
     @post_management = Post.new
-    @posts = Post.all.page(params[:page])
+    @posts = Post.all.order('created_at DESC').page(params[:page])
+    @page = 1 if params[:page].blank?
+    @page = params[:page].to_i if params[:page].present?
   end
 
   def change_post_status

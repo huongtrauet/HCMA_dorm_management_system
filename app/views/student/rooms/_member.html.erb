@@ -1,7 +1,9 @@
 <div class="room_member">
-  <h3 class="ui dividing header">
-    Student Information
-  </h3>
+  <% if current_user.room.id != 1 %>
+    <h3 class="ui dividing header">
+      Student Information
+    </h3>
+  <% end %>
   <div class="content">
     <div class="ui special cards">
       <% if @members != nil  %>

@@ -2,29 +2,19 @@ class NotificationsController < ApplicationController
   before_action :set_notification, only: %i[ show edit update destroy ]
   skip_before_action :verify_authenticity_token
 
-  # GET /notifications or /notifications.json
-  def index
-    @notifications = Notification.all
-  end
-
-  # GET /notifications/1 or /notifications/1.json
-  def show
-  end
-
-  # GET /notifications/new
-  def new
-    @notification = Notification.new
-  end
-
-  # GET /notifications/1/edit
-  def edit
-  end
-
   def count_unread_noti
     # byebug
     @unread_noti = current_user.notifications.where(is_read: false).count
     respond_to do |format|
       format.json { render json: {unread: @unread_noti}}
+    end
+  end
+
+  def count_total_noti
+    # byebug
+    @total = current_user.notifications.count
+    respond_to do |format|
+      format.json { render json: {total: @total}}
     end
   end
 
@@ -62,6 +52,21 @@ class NotificationsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to notifications_url, notice: "Notification was successfully destroyed." }
       format.json { head :no_content }
+    end
+  end
+
+  def read_noti
+    @noti = Notification.find(params[:id])
+    if @noti.is_read == false
+      if @noti.update_attribute(:is_read, true)
+        respond_to do |format|
+          format.json { render json: {}, status: :ok}
+        end
+      else 
+        respond_to do |format|
+          format.json { render json: {}, status: :bad_request}
+        end
+      end
     end
   end
 

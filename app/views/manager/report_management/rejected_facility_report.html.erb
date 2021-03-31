@@ -223,7 +223,7 @@
 
   const urlParams = new URLSearchParams(window.location.search);
   const focusParam = urlParams.get('focus_id');
-  if (focusParam != null) {
+  if (document.querySelector(`#report_${focusParam}`)) {
     document.querySelector(`#report_${focusParam}`).classList.add("active");
   }
 </script>

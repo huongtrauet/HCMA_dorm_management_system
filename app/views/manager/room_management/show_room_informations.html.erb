@@ -12,7 +12,7 @@
             <div class="required ui field field_line" >
               <div class="ui field" id="room_field_name">
                 <label for="room_name">Room name</label>
-                <input type="text" id="room_name" name="room_name" style="display:block" required placeholder="Room name" value="<%= @room.room_name %>" onfocusout="checkDuplicate(this)"/>
+                <input type="text" id="room_name" name="room_name" style="display:block" required placeholder="Room name" value="<%= @room.room_name %>" onfocusout="checkDuplicate(this)" disabled/>
               </div>
             </div>
             <div class="required field field_line">

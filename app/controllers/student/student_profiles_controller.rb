@@ -32,7 +32,7 @@ class Student::StudentProfilesController < StudentMainController
   end
 
   def update
-    if current_user.student_profile.update(student_params[:student_profile_attributes])
+    if current_user.student_profile.update(student_profile_params)
       respond_to do |format|
         format.json {render json: {message: "Update your profile successfully!!"}, status: :ok}
       end
@@ -44,9 +44,14 @@ class Student::StudentProfilesController < StudentMainController
   end
 
   def update_avatar
-    current_user.student_profile.update_attribute(:avatar, params[:avatar])
-    respond_to do |format|
-      format.json { render json: {message: "Update avatar successfully!!"}, status: :ok}
+    if current_user.student_profile.update_attribute(:avatar, params[:avatar])
+      respond_to do |format|
+        format.json { render json: {message: "Update avatar successfully!!"}, status: :ok}
+      end
+    else
+      respond_to do |format|
+        format.json { render json: {message: "Update avatar failed!!"}, status: :bad_request}
+      end
     end
   end
 
@@ -82,7 +87,14 @@ class Student::StudentProfilesController < StudentMainController
       # params.fetch(:student_profile, {})
       params.require(:student_profile).permit :email, :class_name, :name, :date_of_birth, :identity_card_number, :address, :phone_number, :gender
     end
-    def student_params
-      params.require(:student).permit(student_profile_attributes: [:email, :class_name, :date_of_birth, :identity_card_number, :address, :phone_number, :gender])
+    def student_profile_params
+      profile_params = params.require(:student).require(:student_profile_attributes).permit(:email, :class_name, :date_of_birth, :identity_card_number, :address, :phone_number, :gender)
+      profile_params.merge!(class_name: nil) if profile_params[:class_name] == ""
+      profile_params.merge!(date_of_birth: nil) if profile_params[:date_of_birth] == ""
+      profile_params.merge!(identity_card_number: nil) if profile_params[:identity_card_number] == ""
+      profile_params.merge!(address: nil) if profile_params[:address] == ""
+      profile_params.merge!(phone_number: nil) if profile_params[:phone_number] == ""
+      profile_params.merge!(gender: nil) if profile_params[:gender] == ""
+      return profile_params
     end
 end

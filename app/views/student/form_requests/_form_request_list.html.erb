@@ -98,7 +98,7 @@
     $('#new_form_request').modal('show');
   }
   function viewMoreFormRequest(request_id){
-    if(focusParam) {
+    if(document.querySelector(`#report_${focusParam}`)){
       document.querySelector(`#report_${focusParam}`).classList.remove("active");
     }
     $('#form_request_detail').modal('show');
@@ -180,7 +180,7 @@
 
   const urlParams = new URLSearchParams(window.location.search);
   const focusParam = urlParams.get('focus_id');
-  if (focusParam != null) {
+  if (document.querySelector(`#report_${focusParam}`)) {
     document.querySelector(`#report_${focusParam}`).classList.add("active");
   }
 </script>

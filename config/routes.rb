@@ -30,7 +30,9 @@ Rails.application.routes.draw do
 
 
     get "/student-management", to: "student_management#index"
-    get "/student-management/students", to: "student_management#search_student"
+    put "/student-management/reset-ava", to: "student_management#reset_ava"
+    post "/student-management/:id/update-avatar", to: "student_management#update_avatar"
+    get "/student-management/search-students", to: "student_management#search_student"
     get "/student-management/:id/show", to: "student_management#show"
     post "/student-management/create-member", to: "student_management#create_room_member"
     post "/student-management/create", to: "student_management#create"
@@ -144,4 +146,6 @@ Rails.application.routes.draw do
   end
 
   get "/notifications/unread", to: "notifications#count_unread_noti"
+  get "/notifications/total", to: "notifications#count_unread_noti"
+  put "/notifications/:id/read", to: "notifications#read_noti"
 end

@@ -6,10 +6,14 @@
       <%= render "student/rooms/room_sidebar" %>
     </div>
     <div class="twelve wide column" style="padding-top: 5em">
-      <h3>
-        <strong>Room:</strong>
-        <%= @room.room_name %>
-      </h3>
+      <% if current_user.room.id != 1 %>
+        <h3>
+          <strong>Room:</strong>
+          <%= @room.room_name %>
+        </h3>
+      <% else %>
+        <h3>Đang sắp xếp..</h3>
+      <% end %>
       <div id="room_member">
         <%= render "student/rooms/member" %>
       </div>

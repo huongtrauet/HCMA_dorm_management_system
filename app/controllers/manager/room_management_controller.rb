@@ -4,14 +4,20 @@ class Manager::RoomManagementController < ManagerMainController
   # all room in room_management
   def index
     @rooms = Room.where.not(id: 1).page(params[:page])
+    @page = 1 if params[:page].blank?
+    @page = params[:page].to_i if params[:page].present?
   end
 
   def update
     @room = Room.find(params[:id])
     if @room.update(update_room_params)
-      format.json { render json: { message: "Update success" }, status: :ok}
+      respond_to do |format|
+        format.json { render json: { message: "Update success" }, status: :ok}
+      end
     else
-      format.json { render json: { message: "Update fail" }, status: :bad_request}
+      respond_to do |format|
+        format.json { render json: { message: "Update fail" }, status: :bad_request}
+      end
     end
   end
 
@@ -27,7 +33,9 @@ class Manager::RoomManagementController < ManagerMainController
 
   def show_room_service_charges
     @room = Room.find(params[:room_id])
-    @room_service_charges = @room.service_charges.order("year DESC").order("month DESC")
+    @room_service_charges = @room.service_charges.order("year DESC").order("month DESC").page(params[:page])
+    @page = 1 if params[:page].blank?
+    @page = params[:page].to_i if params[:page].present?
   end
 
   def show_room_informations
@@ -76,7 +84,11 @@ class Manager::RoomManagementController < ManagerMainController
   end
 
   def find_room
-    if params[:q] 
+    if params[:q] == "" or params[:q] == nil
+      respond_to do |format|
+        format.json {render json: {is_all: true}, status: :bad_request} 
+      end
+    elsif params[:q] 
       @rooms = Room.where.not(id: 1).ransack(room_name_or_status_or_room_type_cont: params[:q]).result
       if @rooms
         respond_to do |format|
@@ -86,11 +98,6 @@ class Manager::RoomManagementController < ManagerMainController
         respond_to do |format|
           format.json {render json: {message: 'Room not found'}, status: :bad_request}
         end
-      end
-    elsif params[:q] == "" or params[:q] == nil
-      @rooms = Room.where.not(id: 1)
-      respond_to do |format|
-        format.js {render partial: 'room_table', locals: { rooms: @rooms } } 
       end
     end
   end
@@ -109,7 +116,7 @@ class Manager::RoomManagementController < ManagerMainController
   end
 
   def update_room_params
-    params.permit(:room_name, :room_type, :number_student, :max_number_student, :gender)
+    params.permit(:room_type, :number_student, :max_number_student, :gender)
   end
 
 end

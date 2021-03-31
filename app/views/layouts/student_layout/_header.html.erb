@@ -9,23 +9,24 @@
           <%= link_to "Request", student_requests_path, class: "item", id: "student_requests_path", data: { turbolinks: false } %>
           <div class="ui floating labeled icon dropdown button" style="position: relative; background-color: #ffffff" id="noti_button" >
             <img src="/assets/bell.png" style="width: 1.5rem; height: 1.5rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)" onclick="showNotiList()"/>
-            <% if current_user.notifications.where(is_read: 'false').count != 0 %>
-              <div id="unread" class="floating ui red label" style="top: 0.5rem; left: 1.5rem; padding: 0.3rem; border-radius: 0.2rem;"><%= current_user.notifications.where(is_read: 'false').count %></div>
-            <% end %>
+            <div id="unread" class="floating ui red label" style="top: 0.5rem; left: 1.5rem; padding: 0.3rem; border-radius: 0.2rem;"><%= current_user.notifications.where(is_read: 'false').count %></div>
             <div class="ui menu">
               <h3 style="margin: 1rem;">Thong bao</h3>
-              <div id="list_noti">
+              <div id="list_noti" style="max-height: 30rem; overflow: auto;">
               <% if current_user.notifications.length > 0 %>
-                <% current_user.notifications.each do |notification| %>
-                  <div class="item noti_item" style="width: 20rem; height: 4.5rem">
-                    <% if notification.noti_type == "complaint_report" %>
-                      <%= link_to notification.message, "/student/requests/complaint?focus_id=#{notification.report_id}", style: "width: 17rem; height: 4.5rem; overflow: hidden;text-overflow: ellipsis;word-wrap: break-word;-webkit-line-clamp: 2;-webkit-box-orient: vertical;line-height: 2.25rem;  white-space: pre-wrap; display: flex; align-items: center", data: { turbolinks: false } %>
-                    <% elsif notification.noti_type == "facility_report" %>
-                      <%= link_to notification.message, "/student/requests/facility?focus_id=#{notification.report_id}", style: "width: 17rem; height: 4.5rem; overflow: hidden;text-overflow: ellipsis;word-wrap: break-word;-webkit-line-clamp: 2;-webkit-box-orient: vertical;line-height: 2.25rem;  white-space: pre-wrap; display: flex; align-items: center", data: { turbolinks: false } %>
-                    <% else %>
-                      <%= link_to notification.message, "/student/requests/form?focus_id=#{notification.report_id}", style: "width: 17rem; height: 4.5rem; overflow: hidden;text-overflow: ellipsis;word-wrap: break-word;-webkit-line-clamp: 2;-webkit-box-orient: vertical;line-height: 2.25rem;  white-space: pre-wrap; display: flex; align-items: center", data: { turbolinks: false } %>
-                    <% end %>
-                  </div>
+                <% current_user.notifications.order('created_at DESC').each do |notification| %>
+                  <% if notification.is_read %>
+                    <div class="item noti_item" style="width: 20rem; max-height: 9.5rem; overflow: hidden; display: block">
+                      <div onclick="readNotification(<%= notification.id %>, '<%= notification.noti_type %>', <%= notification.report_id || 0 %>, <%= notification.page || 0 %>)" style= "width: 17rem; line-height: 1.5rem;  white-space: pre-wrap;"><%= notification.message %></div>
+                      <p style="font-size: 0.7rem; color: #b8b8b8"><%= time_ago(notification.created_at) %></p>
+                    </div>
+                  <% else %>
+                    <div class="item noti_item" style="width: 20rem; max-height: 9.5rem; overflow: hidden; display: block; background-color: #e0e0e0">
+                      <div onclick="readNotification(<%= notification.id %>, '<%= notification.noti_type %>', <%= notification.report_id || 0 %>, <%= notification.page || 0 %>)" style= "width: 17rem; overflow: hidden;text-overflow: ellipsis;word-wrap: break-word;-webkit-line-clamp: 2;-webkit-box-orient: vertical;line-height: 2.25rem;  white-space: pre-wrap;"><%= notification.message %></div>
+                      <p style="font-size: 0.7rem; color: #b8b8b8"><%= time_ago(notification.created_at) %></p>
+                    </div>
+                  <% end %>
+                  
                 <% end %>
               <% elsif current_user.notifications.length == 0 %>
                 <div class="item noti_item" style="width: 20rem; height: 4.5rem" id="no_notification">
@@ -81,6 +82,18 @@
 </script>
 <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
 <script>
+    $.ajax({
+      type: 'GET',
+      url: '/notifications/unread',
+      success: function(result){
+        if(result.unread == 0) {
+          $("#unread").hide()
+        }
+      }, 
+      error: function (error) {
+
+      }
+    })
 
     let current_channel = document.querySelector("#current_channel").value;
     Pusher.logToConsole = true;
@@ -92,34 +105,59 @@
 
     var channel = pusher.subscribe(current_channel);
     channel.bind('new', function(data){
-        if(data.notification.noti_type == "complaint_report")
-          $('#list_noti').prepend(`<div class="item noti_item" style="width: 20rem; height: 4.5rem">
-                                <a href="/student/requests/complaint?focus_id=${data.notification.report_id}&page=${data.notification.page}" data-turbolinks="false">${data.notification.message}</a>
-                                </div`)
-        else if (data.notification.noti_type == "facility_report")
-          $('#list_noti').prepend(`<div class="item noti_item" style="width: 20rem; height: 4.5rem">
-                                <a href="/student/requests/facility?focus_id=${data.notification.report_id}" data-turbolinks="false">${data.notification.message}</a>
-                                </div`)
-        else if (data.notification.noti_type == "form_request")
-          $('#list_noti').prepend(`<div class="item noti_item" style="width: 20rem; height: 4.5rem">
-                                <a href="/student/requests/form?focus_id=${data.notification.report_id}" data-turbolinks="false">${data.notification.message}</a>
-                                </div`)
-        $("#no_notification").remove();
-        $.ajax({
-          type: 'GET',
-          url: '/notifications/unread',
-          success: function(result){
-            $("#unread").html(result.unread)
-          }, 
-          error: function (error) {
-
+      if (data.notification.is_read) {
+        $('#list_noti').prepend(`<div class="item noti_item" style="width: 20rem; max-height: 9.5rem; overflow: hidden; display: block; background-color: #e0e0e0">
+                                <div onclick="readNotification(${data.notification.id}, '${data.notification.noti_type}', ${data.notification.report_id || 0}, ${data.notification.page || 0})" style= "width: 17rem; overflow: hidden;text-overflow: ellipsis;word-wrap: break-word;-webkit-line-clamp: 2;-webkit-box-orient: vertical;line-height: 2.25rem;  white-space: pre-wrap; display: flex; align-items: center">${data.notification.message}</div>
+                                <p style="font-size: 0.7rem; color: #b8b8b8">Just now</p>
+                              </div>`)
+      } else {
+        $('#list_noti').prepend(`<div class="item noti_item" style="width: 20rem; max-height: 9.5rem; overflow: hidden; display: block; background-color: #e0e0e0">
+                                <div onclick="readNotification(${data.notification.id}, '${data.notification.noti_type}', ${data.notification.report_id || 0}, ${data.notification.page || 0})" style= "width: 17rem; overflow: hidden;text-overflow: ellipsis;word-wrap: break-word;-webkit-line-clamp: 2;-webkit-box-orient: vertical;line-height: 2.25rem;  white-space: pre-wrap; display: flex; align-items: center">${data.notification.message}</div>
+                                <p style="font-size: 0.7rem; color: #b8b8b8">Just now</p>
+                              </div>`)
+      }
+      
+      $("#no_notification").remove();
+      $.ajax({
+        type: 'GET',
+        url: '/notifications/unread',
+        success: function(result){
+          if (result.unread == 0) {
+            $("#unread").hide()
+          } else {
+            $("#unread").show()
           }
-        })
+          $("#unread").html(result.unread)
+        }, 
+        error: function (error) {
+
+        }
+      })
     });
-    function readNoti(item){
-      $(item).css("background-color", "white");
-    }
-    
+    function readNotification(noti_id, noti_type, report_id, page) {
+      // $(item).css("background-color", "white");
+      let redirect_url = ''
+      if (noti_type == "complaint_report") {
+        redirect_url = `/student/requests/complaint?focus_id=${report_id}&page=${page}`
+      } else if (noti_type == "facility_report") {
+        redirect_url = `/student/requests/facility?focus_id=${report_id}&page=${page}`
+      } else if (noti_type == "form_request") {
+        redirect_url = `/student/requests/form?focus_id=${report_id}&page=${page}`
+      } else if (noti_type == "add_student_to_room") {
+        redirect_url = `/student/my-room`
+      }
+      $.ajax({
+        type: "PUT",
+        url: `/notifications/${noti_id}/read`,
+        success: function(result){
+          window.location = redirect_url
+        },
+        error: function (error) {
+          toastr.error('Something went wrong')
+        }
+      })
+      
+    }    
 </script>
 <style>
   .active.selected {

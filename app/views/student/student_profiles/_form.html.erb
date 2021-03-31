@@ -6,11 +6,11 @@
           <div class="left_column">
             <div class="ava">
               <div class="ava_image">
-              <% if @student.student_profile.avatar.url != nil %>
-                <img class="ui medium circular image" id="preview_image_card" src="<%= @student.student_profile.avatar.url %>" style="border-radius: 50%; height: 10.4rem; width: 10.4rem">
-              <% else %>
-                <img class="ui medium circular image" id="preview_image_card" src="/assets/profile.png" style="border-radius: 50%; height: 10.4rem; width: 10.4rem">
-              <% end %>
+                <% if @student.student_profile.avatar.url != nil %>
+                  <img class="ui medium circular image" id="preview_image_card" src="<%= @student.student_profile.avatar.url %>" style="border-radius: 50%; height: 10.4rem; width: 10.4rem">
+                <% else %>
+                  <img class="ui medium circular image" id="preview_image_card" src="/assets/profile.png" style="border-radius: 50%; height: 10.4rem; width: 10.4rem">
+                <% end %>
               </div>
               <div class="ava_icon">
                 <button id="insert_image_button" class="ui icon button" style="padding: 1px 11px">
@@ -102,12 +102,12 @@
               <div class="ui dividing header">
                 Confirmation
               </div>
-              <div class="ui checkbox">
-                <input type="checkbox" name="example">
+              <div class="ui field checkbox">
+                <input type="checkbox" name="confirmation">
                 <label>You are sure that the information above is correct</label>
               </div>
               <div class="field" style="float: right; margin-top: 4em">
-                <div class="ui blue submit button" onclick="updateSubmit()">Submit</div>
+                <div class="ui blue submit button" >Submit</div>
               </div>
             <% end %>
           </div>
@@ -153,9 +153,10 @@
     })
   }
 
-  function updateSubmit() {
+  function updateSubmit(e) {
     let myForm = document.getElementById('profile_form');
     let formData = new FormData(myForm);
+    e.preventDefault();
     $.ajax({
       type: "PUT",
       url: "/student/student-profile/update",
@@ -169,10 +170,62 @@
         toastr.success(JSON.parse(result).message)
       },
       error: function (error) {
-        toastr.error(JSON.parse(error).responseJSON.message)
+        console.log(error)
+        toastr.error(JSON.parse(error.responseText).message)
       }
     })
   }
+
+   $('#profile_form').off('submit').submit(function(e){
+    if($('#profile_form').form('is valid')) {
+      updateSubmit(e);
+    }
+  })
+
+  $('#profile_form')
+    .form({
+      fields: {
+        confirmation: {
+          identifier: 'confirmation',
+          rules: [
+            {
+              type: 'checked',
+              prompt: 'Please check confirmation !'
+            }
+          ]
+        },
+        'student[student_profile_attributes][email]': {
+          identifier: 'student[student_profile_attributes][email]',
+          rules: [
+            {
+              type: 'email',
+              prompt: 'Email sai dinh dang !'
+            }
+          ]
+        },
+        'student[student_profile_attributes][identity_card_number]': {
+          identifier: 'student[student_profile_attributes][identity_card_number]',
+          rules: [
+            {
+              type: 'regExp[/([0-9]{9})/]',
+              prompt: 'So cmt sai dinh dang !'
+            }
+          ]
+        },
+        // 'student[student_profile_attributes][phone_number]': {
+        //   identifier: 'student[student_profile_attributes][phone_number]',
+        //   rules: [
+        //     {
+        //       type: 'regExp[/(03|05|07|08|09|01)+([0-9]{8})\b/]',
+        //       prompt: 'So dien thoai khong ton tai !'
+        //     }
+        //   ]
+        // },
+      },
+      on: 'blur',
+      inline: true
+    })
+  ;
 </script>
 <style>
 #insert_image_button:hover #lable_image{

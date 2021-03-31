@@ -47,12 +47,15 @@ class Manager::ReportManagementController < ApplicationController
     student_id = @complaint_report.student_id
     receiver_student = Student.find(student_id)
     if @complaint_report.update(deny_report_params.merge(status: 'REJECTED'))
+      last_index = receiver_student.complaint_reports.last.index
+      index = @complaint_report.index
+      page = ((last_index - index + 1).to_f / Settings.pagination).ceil
       @pending_reports = ComplaintReport.where(status: "PENDING")
       respond_to do |format|
         format.js {render partial: 'report_table', locals: { reports: @pending_reports } } 
       end
       if current_user.class.name == "Manager"
-        Notification.create(message: "Sorry, Your report was rejected", sender: current_user, receiver: receiver_student, noti_type: "complaint_report", report_id: @complaint_report.id )
+        Notification.create(message: "Sorry, Your report was rejected", sender: current_user, receiver: receiver_student, noti_type: "complaint_report", report_id: @complaint_report.id, page: page )
       end
     else
       respond_to do |format|
@@ -67,11 +70,14 @@ class Manager::ReportManagementController < ApplicationController
     receiver_student = Student.find(student_id)
     if @complaint_report.update_attribute(:status, "APPROVED")
       @pending_reports = ComplaintReport.where(status: "PENDING")
+      last_index = receiver_student.complaint_reports.last.index
+      index = @complaint_report.index
+      page = ((last_index - index + 1).to_f / Settings.pagination).ceil
       respond_to do |format|
         format.js {render partial: 'report_table', locals: { reports: @pending_reports } } 
       end
       if current_user.class.name == "Manager"
-        Notification.create(message: "Your report was approved", sender: current_user, receiver: receiver_student, noti_type: "complaint_report", report_id: @complaint_report.id )
+        Notification.create(message: "Your report was approved", sender: current_user, receiver: receiver_student, noti_type: "complaint_report", report_id: @complaint_report.id, page: page)
       end
     else
       respond_to do |format|
@@ -116,12 +122,15 @@ class Manager::ReportManagementController < ApplicationController
     student_id = @facility_report.student_id
     receiver_student = Student.find(student_id)
     if @facility_report.update(deny_report_params.merge(status: 'REJECTED'))
+      last_index = receiver_student.facility_reports.last.index
+      index = @facility_report.index
+      page = ((last_index - index + 1).to_f / Settings.pagination).ceil
       @pending_reports = FacilityReport.where(status: "PENDING")
       respond_to do |format|
         format.js {render partial: 'report_table', locals: { reports: @pending_reports } } 
       end
       if current_user.class.name == "Manager"
-        Notification.create(message: "Sorry, your report was rejectd", sender: current_user, receiver: receiver_student, noti_type: "facility_report", report_id: @facility_report.id )
+        Notification.create(message: "Sorry, your report was rejectd", sender: current_user, receiver: receiver_student, noti_type: "facility_report", report_id: @facility_report.id, page: page )
       end
     else
       respond_to do |format|
@@ -142,12 +151,15 @@ class Manager::ReportManagementController < ApplicationController
     student_id = @facility_report.student_id
     receiver_student = Student.find(student_id)
     if @facility_report.update_attribute(:status, "APPROVED")
+      last_index = receiver_student.facility_reports.last.index
+      index = @facility_report.index
+      page = ((last_index - index + 1).to_f / Settings.pagination).ceil
       @pending_reports = ComplaintReport.where(status: "PENDING")
       respond_to do |format|
         format.js {render partial: 'report_table', locals: { reports: @pending_reports } } 
       end
       if current_user.class.name == "Manager"
-        Notification.create(message: "Your report was approved", sender: current_user, receiver: receiver_student, noti_type: "facility_report", report_id: @facility_report.id )
+        Notification.create(message: "Your report was approved", sender: current_user, receiver: receiver_student, noti_type: "facility_report", report_id: @facility_report.id, page: page )
       end
     else
       respond_to do |format|
@@ -191,15 +203,18 @@ class Manager::ReportManagementController < ApplicationController
 
   def reject_form_request
     @form_request = FormRequest.find(deny_report_params[:id])
-    student_id = @facility_report.student_id
+    student_id = @form_request.student_id
     receiver_student = Student.find(student_id)
     if @form_request.update(deny_report_params.merge(status: 'REJECTED'))
+      last_index = receiver_student.form_requests.last.index
+      index = @form_request.index
+      page = ((last_index - index + 1).to_f / Settings.pagination).ceil
       @pending_requests = FormRequest.where(status: "PENDING")
       respond_to do |format|
         format.js {render partial: 'form_request_table', locals: { requests: @pending_requests } } 
       end
       if current_user.class.name == "Manager"
-        Notification.create(message: "Sorry, your request was rejected", sender: current_user, receiver: receiver_student, noti_type: "form_reuqest", report_id: @form_request.id )
+        Notification.create(message: "Sorry, your request was rejected", sender: current_user, receiver: receiver_student, noti_type: "form_request", report_id: @form_request.id, page: page)
       end
     else
       respond_to do |format|
@@ -217,13 +232,18 @@ class Manager::ReportManagementController < ApplicationController
 
   def approve_form_request
     @form_request = FormRequest.find(approve_form_request_params[:id])
+    student_id = @form_request.student_id
+    receiver_student = Student.find(student_id)
     if @form_request.update(approve_form_request_params.merge(status: 'APPROVED'))
+      last_index = receiver_student.form_requests.last.index
+      index = @form_request.index
+      page = ((last_index - index + 1).to_f / Settings.pagination).ceil
       @form_requests = FormRequest.where(status: "PENDING")
       respond_to do |format|
         format.js {render partial: 'form_request_table', locals: { requests: @form_requests } } 
       end
       if current_user.class.name == "Manager"
-        Notification.create(message: "Your request was approved", sender: current_user, receiver: receiver_student, noti_type: "form_reuqest", report_id: @form_request.id )
+        Notification.create(message: "Your request was approved", sender: current_user, receiver: receiver_student, noti_type: "form_request", report_id: @form_request.id, page: page )
       end
     else
       respond_to do |format|

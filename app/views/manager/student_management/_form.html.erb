@@ -4,15 +4,22 @@
       <div class="ui grid">
         <div class="five wide column">
           <div class="left_column">
-            <div class="ava">
+            <div class="ava" style="width: 100%">
               <div class="ava_image">
-                <img class="ui medium circular image" src="/assets/ava.jpg">
+                <% if @student.student_profile.avatar.url != nil %>
+                  <img class="ui medium circular image" id="preview_image_card" src="<%= @student.student_profile.avatar.url %>" style="border-radius: 50%; height: 10.4rem; width: 10.4rem; margin: 0 auto">
+                <% else %>
+                  <img class="ui medium circular image" id="preview_image_card" src="/assets/profile.png" style="border-radius: 50%; height: 10.4rem; width: 10.4rem; margin: 0 auto">
+                <% end %>
               </div>
               <div class="ava_icon">
-                <button class="ui icon button">
-                  <i class="edit outline icon"></i>
+                <button id="insert_image_button" class="ui icon button" style="padding: 1px 11px">
+                  <input style="	width: 0.1px;	height: 0.1px;	opacity: 0;	overflow: hidden;	position: absolute;	z-index: -1;" type="file" class="inputfile" id="embedpollfileinput1" onchange="generatePreviewImage(this)" style="width: 100%; height: 100%" multiple="true" accept="image/png, image/jpeg" name="images_input" />
+                  <label id="lable_image" for="embedpollfileinput1" class="ui button" style="margin: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; padding: 0">
+                    <i class="edit outline icon" style="margin: 0"></i>
+                  </label>
                 </button>
-                <button class="ui icon button">
+                <button class="ui icon button" onclick="resetAva()">
                   <i class="trash alternate outline icon"></i>
                 </button>
               </div>
@@ -24,7 +31,7 @@
             <h3 class="ui dividing header">
               Student Information
             </h3>
-            <%= form_for @student, html: {class: 'ui form'}, url: {controller: "student_management", action: "update"}  do |student|%>
+            <%= form_for @student, html: {class: 'ui form segment', style:"border: none; -webkit-box-shadow: none;"}, url: {controller: "student_management", action: "update"}  do |student|%>
                 <% if @student.errors.any? %>
                   <div id="error_explanation">
                     <h2><%= pluralize(@student.errors.count, "error") %> prohibited this student_profile from being saved:</h2>
@@ -35,7 +42,8 @@
                     </ul>
                   </div>
                 <% end %>
-                <div class="two fields">
+                <div class="two fields"> 
+                  <input type="hidden" name="student_id" id="student_id" value="<%= @student.id %>"/>
                   <div class="required field field_line">
                     <%= student.label :student_id_number %>
                     <%= student.text_field :student_id_number, class: "input", required: true, placeholder: "Student it number" %>
@@ -59,11 +67,11 @@
                     <%= f.label :name %>
                     <%= f.text_field :name, class: "input", required: true, placeholder: "Full name" %>
                   </div>
-                  <div class="required field field_line">
+                  <div class="field field_line">
                     <div class="two fields">
-                      <div class="required field">
+                      <div class="field">
                         <label>Class name</label>
-                        <%= f.text_field :class_name, class: "input", required: true, placeholder: "Clas name" %>
+                        <%= f.text_field :class_name, class: "input", placeholder: "Clas name" %>
                       </div>
                       <div class="field">
                         <label>Email</label>
@@ -105,16 +113,25 @@
                     </div>
                   </div>
                 <% end %>
-          
+                <div class="fields field_line">
+                  <div class="eight wide field">
+                    <label>Check in date</label>
+                    <%= student.date_field :check_in_date, class: "input date", data: {provide: "datepicker"}%>
+                  </div>
+                  <div class="required eight wide field">
+                    <label>Thoi gian gia han (Tháng)</label>
+                    <%= student.text_field :extended_time, class: "input", maxlength: "16", placeholder: "Identity card number" %>
+                  </div>
+                </div>
                 <div class="ui dividing header">
                   Confirmation
                 </div>
-                <div class="ui checkbox">
-                  <input type="checkbox" name="example">
+                <div class="ui checkbox field">
+                  <input type="checkbox" name="confirmation">
                   <label>You are sure that the information above is correct</label>
                 </div>
                 <div class="field" style="float: right; margin-top: 4em">
-                  <%= student.submit "Save change", class: "ui primary button right"%>
+                  <%= student.submit "Save change", class: "ui submit primary button right"%>
                 </div>
               <% end %>
           </div>
@@ -125,4 +142,77 @@
 </div>
 <script>
   $('#select_room').dropdown()
+  function resetAva(){
+    $.ajax({
+      type: "PUT",
+      url: "/manager/student-management/reset-ava",
+      data: {
+        "id": $('#student_id').val()
+      },
+      success: function(result){
+        document.getElementById("preview_image_card").src = "/assets/profile.png"
+        toastr.success(result.message)
+      },
+      error: function(error){
+          toastr.success(error.message)
+      }
+    })
+  }
+
+    function generatePreviewImage(image){
+      document.getElementById("preview_image_card").src = URL.createObjectURL(image.files[0])
+      let form = new FormData()
+      let student_id = $('#student_id').val()
+      form.set('avatar', image.files[0])
+      $.ajax({
+        type: "POST",
+        url: `/manager/student-management/${student_id}/update-avatar`,
+        processData: false,
+        contentType: false,
+        cache: false,
+        mimeType: 'multipart/form-data',
+        data: form,
+        success: function(result){
+          toastr.success(JSON.parse(result).message)
+        },
+        error: function (error){
+          toastr.success("Update avatar failed!")
+        }
+      })
+    }
+
+  let student_id = $('#student_id').val()
+  console.log(student_id)
+
+  $(`#edit_student_${student_id}`)
+    .form({
+      fields: {
+        confirmation: {
+          identifier: 'confirmation',
+          rules: [
+            {
+              type: 'checked',
+              prompt: 'Please check confirmation !'
+            }
+          ]
+        },
+        'student[extended_time]': {
+          identifier: 'student[extended_time]',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Please enter extented time!'
+            }
+          ]
+        }
+      },
+      inline: true,
+      on: 'blur'
+    })
+  ;
 </script>
+<style>
+#insert_image_button:hover #lable_image{
+  background-color: #cacbcd;
+}
+</style>

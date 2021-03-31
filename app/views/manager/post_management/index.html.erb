@@ -1,3 +1,9 @@
 <div class="post_management" style="padding-top: 2rem">
   <%= render 'post_management_list' %>
 </div>
+<script>
+if (localStorage.getItem("new_post")) {
+    toastr.success(localStorage.getItem("new_post"))
+    localStorage.removeItem("new_post")
+  }
+</script>
