@@ -2,6 +2,7 @@ class Student::FacilityReportsController < StudentMainController
   before_action :set_facility_report, only: %i[ show edit update destroy ]
   layout 'student_layout/student'
   skip_before_action :verify_authenticity_token
+  before_action :logged_in_student
 
   # GET /facility_reports or /facility_reports.json
   def index
@@ -32,6 +33,10 @@ class Student::FacilityReportsController < StudentMainController
     last_index = current_user.facility_reports.last.index
     @facility_report = FacilityReport.new(facility_report_params.merge(student_id: current_user.id, index: last_index + 1))
     if @facility_report.save
+      # last_index = receiver_student.facility_reports.last.index
+      # index = @facility_report.index
+      # page = ((last_index - index + 1).to_f / Settings.pagination).ceil
+
       index = FacilityReport.all.where(student_id: current_user.id).count
       page = (FacilityReport.where(status: 'PENDING').count.to_f / Settings.pagination).ceil
       if current_user.class.name == "Student"

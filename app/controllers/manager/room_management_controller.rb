@@ -1,9 +1,11 @@
 class Manager::RoomManagementController < ManagerMainController
   layout 'manager_layout/manager'
   skip_before_action :verify_authenticity_token
+  before_action :logged_in_manager
+  
   # all room in room_management
   def index
-    @rooms = Room.where.not(id: 1).page(params[:page])
+    @rooms = Room.where.not(id: 1).order('created_at DESC').page(params[:page])
     @page = 1 if params[:page].blank?
     @page = params[:page].to_i if params[:page].present?
   end
@@ -29,6 +31,7 @@ class Manager::RoomManagementController < ManagerMainController
 
   def show_room_facilities
     @room = Room.find(params[:room_id])
+    @facilities = @room.facilities.all.order("created_at DESC")
   end
 
   def show_room_service_charges
@@ -45,14 +48,22 @@ class Manager::RoomManagementController < ManagerMainController
 
 
   def create
-    @room = Room.new(room_params)
+    building_name = room_params[:room_name].split("_")[0]
+    building = Building.find_by(name: building_name)
+    if building
+      @room = Room.new(room_params.merge(building_id: building.id))
+    else 
+      new_building = Building.create(name: building_name)
+      @room = Room.new(room_params.merge(building_id: new_building.id))
+    end
+
     if @room.save
       respond_to do |format|
-        format.js {render partial: 'room_item', content_type: 'text/html', locals: { room: @room, index: Room.all.count} } 
+        format.json { render json: { message: 'Create new building successfully'}, status: :ok}
       end
     else
       respond_to do |format|
-        format.json { render json: @room.errors, status: :bad_request }
+        format.json { render json: { message: 'Create new building failed'}, status: :bad_request}
       end
     end
   end

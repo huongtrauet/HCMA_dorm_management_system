@@ -55,4 +55,9 @@
   }
 
   $("#manager_room_management_path").addClass("active");
+  if (window.localStorage.getItem('updated_student')) {
+    toastr.success(window.localStorage.getItem('updated_student'))
+    localStorage.removeItem('updated_student');
+    
+  }
 </script>

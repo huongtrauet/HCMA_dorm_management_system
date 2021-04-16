@@ -1,6 +1,7 @@
 class Student::RoomsController < StudentMainController
   layout 'student_layout/student'
   before_action :set_room, only: %i[ show edit update destroy ]
+  before_action :logged_in_student
 
   def room_member
     @room =current_user.room

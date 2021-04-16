@@ -5,6 +5,8 @@ class CreateRooms < ActiveRecord::Migration[6.0]
       t.integer :number_student, null: false, default: 0
       t.integer :max_number_student, null: false
       t.string :room_type, null: false
+      t.integer :floor, null: false, default: 0
+      t.boolean :has_problem, null: false, default: false
 
       t.timestamps
     end

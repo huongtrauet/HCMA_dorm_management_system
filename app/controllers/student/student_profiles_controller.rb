@@ -76,6 +76,24 @@ class Student::StudentProfilesController < StudentMainController
     end
   end
 
+  def reset_password
+    if current_user&.authenticate reset_password_params[:current_password]
+      if current_user.update(reset_password_params.except(:current_password))
+        respond_to do |format|
+          format.json { render json: {message: "Reset password successfully"}, status: :ok}
+        end
+      else
+        respond_to do |format|
+          format.json { render json: {message: "Reset password successfully"}, status: :bad_request}
+        end
+      end
+    else
+      respond_to do |format|
+        format.json { render json: {message: "Current password is incorrect"}, status: :bad_request}
+      end
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_student_profile
@@ -96,5 +114,8 @@ class Student::StudentProfilesController < StudentMainController
       profile_params.merge!(phone_number: nil) if profile_params[:phone_number] == ""
       profile_params.merge!(gender: nil) if profile_params[:gender] == ""
       return profile_params
+    end
+    def reset_password_params
+      params.permit(:current_password, :password, :password_confirmation)
     end
 end

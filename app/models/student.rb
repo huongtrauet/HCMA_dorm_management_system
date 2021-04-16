@@ -53,17 +53,18 @@ class Student < ApplicationRecord
   end
 
   after_update do
+    #room
     room_after = Room.find(self.room.id)
     room_after.update(number_student: room_after.students.count)
     if room_after.number_student < room_after.max_number_student
-      room_after.update(status: "NOT FULL")
+      room_after.update(status: "UNFILLED")
     elsif room_after.number_student == room_after.max_number_student
       room_after.update(status: "FULL")
     end
     room_before = Room.find(self.room_id_before_last_save)
     room_before.update(number_student: room_before.students.count)
     if room_before.number_student < room_before.max_number_student
-      room_before.update(status: "NOT FULL")
+      room_before.update(status: "UNFILLED")
     elsif room_before.number_student == room_before.max_number_student
       room_before.update(status: "FULL")
     end

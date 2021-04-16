@@ -1,32 +1,78 @@
 <% pending_students.each do |student|  %> 
  <div class="students_item" id="student_<%= student.id %>" draggable="true" ondragstart="drag(event)" style="background-color: white; position:relative; height: 9rem">
   <div class="ui grid" >
-    <button style="background-color: #d8d8d8; border-radius:0.5rem; cursor: pointer; width: 1.5rem; height: 1.5rem; display: flex;justify-content: center;align-items: center; border: none; position: absolute; right: 1rem; top: 0.5rem;">
-      <img src="/assets/close.png" style="width: 0.7rem; height: 0.7rem">
+    <button onclick="removeStudent(<%= student.id%>)" class="ui compact icon button" style="position: absolute; right: 0.5rem; top: 0.5rem; z-index: 100; padding: 0.3rem">
+      <i class="close icon"></i>
     </button>
     <div class="three wide column avatar" style="">
-      <img src="/assets/ava.jpg" style="width: 2.5rem; height: 2.5rem; border-radius: 50%">
+      <% if student.student_profile.avatar.url %>
+        <img src="<%= student.student_profile.avatar.url %>" style="width: 2.5rem; height: 2.5rem; border-radius: 50%">
+      <% else %>
+        <img src="/assets/profile.png" style="width: 2.5rem; height: 2.5rem; border-radius: 50%">
+      <% end %>
     </div>
     <div class="thirteen wide column student_information" style="">
       <h4><%= student.name %></h4>
-      <div class="ui grid">
-        <div class="sixteen wide column" style="display: flex">
-          <i class="ui edit outline icon"></i>
-          <p><%= student.created_at.to_date%></p>
-        </div>
+      <div style="display: flex; justify-content: flex-start; align-items: center">
+        <a class="ui mini label" style="background-color: #3889c8; color: #fff !important; font-size: .9rem; margin-right: 1rem"><%= student.student_id_number %></a>
+        <% if student.student_profile.gender == 'MALE' %>
+          <a class="ui basic image mini label">
+            <img src="/assets/elliot.jpeg"> <%= t(".male") %>
+          </a>
+        <% elsif student.student_profile.gender == 'FEMALE' %>
+          <a class="ui basic image mini label">
+            <img src="/assets/stevie.jpeg"> <%= t(".female") %>
+          </a>
+        <% end %>
       </div>
-      <div style="margin-top: 0.5rem">
-        <div class="sixteen wide column" style="display: flex">
-          <%# <img src="/assets/calendar.png" style="width: 1.2rem; height: 1.2rem; margin-right: 1rem"/> %>
-          <i class="ui calendar alternate outline icon"></i>
-          <% if student.student_profile.date_of_birth %>
-            <p><%= student.student_profile.date_of_birth.to_date %></p>
-          <% else %>
-            <p></p>
-          <% end %>
-        </div>
+      <div class="ui label" style="margin-top: 0.5rem">
+        <i class="ui edit outline icon"></i>
+        <%= student.created_at.to_date %>
       </div>
     </div>
   </div>
 </div>
+<div class="ui mini modal" id="confirm-delete-<%= student.id %>">
+  <div class="ui icon header">
+    <i class="archive icon"></i>
+    <%= t(".remove_student_form_title") %>
+  </div>
+  <div class="content">
+    <p><%= t(".remove_student_form_confirm") %></p>
+  </div>
+  <div class="actions" style="display: flex; justify-content: center">
+    <div class="ui negative button">
+      <i class="remove icon"></i>
+      <%= t(".cancel") %>
+    </div>
+    <div class="ui positive right labeled icon button custom_btn" onclick="confirmRemove(<%= student.id %>)">
+      <i class="checkmark icon"></i>
+      <%= t(".approve") %>
+    </div>
+  </div>
+</div>
 <% end %>
+
+<script>
+    function removeStudent(student_id){
+      console.log("tra")
+      $(`#confirm-delete-${student_id}`)
+    .modal('show')
+  ;
+  }
+
+  function confirmRemove(student_id){
+     $.ajax({
+      type: "DELETE",
+      url: `/manager/student-management/${student_id}/delete`,
+      success: function(result){
+        toastr.success(result.message)
+        $(`#student_${student_id}`).remove();
+
+      },
+      error: function (error) {
+        toastr.error(error.responseJSON.message)
+      }
+    })
+  }
+</script>

@@ -2,6 +2,7 @@ class Student::FormRequestsController < StudentMainController
   before_action :set_form_request, only: %i[ show edit update destroy ]
   skip_before_action :verify_authenticity_token
   layout 'student_layout/student'
+  before_action :logged_in_student
 
   # GET /form_requests or /form_requests.json
   def index

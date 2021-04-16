@@ -1,16 +1,21 @@
 <div class="service_charge_list">
-  <h3 class="ui dividing header">
-    Service charges
-  </h3>
+  <div class="header">
+    <h5><a href="/manager/building-management" class="breadcrumb"><%= t(".buildings") %></a> / 
+      <a href="/manager/building-management/<%= @room.building.id %>" class="breadcrumb"><%= @room.building.name %></a> /
+      <a href="/manager/rooms-management/rooms/<%= @room.id %>" class="breadcrumb"><%= t(".room") %> <%= @room.room_name %></a> /
+      <a href="/manager/rooms-management/rooms/<%= @room.id %>/service-charges" class="breadcrumb"><%= t(".service_charges") %></a>
+    </h5>
+  </div>
+  <div class="ui inverted divider"></div>
   <table class="ui very basic table">
     <thead>
       <tr>
-        <th>STT</th>
-        <th>Thang</th>
-        <th>Tien dien</th>
-        <th>Tien nuoc</th>
-        <th>Tong</th>
-        <th>Trang thai</th>
+        <th><%= t(".id") %></th>
+        <th><%= t(".month") %></th>
+        <th><%= t(".electricity_price") %></th>
+        <th><%= t(".water_price") %></th>
+        <th><%= t(".total_price") %></th>
+        <th><%= t(".status") %></th>
       </tr>
     </thead>
     <tbody>
@@ -23,9 +28,9 @@
           <td><%= s.total_price %></td>
           <td>
             <% if s.status == "PAID" %>
-              <a class="ui teal tag label" style="width: 6.7rem"><%= s.status %></a>
+              <a class="ui teal tag label" style="width: 6.7rem"><%= t(".piad") %></a>
             <% elsif s.status == "UNPAID" %>
-              <a class="ui red tag label" style="width: 6.7rem"><%= s.status %></a>
+              <a class="ui red tag label" style="width: 6.7rem"><%= t(".unpaid") %></a>
             <% end  %>
           </td> 
         </tr>
@@ -40,7 +45,7 @@
 <div class="ui first modal service_charge_info" id="show_info_modal">
   <i class="close icon"></i>
   <div class="header">
-      <h3>Service charge</h3>
+      <h3><%= t(".service_charges") %></h3>
       <div>
         <p style="margin-bottom: -1rem" id="show_paid_at"></p>
         <p style="float: right; margin-right: 1rem; margin-right: 2.6rem;" class="show_room_name"></p>
@@ -55,39 +60,39 @@
         <div class="five wide column">
           <div class="student-info">
             <div class="ui field">
-              <label>Thang:</label>
+              <label><%= t(".month") %>:</label>
               <p id="show_month"></p>
             </div>
-            <label>Tong tien:</label>
+            <label><%= t(".total_price") %>:</label>
             <p id="show_total_price"></p>
           </div>
         </div>
         <div class="five wide column">
           <div class="student-info">
-            <label>Tien dien: </label>
+            <label><%= t(".electricity_price") %>: </label>
             <p id="show_electricity_price"></p>
-            <label>Tien nuoc</label>
+            <label><%= t(".water_price") %></label>
             <p id="show_water_price"></p>
           </div>
         </div>
         <div class="five wide column">
           <div class="student-info">
-            <label>Trang thai: </label>
+            <label><%= t(".status") %>: </label>
             <p>
               <span style="background-color: #f4810b; padding: 6px 10px; color: #fff; border-radius: 5px; font-weight: bold" id="show_status"></span>
             </p>
-            <label>Nguoi nop</label>
+            <label><%= t(".payer") %></label>
             <p id="show_payer"></p>
           </div>
         </div>
       </div>
     </div>
     <div class="actions" style="padding: 0.7rem 1rem;">
-      <div class="ui black deny button" onclick="closeModal()">
-        Cancel
+      <div class="ui deny button" onclick="closeModal()">
+        <%= t(".cancel") %>
       </div>
-      <div class="ui positive right labeled icon button edit">
-        Edit
+      <div class="ui positive right labeled icon button custom_btn edit">
+        <%= t(".edit") %>
         <i class="arrow right icon"></i>
       </div>
     </div>
@@ -96,7 +101,7 @@
 <div class="ui second modal service_charge_info" id="edit_info_modal">
   <i class="close icon"></i>
   <div class="header">
-    <h3>Service charge edit</h3>
+    <h3><%= t(".service_charge_edit") %></h3>
     <div>
       <p id="paid_at" style="margin-bottom: -1rem"></p>
       <p style="float: right; margin-right: 1rem; margin-right: 2.6rem;" class="show_room_name"></p>
@@ -107,45 +112,45 @@
   <form class="ui form" style="margin: 0 1.5rem" id="service_charge_edit_form" name="service_charge_edit_form" class="ui form segment">
     <div class="three fields">
       <div class="field">
-        <label>Thang</label>
+        <label><%= t(".month") %></label>
         <input type="text" placeholder="Thang" disabled value="Thang 2" name="month" id="month_edit_field">
       </div>
       <div class="field">
-        <label>Tien dien</label>
+        <label><%= t(".electricity_price") %></label>
         <input type="number" placeholder="Tien dien" name="electricity_price" id="electricity_price_edit_field" onkeyup="changePrice()">
       </div>
       <div class="field">
-        <label>Trang thai</label>
+        <label><%= t(".status") %></label>
         <div class="ui selection dropdown">
           <input type="hidden" name="status" id="status_edit_field">
           <i class="dropdown icon"></i>
           <div class="text" style="color: black;" id="selected_item"></div>
           <div class="menu">
-            <div class="item" data-value="PAID">PAID</div>
-            <div class="item" data-value="UNPAID">UNPAID</div>
+            <div class="item" data-value="PAID"><%= t(".paid") %></div>
+            <div class="item" data-value="UNPAID"><%= t(".unpaid") %></div>
           </div>
         </div>
       </div>
     </div>
     <div class="three fields">
       <div class="field">
-        <label>Tong tien</label>
+        <label><%= t(".total_price") %></label>
         <input type="number" placeholder="Tong tien" name="total_price" id="total_price_edit_field" disabled>
       </div>
       <div class="field">
-        <label>Tien nuoc</label>
+        <label><%= t(".water_price") %></label>
         <input type="number" placeholder="Tien nuoc" name="water_price" id="water_price_edit_field" onkeyup="changePrice()">
       </div>
       <div class="field">
-        <label>Nguoi nop</label>
+        <label><%= t(".payer") %></label>
         <input type="text" placeholder="Nguoi nop" name="payer" id="payer_edit_field">
       </div>
     </div>
   <div class="actions" style="padding: 0.7rem 1rem; float:right; margin-right: 1.5rem">
-    <div class="ui black deny button" onclick="closeModal()">
-      Cancel
+    <div class="ui deny button" onclick="closeModal()">
+      <%= t(".cancel") %>
     </div>
-    <div class="ui blue submit button">Submit</div>
+    <div class="ui blue submit button custom_btn"><%= t(".update") %></div>
   </div>
   </form>
 </div>

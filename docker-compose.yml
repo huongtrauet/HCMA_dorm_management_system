@@ -1,0 +1,14 @@
+version: '3.1'
+
+services:
+  db:
+    image: mysql:8.0.15
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 'huongtra'
+      MYSQL_DATABASE: 'hcma_dorm_management_development'
+      MYSQL_USER: 'root'
+      MYSQL_PASSWORD: 'huongtra'
+    ports:
+      - 3310:3306

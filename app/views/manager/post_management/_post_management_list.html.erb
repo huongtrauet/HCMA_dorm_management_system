@@ -2,14 +2,14 @@
   <div class="header" style="display: flex; justify-content: space-between;">
     <input type="hidden" id="selected_post_id" value=""/>
     <div class="header_title">
-      <h3>Post Management: </h3>
+      <h3><%= t(".post_management") %>: </h3>
     </div>
     <div class="header_search">
       <button class="ui icon button" onclick="addPost()">
         <i class="plus icon"></i>
       </button>
       <div class="ui icon input" style="">
-        <input type="text" placeholder="Name, status or type..." name="q" id="q" class="form-control search-post-form" >
+        <input type="text" placeholder="<%= t(".search_placeholder")%>" name="q" id="q" class="form-control search-post-form" >
         <i class="icon">
           <img src="/assets/search.png" style="width: 1rem; height: 1rem; width: 1rem; top: 50%; position: absolute; transform: translateY(-50%);right: 0.7rem;">
         </i> 
@@ -20,13 +20,13 @@
   <table class="ui very basic selectable table">
     <thead>
       <tr>
-        <th>STT</th>
-        <th>Tieu de</th>
-        <th>Noi dung</th>
-        <th>Thoi gian</th>
-        <th>Nguoi dang</th>
-        <th>Trang thai</th>
-        <th>Action</th>
+        <th><%= t(".id") %></th>
+        <th><%= t(".title") %></th>
+        <th><%= t(".content") %></th>
+        <th><%= t(".created_time") %></th>
+        <th><%= t(".writer") %></th>
+        <th><%= t(".status") %></th>
+        <th><%= t(".action") %></th>
       </tr>
     </thead>
     <tbody id="post_list">
@@ -58,80 +58,27 @@
           <div class="scrolling content" style="padding: 3rem">
             <div class="description">
               <div class="ui header"><h2><%= post.title %></h2></div>
-              <%# <div class="content" style=""><img style="width: 50%; margin: 0 auto; display: block;"/></div> %>
               <div class="content" style="margin-top: 2rem"><%= post.content.html_safe %></div>
-              <% if post.images.length == 1 %>
-              <div class="picture" style="width: 100%; height: 50rem; margin: 0 auto; display: flex;">
-                <div style="background-image: url(<%= image_path post.images[0].url %>); width: 100%; height: 100%; margin: 0 auto; background-repeat: no-repeat; background-position: top;"></div>
-              </div>
-              <% elsif post.images.length > 1 %>
-                <div class="picture" style="width: 100%; height: 25rem; margin: 0 auto; display: flex; margin-top: 2rem;">
-                  <div style="background-image: url(<%= image_path post.images[0].url %>); width: 50%; height: 100%; margin: 0 auto; background-repeat: no-repeat; background-position: cover; "></div>
-                  <div style="width: 50%; height: 100%; position: relative" >
-                    <div style="background-image: url(<%= image_path post.images[1].url %>); width: 100%; height: 100%; margin: 0 auto; background-repeat: no-repeat; background-position: cover; "></div>
-                    <% if post.images.length > 2 %>
-                      <div style="background-color: #000000; opacity: 0.5; position: absolute; top: 0; left: 0; width: 100%; height: 100%">
-                      </div>
-                      <p style="color: white; top: 50%; left: 50%; transform: translate(-50%, -50%); position: absolute; font-size: 3rem; ">
-                        +<%= post.images.length - 2 %>
-                      </p>
-                    <% end %>
-                  </div>
-                </div>
-              <% end %>
-            </div>   
-          </div>
-          <div class="actions">
-            <button class="ui cancel button">
-              Cancel
-            </button>
-            <div class="ui primary approve button proceed">
-              Proceed
-              <i class="right chevron icon"></i>
-            </div>
-          </div>
-        </div>
-        <div class="ui longer small  modal second scrolling" id="show_modal_second_<%= post.id %>">
-          <div class="header">
-            Edit my post
-          </div>
-          <form id="myEditForm_<%= post.id %>" multipart="true" name="myEditForm" class="ui form segment" style="border: none; -webkit-box-shadow: none;">
-            <div style="padding: 1rem">
-              <div style="max-width: 0; max-height: 0; overflow: hidden;">
-                <input autofocus="true" type="hidden" name="id" value="<%= post.id %>" />
-              </div>
-              <div class="field">
-                <textarea name="title" rows="5" placeholder="Enter title"><%= post.title %></textarea>
-              </div>
-              <div class="field" onfocusout="validateContent('content_edit_field')" id="content_edit_field<%= post.id %>">
-                <textarea type="file" name="content" id="editor_<%= post.id %>">
-                  <%= post.content %>
-                </textarea>
-              </div>
               <div class="content">
-                <div class="ui special cards" id="preview_image_edit_<%= post.id %>"> 
-                  <div class="card" style="height: 20rem", id="preview_image_card_<%= post.id %>">
-                    <input type="file" class="inputfile" id="embedpollfileinput_<%= post.id %>" onchange="generatePreviewImageEdit(this)" item_index="<%= post.id %>" style="width: 100%; height: 100%" multiple="true" accept="image/png, image/jpeg" name="images_edit_input" />
-                    <label for="embedpollfileinput_<%= post.id %>" class="ui button" style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center">
-                      <i class="ui plus icon"></i>
-                    </label>
-                  </div>
-                  <% for i in 0..post.images.length - 1 do %>
-                    <div class='card' style="max-height: 20rem; height: 20rem" id="image_<%= i %>">
-                    <i class="ui window close outline icon" style="position: absolute; top: 0.5rem; right: 0.5rem; cursor: pointer;", onclick="removeImage(this)"></i>
-                    <img style="width: 100%; height: 100%;" src='<%= post.images[i]%>' />
+                <div class="ui special cards" style="margin-top: 2rem">
+                  <% post.images.each do |image| %>
+                    <div class='card' style="max-height: 20rem; height: 20rem" id="image_${i}">
+                      <img style="width: 100%; height: 100%;" src="<%= image.url %>" />
                     </div>
                   <% end %>
                 </div>
               </div>
-              <div class="actions">
-                <button class="ui cancel button">
-                  Cancel
-                </button>
-                <div class="ui primary submit button">Update</div>
-              </div>
+            </div>   
+          </div>
+          <div class="actions">
+            <button class="ui cancel button">
+              <%= t(".cancel") %>
+            </button>
+            <div class="ui primary approve button proceed">
+              <%= t(".edit") %>
+              <i class="right chevron icon"></i>
             </div>
-          </form>
+          </div>
         </div>
       <% end %>
     </tbody>
@@ -141,9 +88,41 @@
   </div>
 </div>
 
+<div class="ui longer small modal second scrolling" id="show_modal_second">
+  <div class="header">
+    <%= t(".edit_post_form_title") %>
+  </div>
+  <form id="myEditForm" multipart="true" name="myEditForm" class="ui form segment" style="border: none; -webkit-box-shadow: none;">
+    <div style="padding: 1rem">
+      <div style="max-width: 0; max-height: 0; overflow: hidden;">
+        <input autofocus="true" type="hidden" name="id" id="post_id_edit" value="" />
+      </div>
+      <div class="field">
+        <label><%= t(".title") %>: </label>
+        <textarea id="post_title_edit" name="post_title_edit" rows="5" placeholder="<%= t(".title") %>"></textarea>
+      </div>
+      <div class="field" onfocusout="validateContent('content_edit_field')" id="content_edit_field">
+        <label><%= t(".content") %>: </label>
+        <textarea type="file" name="content" id="editor_edit" placeholder="<%= t(".content") %>"></textarea>
+      </div>
+      <div class="field">
+        <label><%= t(".writer") %>: </label>
+        <textarea id="writer_name_edit" name="writer_name_edit" rows="1" placeholder="<%= t(".writer") %>"></textarea>
+      </div>
+      <div class="content">
+        <div class="ui special cards" id="preview_image_edit"></div>
+      </div>
+      <div class="actions" style="float: right; margin-top: 1rem">
+        <button class="ui cancel button"><%= t(".cancel") %></button>
+        <div class="ui primary submit button"><%= t(".update") %></div>
+      </div>
+    </div>
+  </form>
+</div>
+
 <div class="ui longer small modal add">
   <div class="header">
-    Create a new post
+    <%= t(".new_post_form_title") %>
   </div>
   <form id="myForm" multipart="true" name="myForm" class="ui form segment" style="border: none; -webkit-box-shadow: none; margin-top: 0">
     <div class="ui form" style="padding: 1rem">
@@ -151,15 +130,16 @@
         <input autofocus="true" />
       </div>
       <div class="field">
-        <textarea name="title" placeholder="Enter title" rows="5"></textarea>
+        <label><%= t(".title") %>: </label>
+        <textarea name="title" placeholder="<%= t(".title") %>" rows="5"></textarea>
       </div>
       <div class="field" id="content_field" onfocusout="validateContent('content_field')">
-        <textarea id="editor" name="content"></textarea>
+        <label><%= t(".content") %>: </label>
+        <textarea id="editor" name="content" placeholder="<%= t(".content") %>"></textarea>
       </div>
-      <div class="field">
-        <div style="width: 30.6%">
-          <textarea name="writer_name" placeholder="Writer" rows="1"></textarea>
-        </div>
+      <div class="field" style="width: 30.6%">
+        <label><%= t(".writer") %>: </label>
+        <textarea name="writer_name" placeholder="<%= t(".writer") %>" rows="1"></textarea>
       </div>
       <div class="content">
         <div class="ui special cards" id="preview_image"> 
@@ -173,31 +153,31 @@
       </div>
       <div class="actions" style="float: right; margin-top: 1rem;">
         <button class="ui cancel button" onclick="cancelCreatePost()">
-          Cancel
+          <%= t(".cancel") %>
         </button>
-        <div class="ui blue submit button">Submit</div>
+        <div class="ui blue submit button"><%= t(".submit") %></div>
       </div>
     </div>
   </form>
 </div>
 <div class="ui mini modal confirm_delete_post">
-  <div class="header">Delete this post</div>
+  <div class="header"><%= t(".delete_form_title") %></div>
   <div class="content">
-    <p>Are you sure to delete this post</p>
+    <p><%= t(".delete_form_confirm") %></p>
   </div>
   <div class="actions">
-    <div class="ui appove button" onclick="changePostStatus()">Approve</div>
-    <div class="ui cancel button">Cancel</div>
+    <div class="ui cancel button"><%= t(".cancel") %></div>
+    <div class="ui appove button custom_btn" onclick="changePostStatus()"><%= t(".approve") %></div>
   </div>
 </div>
 <div class="ui mini modal confirm_restore_post">
-  <div class="header">Restore this post</div>
+  <div class="header"><%= t(".restore_form_title") %></div>
   <div class="content">
-    <p>Are you sure to restore this post</p>
+    <p><%= t(".restore_form_confirm") %></p>
   </div>
   <div class="actions">
-    <div class="ui appove button" onclick="changePostStatus()">Approve</div>
-    <div class="ui cancel button">Cancel</div>
+    <div class="ui cancel button"><%= t(".cancel") %></div>
+    <div class="ui appove button custom_btn" onclick="changePostStatus()"><%= t(".approve") %></div>
   </div>
 </div>
 
@@ -210,6 +190,10 @@
 <script src="https://cdn.ckeditor.com/ckeditor5/25.0.0/classic/ckeditor.js">
 </script>
 <script>
+if(localStorage.getItem("update_post")) {
+  toastr.success(localStorage.getItem("update_post"))
+  localStorage.removeItem("update_post")
+}
 
 $(document).ready(function(){
   $("#editor").validate({
@@ -252,103 +236,90 @@ $(document).ready(function(){
       })
   }
 
-  var isCreated = []
   document.addEventListener("DOMContentLoaded", function(event) { 
-      ClassicEditor
-        .create( document.querySelector( '#editor' ), {
-          toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'imageInsert'],
-          heading: {
-            options: [
-                { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-                { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
-                { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' }
-            ]
+    ClassicEditor
+      .create(document.querySelector( '#editor' ), {
+        toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'imageInsert'],
+        heading: {
+          options: [
+            { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+            { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+            { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' }
+          ]
         }
-        })
-        .catch( error => {
-          console.error( error );
-        })
+      })
+      .then((editor) => {})
+      .catch( error => {
+        console.error( error );
+      })
+
+    ClassicEditor
+      .create(document.getElementById('editor_edit'), {
+        toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'imageInsert'],
+        heading: {
+          options: [
+            { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+            { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+            { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' }
+          ]
+        }
+      })
+      .then((editor) => {})
+      .catch( error => {
+        console.error( error );
+      })
     }
 
-    
   );
 
-  var currentEditor;
   function showPost(post_id) {
     $(`#show_modal_first_${post_id}`).modal('show');
-    $(`#show_modal_second_${post_id}`)
+    $(`#show_modal_second`)
     .modal('attach events', `#show_modal_first_${post_id} .button.proceed`);
-    if (isCreated[post_id] != true) {
-       ClassicEditor
-        .create( document.querySelector( '#editor_' + post_id ), {
-          toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'imageInsert'],
-          heading: {
-            options: [
-                { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-                { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
-                { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' }
-            ]
+    $.ajax({
+      type: 'GET',
+      url: `/manager/post-management/${post_id}`,
+      success: function(result){
+        $('#post_title_edit').val(null);
+        $('#post_id_edit').val(null);
+        $('#preview_image_edit').html(null);
+        $('#post_title_edit').val(result.object.title);
+        $('#editor_edit').next().children().next().next().children().children().html(result.object.content);
+        $('#post_id_edit').val(result.object.id);
+        $('#writer_name_edit').val(result.object.writer_name);
+        let images = result.object.images
+        for (var i = 0; i < images.length; i++){
+          $('#preview_image_edit').append(`
+            <div class='card' style="max-height: 20rem; height: 20rem" id="image_${i}">
+              <img style="width: 100%; height: 100%;" src='${images[i].url}' />
+            </div>`)
         }
-        })
-        .then(editor => {
-          currentEditor = editor;
-        })
-        .catch( error => {
-          console.error( error );
-        })
-        isCreated[post_id] = true;
-    }
+      },
+      error: function (error) {
+        toastr.error('Show post failed!')
+      }
+    })
+  
   }
+  
 
   $('.coupled.modal')
     .modal({
       allowMultiple: false
     })
-  ;
-  // attach events to buttons
+
   function addPost() {
     $('.ui.longer.small.modal.add').modal('show');
     $('#myForm').form('reset');
   }
-  // CKEDITOR.replace('content',{ toolbar :[ ['Subscript','Superscript'] ], height: '35px', width: '100%' });
-  console.log(ClassicEditor.builtinPlugins.map( plugin => plugin.pluginName ))
 
-  function convertStringToHtml(str) { 
-    return $(str);
-  }
-
-  let myEditForm = document.getElementById('myEditForm_1');
-  let formDataEdit = new FormData(myEditForm);
-
-  function generatePreviewImageEdit(image, images){
-    var index = 0;
-    count = image.files.length;
-    image_index = image.getAttribute('item_index')
-    console.log(images)
-    for (let i = 0; i < image.files.length; i++) {
-      $(`#preview_image_edit_${image_index}`).append(`<div class='card' style="height: 20rem" id="image_edit_${i}">
-                                <i class="ui window close outline icon" style="position: absolute; top: 0.5rem; right: 0.5rem; cursor: pointer;", onclick="removeImage(this)"></i>
-                                <img style="width: 100%; height: 100%;" src='${URL.createObjectURL(image.files[i])}' />
-                                </div>`)
-      console.log("abc")
-    }
-
-    index++
-    console.log(formDataEdit.getAll("title"))
-  }
-
-//ADD POST
-
-
+  //ADD POST
   var allImage = [] 
   let myForm = document.getElementById('myForm');
   let formData = new FormData(myForm);
-  // console.log(formData.get('content'))
   function generatePreviewImage(image){
     var index = 0;
     count = image.files.length;
-    // uploadFile(image.files[0])
-
     for (let i = 0; i < image.files.length; i++) {
       $('#preview_image').append(`<div class='card' style="height: 20rem" id="image_${index}">
                                 <i class="ui window close outline icon" style="position: absolute; top: 0.5rem; right: 0.5rem; cursor: pointer;", onclick="removeImage(this)"></i>
@@ -384,8 +355,7 @@ $(document).ready(function(){
     }
     formdatapost.delete('images_input')
     formdatapost.delete('content')
-    x = document.querySelector('[role="textbox"]');
-    var post_content = x.innerHTML
+    post_content = $('#editor').next().children().next().next().children().html()
     formdatapost.append('content', post_content)
 
     $.ajax({
@@ -397,20 +367,20 @@ $(document).ready(function(){
       mimeType: 'multipart/form-data',
       data: formdatapost,
       success: function(result){
-        window.localStorage.setItem('new_post', result.message)
+        window.localStorage.setItem('new_post', JSON.parse(result).message)
         window.location = "/manager/post-management"
       },
       error: function (error) {
-        toastr.error('Created post failed')
+        toastr.error(JSON.parse(error.responseText).message)
       }
     })
   }
 
   function validateContent(field_id){
     $('.ui.pointing.red.basic.label.validate.content ').remove();
-    x = document.querySelector('[role="textbox"]');
+    x = document.querySelector("#ck_editor_create");
     var post_content = x.innerHTML
-    console.log(post_content.replace(/<[^>]*>/gi, '').length)
+    console.log(post_content.length)
     if (post_content.replace(/<[^>]*>/gi, '').length < 1) {
       $(`#${field_id}`).append(`<div class="ui pointing red basic label validate content " style="color: #9f3a38!important; border-color: #e0b4b4!important">
                                     Please enter content!!
@@ -431,13 +401,32 @@ $(document).ready(function(){
     $('.ui.longer.modal.add').modal('hide')
   }
 
-  function updateSubmit(event){
-    
+  // UPDATE POST
+  function updateSubmit(e){
+    e.preventDefault();
+    $.ajax({
+      type: 'PUT',
+      url: '/manager/post-management/update',
+      data: {
+        post: {
+          id: $('#post_id_edit').val(),
+          title: $('#post_title_edit').val(),
+          content: $('#editor_edit').next().children().next().next().children().html(),
+          writer_name: $('#writer_name_edit').val()
+        }
+      },
+      success: function(result){
+        window.localStorage.setItem('update_post', result.message)
+        window.location.reload()
+      },
+      error: function (error) {
+        toastr.error(error.responseJSON.message)
+      }
+    })
   }
 
-   $('#myEditForm_1').off('submit').submit(function(e){
-     console.log("myEditForm")
-    if($('#myEditForm_1').form('is valid')) {
+  $('#myEditForm').off('submit').submit(function(e){
+    if($('#myEditForm').form('is valid')) {
       updateSubmit(e);
     }
   })
@@ -504,7 +493,7 @@ $(document).ready(function(){
       on: 'blur'
     })
   ;
-  $('#myEditForm_1')
+  $('#myEditForm')
      .form({
       fields: {
         title: {
@@ -548,10 +537,10 @@ $(document).ready(function(){
   cursor: pointer;
 }
 .card {
-      width: 30% !important;
+      width: 31% !important;
       float: left;
     }
-    .dimmer {
-      padding-top: 4rem !important;
-    }
+.dimmer {
+  padding-top: 4rem !important;
+}
 </style>

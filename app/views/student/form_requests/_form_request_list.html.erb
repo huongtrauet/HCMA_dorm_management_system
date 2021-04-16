@@ -76,10 +76,11 @@
   </div>
 
   <div class="ui modal" id="form_request_detail">
-    <div class="header">Facility Report</div>
+    <div class="header">Form request</div>
     <div class="content">
       <b id="created_date"></b>
       <h3 id="request_form_type_show"></h3>
+      <p><b>Return date: </b><span id="return_date_show"></span></p>
       <p><b>Content:</b></p>
       <p id="request_description_show"></p>
       <p><b>Note:</b></p>
@@ -110,10 +111,15 @@
       },
       success: function(result){
         let date = new Date(result.form_request.created_at)
+        // console.log(result.form_request)
+        let return_date = new Date(result.form_request.return_date)
         $('#created_date').html(`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`)
         $('#request_form_type_show').html(result.form_request.form_type);
         $('#request_description_show').html(result.form_request.description)
         $('#request_note_show').html(result.form_request.note)
+        if(result.form_request.return_date != null){
+          $('#return_date_show').html(`${return_date.getDate()}/${return_date.getMonth() + 1}/${return_date.getFullYear()}`)
+        }
       },
       error: function(error){
       }

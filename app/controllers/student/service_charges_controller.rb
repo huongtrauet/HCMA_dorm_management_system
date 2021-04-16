@@ -1,5 +1,6 @@
 class Student::ServiceChargesController < StudentMainController
   before_action :set_service_charge, only: %i[ show edit update destroy ]
+  before_action :logged_in_student
 
   # GET /service_charges or /service_charges.json
   def index

@@ -8,16 +8,30 @@
 Manager.create!(email: 'manager123@gmail.com', phone_number: "0972403331", password: '999999', password_confirmation: '999999', channel: "manager")
 
 18.times do |index|
-  Building.create!(name: "A#{index + 1}")
+  Building.create!(name: "A#{index + 1}", total_floor: 10)
 end
 
-Room.create!(room_name: 'A01', number_student: 4, max_number_student: 6, room_type: 'NORMAL', gender: "FEMALE", building_id: 1)
-Room.create!(room_name: 'A02', number_student: 5, max_number_student: 6, room_type: 'VIP', gender: "MALE", building_id: 1)
-Room.create!(room_name: 'A03', number_student: 0, max_number_student: 6, room_type: 'NORMAL', gender: "FEMALE", building_id: 2)
-Room.create!(room_name: 'A04', number_student: 0, max_number_student: 6, room_type: 'NORMAL', gender: "FEMALE", building_id: 2)
-Room.create!(room_name: 'A05', number_student: 0, max_number_student: 6, room_type: 'VIP', gender: "MALE", building_id: 2)
-Room.create!(room_name: 'A06', number_student: 0, max_number_student: 6, room_type: 'NORMAL', gender: "FEMALE", building_id: 3)
-Room.create!(room_name: 'A07', number_student: 0, max_number_student: 6, room_type: 'NORMAL', gender: "FEMALE", building_id: 3)
+Room.create!(room_name: 'A1_0000', number_student: 4, max_number_student: 6, room_type: 'NORMAL', gender: "FEMALE", building_id: 1, status: 'UNFILLED')
+Room.create!(room_name: 'A1_0202', number_student: 5, max_number_student: 6, room_type: 'VIP', gender: "MALE", building_id: 1, status: 'UNFILLED')
+Room.create!(room_name: 'A2_0203', number_student: 0, max_number_student: 6, room_type: 'NORMAL', gender: "FEMALE", building_id: 2)
+Room.create!(room_name: 'A2_0304', number_student: 0, max_number_student: 6, room_type: 'NORMAL', gender: "FEMALE", building_id: 2)
+Room.create!(room_name: 'A2_0305', number_student: 0, max_number_student: 6, room_type: 'VIP', gender: "MALE", building_id: 2)
+Room.create!(room_name: 'A3_0406', number_student: 0, max_number_student: 6, room_type: 'NORMAL', gender: "FEMALE", building_id: 3)
+Room.create!(room_name: 'A4_1007', number_student: 0, max_number_student: 6, room_type: 'NORMAL', gender: "FEMALE", building_id: 4)
+Room.create!(room_name: 'A5_1007', number_student: 0, max_number_student: 6, room_type: 'NORMAL', gender: "FEMALE", building_id: 5)
+Room.create!(room_name: 'A6_1007', number_student: 0, max_number_student: 6, room_type: 'NORMAL', gender: "FEMALE", building_id: 6)
+Room.create!(room_name: 'A7_1007', number_student: 0, max_number_student: 6, room_type: 'NORMAL', gender: "FEMALE", building_id: 7)
+Room.create!(room_name: 'A8_1007', number_student: 0, max_number_student: 6, room_type: 'NORMAL', gender: "FEMALE", building_id: 8)
+Room.create!(room_name: 'A9_1007', number_student: 0, max_number_student: 6, room_type: 'NORMAL', gender: "FEMALE", building_id: 9)
+Room.create!(room_name: 'A10_1007', number_student: 0, max_number_student: 6, room_type: 'NORMAL', gender: "FEMALE", building_id: 10)
+Room.create!(room_name: 'A11_1007', number_student: 0, max_number_student: 6, room_type: 'NORMAL', gender: "FEMALE", building_id: 11)
+Room.create!(room_name: 'A12_1007', number_student: 0, max_number_student: 6, room_type: 'NORMAL', gender: "FEMALE", building_id: 12)
+Room.create!(room_name: 'A13_1007', number_student: 0, max_number_student: 6, room_type: 'NORMAL', gender: "FEMALE", building_id: 13)
+Room.create!(room_name: 'A14_1007', number_student: 0, max_number_student: 6, room_type: 'NORMAL', gender: "FEMALE", building_id: 14)
+Room.create!(room_name: 'A15_1007', number_student: 0, max_number_student: 6, room_type: 'NORMAL', gender: "FEMALE", building_id: 15)
+Room.create!(room_name: 'A16_1007', number_student: 0, max_number_student: 6, room_type: 'NORMAL', gender: "FEMALE", building_id: 16)
+Room.create!(room_name: 'A17_1007', number_student: 0, max_number_student: 6, room_type: 'NORMAL', gender: "FEMALE", building_id: 17)
+Room.create!(room_name: 'A18_1007', number_student: 0, max_number_student: 6, room_type: 'NORMAL', gender: "FEMALE", building_id: 18)
 
 Student.create!(student_id_number: '11111111', password: '11111111', name: 'Nguyen Thi Huong Tra', channel: "1", room_id: 1, extended_time: 6)
 Student.create!(student_id_number: '22222222', password: '22222222', name: 'Vu Van Duc', channel: "2", room_id: 1, extended_time: 12)
@@ -71,7 +85,7 @@ end
   )
 end
 
-5.times do 
+10.times do 
   ServiceCharge.create(
     water_price: "100000",
     electricity_price: "50000", 
@@ -85,7 +99,7 @@ end
   )
 end
 
-5.times do |index|
+10.times do |index|
   ComplaintReport.create(
     title: "Tình hình kiến ba khoang ở các phòng",
     description: "Hiện tại phòng em 1410 và các phòng cùng tầng có rất nhiều kiến ba khoang, gây ảnh hưởng đến sức khoẻ sinh viên. Mong ban quản lý sớm có biện pháp khắc phục",
@@ -95,7 +109,7 @@ end
   )
 end
 
-5.times do |index|
+10.times do |index|
   ComplaintReport.create(
     title: "Tình hình kiến ba khoang ở các phòng",
     description: "Hiện tại phòng em 1410 và các phòng cùng tầng có rất nhiều kiến ba khoang, gây ảnh hưởng đến sức khoẻ sinh viên. Mong ban quản lý sớm có biện pháp khắc phục",
@@ -105,7 +119,7 @@ end
 )
 end
 
-5.times do |index|
+10.times do |index|
   FacilityReport.create!(
     title: "Báo cáo hỏng thiết bị", 
     description: "Hiện tại phòng 1410 bị hỏng bình nóng lạnh, mong ban quản lý sớm có biện pháp sửa chữa.", 
@@ -114,7 +128,7 @@ end
   )
 end
 
-5.times do |index|
+10.times do |index|
   FacilityReport.create(
     title: "Báo cáo hỏng thiết bị",
     description: "Hiện tại phòng 1410 bị hỏng bình nóng lạnh, mong ban quản lý sớm có biện pháp sửa chữa.",
@@ -124,7 +138,7 @@ end
 )
 end
 
-5.times do |index|
+10.times do |index|
   FacilityReport.create(
     title: "Báo cáo hỏng thiết bị",
     description: "Hiện tại phòng 1410 bị hỏng bình nóng lạnh, mong ban quản lý sớm có biện pháp sửa chữa.",
@@ -134,12 +148,20 @@ end
 )
 end
 
-5.times do |index|
+10.times do |index|
   FormRequest.create(
     form_type: "The Confirmation of temporary residence",
     description: "Khi nào về Sài Gòn cậu nhớ gọi cho tôi Bất kể là mùa mưa hay mùa nắng",
     status: "PENDING",
     student_id: 1,
     index: index + 1
+)
+end
+
+10.times do |index|
+  Facility.create(
+    name: "Bàn học",
+    detail: "Bàn học 4 chân",
+    room_id: 2
 )
 end

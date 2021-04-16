@@ -28,94 +28,126 @@
         </div>
         <div class="eleven wide column">
           <div class="right_column">
-            <h3 class="ui dividing header">
-              Student Information
-            </h3>
-             <%= form_for @student, html: {class: 'ui form', id: "profile_form"}, url: {controller: "student_profiles", action: "update"}  do |student|%>
-              <div class="two fields">
-                <div class="required field field_line">
-                  <%= student.label :student_id_number %>
-                  <%= student.text_field :student_id_number, class: "input", required: true, placeholder: "Student it number", disabled: true %>
-                </div>
-                <div class="required field field_line">
-                  <label>Room</label>
-                  <div class="ui input" >
-                    <% if @student.room.id != 1 %>
-                      <input value="<%= @student.room.room_name %>" disabled/>
-                    <% else %>
-                      <input value="PENDING" disabled/>
-                    <% end %>            
-                  </div>
-                </div>
+            <div class="ui styled accordion" style="box-shadow: none; -webkit-box-shadow: none; border:none; border-bottom: 1px solid rgba(34,36,38,.15); border-radius: 0; width: 100%; padding-bottom: 1rem">
+              <div class="title active">
+                <i class="dropdown icon"></i>
+                <span>Informations</span>
               </div>
-              <%= student.fields_for :student_profile do |f| %>
-                <div class="required field field_line">
-                  <%= f.label :full_name %>
-                  <input value="<%= @student.name %>" disabled/>
-                </div>
-                <div class="field field_line">
+              <div class="content active">
+                <%= form_for @student, html: {class: 'ui form', id: "profile_form"}, url: {controller: "student_profiles", action: "update"}  do |student|%>
                   <div class="two fields">
-                    <div class="field">
-                      <label>Class name</label>
-                      <%= f.text_field :class_name, class: "input", placeholder: "Clas name" %>
+                    <div class="required field field_line">
+                      <%= student.label :student_id_number %>
+                      <%= student.text_field :student_id_number, class: "input", required: true, placeholder: "Student it number", disabled: true %>
                     </div>
-                    <div class="field">
-                      <label>Email</label>
-                      <%= f.text_field :email, class: "input", placeholder: "Email" %>
-                    </div>
-                  </div>
-                </div>
-                <div class="fields field_line">
-                  <div class="eight wide field">
-                    <label>Identity Card Number</label>
-                    <%= f.text_field :identity_card_number, class: "input", maxlength: "16", placeholder: "Identity card number" %>
-                  </div>
-                  <div class="eight wide field">
-                    <label>Date of Birth</label>
-                    <%= f.date_field :date_of_birth, class: "input date", data: {provide: "datepicker"} %>
-                  </div>
-                </div>
-                <div class="field field_line">
-                  <label>Address</label>
-                  <%= f.text_field :address, class: "input", placeholder: "Address" %>
-                </div>
-                <div class="field field_line">
-                  <div class="two fields">
-                    <div class="field">
-                      <label>Phone number</label>
-                      <%= f.text_field :phone_number, class: "input", placeholder: "Phone number" %>
-                    </div>
-                    <div class="field">    
-                      <%= f.label :gender %>
-                      <div class="options" style="height: 60%; margin-top: 0.8rem">
-                        <span style="margin-right: 0.6rem">
-                          <span class="option" style="margin-right: 0.3rem">Male</span><%= f.radio_button :gender, 'MALE' %>
-                        </span>
-                        <span>
-                          <span class="option" style="margin-right: 0.3rem">Female</span><%= f.radio_button :gender, 'FEMALE' %>
-                        </span>
+                    <div class="required field field_line">
+                      <label>Room</label>
+                      <div class="ui input" >
+                        <% if @student.room.id != 1 %>
+                          <input value="<%= @student.room.room_name %>" disabled/>
+                        <% else %>
+                          <input value="PENDING" disabled/>
+                        <% end %>            
                       </div>
                     </div>
                   </div>
-                </div>
-              <% end %>
-              <div class="ui dividing header">
-                Confirmation
+                  <%= student.fields_for :student_profile do |f| %>
+                    <div class="required field field_line">
+                      <%= f.label :full_name %>
+                      <input value="<%= @student.name %>" disabled/>
+                    </div>
+                    <div class="field field_line">
+                      <div class="two fields">
+                        <div class="field">
+                          <label>Class name</label>
+                          <%= f.text_field :class_name, class: "input", placeholder: "Clas name" %>
+                        </div>
+                        <div class="field">
+                          <label>Email</label>
+                          <%= f.text_field :email, class: "input", placeholder: "Email" %>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="fields field_line">
+                      <div class="eight wide field">
+                        <label>Identity Card Number</label>
+                        <%= f.text_field :identity_card_number, class: "input", maxlength: "16", placeholder: "Identity card number" %>
+                      </div>
+                      <div class="eight wide field">
+                        <label>Date of Birth</label>
+                        <%= f.date_field :date_of_birth, class: "input date", data: {provide: "datepicker"} %>
+                      </div>
+                    </div>
+                    <div class="field field_line">
+                      <label>Address</label>
+                      <%= f.text_field :address, class: "input", placeholder: "Address" %>
+                    </div>
+                    <div class="field field_line">
+                      <div class="two fields">
+                        <div class="field">
+                          <label>Phone number</label>
+                          <%= f.text_field :phone_number, class: "input", placeholder: "Phone number" %>
+                        </div>
+                        <div class="field">    
+                          <%= f.label :gender %>
+                          <div class="options" style="height: 60%; margin-top: 0.8rem">
+                            <span style="margin-right: 0.6rem">
+                              <span class="option" style="margin-right: 0.3rem">Male</span><%= f.radio_button :gender, 'MALE' %>
+                            </span>
+                            <span>
+                              <span class="option" style="margin-right: 0.3rem">Female</span><%= f.radio_button :gender, 'FEMALE' %>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  <% end %>
+                  <div class="ui dividing header">
+                    Confirmation
+                  </div>
+                  <div class="ui field checkbox">
+                    <input type="checkbox" name="confirmation">
+                    <label>You are sure that the information above is correct</label>
+                  </div>
+                  <div class="field" style="float: right; margin-top: 2em">
+                    <div class="ui blue submit button" >Submit</div>
+                  </div>
+                <% end %>
               </div>
-              <div class="ui field checkbox">
-                <input type="checkbox" name="confirmation">
-                <label>You are sure that the information above is correct</label>
+            </div>
+            <div class="ui styled accordion" style="box-shadow: none; -webkit-box-shadow: none; border:none; border-bottom: 1px solid rgba(34,36,38,.15); border-radius: 0; width: 100%; padding-bottom: 1rem">
+              <div class="title">
+                <i class="dropdown icon"></i>
+                <span>Bảo mật</span>
               </div>
-              <div class="field" style="float: right; margin-top: 4em">
-                <div class="ui blue submit button" >Submit</div>
+              <div class="content">
+                <form class="ui form" id="reset_password_form">
+                  <div class="required field field_line" style="width: 50%">
+                    <label>Current password</label>
+                    <input type="password" name="current_password"/>
+                  </div>
+                  <div class="required field field_line" style="width: 50%">
+                    <label>New password</label>
+                    <input type="password" name="password"/>
+                  </div>
+                  <div class="required field field_line" style="width: 50%">
+                    <label>New password confirmation</label>
+                    <input type="password" name="password_confirmation"/>
+                  </div>
+                  <div class="field" style="">
+                    <div class="ui blue submit button">Submit</div>
+                  </div>
+                </form>
               </div>
-            <% end %>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+
 <script>
   function resetAva(){
     console.log("reste")
@@ -176,6 +208,29 @@
     })
   }
 
+  function submitResetPassword(e){
+    let myPasswordForm = document.getElementById('reset_password_form');
+    let formPass = new FormData(myPasswordForm);
+    e.preventDefault();
+    $.ajax({
+      type: "POST",
+      url: "/student/reset-password",
+      processData: false,
+      contentType: false,
+      cache: false,
+      mimeType: 'multipart/form-data',
+      data: formPass,
+      success: function(result){
+        toastr.success(JSON.parse(result).message)
+        $('#reset_password_form').form('reset');
+      },
+      error: function (error) {
+        toastr.error(JSON.parse(error.responseText).message)
+         $('#reset_password_form').form('reset');
+      }
+    })
+  }
+
    $('#profile_form').off('submit').submit(function(e){
     if($('#profile_form').form('is valid')) {
       updateSubmit(e);
@@ -226,6 +281,55 @@
       inline: true
     })
   ;
+   $('.accordion')
+  .accordion();
+
+ $('#reset_password_form').off('submit').submit(function(e){
+    if($('#reset_password_form').form('is valid')) {
+      submitResetPassword(e);
+    }
+  })
+
+  $('#reset_password_form')
+    .form({
+      fields: {
+        current_password: {
+          identifier: 'current_password',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Please enter current your password!'
+            }
+          ]
+        },
+        password: {
+          identifier: 'password',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Please enter new password!!'
+            },
+          ]
+        },
+        password_confirmation: {
+          identifier: 'password_confirmation',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Please enter password confirmation !!'
+            },
+            {
+              type: 'match[password]',
+              prompt: 'Password confirmation mismatch'
+            }
+          ]
+        }
+      },
+      inline: true,
+    })
+  ;
+
+
 </script>
 <style>
 #insert_image_button:hover #lable_image{

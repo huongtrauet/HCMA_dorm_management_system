@@ -3,15 +3,17 @@ class NotificationsController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def count_unread_noti
-    # byebug
-    @unread_noti = current_user.notifications.where(is_read: false).count
+    if current_user
+      @unread_noti = current_user.notifications.where(is_read: false).count
+    else
+      @unread_noti = 0
+    end
     respond_to do |format|
       format.json { render json: {unread: @unread_noti}}
     end
   end
 
   def count_total_noti
-    # byebug
     @total = current_user.notifications.count
     respond_to do |format|
       format.json { render json: {total: @total}}

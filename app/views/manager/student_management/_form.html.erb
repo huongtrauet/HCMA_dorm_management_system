@@ -31,17 +31,7 @@
             <h3 class="ui dividing header">
               Student Information
             </h3>
-            <%= form_for @student, html: {class: 'ui form segment', style:"border: none; -webkit-box-shadow: none;"}, url: {controller: "student_management", action: "update"}  do |student|%>
-                <% if @student.errors.any? %>
-                  <div id="error_explanation">
-                    <h2><%= pluralize(@student.errors.count, "error") %> prohibited this student_profile from being saved:</h2>
-                    <ul>
-                      <% @student.errors.full_messages.each do |message| %>
-                        <li><%= message %></li>
-                      <% end %>
-                    </ul>
-                  </div>
-                <% end %>
+            <%= form_for @student, html: {class: 'ui form', style:"border: none; -webkit-box-shadow: none;", id:"student_form"},  url: {controller: "student_management", action: "update"} do |student|%>
                 <div class="two fields"> 
                   <input type="hidden" name="student_id" id="student_id" value="<%= @student.id %>"/>
                   <div class="required field field_line">
@@ -126,12 +116,12 @@
                 <div class="ui dividing header">
                   Confirmation
                 </div>
-                <div class="ui checkbox field">
-                  <input type="checkbox" name="confirmation">
+                <div class="ui field checkbox">
+                  <input type="checkbox" name="confirm">
                   <label>You are sure that the information above is correct</label>
                 </div>
                 <div class="field" style="float: right; margin-top: 4em">
-                  <%= student.submit "Save change", class: "ui submit primary button right"%>
+                  <button class= "ui submit primary button right">Save change</button>
                 </div>
               <% end %>
           </div>
@@ -159,36 +149,66 @@
     })
   }
 
-    function generatePreviewImage(image){
-      document.getElementById("preview_image_card").src = URL.createObjectURL(image.files[0])
-      let form = new FormData()
-      let student_id = $('#student_id').val()
-      form.set('avatar', image.files[0])
-      $.ajax({
-        type: "POST",
-        url: `/manager/student-management/${student_id}/update-avatar`,
-        processData: false,
-        contentType: false,
-        cache: false,
-        mimeType: 'multipart/form-data',
-        data: form,
-        success: function(result){
-          toastr.success(JSON.parse(result).message)
-        },
-        error: function (error){
-          toastr.success("Update avatar failed!")
-        }
-      })
+  function generatePreviewImage(image){
+    document.getElementById("preview_image_card").src = URL.createObjectURL(image.files[0])
+    let form = new FormData()
+    let student_id = $('#student_id').val()
+    form.set('avatar', image.files[0])
+    $.ajax({
+      type: "POST",
+      url: `/manager/student-management/${student_id}/update-avatar`,
+      processData: false,
+      contentType: false,
+      cache: false,
+      mimeType: 'multipart/form-data',
+      data: form,
+      success: function(result){
+        toastr.success(JSON.parse(result).message)
+      },
+      error: function (error){
+        toastr.success("Update avatar failed!")
+      }
+    })
+  }
+
+  function saveChangeSubmit(e){
+    let myEditForm = document.getElementById('student_form');
+    let formDataEdit = new FormData(myEditForm);
+    let student_id = $('#student_id').val()
+    e.preventDefault();
+    $.ajax({
+      type: 'PATCH',
+      url: `/manager/student-management/${student_id}/update`,
+      processData: false,
+      contentType: false,
+      cache: false,
+      mimeType: 'multipart/form-data',
+      data: formDataEdit,
+      success: function(result){
+        window.localStorage.setItem('updated_student', JSON.parse(result).message)
+        let forwarding_url = window.localStorage.getItem('forwarding_url') || '/manager/student-management'
+        localStorage.removeItem('forwarding_url')
+        window.location = forwarding_url
+      },
+      error: function (error) {
+        console.log(error)
+        toastr.error(JSON.parse(error.responseText).message)
+      }
+    })
+
+  }
+
+   $('#student_form').off('submit').submit(function(e){
+    if($('#student_form').form('is valid')) {
+      saveChangeSubmit(e);
     }
+  })
 
-  let student_id = $('#student_id').val()
-  console.log(student_id)
-
-  $(`#edit_student_${student_id}`)
+  $(`#student_form`)
     .form({
       fields: {
-        confirmation: {
-          identifier: 'confirmation',
+        confirm: {
+          identifier: 'confirm',
           rules: [
             {
               type: 'checked',

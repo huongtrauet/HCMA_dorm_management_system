@@ -2,6 +2,7 @@ class Student::ComplaintReportsController < StudentMainController
   before_action :set_complaint_report, only: %i[ show edit update destroy ]
   layout 'student_layout/student'
   skip_before_action :verify_authenticity_token
+  before_action :logged_in_student
 
   # GET /complaint_reports or /complaint_reports.json
   def index

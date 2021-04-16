@@ -1,72 +1,77 @@
-<p id="notice"><%= notice %></p>
 <div class="room_management_show">
-  <div class="ui grid">
-    <div class="four wide column" style="padding-top: 5em">
+  <div class="ui grid" style="padding-top: 2rem">
+    <div class="four wide column" style="padding-top: 3rem">
       <%= render partial: "manager/room_management/room_management_sidebar", locals: {active: 'information'} %>
     </div>
-    <div class="twelve wide column">
-      <div id="room_information" style="margin-left: 1rem; margin-top: 4rem; width: 80%;">
+    <div class="twelve wide column" style="padding-top: 0.7rem">
+      <h5><a href="/manager/building-management" class="breadcrumb"><%= t(".buildings") %></a> / 
+        <a href="/manager/building-management/<%= @room.building.id %>" class="breadcrumb"><%= @room.building.name %></a> /
+        <a href="/manager/rooms-management/rooms/<%= @room.id %>" class="breadcrumb"><%= t(".room") %> <%= @room.room_name %></a> /
+        <a href="/manager/rooms-management/rooms/<%= @room.id %>/informations" class="breadcrumb"><%= t(".informations") %></a>
+      </h5>
+      <div class="ui inverted divider"></div>
+      <div id="room_information" style="width: 80%;">
         <form class="ui form segment" id="room_info_form" style="border: none; -webkit-box-shadow: none">
           <input type="hidden" id="room_id" name="room_id" value="<%= @room.id %>"/>
           <div class="two fields">
             <div class="required ui field field_line" >
               <div class="ui field" id="room_field_name">
-                <label for="room_name">Room name</label>
+                <label for="room_name"><%= t(".room_name") %></label>
                 <input type="text" id="room_name" name="room_name" style="display:block" required placeholder="Room name" value="<%= @room.room_name %>" onfocusout="checkDuplicate(this)" disabled/>
               </div>
             </div>
             <div class="required field field_line">
-              <label>Type</label>
+              <label><%= t(".room_type") %></label>
               <div class="ui fluid search selection dropdown" id="select_room">
                 <input type="hidden" name="room_type" id="room_type" value="<%= @room.room_type%>" required placeholder="Select room type"/>
                 <i class="dropdown icon"></i>
                 <div class="default text"></div>
                 <div class="menu">
-                  <div class="item" data-value="NORMAL">NORMAL</div>
-                  <div class="item" data-value="VIP">VIP</div>
+                  <div class="item" data-value="NORMAL"><%= t(".normal") %></div>
+                  <div class="item" data-value="VIP"><%= t(".vip") %></div>
                 </div>
               </div>
             </div>
           </div>
           <div class="two fields">
             <div class="required field field_line">
-              <label>Gender</label>
+              <label><%= t(".room_gender") %></label>
               <div class="ui fluid search selection dropdown" id="select_room">
                 <input type="hidden" name="gender" id="gender" value="<%= @room.gender %>" required placeholder="Select room type"/>
                 <i class="dropdown icon"></i>
                 <div class="default text"><%= @room.gender %></div>
                 <div class="menu">
-                  <div class="item" data-value="MALE">MALE</div>
-                  <div class="item" data-value="FEMALE">FEMALE</div>
+                  <div class="item" data-value="MALE"><%= t(".male") %></div>
+                  <div class="item" data-value="FEMALE"><%= t(".female") %></div>
                 </div>
               </div>
             </div>
             <div class="required field field_line">
-              <label>Status</label>
+              <label><%= t(".status") %></label>
               <input type="text" name="status" required placeholder="Room name" disabled value="<%= @room.status%>"/>
             </div>
           </div>
           <div class="two fields">
             <div class="required field field_line">
-              <label>Number student</label>
+              <label><%= t(".number_student") %></label>
               <input type="text" name="number_student" required placeholder="Number student" disabled  value="<%= @room.number_student%>"/>
             </div>
             <div class="required field field_line">
-              <label>Max number student</label>
+              <label><%= t(".max_number_student") %></label>
               <input type="text" name="max_number_student" required placeholder="Max number student"value="<%= @room.max_number_student%>" />
             </div>
           </div>
           <div class="ui dividing header">
-            Confirmation
+            <%= t(".confirmation") %>
           </div>
           <div class="ui checkbox">
             <div class="field">
             <input type="checkbox" name="confirmation_checkbox">
-            <label>You are sure that the information above is correct</label>
+            <label><%= t(".confirmation_message") %></label>
           </div>
           <div class="actions" style="display: flex; justify-content: flex-start; margin-top: 1rem;">
-            <button class="ui button">
-              Update
+            <button class="ui button custom_btn">
+              <%= t(".update") %>
             </button>
           </div>
         </form>

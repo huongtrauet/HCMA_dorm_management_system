@@ -5,7 +5,7 @@
       <div class="four wide column left" style="background-color: #edeff1; overflow: auto; height: calc(100vh - 58.72px)">
         <div class="title" style="margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center">
           <div class="ui icon input" style="width: 85%;margin: 0 auto ">
-            <input type="text" placeholder="Room type or name..." name="q" id="q" class="form-control search-room-form" >
+            <input type="text" placeholder="<%= t(".search_left_column") %>" name="q" id="q" class="form-control search-room-form" >
             <i class="icon">
               <img src="/assets/search.png" style="width: 1rem; height: 1rem; width: 1rem; top: 50%; position: absolute; transform: translateY(-50%);right: 0.7rem;">
             </i> 
@@ -20,7 +20,7 @@
       <div class="four wide column right" style="background-color: #edeff1; overflow: auto; height: calc(100vh - 58.72px)">
         <div class="header" style="margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center">
           <div class="ui icon input" style="width: 95%;margin: 0 auto ">
-            <input type="text" placeholder="Name or student id number..." name="q" id="q" class="form-control search-student-form" >
+            <input type="text" placeholder="<%= t(".search_right_column") %>" name="q" id="q" class="form-control search-student-form" >
             <i class="icon">
               <img src="/assets/search.png" style="width: 1rem; height: 1rem; width: 1rem; top: 50%; position: absolute; transform: translateY(-50%);right: 0.7rem;">
             </i> 
@@ -180,7 +180,6 @@ $(document).on("turbolinks:load", function() {
       })
     });
   });
-
 
 </script>
 <style>

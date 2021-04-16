@@ -7,4 +7,14 @@
     toastr.success(localStorage.getItem('new_student'))
     localStorage.removeItem('new_student')
   }
+
+  if(localStorage.getItem('deleted_student')){
+    toastr.success(localStorage.getItem('deleted_student'))
+    localStorage.removeItem('deleted_student')
+  }
+  if (window.localStorage.getItem('updated_student')) {
+    toastr.success(window.localStorage.getItem('updated_student'))
+    localStorage.removeItem('updated_student');
+    
+  }
 </script>

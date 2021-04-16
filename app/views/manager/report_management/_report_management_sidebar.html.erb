@@ -1,21 +1,21 @@
 <div class="room_sidebar">
   <div class="ui secondary vertical pointing menu">
     <% if active == 'complaint_report' %>
-      <%= link_to "Complaint reports", "/manager/report-management/complaint-reports/", class: "item active", id: "complaint_report_btn", data: { turbolinks: false } %>
-      <%= link_to "Form requests", "/manager/report-management/form-requests", class: "item", id: "form_request_btn", data: { turbolinks: false } %>
-      <%= link_to "Facility reports", "/manager/report-management/facility-reports/", class: "item", id: "facility_report_btn", data: { turbolinks: false } %>
+      <%= link_to t(".complaint_reports"), "/manager/report-management/complaint-reports/", class: "item active", id: "complaint_report_btn", data: { turbolinks: false } %>
+      <%= link_to t(".form_requests"), "/manager/report-management/form-requests", class: "item", id: "form_request_btn", data: { turbolinks: false } %>
+      <%= link_to t(".facility_reports"), "/manager/report-management/facility-reports/", class: "item", id: "facility_report_btn", data: { turbolinks: false } %>
     <% end %>
       
     <% if active == 'form_request' %>
-      <%= link_to "Complaint reports", "/manager/report-management/complaint-reports/", class: "item", id: "complaint_report_btn", data: { turbolinks: false } %>
-      <%= link_to "Form requests", "/manager/report-management/form-requests", class: "item active", id: "form_request_btn", data: { turbolinks: false } %>
-      <%= link_to "Facility reports", "/manager/report-management/facility-reports/", class: "item", id: "facility_report_btn", data: { turbolinks: false } %>
+      <%= link_to t(".complaint_reports"), "/manager/report-management/complaint-reports/", class: "item", id: "complaint_report_btn", data: { turbolinks: false } %>
+      <%= link_to t(".form_requests"), "/manager/report-management/form-requests", class: "item active", id: "form_request_btn", data: { turbolinks: false } %>
+      <%= link_to t(".facility_reports"), "/manager/report-management/facility-reports/", class: "item", id: "facility_report_btn", data: { turbolinks: false } %>
     <% end %>
 
     <% if active == 'facility_report' %>
-      <%= link_to "Complaint reports", "/manager/report-management/complaint-reports/", class: "item", id: "complaint_report_btn", data: { turbolinks: false } %>
-      <%= link_to "Form requests", "/manager/report-management/form-requests", class: "item", id: "form_request_btn", data: { turbolinks: false } %>
-      <%= link_to "Facility reports", "/manager/report-management/facility-reports/", class: "item active", id: "facility_report_btn", data: { turbolinks: false } %>
+      <%= link_to t(".complaint_reports"), "/manager/report-management/complaint-reports/", class: "item", id: "complaint_report_btn", data: { turbolinks: false } %>
+      <%= link_to t(".form_requests"), "/manager/report-management/form-requests", class: "item", id: "form_request_btn", data: { turbolinks: false } %>
+      <%= link_to t(".facility_reports"), "/manager/report-management/facility-reports/", class: "item active", id: "facility_report_btn", data: { turbolinks: false } %>
     <% end %>
   </div>
 </div>

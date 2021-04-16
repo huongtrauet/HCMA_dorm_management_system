@@ -18,15 +18,18 @@ Rails.application.routes.draw do
     post "/service-management/:id/:year/:month/update", to: "service_management#update_service_charge"
     # get "/service-management/find", to: "service_management#find_service_chare"
     get "/service-management/filter", to: "service_management#filter"
+    post "/service-management/remind", to: "service_management#remind"
+    post "/service-management/import", to: "service_management#import"
 
 
     get "/post-management", to: "post_management#index"
     get "/post-management/show", to: "post_management#show"
     post "/post-management/create", to: "post_management#create"
-    post "/post-management/update", to: "post_management#update"
+    put "/post-management/update", to: "post_management#update"
     post "/post-management/", to: "post_management#change_post_status"
     post "/post-management/restore", to: "post_management#restore"
     get "/post-management/find-post", to: "post_management#find_post"
+    get "/post-management/:id", to: "post_management#show"
 
 
     get "/student-management", to: "student_management#index"
@@ -60,6 +63,10 @@ Rails.application.routes.draw do
     post "/room-management/rooms/:room_id/service-charge/:year/:month/update", to: "service_management#update_room_service_charge"
     get "/room-management/find-room", to: "room_management#find_room"
     get "/room-management/:id/number-student", to: "room_management#room_number_student"
+
+    post "/facility-management/create", to: "facility_management#create"
+    put "/facility-management/:id/update", to: "facility_management#update"
+    get "/facility-management/:id", to: "facility_management#show"
 
     post "/students-arrangement/remove-student", to: "students_arrangement#remove_student_from_room"
     post "/students-arrangement/add-student", to: "students_arrangement#add_student_to_room"
@@ -97,6 +104,7 @@ Rails.application.routes.draw do
     put "/report-management/form-requests/:id/approve", to: "report_management#approve_form_request"
 
     get "/building-management/", to: "building_management#index"
+    get "/building-management/:id", to: "building_management#show"
 
     resources :students
     resources :managers
@@ -131,9 +139,8 @@ Rails.application.routes.draw do
     get "/my-room/members", to: "rooms#room_member"
     get "/my-room/services", to: "rooms#room_service_charge"
 
-
-
-
+    post "/reset-password", to: "student_profiles#reset_password"
+    
     resources :student_profiles
     resources :rooms
     resources :requests
@@ -141,11 +148,12 @@ Rails.application.routes.draw do
     # resources :facility_reports
     resources :complaint_reports
     resources :form_requests
-    resources :facilities
+    # resources :facilities
     resources :service_charges
   end
 
   get "/notifications/unread", to: "notifications#count_unread_noti"
   get "/notifications/total", to: "notifications#count_unread_noti"
   put "/notifications/:id/read", to: "notifications#read_noti"
+  resources :payments
 end

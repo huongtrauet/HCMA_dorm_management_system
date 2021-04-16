@@ -9,30 +9,30 @@
           <%= link_to "Request", student_requests_path, class: "item", id: "student_requests_path", data: { turbolinks: false } %>
           <div class="ui floating labeled icon dropdown button" style="position: relative; background-color: #ffffff" id="noti_button" >
             <img src="/assets/bell.png" style="width: 1.5rem; height: 1.5rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)" onclick="showNotiList()"/>
-            <div id="unread" class="floating ui red label" style="top: 0.5rem; left: 1.5rem; padding: 0.3rem; border-radius: 0.2rem;"><%= current_user.notifications.where(is_read: 'false').count %></div>
+            <div id="unread" class="floating ui red label" style="display: none; top: 0.5rem; left: 1.5rem; padding: 0.3rem; border-radius: 0.2rem;"><%= current_user.notifications.where(is_read: 'false').count %></div>
             <div class="ui menu">
               <h3 style="margin: 1rem;">Thong bao</h3>
               <div id="list_noti" style="max-height: 30rem; overflow: auto;">
-              <% if current_user.notifications.length > 0 %>
-                <% current_user.notifications.order('created_at DESC').each do |notification| %>
-                  <% if notification.is_read %>
-                    <div class="item noti_item" style="width: 20rem; max-height: 9.5rem; overflow: hidden; display: block">
-                      <div onclick="readNotification(<%= notification.id %>, '<%= notification.noti_type %>', <%= notification.report_id || 0 %>, <%= notification.page || 0 %>)" style= "width: 17rem; line-height: 1.5rem;  white-space: pre-wrap;"><%= notification.message %></div>
-                      <p style="font-size: 0.7rem; color: #b8b8b8"><%= time_ago(notification.created_at) %></p>
-                    </div>
-                  <% else %>
-                    <div class="item noti_item" style="width: 20rem; max-height: 9.5rem; overflow: hidden; display: block; background-color: #e0e0e0">
-                      <div onclick="readNotification(<%= notification.id %>, '<%= notification.noti_type %>', <%= notification.report_id || 0 %>, <%= notification.page || 0 %>)" style= "width: 17rem; overflow: hidden;text-overflow: ellipsis;word-wrap: break-word;-webkit-line-clamp: 2;-webkit-box-orient: vertical;line-height: 2.25rem;  white-space: pre-wrap;"><%= notification.message %></div>
-                      <p style="font-size: 0.7rem; color: #b8b8b8"><%= time_ago(notification.created_at) %></p>
-                    </div>
+                <% if current_user.notifications.length > 0 %>
+                  <% current_user.notifications.order('created_at DESC').each do |notification| %>
+                    <% if notification.is_read %>
+                      <div class="item noti_item" style="width: 20rem; max-height: 9.5rem; overflow: hidden; display: block">
+                        <div onclick="readNotification(<%= notification.id %>, '<%= notification.noti_type %>', <%= notification.report_id || 0 %>, <%= notification.page || 0 %>)" style= "width: 17rem; line-height: 1.5rem;  white-space: pre-wrap;"><%= notification.message %></div>
+                        <p style="font-size: 0.7rem; color: #b8b8b8"><%= time_ago(notification.created_at) %></p>
+                      </div>
+                    <% else %>
+                      <div class="item noti_item" style="width: 20rem; max-height: 9.5rem; overflow: hidden; display: block; background-color: #e0e0e0">
+                        <div onclick="readNotification(<%= notification.id %>, '<%= notification.noti_type %>', <%= notification.report_id || 0 %>, <%= notification.page || 0 %>)" style= "width: 17rem; overflow: hidden;text-overflow: ellipsis;word-wrap: break-word;-webkit-line-clamp: 2;-webkit-box-orient: vertical;line-height: 2.25rem;  white-space: pre-wrap;"><%= notification.message %></div>
+                        <p style="font-size: 0.7rem; color: #b8b8b8"><%= time_ago(notification.created_at) %></p>
+                      </div>
+                    <% end %>
+                    
                   <% end %>
-                  
+                <% elsif current_user.notifications.length == 0 %>
+                  <div class="item noti_item" style="width: 20rem; height: 4.5rem" id="no_notification">
+                    <div class="" style= "width: 17rem; height: 4.5rem; overflow: hidden;text-overflow: ellipsis;word-wrap: break-word;-webkit-line-clamp: 2;-webkit-box-orient: vertical;line-height: 2.25rem;  white-space: pre-wrap; display: flex; align-items: center">Khong co thong bao nao</div>
+                  </div>
                 <% end %>
-              <% elsif current_user.notifications.length == 0 %>
-                <div class="item noti_item" style="width: 20rem; height: 4.5rem" id="no_notification">
-                  <div class="" style= "width: 17rem; height: 4.5rem; overflow: hidden;text-overflow: ellipsis;word-wrap: break-word;-webkit-line-clamp: 2;-webkit-box-orient: vertical;line-height: 2.25rem;  white-space: pre-wrap; display: flex; align-items: center">Khong co thong bao nao</div>
-                </div>
-              <% end %>
               </div>
             </div>
           </div>
@@ -44,12 +44,12 @@
             <% if I18n.locale == :en %>
               <%= t(".english") %>
             <% else %>
-              <%= t(".vienamese") %>
+              <%= t(".vietnamese") %>
             <% end %>
           </span>
           <div class="menu" style="z-index: 3000">
             <%= link_to t(".english"), {locale:"en"}, class: "item", data: { turbolinks: false } %>
-            <%= link_to t(".vienamese"), {locale:"vi"}, class: "item",  data: { turbolinks: false } %>
+            <%= link_to t(".vietnamese"), {locale:"vi"}, class: "item",  data: { turbolinks: false } %>
           </div>
         </div>
         <% if logged_in? %>
@@ -88,6 +88,8 @@
       success: function(result){
         if(result.unread == 0) {
           $("#unread").hide()
+        } else {
+          $("#unread").show()
         }
       }, 
       error: function (error) {
@@ -145,6 +147,9 @@
         redirect_url = `/student/requests/form?focus_id=${report_id}&page=${page}`
       } else if (noti_type == "add_student_to_room") {
         redirect_url = `/student/my-room`
+      }
+      else if (noti_type == "service_charge_remind") {
+        redirect_url = `/student/my-room/services`
       }
       $.ajax({
         type: "PUT",

@@ -6,11 +6,11 @@
       </div>
       <div class="content">
         <div class="header"><%= post.title %></div>
-        <div class="meta">
+        <div class="meta" style="display: flex; flex-direction: column; justify-content: space-between; height: 8.5rem">
           <span style="margin-bottom: 1rem; line-height: 1.7rem; word-wrap: break-word; overflow: hidden; -webkit-line-clamp: 4 ; -webkit-box-orient: vertical; display: -webkit-box">
-            <%= post.content %>
+            <%= remove_html_tag(post.content).html_safe %>
           </span>
-          <a href="posts/<%= post.id %>">Xem them	&rarr;</a>
+          <a href="posts/<%= post.id %>" data-turbolinks="false"><%= t(".view_more") %>&rarr;</a>
         </div>
         <div class="description">
           <p></p>

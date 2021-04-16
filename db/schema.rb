@@ -10,60 +10,65 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_29_165326) do
+ActiveRecord::Schema.define(version: 2021_04_02_175242) do
 
   create_table "buildings", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
+    t.integer "total_floor"
+    t.integer "full_room_quantity", default: 0
+    t.integer "unfilled_room_quantity", default: 0
+    t.integer "pending_room_quantity", default: 0
+    t.boolean "has_problem", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "complaint_reports", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "title", null: false
-    t.string "description", null: false
+    t.text "description", size: :long, null: false
     t.string "status", default: "PENDING", null: false
     t.integer "index", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "student_id", null: false
-    t.string "reject_reason"
+    t.text "reject_reason", size: :long
     t.index ["student_id"], name: "index_complaint_reports_on_student_id"
   end
 
   create_table "facilities", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.integer "name", null: false
-    t.integer "quantity", null: false
-    t.integer "status", null: false
-    t.string "description"
+    t.string "name", null: false
+    t.integer "quantity", default: 1, null: false
+    t.string "status", default: "NEW", null: false
+    t.string "detail"
+    t.string "images"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "room_id", null: false
-    t.index ["name"], name: "index_facilities_on_name", unique: true
     t.index ["room_id"], name: "index_facilities_on_room_id"
   end
 
   create_table "facility_reports", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "title", null: false
-    t.string "description", null: false
+    t.text "description", size: :long, null: false
     t.string "status", default: "PENDING", null: false
     t.integer "index", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "student_id", null: false
-    t.string "reject_reason"
+    t.text "reject_reason", size: :long
     t.index ["student_id"], name: "index_facility_reports_on_student_id"
   end
 
   create_table "form_requests", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "form_type", null: false
-    t.string "description", null: false
+    t.text "description", size: :long, null: false
     t.string "status", default: "PENDING", null: false
     t.integer "index", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "student_id", null: false
-    t.datetime "return_date", default: "2021-03-31 00:00:00"
-    t.string "note"
+    t.datetime "return_date"
+    t.text "note", size: :long
     t.index ["student_id"], name: "index_form_requests_on_student_id"
   end
 
@@ -92,6 +97,13 @@ ActiveRecord::Schema.define(version: 2021_03_29_165326) do
     t.integer "report_id"
   end
 
+  create_table "payments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "order_id"
+    t.string "payer_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "posts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "title"
     t.text "content", size: :long
@@ -109,9 +121,11 @@ ActiveRecord::Schema.define(version: 2021_03_29_165326) do
     t.integer "number_student", default: 0, null: false
     t.integer "max_number_student", null: false
     t.string "room_type", null: false
+    t.integer "floor", default: 0, null: false
+    t.boolean "has_problem", default: false, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "status", default: "UNFILLED"
+    t.string "status", default: "PENDING"
     t.string "gender"
     t.bigint "building_id", null: false
     t.index ["building_id"], name: "index_rooms_on_building_id"
@@ -125,7 +139,7 @@ ActiveRecord::Schema.define(version: 2021_03_29_165326) do
     t.string "status", default: "UNPAID", null: false
     t.integer "month", null: false
     t.integer "year", null: false
-    t.string "payer", default: "Student name", null: false
+    t.string "payer", default: "Payer", null: false
     t.datetime "paid_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

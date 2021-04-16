@@ -1,4 +1,4 @@
-class Manager::StudentManagementController < ApplicationController
+class Manager::StudentManagementController < ManagerMainController
   layout 'manager_layout/manager'
   skip_before_action :verify_authenticity_token
   before_action :logged_in_manager
@@ -36,21 +36,24 @@ class Manager::StudentManagementController < ApplicationController
 
   def create_room_member
     @room = Room.find(params[:room_id])
-    if(student_create_params[:student_id_number_confirm] == student_create_params[:student_id_number])
-      student_id_number = student_create_params[:student_id_number]
-      new_params = student_create_params.merge(password: student_id_number, password_confirmation: student_id_number, channel: generate_channel).except(:student_id_number_confirm)
+    if(create_room_member_params[:create_student_id_number_confirm] == create_room_member_params[:create_student_id_number])
+      student_id_number = create_room_member_params[:create_student_id_number]
+      new_params = create_room_member_params.merge(password: student_id_number, password_confirmation: student_id_number, student_id_number: student_id_number, channel: generate_channel).except(:create_student_id_number_confirm, :create_student_id_number)
       @student = Student.new(new_params)
       @student.student_profile = StudentProfile.new(email:"#{@student.student_id_number}@gmail.com", identity_card_number: @student.student_id_number, name: @student.name)
     else
-      redirect_to manager_student_management_path
+      respond_to do |format|
+        format.json { render json: { message: "Create student failed" }, status: :bad_request }
+      end
     end
+
     if @student.save
       respond_to do |format|
-        format.js {render partial: '/manager/room_management/line_student_member', locals: { member: @student, index: @room.students.count } } 
+        format.json { render json: { message: "Create student successfully" }, status: :ok }
       end
-    elsif
+    else
       respond_to do |format|
-        format.json { render json: @student.errors, status: :unprocessable_entity }
+        format.json { render json: { message: "Create student failed" }, status: :bad_request }
       end
     end
   end
@@ -71,26 +74,34 @@ class Manager::StudentManagementController < ApplicationController
   end
 
   def update
-    byebug
     @student = Student.find(params[:id])
     if @student.update(student_params.merge(name: params[:student][:student_profile_attributes][:name]))
-      # flash[:success] = "Update success!!"
-      url = cookies[:forwarding_url]
-      cookies.delete(:forwarding_url)
-      redirect_to url
+      if @student.room.id != 1 and @student.status != 'ACTIVE'
+        @student.update_attribute(:status, 'ACTIVE')
+      elsif @student.room.id == 1 and @student.status == 'ACTIVE'
+        @student.update_attribute(:status, 'PENDING')
+      end
+      respond_to do |format|
+        format.json { render json: { message: "Update student profile successfully!!" }, status: :ok}
+      end
     else
-      url = cookies[:forwarding_url]
-      cookies.delete(:forwarding_url)
-      redirect_to url
+      respond_to do |format|
+        format.json { render json: {errors: @student.errors, message: "Update student profile failed!!" }, status: :bad_request}
+      end
     end
   end
 
   def destroy
     @student = Student.find(params[:id])
+    @room = @student.room
     if @student.destroy
-      redirect_to manager_student_management_path
+      respond_to do |format|
+        format.json { render json: {room: @room, message: "Delete student successfully!!"}, status: :ok}
+      end
     else
-      redirect_to manager_student_management_path
+      respond_to do |format|
+        format.json { render json: {message: "Delete student failed!!"}, status: :bad_request}
+      end
     end
   end
 
@@ -175,6 +186,10 @@ class Manager::StudentManagementController < ApplicationController
 
   def student_create_params
     params.permit(:student_id_number, :student_id_number_confirm, :check_in_date, :check_out_date, :name, :room_id)
+  end
+
+  def create_room_member_params
+    params.permit(:create_student_id_number, :create_student_id_number_confirm, :check_in_date, :check_out_date, :name, :room_id)
   end
 
   def generate_channel

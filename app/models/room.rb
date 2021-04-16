@@ -1,4 +1,7 @@
 class Room < ApplicationRecord
+  after_commit :update_floor, on: [:create]
+  after_commit :update_building, on: [:create, :update]
+
   has_many :service_charges, dependent: :destroy
   has_many :facilities, dependent: :destroy
   has_many :students
@@ -21,4 +24,22 @@ class Room < ApplicationRecord
             }
   validates :room_type, presence: true, allow_nil: false, inclusion: { in: ['NORMAL', 'VIP']}
   validates :status, presence: true, allow_nil: false, inclusion: { in: ['PENDING', 'UNFILLED','FULL']}
+
+  def update_floor
+    floor = self.room_name.split('_')[1][0,2].to_i
+    self.update(floor: floor)
+  end
+
+  def update_building
+    self.building.update(full_room_quantity: self.building.rooms.where(status: 'FULL').count)
+    self.building.update(unfilled_room_quantity: self.building.rooms.where(status: 'UNFILLED').count)
+    self.building.update(pending_room_quantity: self.building.rooms.where(status: 'PENDING').count)
+
+    if self.has_problem == true
+      self.building.update_attribute(:has_problem, true)
+    end
+    if self.building.rooms.where(has_problem: true).length == 0
+      self.building.update_attribute(:has_problem, false)
+    end
+  end
 end

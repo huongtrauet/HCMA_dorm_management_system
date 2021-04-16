@@ -1,4 +1,6 @@
 class Manager::ManagerSessionsController < ManagerMainController
+  layout 'manager_layout/manager'
+  
   def new
   end
   def create

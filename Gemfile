@@ -22,6 +22,11 @@ gem 'pusher'
 gem 'ransack'
 gem 'jquery-rails'
 gem 'kaminari' 
+gem 'paypal-checkout-sdk'
+gem 'roo'
+gem "activerecord-import"
+gem "flex-slider-rails"
+gem "rails-i18n"
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

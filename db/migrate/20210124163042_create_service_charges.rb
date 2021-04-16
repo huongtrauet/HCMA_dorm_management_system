@@ -7,7 +7,7 @@ class CreateServiceCharges < ActiveRecord::Migration[6.0]
       t.string :status, null: false, default: "UNPAID"
       t.integer :month, null: false
       t.integer :year, null: false
-      t.string :payer, null: false, default: "Student name"
+      t.string :payer, null: false, default: "Payer"
       t.datetime :paid_at, null: true
 
       t.timestamps

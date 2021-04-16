@@ -8,29 +8,29 @@
       <div id="form_request" style="margin-top: 3rem">
         <div class="header" style="display: flex; justify-content: space-between;">
           <div class="header_title">
-            <h3>Form request</h3>
+            <h3><%= t(".form_request") %></h3>
           </div>
         </div>
         <div class="footer_line" style="height: 1px; background-color: rgba(34,36,38,.15); margin-top: 0.5rem; margin-bottom: 1.5rem"></div>
         <div class="ui tabular menu">
           <a class="item active" id="pending_tab" href="/manager/report-management/form-requests/pending" data-turbolinks="false">
-            Pending
+            <%= t(".pending") %>
           </a>
           <a class="item" id="approved_tab" href="/manager/report-management/form-requests/approved" data-turbolinks="false">
-            Approved
+            <%= t(".approved") %>
           </a>
           <a class="item" id="rejected_tab" href="/manager/report-management/form-requests/rejected" data-turbolinks="false">
-            Rejected
+            <%= t(".rejected") %>
           </a>
         </div>
         <table class="ui very basic selectable table" style="margin-top: 2rem">
           <thead>
             <tr>
-              <th style="text-align: center">STT</th>
-              <th style="text-align: center">TYPE</th>
-              <th style="text-align: center">CONTENT</th>
-              <th style="text-align: center">NGAY HEN</th>
-              <th style="text-align: right">STATUS</th>
+              <th style="text-align: center"><%= t(".id") %></th>
+              <th style="text-align: center"><%= t(".type") %></th>
+              <th style="text-align: center"><%= t(".building") %></th>
+              <th style="text-align: center"><%= t(".content") %></th>
+              <th style="text-align: right"><%= t(".status") %></th>
             </tr>
           </thead>
           <tbody id="reports_list">
@@ -43,20 +43,22 @@
                   </p>
                 </td>
                 <td>
+                  <p style="text-align: center; margin: 0 auto; word-wrap: break-word; width: 12rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+                    <%= report.student.room.building.name %> / <%= report.student.room.room_name %>
+                  </p>
+                </td>
+                <td>
                   <span style="text-align: center; margin: 0 auto; word-wrap: break-word; width: 12rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
                     <%= report.description %>
                   </span>
                 </td>
-                <td style="text-align: center">
-                    <%= report.return_date.to_date %>
-                </td>
                 <td style="text-align: right">
                   <% if report.status == "PENDING" %>
-                    <a class="ui teal tag label" style="width: 7rem"><%= report.status %></a>
+                    <a class="ui teal tag label"><%= t(".pending") %></a>
                   <% elsif report.status == "APPROVED" %>
-                    <a class="ui blue tag label" style="width: 7rem"><%= report.status %></a>
+                    <a class="ui blue tag label"><%= t(".approved") %></a>
                   <% elsif report.status == "REJECTED" %>
-                    <a class="ui red tag label" style="width: 7rem"><%= report.status %></a>
+                    <a class="ui red tag label"><%= t(".rejected") %></a>
                   <% end  %>
                 </td>
               </tr>
@@ -74,16 +76,27 @@
 <div class="ui small first modal report_info" id="show_info_modal">
   <i class="close icon"></i>
   <div class="content">
-    <h3 id="title_show"></h3>
-    <p id="description_show"></p>
+    <div style="font-weight: bold; font-size: 1.5rem" id="title_show"></div>
+    <div id="report_building" style="    margin-bottom: 1rem; color: #00000066;"></div>
+    <div style="margin-bottom: 0.4rem"><b><%= t(".created_date") %>: </b> <span id="created_at_show"></span></div>
+    <div style="margin-bottom: 0.4rem">
+      <b><%= t(".content") %>: </b>
+      <div id="description_show"></div>
+    </div>
     <input type="hidden" id="report_id_show" value=""/>
   </div>
-  <div class="actions" style="padding: 0.7rem 1rem;">
-    <div class="ui black reject button">
-      Reject
+  <div class="actions" style="padding: 0.7rem 1rem; display: flex; justify-content: space-between; align-items: center">
+    <div style="display: flex; align-items: center">
+      <img id="reporter_image" src="/assets/profile.png" style="width: 2rem; height: 2rem; border-radius: 50%; margin-right: 1rem"/>
+      <b id="reporter_name"></b>
     </div>
-    <div class="ui teal approve button">
-      Approve
+    <div>
+      <div class="ui black reject button">
+        <%= t(".reject") %>
+      </div>
+      <div class="ui teal approve button">
+        <%= t(".approve") %>
+      </div>
     </div>
   </div>
 </div>
@@ -92,7 +105,7 @@
 
 <div class="ui small second modal reject" >
   <i class="close icon"></i>
-  <div class="header">Reject reason</div>
+  <div class="header"><%= t(".reject_reason") %></div>
   <div class="content ">
     <form id="reject_form" name="reject_form">
       <div class="ui form">
@@ -105,21 +118,21 @@
   </div>
   <div class="actions" style="padding: 0.7rem 1rem;">
     <div class="ui black cancel button">
-      Cancel
+      <%= t(".cancel") %>
     </div>
     <div class="ui teal button" onclick="submitReject()">
-      Reject
+      <%= t(".reject") %>
     </div>
   </div>
 </div>
 
 <div class="ui small third modal approve">
   <i class="close icon"></i>
-  <div class="header">Approve</div>
+  <div class="header"><%= t(".approve") %></div>
   <div class="content ">
     <form id="reject_form" name="reject_form">
       <div class="ui form">
-        <h3>Return date</h3>
+        <h3><%= t(".return_date") %></h3>
         <div class="ui calendar" id="return_date">
           <div class="ui input" >
             <input type="text" placeholder="Return date" id="return_date_input">
@@ -134,10 +147,10 @@
   </div>
   <div class="actions" style="padding: 0.7rem 1rem;">
     <div class="ui black cancel button">
-      Cancel
+      <%= t(".cancel") %>
     </div>
     <div class="ui teal button" onclick="submitApprove()">
-      Approve
+      <%= t(".approve") %>
     </div>
   </div>
 </div>
@@ -174,10 +187,19 @@
         "id": report_id
       },
       success: function(result){
-        $('#title_show').html(result.form_request.title)
+        let created_date = new Date(result.form_request.created_at)
+        let return_date = new Date(result.form_request.return_date)
+        $('#title_show').html(result.form_request.form_type)
         $('#description_show').html(result.form_request.description)
         $('#report_id_show').val(result.form_request.id)
         $('#report_id_reject').val(result.form_request.id)
+        $('#created_at_show').html(`${created_date.getDate()}/${created_date.getMonth() + 1}/${created_date.getFullYear()}`)
+        $('#note_show').html(result.form_request.note)
+        $('#report_building').html(`Building ${result.building}/${result.room}`)
+        $('#reporter_name').html(result.reporter.name)
+        if(result.reporter.avatar.url != null && result.reporter.avatar.url != ""){
+          $('#reporter_image').attr("src",result.reporter.avatar.url)
+        }
       },
       error: function (error) {
         console.log(error)
@@ -254,7 +276,7 @@
       },
       success: function(result){
         toastr.success("Approved successfully");
-        $('.ui.small.first.modal.report_info').modal('hide');
+        $('.ui.small.third.modal.approve').modal('hide');
         $("#reports_list").html(result)
 
       },

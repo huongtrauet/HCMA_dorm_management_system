@@ -1,10 +1,12 @@
 <div class="facility_management_list">
-  <div class="header" style="display: flex; justify-content: space-between;">
-    <div class="header_title">
-      <h3>Facilities: </h3>
+  <div class="header" style="display: flex; justify-content: space-between; align-items: flex-end">
+    <div style="font-weight: bold"><a href="/manager/building-management" class="breadcrumb"><%= t(".buildings") %></a> / 
+      <a href="/manager/building-management/<%= @room.building.id %>" class="breadcrumb"><%= @room.building.name %></a> /
+      <a href="/manager/rooms-management/rooms/<%= @room.id %>" class="breadcrumb"><%= t(".room") %> <%= @room.room_name %></a> /
+      <a href="/manager/rooms-management/rooms/<%= @room.id %>/facilities" class="breadcrumb"><%= t(".facilities") %></a>
     </div>
     <div class="header_search">
-      <button class="ui icon button" onclick="addStudent()">
+      <button class="ui icon button" onclick="addFacility()">
         <i class="plus icon"></i>
       </button>
       <div class="ui icon input">
@@ -15,27 +17,25 @@
       </div>
     </div>
   </div>
-  <div class="footer_line" style="height: 1px; background-color: rgba(34,36,38,.15); margin-top: 0.5rem; margin-bottom: 1.5rem"></div>
+  <div class="ui inverted divider"></div>
   <table class="ui very basic selectable table">
     <thead>
       <tr>
-        <th>STT</th>
-        <th>Ma thiet bi</th>
-        <th>Ten thiet bi</th>
-        <th>So luong</th>
-        <th>Trang thai</th>
-        <th>Chu thich</th>
+        <th><%= t(".id") %></th>
+        <th><%= t(".facility_name") %></th>
+        <th><%= t(".quantity") %></th>
+        <th><%= t(".status") %></th>
+        <th><%= t(".note") %></th>
       </tr>
     </thead>
     <tbody>
-      <% for i in 0..5 do %>
-        <tr onclick="showFacilityInfo()">
-          <td>1</td>
-          <td>BH179</td>
-          <td>Ban hoc</td>
-          <td>6</td>
-          <td>Moi</td>
-          <td>Khong</td>
+      <% @facilities.each_with_index do |f, index|%>
+        <tr onclick="showFacilityInfo(<%= f.id %>)">
+          <td><%= index + 1 %></td>
+          <td><%= f.name %></td>
+          <td><%= f.quantity %></td>
+          <td><%= f.status %></td>
+          <td><%= f.detail %></td>
         </tr>
       <% end %>
     </tbody>
@@ -45,39 +45,55 @@
 <div class="ui first modal facility_info">
   <i class="close icon"></i>
   <div class="header">
-    Facility
+    <%= t(".facility") %>
   </div>
-  <div class="ui header" style="margin-bottom: 2rem;">P1410</div>
-  <div class="">
-    <div class="ui grid">
+  <div class="" style="margin-top: 2rem">
+    <div class="ui grid" style="margin-bottom: 2rem">
       <div class="one wide column"></div>
       <div class="five wide column">
-        <div class="student-info">
-          <label>Ma thiet bi:</label>
-          <p>MH170</p>
-          <label>Ten thiet bi:</label>
-          <p>Ban hoc</p>
+        <div class="facility_attr">
+          <label><%= t(".facility_name") %>:</label>
+          <div id="facility_name"><%= t(".default") %></div>
         </div>
       </div>
       <div class="five wide column">
-        <div class="student-info">
-          <label>So luong: </label>
-          <p>
-          <span style="background-color: #f4810b; padding: 6px 10px; color: #fff; border-radius: 5px; font-weight: bold">6</span>
-          </p>
-          <label>Tinh trang: </label>
-          <p>Moi</p>
+        <div class="facility_attr">
+          <label><%= t(".quantity") %>: </label>
+          <div>
+            <a class="ui mini label" style=" background-color: #f4810b; color: #fff !important" id="facility_quantity">Default</a>
+          </div>
+        </div>
+      </div>
+      <div class="five wide column">
+        <div class="facility_attr">
+          <label><%= t(".status") %>: </label>
+          <a class="ui mini label" style=" background-color: #3889c8; color: #fff !important" id="facility_status">Default</a>
+        </div>
+      </div>
+      <div class="one wide column"></div>
+      <div class="fifteen wide column">
+        <div class="facility_attr">
+          <label><%= t(".detail") %>: </label>
+          <div id="facility_detail">Default</div>
+        </div>
+      </div>
+      <div class="one wide column"></div>
+      <div class="fourteen wide column">
+        <div style="display: flex; justify-content: space-between; width: 100%; flex-wrap: wrap;" id="facility_image">
+          <img src="/assets/profile.png" style="width: 30%">
+          <img src="/assets/profile.png" style="width: 30%">
+          <img src="/assets/profile.png" style="width: 30%">
+          <img src="/assets/profile.png" style="width: 30%">
         </div>
       </div>
     </div>
   </div>
   <div class="actions" style="padding: 0.7rem 1rem;">
-    <div class="ui black deny button">
-      Cancel
+    <div class="ui deny button">
+      <%= t(".cancel") %>
     </div>
-    <div class="ui positive right labeled icon button edit">
-      Edit
-      <i class="arrow right icon"></i>
+    <div class="ui button edit custom_btn" style="width: 6rem">
+      <%= t(".edit") %>
     </div>
   </div>
 </div>
@@ -85,61 +101,147 @@
 <div class="ui second modal facility_info">
   <i class="close icon"></i>
   <div class="header">
-    Facility edit
+    <%= t(".facility_edit") %>
   </div>
-  <div class="ui header" style="margin-bottom: 2rem;">P1410</div>
-  <form class="ui form" style="margin: 0 1.5rem">
+  <form class="ui form" style="margin: 2rem 1.5rem" id="edit_facility_form">
     <div class="three fields">
+      <input type="hidden" id="facility_id_edit" value="">
       <div class="field">
-        <label>Thang</label>
-        <input type="text" placeholder="Thang" disabled value="Thang 2">
+        <label><%= t(".facility_name") %></label>
+        <input type="text" id="facility_name_edit"  name="name" placeholder="Ten thiet bi">
       </div>
       <div class="field">
-        <label>Tien dien</label>
-        <input type="text" placeholder="Tien dien">
+        <label><%= t(".quantity") %></label>
+        <input type="text" id="facility_quantity_edit" name="quantity" placeholder="So luong">
       </div>
       <div class="field">
-        <label>Trang thai</label>
+        <label><%= t(".status") %></label>
         <div class="ui selection dropdown">
-          <input type="hidden" name="gender">
+          <input name="status" id="facility_status_edit">
           <i class="dropdown icon"></i>
-          <div class="default text">Trang thai</div>
+          <div class="default text" style="color: black" id="facility_status_text">Trang thai</div>
           <div class="menu">
-            <div class="item" data-value="1">Paid</div>
-            <div class="item" data-value="0">Unpaid</div>
+            <div class="item" data-value="NEW"><%= t(".new") %></div>
+            <div class="item" data-value="REPAIRING"><%= t(".repairing") %></div>
+            <div class="item" data-value="BROKEN"><%= t(".broken") %></div>
           </div>
         </div>
       </div>
     </div>
-    <div class="three fields">
-      <div class="field">
-        <label>Tong tien</label>
-        <input type="text" placeholder="Tong tien">
+    <div class="field">
+      <label><%= t(".detail") %></label>
+      <textarea type="text" id="facility_detail_edit" name="detail" rows="4" placeholder="Detail"></textarea>
+    </div>
+    <div class="actions" style="padding: 0.7rem 1rem;">
+      <div class="ui deny button">
+        <%= t(".cancel") %>
       </div>
-      <div class="field">
-        <label>Tien nuoc</label>
-        <input type="text" placeholder="Tien nuoc">
-      </div>
-      <div class="field">
-        <label>Nguoi nop</label>
-        <input type="text" placeholder="Nguoi nop">
+      <div class="ui submit button" style="background-color: #3889c8; color: white">
+        <%= t(".update") %>
       </div>
     </div>
   </form>
-  <div class="actions" style="padding: 0.7rem 1rem;">
-    <div class="ui black deny button">
-      Cancel
-    </div>
-    <div class="ui positive right labeled icon button">
-      Submit
-      <i class="arrow right icon"></i>
-    </div>
+</div>
+
+<div class="ui longer scrolling small modal add">
+  <div class="header">
+    <%= t(".create_new_facility") %>
   </div>
+  <form id="myForm" multipart="true" name="myForm" class="ui form segment" style="border: none; -webkit-box-shadow: none; margin-top: 0">
+    <input type="hidden" name="room_id" id="room_id" value="<%= @room.id %>">
+    <div class="ui form" style="padding: 1rem">
+      <div style="max-width: 0; max-height: 0; overflow: hidden;">
+        <input autofocus="true" />
+      </div>
+      <div class="field">
+        <label><%= t(".facility_name") %>:</label>
+        <textarea name="name" placeholder="<%= t(".facility_name") %>" rows="1"></textarea>
+      </div>
+      <div class="field" style="margin-top: 2.5rem">
+        <label><%= t(".detail") %>:</label>
+        <textarea name="detail" placeholder="<%= t(".detail") %>" rows="8"></textarea>
+      </div>
+      <div class="content" style="margin-top: 2.5rem">
+        <div class="ui special cards" id="preview_image"> 
+          <div class="card" style="height: 20rem", id="preview_image_card">
+            <input type="file" class="inputfile" id="embedpollfileinput1" onchange="generatePreviewImage(this)" style="width: 100%; height: 100%" multiple="true" accept="image/png, image/jpeg" name="images_input" />
+            <label for="embedpollfileinput1" class="ui button" style="margin: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center">
+              <i class="ui plus icon"></i>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="actions" style="float: right; margin-top: 1rem;">
+        <button class="ui cancel button" onclick="cancelCreatePost()">
+          <%= t("cancel") %>
+        </button>
+        <div class="ui blue submit button custom_btn"><%= t(".submit") %></div>
+      </div>
+    </div>
+  </form>
 </div>
 
 <script>
-  function showFacilityInfo() {
+  if (localStorage.getItem("create_facility")) {
+    toastr.success(localStorage.getItem("create_facility"))
+    localStorage.removeItem("create_facility")
+  }
+    if (localStorage.getItem("update_facility")) {
+    toastr.success(localStorage.getItem("update_facility"))
+    localStorage.removeItem("update_facility")
+  }
+  function showFacilityInfo(facility_id) {
     $('.ui.modal.first.facility_info').modal('show');
+    $.ajax({
+      type: "GET",
+      url: `/manager/facility-management/${facility_id}`,
+      success: function(result){
+        $('#facility_name').html(result.facility.name)
+        $('#facility_quantity').html(result.facility.quantity)
+        $('#facility_status').html(result.facility.status)
+        $('#facility_detail').html(result.facility.detail)
+        $('#facility_detail_edit').val(result.facility.detail)
+        $('#facility_image').html('')
+        result.facility.images.forEach(image => {
+          $('#facility_image').append(`<img src="${image.url}" style="width: 30%">`)
+        })
+        $('#facility_name_edit').val(result.facility.name)
+        $('#facility_quantity_edit').val(result.facility.quantity)
+        $('#facility_status_edit').val(result.facility.status)
+        $('#facility_status_text').html(result.facility.status)
+        $('#facility_id_edit').val(facility_id)
+        debugger
+
+      },
+      error: function(error) {
+        
+      }
+    })
+  }
+
+  function updateSubmit(e) {
+    let facility_id = $('#facility_id_edit').val()
+    debugger
+    e.preventDefault()
+    $.ajax({
+      type: "PUT",
+      url: `/manager/facility-management/${facility_id}/update`,
+      data: {
+        "facility": { 
+          "name": $('#facility_name_edit').val(), 
+          "quantity": $('#facility_quantity_edit').val(), 
+          "detail": $('#facility_detail_edit').val(), 
+          "status": $('#facility_status_text').html()
+        }
+      },
+      success: function(result){
+        localStorage.setItem("update_facility", result.message)
+        window.location.reload()
+      },
+      error: function (error) {
+        toastr.error('Update post failed')
+      }
+    })
   }
 
   $('.second.modal')
@@ -147,4 +249,214 @@
 
   $('.ui.dropdown')
   .dropdown();
+
+  function addFacility(){
+    $('.ui.longer.small.modal.add').modal('show')
+    $('#room_id').val()
+  };
+
+  var allImage = [] 
+  let myForm = document.getElementById('myForm');
+  let formData = new FormData(myForm);
+
+  function generatePreviewImage(image){
+    var index = 0;
+    count = image.files.length;
+    // uploadFile(image.files[0])
+
+    for (let i = 0; i < image.files.length; i++) {
+      $('#preview_image').append(`<div class='card' style="height: 20rem" id="image_${index}">
+                                <i class="ui window close outline icon" style="position: absolute; top: 0.5rem; right: 0.5rem; cursor: pointer;", onclick="removeImage(this)"></i>
+                                <img style="width: 100%; height: 100%;" src='${URL.createObjectURL(image.files[i])}' />
+                                </div>`)
+    }
+    let myFormImage = document.getElementById('myForm');
+    let formDataImage = new FormData(myForm);
+    index++;
+    for (let index = 0; index < formDataImage.getAll("images_input").length; index++) {
+      formData.append('images', formDataImage.getAll("images_input")[index]);
+    }
+  }
+
+  function removeImage(_this){
+    const preview_images = Array.prototype.slice.call( document.getElementById('preview_image').children )
+    $(_this).parent().remove();
+    const index =  preview_images.indexOf( _this.parentElement )
+    let images = formData.getAll("images")
+    images.splice(index-1, 1)
+    formData.delete('images')
+    for (let index = 0; index < images.length; index++) {
+      formData.append('images', images[index])
+    }
+  }
+
+  function addSubmit(e) {
+    e.preventDefault();
+    let formdatafacility = new FormData(document.getElementById('myForm'));
+    let images = formData.getAll('images');
+    for (let i = 0; i < images.length; i++) {
+      formdatafacility.append(`images[]`, images[i])
+    }
+    formdatafacility.delete('images_input')
+    console.log(formdatafacility)
+    $.ajax({
+      type: "POST",
+      url: "/manager/facility-management/create",
+      processData: false,
+      contentType: false,
+      cache: false,
+      mimeType: 'multipart/form-data',
+      data: formdatafacility,
+      success: function(result){
+        localStorage.setItem("create_facility", JSON.parse(result).message)
+        window.location.reload()
+      },
+      error: function (error) {
+        toastr.error('Created post failed')
+      }
+    })
+  }
+
+  $('#edit_facility_form').off('submit').submit(function(e){
+    e.preventDefault();
+    if($('#edit_facility_form').form('is valid')) {
+        console.log("is valid")
+        updateSubmit(e)
+    }
+  })
+
+   $('#myForm').off('submit').submit(function(e){
+    e.preventDefault();
+    if($('#myForm').form('is valid')) {
+        console.log("is valid")
+        addSubmit(e)
+    }
+  })
+
+  $('#myForm')
+  .form({
+    fields: {
+      name: {
+        identifier: 'name',
+        rules: [
+          {
+            type: 'empty',
+            prompt: 'Please enter facility name!'
+          },
+          {
+            type: 'maxLength[100]',
+            prompt: 'Facility name must be less than 100 letters!'
+          }
+        ]
+      },
+      detail: {
+        identifier: 'detail',
+        rules: [
+          {
+            type: 'empty',
+            prompt: 'Please enter facility detail !!'
+          },
+          {
+            type: 'maxLength[1000]',
+            prompt: 'Detail must be less than 1000 letters!'
+          }
+        ]
+      },
+    },
+    inline: true,
+  });
+
+  $('#edit_facility_form')
+  .form({
+    fields: {
+      name: {
+        identifier: 'name',
+        rules: [
+          {
+            type: 'empty',
+            prompt: 'Please enter facility name!!'
+          },
+          {
+            type: 'maxLength[100]',
+            prompt: 'Facility name must be less than 100 letters!!'
+          }
+        ]
+      },
+      detail: {
+        identifier: 'detail',
+        rules: [
+          {
+            type: 'empty',
+            prompt: 'Please enter facility detail!!'
+          },
+          {
+            type: 'maxLength[1000]',
+            prompt: 'Detail must be less than 1000 letters!!'
+          }
+        ]
+      },
+      status: {
+        identifier: 'status',
+        rules: [
+          {
+            type: 'empty',
+            prompt: 'Please set up status !!'
+          }
+        ]
+      },
+      quantity: {
+        identifier: 'quantity',
+        rules: [
+          {
+            type: 'empty',
+            prompt: 'Please enter quantity!!'
+          },
+          {
+            type: 'integer[0..1000]',
+            prompt: 'Quantity must be greater than 0!!'
+          }
+        ]
+      },
+    },
+    inline: true
+  })
+  ;
 </script>
+
+<style>
+  /* .grid.container {
+    margin-top: 5em;
+  } */
+  .inputfile {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+  }
+  .insert_image:hover {
+    background-color: #e0e1e2;
+    cursor: pointer;
+  }
+  .card {
+    width: 31% !important;
+    float: left;
+  }
+  .dimmer {
+    padding-top: 6rem !important;
+  }
+  .facility_attr {
+    font-size: 16px;
+  }
+  .facility_attr label {
+    color: #b8b8b8;
+    margin-bottom: 1rem !important;
+  } 
+  .facility_attr p {
+      margin-bottom: 2.5rem !important;
+    }
+  input, .dropdown.selection {
+    width: 17rem !important;
+  }
+</style>

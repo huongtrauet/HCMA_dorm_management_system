@@ -8,15 +8,15 @@
 <div class="service_charge_list">
   <div class="header" style="display: flex; justify-content: space-between; margin-bottom: 1rem">
     <div class="header_title">
-      <h3>Service charge: </h3>
+      <h3><%= t(".service_charge") %>: </h3>
     </div>
   </div>
   <div style="display: flex; justify-content: flex-start">
     <div class="ui selection dropdown filter_item" >
       <input type="hidden" name="room_name_filter" onchange="onHandleFilter(this)">
-      <div class="default text">Phong</div>
+      <div class="default text"><%= t(".room") %></div>
       <div class="menu">
-        <div class="item" data-value="ALL">All</div>
+        <div class="item" data-value="ALL"><%= t(".all") %></div>
         <% @rooms.each do |r|%>
           <div class="item" data-value="<%= r.id %>"><%= r.room_name %></div>
         <% end %>
@@ -24,19 +24,19 @@
     </div>
     <div class="ui selection dropdown filter_item">
       <input type="hidden" name="status_filter" onchange="onHandleFilter(this)">
-      <div class="default text">Trang thai</div>
+      <div class="default text"><%= t(".status") %></div>
       <div class="menu">
-        <div class="item" data-value="ALL">All</div>
-        <div class="item" data-value="PAID">Paid</div>
-        <div class="item" data-value="UNPAID">Unpaid</div>
+        <div class="item" data-value="ALL"><%= t(".all") %></div>
+        <div class="item" data-value="PAID"><%= t(".paid") %></div>
+        <div class="item" data-value="UNPAID"><%= t(".unpaid") %></div>
       </div>
     </div>
     <div class="ui selection dropdown filter_item" id="min_charge">
       <input type="hidden" value="0" name="min_charge" onchange="onHandleFilter(this)">
       <i class="dropdown icon"></i>
-      <div class="default text">Min charge</div>
+      <div class="default text"><%= t(".min_charge") %></div>
       <div class="menu">
-        <div class="item" data-value="ALL">All</div>
+        <div class="item" data-value="ALL"><%= t(".all") %></div>
         <div class="item" data-value="50000">50000</div>
         <div class="item" data-value="100000">100000</div>
         <div class="item" data-value="200000">200000</div>
@@ -48,9 +48,9 @@
     <div class="ui selection dropdown filter_item" id="max_charge">
       <input type="hidden" value="0" name="max_charge" onchange="onHandleFilter(this)">
       <i class="dropdown icon"></i>
-      <div class="default text">Max charge</div>
+      <div class="default text"><%= t(".max_charge") %></div>
       <div class="menu">
-        <div class="item" data-value="ALL">All</div>
+        <div class="item" data-value="ALL"><%= t(".all") %></div>
         <div class="item" data-value="50000">50000</div>
         <div class="item" data-value="100000">100000</div>
         <div class="item" data-value="200000">200000</div>
@@ -59,82 +59,95 @@
         <div class="item" data-value="500000">500000</div>
       </div>
     </div>
+    <button class="reset_button" style="width: 9rem; color: #f4810b; border: 1px solid #f4810b; border-radius: 3px; background-color: #ffffff; outline: none" onclick="resetFilter()"><%= t(".reset") %></button>
   </div>
-  <div style="min-width: 8px; width: 19rem !important; margin-top: 1rem;" >
-    <select id="month_filter" name="month_filter" multiple="" class="ui fluid dropdown" onchange="onHandleFilter(this)">
-      <option value="">Month</option>
-      <option value="1">Thang 1</option>
-      <option value="2">Thang 2</option>
-      <option value="3">Thang 3</option>
-      <option value="4">Thang 4</option>
-      <option value="5">Thang 5</option>
-      <option value="6">Thang 6</option>
-      <option value="7">Thang 7</option>
-      <option value="8">Thang 8</option>
-      <option value="9">Thang 9</option>
-      <option value="10">Thang 10</option>
-      <option value="11">Thang 11</option>
-      <option value="12">Thang 12</option>
+  <div style="min-width: 8px; width: 19rem !important; margin-top: 1rem; display: flex;" >
+    <select id="month_filter" name="month_filter" multiple="" class="ui fluid multiple selection dropdown" onchange="onHandleFilter(this)">
+      <option value=""><%= t(".month") %></option>
+      <option value="1"><%= t(".month") %> 1</option>
+      <option value="2"><%= t(".month") %> 2</option>
+      <option value="3"><%= t(".month") %> 3</option>
+      <option value="4">T<%= t(".month") %> 4</option>
+      <option value="5">T<%= t(".month") %> 5</option>
+      <option value="6"><%= t(".month") %> 6</option>
+      <option value="7"><%= t(".month") %> 7</option>
+      <option value="8"><%= t(".month") %> 8</option>
+      <option value="9"><%= t(".month") %> 9</option>
+      <option value="10"><%= t(".month") %> 10</option>
+      <option value="11"><%= t(".month") %> 11</option>
+      <option value="12"><%= t(".month") %> 12</option>
     </select>
   </div>
-   <div class="remind checkbox_col" style="display: none">
-    <button class="button" id="myElement" disabled style="float: right; margin: 1rem 1.8rem 1rem 0;" onclick="onclick()">Orange</button>
+   <div class="remind checkbox_col" style="display: none; float:right">
+    <button class="button" id="myElement" disabled style="float: right; margin: 1rem 1.8rem 1rem 0;" onclick="remind()">Remind</button>
   </div>
-  <table class="ui very basic selectable table">
-    <thead>
-      <tr>
-        <th>STT</th>
-        <th>Phong</th>
-        <th>Thang</th>
-        <th>Tien dien</th>
-        <th>Tien nuoc</th>
-        <th>Tong</th>
-        <th>Trang thai</th>
-        <th>Nguoi nop tien</th>
-        <th style="display: none" class="checkbox_col">
-         <div class="ui checkbox">
-            <input type="checkbox" name="example" onchange="selectItem(this) ">
-            <label></label>
-          </div>
-        </th>
-      </tr>
-    </thead>
-    <tbody id="service_charge_table">
-      <% @service_charges.each_with_index do |charge, index| %>
-        <tr onclick="showServiceChargeInfo(<%= charge.room_id %>, <%= charge.year %>, <%= charge.month %>, <%= charge.id %>, <%= index + 1%>)" id="tr_service_charge_<%= charge.id %>">
-          <td><%= index + 1 %></td>
-          <td><%= charge.room.room_name %></td>
-          <td><%= charge.month %></td>
-          <td><%= charge.electricity_price %></td>
-          <td><%= charge.water_price %></td>
-          <td><%= charge.total_price %></td>
-          <td>
-            <% if charge.status == "PAID" %>
-              <a class="ui teal tag label" style="width: 6.7rem"><%= charge.status %></a>
-            <% elsif charge.status == "UNPAID" %>
-              <a class="ui red tag label" style="width: 6.7rem"><%= charge.status %></a>
-            <% end  %>
-          </td>
-          <td><%= charge.payer %></td>
-          <td style="display: none" class="checkbox_col">
+  <button class="ui orange basic button" style="float:right; margin: 1rem 1rem 1rem 0" id="import_data_button">
+    <input style="	width: 0.1px;	height: 0.1px;	opacity: 0;	overflow: hidden;	position: absolute;	z-index: -1;" type="file" class="inputfile" id="embedpollfileinput1" onchange="uploadData(this)" style="width: 100%; height: 100%" multiple="true" name="images_input" />
+    <label id="lable_image" for="embedpollfileinput1" class="import_data_button">
+      <%= t(".import_data") %>
+    </label>
+  </button>
+  <div id="service_charge_table" style="margin-top: 1rem">
+    <table class="ui very basic selectable table">
+      <thead>
+        <tr>
+          <th><%= t(".id") %></th>
+          <th><%= t(".room") %></th>
+          <th><%= t(".month") %></th>
+          <th><%= t(".electricity_price") %></th>
+          <th><%= t(".water_price") %></th>
+          <th><%= t(".total_price") %></th>
+          <th><%= t(".status") %></th>
+          <th><%= t(".payer") %></th>
+          <th><%= t(".action") %></th>
+          <th style="display: none" class="checkbox_col">
             <div class="ui checkbox">
-              <input class="remind_checkbox" type="checkbox" name="example" onchange="onHandleCheckbox(this)">
+              <input id="check_all" type="checkbox" name="example" onchange="selectItem(this) ">
               <label></label>
             </div>
-          </td>
+          </th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
-  <div class="mt-4" style="float: right;">
-    <%= paginate @service_charges, turbolinks: false %>
+      </thead>
+      <tbody>
+        <% @service_charges.each_with_index do |charge, index| %>
+          <tr id="tr_service_charge_<%= charge.id %>">
+            <td class='index'><%= index + 1 %></td>
+            <td class='room_name'><%= charge.room.room_name %></td>
+            <td class='month'><%= charge.month %></td>
+            <td class='electricity_price'><%= charge.electricity_price %></td>
+            <td class='water_price'><%= charge.water_price %></td>
+            <td class='total_price'><%= charge.total_price %></td>
+            <td class='status'>
+              <% if charge.status == "PAID" %>
+                <a class="ui teal tag label"><%= t(".paid") %></a>
+              <% elsif charge.status == "UNPAID" %>
+                <a class="ui red tag label"><%= t(".unpaid") %></a>
+              <% end  %>
+            </td>
+            <td class='payer'><%= charge.payer %></td>
+            <td class="view_more" onclick="showServiceChargeInfo(<%= charge.room_id %>, <%= charge.year %>, <%= charge.month %>, <%= charge.id %>, <%= index + 1%>)">
+              <%= t(".view_more") %>
+            </td>
+            <td style="display: none" class="checkbox_col">
+              <div class="ui checkbox">
+                <input class="remind_checkbox" type="checkbox" name="example" onchange="onHandleCheckbox(this)" value="<%= charge.id %>">
+                <label></label>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <div class="mt-4" style="float: right;">
+      <%= paginate @service_charges, turbolinks: false %>
+    </div>
   </div>
 </div>
 
 <div class="ui first modal service_charge_info" id="show_info_modal">
   <i class="close icon"></i>
   <div class="header">
-      <h3>Service charge</h3>
+      <h3><%= t("service_charge") %></h3>
       <div>
         <p style="margin-bottom: -1rem" id="show_paid_at"></p>
         <p style="float: right; margin-right: 1rem; margin-right: 2.6rem;" class="show_room_name"></p>
@@ -149,28 +162,28 @@
         <div class="five wide column">
           <div class="student-info">
             <div class="ui field">
-              <label>Thang:</label>
+              <label><%= t(".month") %>:</label>
               <p id="show_month"></p>
             </div>
-            <label>Tong tien:</label>
+            <label><%= t(".total_price") %>:</label>
             <p id="show_total_price"></p>
           </div>
         </div>
         <div class="five wide column">
           <div class="student-info">
-            <label>Tien dien: </label>
+            <label><%= t(".electricity_price") %>: </label>
             <p id="show_electricity_price"></p>
-            <label>Tien nuoc</label>
+            <label><%= t(".water_price") %></label>
             <p id="show_water_price"></p>
           </div>
         </div>
         <div class="five wide column">
           <div class="student-info">
-            <label>Trang thai: </label>
+            <label><%= t(".status") %> </label>
             <p>
               <span style="background-color: #f4810b; padding: 6px 10px; color: #fff; border-radius: 5px; font-weight: bold" id="show_status"></span>
             </p>
-            <label>Nguoi nop</label>
+            <label><%= t(".payer") %></label>
             <p id="show_payer"></p>
           </div>
         </div>
@@ -178,10 +191,10 @@
     </div>
     <div class="actions" style="padding: 0.7rem 1rem;">
       <div class="ui black deny button" onclick="closeModal()">
-        Cancel
+        <%= t(".cancel") %>
       </div>
       <div class="ui positive right labeled icon button edit">
-        Edit
+        <%= t(".edit") %>
         <i class="arrow right icon"></i>
       </div>
     </div>
@@ -190,7 +203,7 @@
 <div class="ui second modal service_charge_info" id="edit_info_modal">
   <i class="close icon"></i>
   <div class="header">
-    <h3>Service charge edit</h3>
+    <h3><%= t(".service_charge_edit") %></h3>
     <div>
       <p id="paid_at" style="margin-bottom: -1rem"></p>
       <p style="float: right; margin-right: 1rem; margin-right: 2.6rem;" class="show_room_name"></p>
@@ -201,56 +214,61 @@
   <form class="ui form" style="margin: 0 1.5rem" id="service_charge_edit_form" name="service_charge_edit_form" class="ui form segment">
     <div class="three fields">
       <div class="field">
-        <label>Thang</label>
-        <input type="text" placeholder="Thang" disabled value="Thang 2" name="month" id="month_edit_field">
+        <label><%= t(".month") %></label>
+        <input type="text" placeholder="<%= t(".month") %>" disabled name="month" id="month_edit_field">
       </div>
       <div class="field">
-        <label>Tien dien</label>
-        <input type="number" placeholder="Tien dien" name="electricity_price" id="electricity_price_edit_field" onkeyup="changePrice()">
+        <label><%= t(".electricity_price") %></label>
+        <input type="number" placeholder="<%= t(".electricity_price") %>" name="electricity_price" id="electricity_price_edit_field" onkeyup="changePrice()">
       </div>
       <div class="field">
-        <label>Trang thai</label>
+        <label><%= t(".status") %></label>
         <div class="ui selection dropdown">
           <input type="hidden" name="status" id="status_edit_field">
           <i class="dropdown icon"></i>
           <div class="text" style="color: black;" id="selected_item"></div>
           <div class="menu">
-            <div class="item" data-value="PAID">PAID</div>
-            <div class="item" data-value="UNPAID">UNPAID</div>
+            <div class="item" data-value="PAID"><%= t(".paid") %></div>
+            <div class="item" data-value="UNPAID"><%= t(".unpaid") %></div>
           </div>
         </div>
       </div>
     </div>
     <div class="three fields">
       <div class="field">
-        <label>Tong tien</label>
-        <input type="number" placeholder="Tong tien" name="total_price" id="total_price_edit_field" disabled>
+        <label><%= t(".total_price") %></label>
+        <input type="number" placeholder="<%= t(".total_price") %>" name="total_price" id="total_price_edit_field" disabled>
       </div>
       <div class="field">
-        <label>Tien nuoc</label>
-        <input type="number" placeholder="Tien nuoc" name="water_price" id="water_price_edit_field" onkeyup="changePrice()">
+        <label><%= t(".water_price") %></label>
+        <input type="number" placeholder="<%= t(".water_price") %>" name="water_price" id="water_price_edit_field" onkeyup="changePrice()">
       </div>
       <div class="field">
-        <label>Nguoi nop</label>
-        <input type="text" placeholder="Nguoi nop" name="payer" id="payer_edit_field">
+        <label><%= t(".payer") %></label>
+        <input type="text" placeholder="<%= t(".payer") %>" name="payer" id="payer_edit_field">
       </div>
     </div>
     <div class="actions" style="padding: 0.7rem 1rem; float:right; margin-right: 1.5rem">
       <div class="ui black deny button" onclick="closeModal()">
-        Cancel
+        <%= t(".cancel") %>
       </div>
-      <div class="ui blue submit button">Submit</div>
+      <div class="ui blue submit button"><%= t(".update") %></div>
     </div>
   </form>
 </div>
 
 <script>
 
+  if (window.localStorage.getItem('imported')) {
+    toastr.success(window.localStorage.getItem('imported'));
+    window.localStorage.removeItem('imported')
+  }
   $('.ui.dropdown').dropdown();
   // ô vuông chọn 1 bên phải
   function selectItem(event) {
     if (event.checked == true) {
       $('.remind_checkbox').prop('checked', true);
+      $('.remind .button').prop('disabled', false)
       $('.remind .button').addClass('hover');
     }
     else if (event.checked == false) {
@@ -258,9 +276,36 @@
       $('.remind .button').removeClass('hover');
     }
   }
+
+  function uploadData(data) {
+    let form = new FormData()
+    form.set('file', data.files[0])
+    $.ajax({
+      type: "POST",
+      url: "/manager/service-management/import",
+      processData: false,
+      contentType: false,
+      cache: false,
+      mimeType: 'multipart/form-data',
+      data: form,
+      success: function(result){
+        // toastr.success(JSON.parse(result).message)
+        // toastr.success(JSON.parse(result).message)
+        window.localStorage.setItem('imported', JSON.parse(result).message )
+        window.location.reload()
+      },
+      error: function (error){
+        toastr.error(JSON.parse(error.responseText).message)
+        // toastr.success("Update avatar failed!")
+      }
+    })
+  }
   
   function onHandleCheckbox (event) {
     var checkboxes = $('input:checkbox:checked').length;
+    if (event.checked == false) {
+      $('#check_all').prop('checked', false)
+    }
     if (checkboxes > 0) {
       $('.remind .button').prop('disabled', false)
       $('.remind .button').addClass('hover');
@@ -272,6 +317,7 @@
   }
 
   function onHandleFilter (event) {
+    console.log($("#month_filter").dropdown("get value") )
 
     $.ajax({
       type: "GET",
@@ -280,21 +326,19 @@
         filter: {
         room_id_filter: document.querySelectorAll('input[name=room_name_filter]')[0].value,
         status_filter: document.querySelectorAll('input[name=status_filter]')[0].value,
-        month_filter: document.getElementById("month_filter").value,
+        month_filters: $("#month_filter").dropdown("get value"),
         min_charge: document.querySelectorAll('input[name=min_charge]')[0].value,
         max_charge: document.querySelectorAll('input[name=max_charge]')[0].value,
         }
       },
       success: function(result){
-        console.log("filter success")
         $('#service_charge_table').html(result)
-        console.log(event.name)
-          if (event.name == "status_filter" & event.value == 'UNPAID') {
-            $('.checkbox_col').css("display", "block");
-          }
-          else if (event.name == "status" & event.value == 'PAID') {
-            $('.checkbox_col').css("display", "none");
-          }
+        if (event.name == "status_filter" & event.value == 'UNPAID') {
+          $('.checkbox_col').css("display", "block");
+        }
+        else if (event.name == "status_filter" & event.value == 'PAID') {
+          $('.checkbox_col').css("display", "none");
+        }
       },
       error: function (error) {
 
@@ -320,8 +364,53 @@
     })
   }
 
-  function onclick() {
-    console.log(123)
+  function remind() {
+    let item_quantity = 0
+    let success_item = 0
+    const remindRoom = item => new Promise((resolve, reject) => {
+      if (item.checked == true) {
+        item_quantity += 1
+        console.log(item_quantity)
+        $.ajax({
+          type: 'POST',
+          url: '/manager/service-management/remind',
+          data: {
+            charge_id: item.value
+          },
+          success: function(result){
+            success_item += 1
+            $('.remind_checkbox').prop('checked', false);
+            $('#check_all').prop('checked', false);
+            $('.remind .button').prop('disabled', true)
+            $('.remind .button').removeClass('hover');
+            resolve();
+          },
+          error: function (error) {
+            reject()
+          }
+        })
+      } else {
+        resolve()
+      }
+    })
+
+    let remindRooms = []
+    for (let i = 0; i < document.getElementsByClassName('remind_checkbox').length; i++) {
+      const item = document.getElementsByClassName('remind_checkbox')[i];
+      console.log(item.checked)
+      remindRooms.push(remindRoom(item))
+    }
+    Promise.all(remindRooms).then(() => {
+      console.log(item_quantity, success_item)
+      if(success_item == item_quantity) {
+        console.log(item_quantity, success_item)
+        toastr.success('Send notifications to selected room successfully')
+      } else {
+        toastr.error('Send notifications to selected room failed')
+      }
+    }).catch(() => {
+      toastr.error('Send notifications to selected room failed')
+    })
   }
 
 
@@ -346,7 +435,6 @@
         "charge_id": charge_id
       },
       success: function(result){
-        console.log(result)
         //Show modal
         $('#show_month').html(result.service_charge.month)
         $('#show_year').html(result.service_charge.year)
@@ -359,7 +447,6 @@
         $('.show_room_name').html(result.room.room_name)
         $('#room_id').val(result.room.id)
         $('#charge_id').val(result.service_charge.id)
-        // console.log(result.room)
         //Edit modal
         $('#month_edit_field').val(result.service_charge.month)
         $('#year_edit_field').val(result.service_charge.year)
@@ -385,7 +472,6 @@
     let year = $('#year_edit_field').val();
     let month = $('#month_edit_field').val();
     let charge_id = $('#charge_id').val();
-    console.log("room_id: " + room_id)
     // $('#service_charge_edit_form').form('reset');
     $("#service_charge_edit_form").find('.error').removeClass('error');
     $('#show_info_modal').modal('hide');
@@ -408,8 +494,18 @@
         }
       },
       success: function(result){
-        console.log(result)
-        $(`#tr_service_charge_${charge_id}`).html(result)
+        $(`#tr_service_charge_${charge_id} .water_price`).html(result.charge.water_price)
+        $(`#tr_service_charge_${charge_id} .electricity_price`).html(result.charge.electricity_price)
+        $(`#tr_service_charge_${charge_id} .total_price`).html(result.charge.total_price)
+        $(`#tr_service_charge_${charge_id} .month`).html(result.charge.month)
+        $(`#tr_service_charge_${charge_id} .year`).html(result.charge.year)
+        $(`#tr_service_charge_${charge_id} .payer`).html(result.charge.payer)
+        if (result.charge.status == 'PAID') {
+          $(`#tr_service_charge_${charge_id} .status`).html(`<a class="ui teal tag label" style="width: 6.7rem">PAID</a>`)
+        } else if (result.charge.status == 'UNPAID') {
+          $(`#tr_service_charge_${charge_id} .status`).html(`<a class="ui red tag label" style="width: 6.7rem">UNPAID</a>`)
+        }
+        toastr.success(result.message)
       },
       error: function (error) {}
     })
@@ -417,8 +513,6 @@
 
   $('#service_charge_edit_form').off('submit').submit(function(e){
     if($('#service_charge_edit_form').form('is valid')){
-      console.log("submit")
-
       submitUpdateServiceCharge(e);
     }
   })
@@ -505,8 +599,6 @@
     $('#edit_info_modal').modal('hide');
   }
 
-  // search
-
   $(document).on("turbolinks:load", function() {
     $(".search-service-charge-form").on("keyup", function() {
       // $('#room_list').html("")
@@ -515,7 +607,6 @@
         url: "/manager/service-management/find?q=" + this.value,
         success: function(result){
           $('#service_charge_table').html(result)
-          console.log('success' + result)
         },
         error: function (error){
           console.log('error', error)
@@ -523,4 +614,29 @@
       })
     });
   });
+
+  function resetFilter(){
+    window.location.reload();
+  }
 </script>
+<style>
+.view_more:hover {
+  text-decoration: underline;
+  color: #f4810b;
+}
+.reset_button:hover {
+  background-color: #f4810b!important;
+  color: white !important;
+  cursor: pointer;
+}
+#import_data_button:hover {
+  cursor: pointer;
+  background-color: #f4810b !important;
+  color: white !important;
+}
+
+.import_data_button{
+  cursor: pointer;
+}
+
+</style>

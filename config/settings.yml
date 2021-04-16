@@ -20,7 +20,6 @@ validations:
       max_length: 100
     description:
       max_length: 1000
-      min_length: 5
   facility_reports:
     title:
       min_length: 5

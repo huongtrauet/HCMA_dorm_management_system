@@ -1,13 +1,167 @@
 <div class="student_management" style="padding-top: 2rem; width: 80%; margin: 0 auto">
-  <h5>Building</h5>
+  <h5><a href="/manager/building-management">Buildings</a></h5>
   <div class="ui grid" style="margin-top: 1.5rem">
     <div class="doubling six column row">
-      <% (1..18).each do |i| %>
-        <div class="column" style="text-align: center; border: 3px solid #f4810b; border-radius: 0.5rem; margin: 3rem 1rem" >
-          <i class="building outline icon" style="color: #f4810b; font-size: 6rem; display: inline; background-color: #ffffff"></i>
-          <p style="text-align: center; margin-top: 1rem; font-size: 1.5rem; color: #969696"><b>A<%= i + 1 %></b></p>
+      <% @buildings.each do |building| %>
+        <div onclick="redirectToBuildingDetail(<%= building.id %>)" class="column building_item" style=" margin: 3rem 1rem; display: flex; flex-direction: column; justify-content: flex-end; position: relative">
+          <div style="display:flex; flex-direction: column; justify-content: flex-end; border: 2px solid #f4f4f6; border-radius: 5px; height: 5.5rem">
+            <img src="/assets/building.png" style="width: 5rem; height: auto; position: absolute; margin: 0 auto; bottom: 35px; background-color: #fff; left: 50%; transform: translateX(-50%)" >
+            <p style="text-align: center; margin-bottom: 0.2rem; font-size: 1.5rem; color: #969696; font-size: 17px;"><b><%= building.name %></b></p>
+            <% if building.has_problem %>
+              <i onclick="redirectToFacilityReport()" class="exclamation icon" style="color: red; position: absolute; top: -3rem; right: 2rem; font-size: 1.5em; z-index: 2000"></i>
+            <% end %>
+          </div>
+        </div>
+        <div class="ui flowing popup" style="max-width: 30rem; z-index: 20000000; padding: 1.5rem">
+          <div style="display: flex;">
+            <div class="pieContainer">
+              <div class="pieBackground"></div>
+              <% if building.full_room_quantity/ building.rooms.count * 360 > 180 %>
+                <div class="pieSlice1 hold">
+                  <div class="pie" style="transform:rotate(180deg);"></div>
+                </div>
+                <div class="pieSlice1 hold" style="transform:rotate(180deg)">
+                  <div class="pie" style="transform:rotate(<%= (building.full_room_quantity.to_f/ building.rooms.count - 0.5) * 360 %>deg);"></div>
+                </div>
+              <% else %>
+                <div class="pieSlice1 hold">
+                  <div class="pie" style="transform:rotate(<%= building.full_room_quantity.to_f/ building.rooms.count * 360 %>deg);"></div>
+                </div>
+              <% end %>
+
+              <% if building.unfilled_room_quantity.to_f/ building.rooms.count * 360 > 180 %>
+                <div class="pieSlice2 hold" style="transform:rotate(<%= building.full_room_quantity.to_f/ building.rooms.count * 360 %>deg);">
+                  <div class="pie" style="transform:rotate(180deg);"></div>
+                </div>
+                <div class="pieSlice2 hold" style="transform:rotate(<%= building.full_room_quantity.to_f/ building.rooms.count * 360 + 180 %>deg);">
+                  <div class="pie" style="transform:rotate(<%= building.unfilled_room_quantity/ building.rooms.count * 360 - 180 %>deg);"></div>
+                </div>
+              <% else %>
+                <div class="pieSlice2 hold" style="transform:rotate(<%= building.full_room_quantity.to_f/ building.rooms.count * 360 %>deg);">
+                  <div class="pie" style="transform:rotate(<%= building.unfilled_room_quantity.to_f/ building.rooms.count * 360 %>deg);"></div>
+                </div>
+              <% end %>
+              <div id="pieSlice3" class="hold" ><div class="pie"></div></div>
+              <div class="innerCircle"><div class="content"><%= building.name %></div></div>
+            </div>
+            <div class="ui two column grid" style="margin-left: 7rem">
+              <div class="row">
+                <div class="column" style="font-weight: bold; width: 9rem; padding-bottom: 0">Phòng đã đầy: </div>
+                <div class="column" style="width: 7rem; padding-bottom: 0"><%= building.rooms.where(status: 'FULL').count %> phong</div>
+              </div>
+              <div class="row">
+                <div class="column" style="font-weight: bold; width: 9rem">Phòng chưa đầy: </div>
+                <div class="column" style="width: 7rem"><%= building.rooms.where(status: 'UNFILLED').count %> phong</div>
+              </div>
+              <div class="row">
+                <div class="column" style="font-weight: bold; width: 9rem">Phòng trống: </div>
+                <div class="column" style="width: 7rem"><%= building.rooms.where(status: 'PENDING').count %> phong</div>
+              </div>
+            </div>
+          </div>
         </div>
       <% end %>
     </div>
   </div>
 </div>
+
+<script>
+  $('.building_item')
+    .popup()
+  ;
+
+  let isClickedWaringIcon = false;
+
+  function redirectToBuildingDetail(building_id) {
+    if(!isClickedWaringIcon) 
+      window.location = `/manager/building-management/${building_id}`
+  }
+
+  function redirectToFacilityReport() {
+    window.location = `/manager/report-management/facility-reports/`
+    isClickedWaringIcon = true
+  }
+</script>
+
+<style>
+  .building_item:hover {
+    cursor: pointer;
+  }
+  .pieContainer {
+    width: 150px;
+    height: 150px;
+    position: relative;
+  }
+
+  .pieBackground {
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    border-radius: 75px;
+    /* box-shadow: 0px 0px 8px rgba(0,0,0,0.5); */
+    top: 0;
+    left: 0;
+    border: 2px solid #f4f4f6;
+  } 
+
+  .pie {
+    transition: all 1s;
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    border-radius: 75px;
+    clip: rect(0px, 75px, 150px, 0px);
+  }
+
+  .hold {
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    border-radius: 75px;
+    clip: rect(0px, 150px, 150px, 75px);
+  }
+
+  .pieSlice1 .pie {
+    background-color: #f4810b;
+  }
+
+  .pieSlice2 .pie {
+    background-color: #3889c8;
+  }
+
+  #pieSlice3 .pie {
+    background-color: #ffffff;
+  }
+
+  .innerCircle {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    background-color: #444;
+    border-radius: 60px;
+    top: 15px;
+    left: 15px; 
+    box-shadow: 0px 0px 8px rgba(0,0,0,0.5) inset;
+    color: white;
+  }
+  .innerCircle .content {
+    position: absolute;
+    display: block;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    font-size: 27px;
+    font-weight: bold;
+  }
+
+  h1 {
+    font-size: 20px;
+    margin-left: 30px;
+    padding-left: 20px;
+    color: white;
+    margin-bottom: 20px;
+    border-bottom: 4px solid #fff;
+    width: 130px;
+  }
+</style>

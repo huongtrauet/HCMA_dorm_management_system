@@ -1,14 +1,10 @@
 <p id="notice"><%= notice %></p>
 <div class="room_management_show">
-  <div class="ui grid">
-    <div class="four wide column" style="padding-top: 5em">
+  <div class="ui grid" style="padding-top: 1.4rem">
+    <div class="four wide column" style="padding-top: 3.6rem">
       <%= render partial: "manager/room_management/room_management_sidebar", locals: {active: 'member'} %>
     </div>
-    <div class="twelve wide column">
-      <p>
-        <strong>Room:</strong>
-        <%= @room.room_name %>
-      </p>
+    <div class="twelve wide column" style="padding-top: 0">
       <div id="room_member">
         <%= render "room_member_list" %>
       </div>

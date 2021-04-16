@@ -10,8 +10,6 @@ require("turbolinks").start()
 require("@rails/activestorage").start()
 require("channels")
 require('jquery')
-import 'owl.carousel/dist/assets/owl.carousel.css';
-import 'owl.carousel';
 
 toastr.options = {
   // thay đổi nội dung hiển thị trên nút close, vd như "Đóng"

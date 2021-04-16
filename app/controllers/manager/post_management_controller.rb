@@ -1,4 +1,4 @@
-class Manager::PostManagementController < ApplicationController
+class Manager::PostManagementController < ManagerMainController
   layout 'manager_layout/manager'
   skip_before_action :verify_authenticity_token
   before_action :logged_in_manager
@@ -32,9 +32,13 @@ class Manager::PostManagementController < ApplicationController
   def update
     @post = Post.find(params[:post][:id])
     if @post.update(post_params)
-      redirect_to manager_post_management_path
+      respond_to do |format|
+        format.json {render json: {message: 'Update post successfully'}, status: :ok } 
+      end
     else
-      redirect_to manager_post_management_path
+      respond_to do |format|
+        format.json {render json: {message: 'Update post fail'}, status: :bad_request } 
+      end
     end
   end
 

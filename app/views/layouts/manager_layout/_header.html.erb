@@ -1,75 +1,80 @@
-  <div class="manager_header">
-    <div class="ui secondary pointing menu">
-      <% if logged_in? %>
-        <%= link_to manager_homepage_path, class: "item", id: "manager_home_path", data: { turbolinks: false } do %>
-          <img src="/assets/HCMA-LOGO.jpeg" style="width: 8rem"/>
-        <% end %>
-        <%= link_to "Posts", manager_post_management_path, class: "item", id: "manager_post_management_path", data: { turbolinks: false } %>
-        <%= link_to "Student arrangement", manager_students_arrangement_path, class: "item", id: "manager_students_arrangement_path", data: { turbolinks: false } %>
-        <%= link_to "Students", manager_student_management_path, class: "item", id: "manager_student_management_path", data: { turbolinks: false } %>
-        <%= link_to "Rooms", manager_room_management_path, class: "item", id: "manager_room_management_path", data: { turbolinks: false } %>
-        <%= link_to "Services", manager_service_management_path, class: "item", id: "manager_service_management_path", data: { turbolinks: false } %>
-        <%= link_to "Reports", manager_report_management_path, class: "item", id: "manager_report_management_path", data: { turbolinks: false } %>
-        <%= link_to "Building", manager_building_management_path, class: "item", id: "manager_building_management_path", data: { turbolinks: false } %>
-
-      <% else %>
-        <%= link_to "Home", manager_homepage_path, class: "item", id: "manager_homepage_path", data: { turbolinks: false } %>
+<div class="manager_header">
+  <div class="ui secondary pointing menu">
+    <% if logged_in? %>
+      <%= link_to manager_homepage_path, class: "item", id: "manager_home_path", data: { turbolinks: false } do %>
+        <img src="/assets/HCMA-LOGO.jpeg" style="width: 8rem"/>
       <% end %>
-      <div class="right menu">
+      <%= link_to t(".posts"), manager_post_management_path, class: "item", id: "manager_post_management_path", data: { turbolinks: false } %>
+      <%= link_to t(".student_arrangement"), manager_students_arrangement_path, class: "item", id: "manager_students_arrangement_path", data: { turbolinks: false } %>
+      <%= link_to t(".students"), manager_student_management_path, class: "item", id: "manager_student_management_path", data: { turbolinks: false } %>
+      <%= link_to t(".rooms"), manager_room_management_path, class: "item", id: "manager_room_management_path", data: { turbolinks: false } %>
+      <%= link_to t(".services"), manager_service_management_path, class: "item", id: "manager_service_management_path", data: { turbolinks: false } %>
+      <%= link_to t(".reports"), manager_report_management_path, class: "item", id: "manager_report_management_path", data: { turbolinks: false } %>
+      <%= link_to t(".building"), manager_building_management_path, class: "item", id: "manager_building_management_path", data: { turbolinks: false } %>
+
+    <% else %>
+      <%= link_to "Home", manager_homepage_path, class: "item", id: "manager_homepage_path", data: { turbolinks: false } %>
+    <% end %>
+    <div class="right menu">
+      <% if logged_in? %>
         <div class="ui floating labeled icon dropdown button" style="position: relative; background-color: #ffffff" id="noti_button" >
           <img src="/assets/bell.png" style="width: 1.5rem; height: 1.5rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)" onclick="showNotiList()"/>
-          <% if current_user.notifications.where(is_read: 'false').count != 0 %>
-            <div id="unread" class="floating ui red label" style="top: 0.5rem; left: 3rem; padding: 0.3rem; border-radius: 0.2rem;"><%= current_user.notifications.where(is_read: 'false').count %></div>
-          <% end %>
+          <div id="unread" class="floating ui red label" style="display: none; top: 0.5rem; left: 3rem; padding: 0.3rem; border-radius: 0.2rem;"><%= current_user.notifications.where(is_read: 'false').count %></div>
           <div class="menu" >
-            <h3 style="margin: 1rem;">Thong bao</h3>
+            <h3 style="margin: 1rem;"><%= t(".notifications") %></h3>
             <div id="list_noti" style="max-height: 30rem; overflow: auto;">
               <% if current_user.notifications.length > 0 %>
-                <% current_user.notifications.order("created_at DESC").each do |notification| %>
-                  <div class="item noti_item" style="width: 20rem; height: 4.5rem">
-                    <% if notification.noti_type == "create_complaint_report" %>
-                      <%= link_to notification.message, "/manager/report-management/complaint-reports?focus_id=#{notification.report_id}&page=#{notification.page}", style: "width: 17rem; height: 4.5rem; overflow: hidden;text-overflow: ellipsis;word-wrap: break-word;-webkit-line-clamp: 2;-webkit-box-orient: vertical;line-height: 2.25rem;  white-space: pre-wrap; display: flex; align-items: center", data: { turbolinks: false } %>
-                    <% elsif notification.noti_type == "create_facility_report" %>
-                      <%= link_to notification.message, "/manager/report-management/facility-reports?focus_id=#{notification.report_id}&page=#{notification.page}", style: "width: 17rem; height: 4.5rem; overflow: hidden;text-overflow: ellipsis;word-wrap: break-word;-webkit-line-clamp: 2;-webkit-box-orient: vertical;line-height: 2.25rem;  white-space: pre-wrap; display: flex; align-items: center", data: { turbolinks: false } %>
-                    <% elsif notification.noti_type == "create_form_request" %>
-                      <%= link_to notification.message, "/manager/report-management/form-requests?focus_id=#{notification.report_id}&page=#{notification.page}", style: "width: 17rem; height: 4.5rem; overflow: hidden;text-overflow: ellipsis;word-wrap: break-word;-webkit-line-clamp: 2;-webkit-box-orient: vertical;line-height: 2.25rem;  white-space: pre-wrap; display: flex; align-items: center", data: { turbolinks: false } %>
-                    <% end %>
-                  </div>
+                <% current_user.notifications.order('created_at DESC').each do |notification| %>
+                  <% if notification.is_read %>
+                    <div class="item noti_item" style="width: 20rem; max-height: 9.5rem; overflow: hidden; display: block">
+                      <div onclick="readNotification(<%= notification.id %>, '<%= notification.noti_type %>', <%= notification.report_id || 0 %>, <%= notification.page || 0 %>)" style= "width: 17rem; line-height: 1.5rem;  white-space: pre-wrap;"><%= notification.message %></div>
+                      <p style="font-size: 0.7rem; color: #b8b8b8"><%= time_ago(notification.created_at) %></p>
+                    </div>
+                  <% else %>
+                    <div class="item noti_item" style="width: 20rem; max-height: 9.5rem; overflow: hidden; display: block; background-color: #e0e0e0">
+                      <div onclick="readNotification(<%= notification.id %>, '<%= notification.noti_type %>', <%= notification.report_id || 0 %>, <%= notification.page || 0 %>)" style= "width: 17rem; overflow: hidden;text-overflow: ellipsis;word-wrap: break-word;-webkit-line-clamp: 2;-webkit-box-orient: vertical;line-height: 2.25rem;  white-space: pre-wrap;"><%= notification.message %></div>
+                      <p style="font-size: 0.7rem; color: #b8b8b8"><%= time_ago(notification.created_at) %></p>
+                    </div>
+                  <% end %>
                 <% end %>
               <% elsif current_user.notifications.length == 0 %>
                 <div class="item noti_item" style="width: 20rem; height: 4.5rem" id="no_notification">
-                  <div class="" style= "width: 17rem; height: 4.5rem; overflow: hidden;text-overflow: ellipsis;word-wrap: break-word;-webkit-line-clamp: 2;-webkit-box-orient: vertical;line-height: 2.25rem;  white-space: pre-wrap; display: flex; align-items: center">Khong co thong bao nao</div>
+                  <div class="" style= "width: 17rem; height: 4.5rem; overflow: hidden;text-overflow: ellipsis;word-wrap: break-word;-webkit-line-clamp: 2;-webkit-box-orient: vertical;line-height: 2.25rem;  white-space: pre-wrap; display: flex; align-items: center"><%= t(".no_nnotifications") %></div>
                 </div>
               <% end %>
             </div>
           </div>
         </div>
-         <div class="ui item floating dropdown labeled" id="language_dropdown" style="background-color: #ffffff; border-bottom: 2px solid rgba(34, 36, 38, 0.15)">
-          <span class="text">
-            <% if I18n.locale == :en %>
-              <%= t(".english") %>
-            <% else %>
-              <%= t(".vienamese") %>
-            <% end %>
-          </span>
-          <div class="menu" style="z-index: 3000">
-            <%= link_to t(".english"), {locale:"en"}, class: "item", data: { turbolinks: false } %>
-            <%= link_to t(".vienamese"), {locale:"vi"}, class: "item",  data: { turbolinks: false } %>
-          </div>
+      <% end %>
+      <div class="ui item floating dropdown labeled" id="language_dropdown" style="background-color: #ffffff; border-bottom: 2px solid rgba(34, 36, 38, 0.15)">
+        <span class="text">
+          <% if I18n.locale == :en %>
+            <%= t(".english") %>
+          <% else %>
+            <%= t(".vietnamese") %>
+          <% end %>
+        </span>
+        <div class="menu" style="z-index: 3000">
+          <%= link_to t(".english"), {locale:"en"}, class: "item", data: { turbolinks: false } %>
+          <%= link_to t(".vietnamese"), {locale:"vi"}, class: "item",  data: { turbolinks: false } %>
         </div>
-        <% if logged_in? %>
-          <%= link_to t(".logout"), manager_logout_path, class: "item", data: { turbolinks: false } %>
-        <% else %>
-          <%= link_to "Login", manager_login_path, class: "item", id: "student_login_path", data: { turbolinks: false } %>
-        <% end %>
       </div>
-      <input type="hidden" name="current_channel" id="current_channel" value="<%= current_user.channel%>">
+      <% if logged_in? %>
+        <%= link_to t(".logout"), manager_logout_path, class: "item", data: { turbolinks: false } %>
+      <% else %>
+        <%= link_to t(".login"), manager_login_path, class: "item", id: "student_login_path", data: { turbolinks: false } %>
+      <% end %>
     </div>
+    <% if logged_in? %>
+     <input type="hidden" name="current_channel" id="current_channel" value="<%= current_user.channel%>">
+    <% end %>
   </div>
-  <script>
-    $(document).on('click', '#language_dropdown', function(){
-      $('#language_dropdown').dropdown('show');
-    });
+</div>
+<script>
+  $(document).on('click', '#language_dropdown', function(){
+    $('#language_dropdown').dropdown('show');
+
+  });
     const current_url = window.location.pathname
     if (current_url.indexOf("/manager/students-arrangement") != -1) {
       $("#manager_students_arrangement_path").addClass("active");
@@ -92,13 +97,30 @@
     else if (current_url.indexOf("students") != -1){
       $("#home_path").addClass("active");
     }
-      
-    function showNotiList(){
-      $('#noti_button').dropdown();
+    else if (current_url.indexOf("/manager/building-management") != -1){
+      $("#manager_building_management_path").addClass("active");
     }
-  </script>
+
+  function showNotiList(){
+    $('#noti_button').dropdown();
+  }
+</script>
 <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
 <script>
+  $.ajax({
+    type: 'GET',
+    url: '/notifications/unread',
+    success: function(result){
+      if(result.unread == 0) {
+        $("#unread").hide()
+      } else {
+        $("#unread").show()
+      }
+    }, 
+    error: function (error) {
+
+    }
+  })
   let current_channel = document.querySelector("#current_channel").value;
   Pusher.logToConsole = true;
 
@@ -108,54 +130,73 @@
   });
   var channel = pusher.subscribe(current_channel);
   channel.bind('new', function(data) {
-    // alert(JSON.stringify(data.notification.message));
-    // $('#list_noti').prepend(`<div class="item noti_item" style="width: 20rem; height: 4.5rem; background-color: #e0e1e2" onclick="readNoti(this)">
-    //                           <p style="width: 17rem; max-height: 4.5rem; overflow: hidden;text-overflow: ellipsis;word-wrap: break-word;-webkit-line-clamp: 2;-webkit-box-orient: vertical;line-height: 1.5rem;  white-space: pre-wrap; display: -webkit-box">${data.notification.message}</p>
-    //                         </div>`)
-
-    if(data.notification.noti_type == "create_complaint_report")
-      $('#list_noti').prepend(`<div class="item noti_item" style="width: 20rem; height: 4.5rem">
-                            <a href="/manager/report-management/complaint-reports?focus_id=${data.notification.report_id}&page=${data.notification.page}" data-turbolinks="false" style="width: 17rem; height: 4.5rem; overflow: hidden;text-overflow: ellipsis;word-wrap: break-word;-webkit-line-clamp: 2;-webkit-box-orient: vertical;line-height: 2.25rem;  white-space: pre-wrap; display: flex; align-items: center">${data.notification.message}</a>
-                            </div`)
-    else if (data.notification.noti_type == "create_facility_report")
-      $('#list_noti').prepend(`<div class="item noti_item" style="width: 20rem; height: 4.5rem">
-                            <a href="/manager/report-management/facility-reports?focus_id=${data.notification.report_id}&page=${data.notification.page}" data-turbolinks="false" style= "width: 17rem; height: 4.5rem; overflow: hidden;text-overflow: ellipsis;word-wrap: break-word;-webkit-line-clamp: 2;-webkit-box-orient: vertical;line-height: 2.25rem;  white-space: pre-wrap; display: flex; align-items: center">${data.notification.message}</a>
-                            </div`)
-    else if (data.notification.noti_type == "create_form_request")
-      $('#list_noti').prepend(`<div class="item noti_item" style="width: 20rem; height: 4.5rem">
-                            <a href="/manager/report-management/form-requests?focus_id=${data.notification.report_id}&page=${data.notification.page}" data-turbolinks="false" style="width: 17rem; height: 4.5rem; overflow: hidden;text-overflow: ellipsis;word-wrap: break-word;-webkit-line-clamp: 2;-webkit-box-orient: vertical;line-height: 2.25rem;  white-space: pre-wrap; display: flex; align-items: center">${data.notification.message}</a>
-                            </div`)
+    if (data.notification.is_read) {
+      $('#list_noti').prepend(`<div class="item noti_item" style="width: 20rem; max-height: 9.5rem; overflow: hidden; display: block; background-color: #e0e0e0">
+                              <div onclick="readNotification(${data.notification.id}, '${data.notification.noti_type}', ${data.notification.report_id || 0}, ${data.notification.page || 0})" style= "width: 17rem; overflow: hidden;text-overflow: ellipsis;word-wrap: break-word;-webkit-line-clamp: 2;-webkit-box-orient: vertical;line-height: 2.25rem;  white-space: pre-wrap; display: flex; align-items: center">${data.notification.message}</div>
+                              <p style="font-size: 0.7rem; color: #b8b8b8">Just now</p>
+                            </div>`)
+    } else {
+      $('#list_noti').prepend(`<div class="item noti_item" style="width: 20rem; max-height: 9.5rem; overflow: hidden; display: block; background-color: #e0e0e0">
+                              <div onclick="readNotification(${data.notification.id}, '${data.notification.noti_type}', ${data.notification.report_id || 0}, ${data.notification.page || 0})" style= "width: 17rem; overflow: hidden;text-overflow: ellipsis;word-wrap: break-word;-webkit-line-clamp: 2;-webkit-box-orient: vertical;line-height: 2.25rem;  white-space: pre-wrap; display: flex; align-items: center">${data.notification.message}</div>
+                              <p style="font-size: 0.7rem; color: #b8b8b8">Just now</p>
+                            </div>`)
+    }
     $("#no_notification").remove();
-     $.ajax({
-          type: 'GET',
-          url: '/notifications/unread',
-          success: function(result){
-            $("#unread").html(result.unread)
-          }, 
-          error: function (error) {
-
-          }
-        })
-  });
-  function readNoti(item){
-    $(item).css("background-color", "white");
-  }
-
-  $(document).on("turbolinks:load", function() {
-    $(".search-form-header").on("keyup", function() {
-      $(".students").html("");
-      $.ajax({
-        type: "GET",
-        url: "/manager/managers/search?q=" + this.value,
-        success: function(result){
-          $(".search-item").html(result.students[0].name)
-        },
-        error: function (error){
-          console.log('error', error)
+    $.ajax({
+      type: 'GET',
+      url: '/notifications/unread',
+      success: function(result){
+        debugger
+        if (result.unread == 0) {
+          $("#unread").hide()
+        } else {
+          $("#unread").show()
         }
-      })
-    });
-  }); 
+        $("#unread").html(result.unread)
+      }, 
+      error: function (error) {
+
+      }
+    })
+  });
+  function readNotification(noti_id, noti_type, report_id, page) {
+    // $(item).css("background-color", "white");
+    let redirect_url = ''
+    if (noti_type == "create_complaint_report") {
+      redirect_url = `/manager/report-management/complaint-reports/`
+    } else if (noti_type == "create_facility_report") {
+      redirect_url = `/manager/report-management/facility-reports/`
+    } else if (noti_type == "create_form_request") {
+      redirect_url = `/manager/report-management/form-requests`
+    }
+    $.ajax({
+      type: "PUT",
+      url: `/notifications/${noti_id}/read`,
+      success: function(result){
+        window.location = redirect_url
+      },
+      error: function (error) {
+        toastr.error('Something went wrong')
+      }
+    })
+    
+  }   
+
+  // $(document).on("turbolinks:load", function() {
+  //   $(".search-form-header").on("keyup", function() {
+  //     $(".students").html("");
+  //     $.ajax({
+  //       type: "GET",
+  //       url: "/manager/managers/search?q=" + this.value,
+  //       success: function(result){
+  //         $(".search-item").html(result.students[0].name)
+  //       },
+  //       error: function (error){
+  //         console.log('error', error)
+  //       }
+  //     })
+  //   });
+  // }); 
 </script>
 <style>
 .active.selected {

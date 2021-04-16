@@ -1,27 +1,66 @@
-<% service_charges.each_with_index do |charge, index| %>
-  <tr onclick="showServiceChargeInfo(<%= charge.room_id %>, <%= charge.year %>, <%= charge.month %>, <%= charge.id %>, <%= index + 1%>)" id="tr_service_charge_<%= charge.id %>">
-    <td><%= index + 1 %></td>
-    <td><%= charge.room.room_name %></td>
-    <td><%= charge.month %></td>
-    <td><%= charge.electricity_price %></td>
-    <td><%= charge.water_price %></td>
-    <td><%= charge.total_price %></td>
-    <td>
-      <% if charge.status == "PAID" %>
-        <a class="ui teal tag label" style="width: 6.7rem"><%= charge.status %></a>
-      <% elsif charge.status == "UNPAID" %>
-        <a class="ui red tag label" style="width: 6.7rem"><%= charge.status %></a>
-      <% end  %>
-    </td> 
-    <td><%= charge.payer %></td>
-    <td style="display: none; z-index: 100; position absolute" class="checkbox_col" onclick="click()">
-      <div class="ui checkbox">
-        <input class="remind_checkbox" type="checkbox" name="example" onchange="onHandleCheckbox(this)">
-        <label></label>
-      </div>
-    </td>
-  </tr>
-<% end %>
-<script>
-  function click(){};
-</script>
+<table class="ui very basic selectable table">
+  <thead>
+    <tr>
+      <th>STT</th>
+      <th>Phong</th>
+      <th>Thang</th>
+      <th>Tien dien</th>
+      <th>Tien nuoc</th>
+      <th>Tong</th>
+      <th>Trang thai</th>
+      <th>Nguoi nop tien</th>
+      <th>Action</th>
+      <% if is_check == false %>
+        <th style="display: none" class="checkbox_col">
+        <div class="ui checkbox">
+            <input type="checkbox" name="example" onchange="selectItem(this) ">
+            <label></label>
+          </div>
+        </th>
+      <% else %>
+        <th class="checkbox_col">
+        <div class="ui checkbox">
+            <input id="check_all" type="checkbox" name="example" onchange="selectItem(this) ">
+            <label></label>
+          </div>
+        </th>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <% service_charges.each_with_index do |charge, index| %>
+      <tr id="tr_service_charge_<%= charge.id %>">
+        <td><%= index + 1 %></td>
+        <td><%= charge.room.room_name %></td>
+        <td><%= charge.month %></td>
+        <td><%= charge.electricity_price %></td>
+        <td><%= charge.water_price %></td>
+        <td><%= charge.total_price %></td>
+        <td>
+          <% if charge.status == "PAID" %>
+            <a class="ui teal tag label"><%= charge.status %></a>
+          <% elsif charge.status == "UNPAID" %>
+            <a class="ui red tag label"><%= charge.status %></a>
+          <% end  %>
+        </td>
+        <td><%= charge.payer %></td>
+        <td class="view_more" onclick="showServiceChargeInfo(<%= charge.room_id %>, <%= charge.year %>, <%= charge.month %>, <%= charge.id %>, <%= index + 1%>)">Xem them</td>
+        <% if is_check == false %>
+          <td style="display: none" class="checkbox_col">
+            <div class="ui checkbox">
+              <input class="remind_checkbox" type="checkbox" name="example" onchange="onHandleCheckbox(this)">
+              <label></label>
+            </div>
+          </td>
+        <% else %>
+          <td class="checkbox_col">
+            <div class="ui checkbox">
+              <input class="remind_checkbox" type="checkbox" name="example" onchange="onHandleCheckbox(this)" value="<%= charge.id %>">
+              <label></label>
+            </div>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

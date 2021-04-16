@@ -12,7 +12,7 @@
       </span>
     </td>
     <td style="text-align: center;">
-        <%= report.return_date.to_date %>
+      <%= report.return_date ? report.return_date.to_date : nil %>
     </td>
     <td>
       <% if report.status == "PENDING" %>
