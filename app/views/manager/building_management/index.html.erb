@@ -1,5 +1,5 @@
 <div class="student_management" style="padding-top: 2rem; width: 80%; margin: 0 auto">
-  <h5><a href="/manager/building-management">Buildings</a></h5>
+  <h5><a href="/manager/building-management">Toà nhà</a></h5>
   <div class="ui grid" style="margin-top: 1.5rem">
     <div class="doubling six column row">
       <% @buildings.each do |building| %>
@@ -46,16 +46,16 @@
             </div>
             <div class="ui two column grid" style="margin-left: 7rem">
               <div class="row">
-                <div class="column" style="font-weight: bold; width: 9rem; padding-bottom: 0">Phòng đã đầy: </div>
-                <div class="column" style="width: 7rem; padding-bottom: 0"><%= building.rooms.where(status: 'FULL').count %> phong</div>
+                <div class="column" style="font-weight: bold; width: 10rem; padding-bottom: 0">Phòng đã đầy: </div>
+                <div class="column" style="width: 7rem; padding-bottom: 0"><%= building.rooms.where(status: 'FULL').count %> phòng</div>
               </div>
               <div class="row">
-                <div class="column" style="font-weight: bold; width: 9rem">Phòng chưa đầy: </div>
-                <div class="column" style="width: 7rem"><%= building.rooms.where(status: 'UNFILLED').count %> phong</div>
+                <div class="column" style="font-weight: bold; width: 10rem">Phòng còn chỗ: </div>
+                <div class="column" style="width: 7rem"><%= building.rooms.where(status: 'UNFILLED').count %> phòng</div>
               </div>
               <div class="row">
-                <div class="column" style="font-weight: bold; width: 9rem">Phòng trống: </div>
-                <div class="column" style="width: 7rem"><%= building.rooms.where(status: 'PENDING').count %> phong</div>
+                <div class="column" style="font-weight: bold; width: 10rem">Phòng bỏ trống: </div>
+                <div class="column" style="width: 7rem"><%= building.rooms.where(status: 'PENDING').count %> phòng</div>
               </div>
             </div>
           </div>

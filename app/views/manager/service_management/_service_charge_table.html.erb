@@ -2,14 +2,14 @@
   <thead>
     <tr>
       <th>STT</th>
-      <th>Phong</th>
-      <th>Thang</th>
-      <th>Tien dien</th>
-      <th>Tien nuoc</th>
-      <th>Tong</th>
-      <th>Trang thai</th>
-      <th>Nguoi nop tien</th>
-      <th>Action</th>
+      <th>Phòng</th>
+      <th>Tháng</th>
+      <th>Tiền điện</th>
+      <th>Tiền nước</th>
+      <th>Tổng tiền</th>
+      <th>Trạng thái</th>
+      <th>Người thanh toán</th>
+      <th>Hành động</th>
       <% if is_check == false %>
         <th style="display: none" class="checkbox_col">
         <div class="ui checkbox">
@@ -38,13 +38,13 @@
         <td><%= charge.total_price %></td>
         <td>
           <% if charge.status == "PAID" %>
-            <a class="ui teal tag label"><%= charge.status %></a>
+            <a class="ui teal tag label">Đã thanh toán</a>
           <% elsif charge.status == "UNPAID" %>
-            <a class="ui red tag label"><%= charge.status %></a>
+            <a class="ui red tag label">Chưa thanh toán</a>
           <% end  %>
         </td>
         <td><%= charge.payer %></td>
-        <td class="view_more" onclick="showServiceChargeInfo(<%= charge.room_id %>, <%= charge.year %>, <%= charge.month %>, <%= charge.id %>, <%= index + 1%>)">Xem them</td>
+        <td class="view_more" onclick="showServiceChargeInfo(<%= charge.room_id %>, <%= charge.year %>, <%= charge.month %>, <%= charge.id %>, <%= index + 1%>)">Xem thêm</td>
         <% if is_check == false %>
           <td style="display: none" class="checkbox_col">
             <div class="ui checkbox">

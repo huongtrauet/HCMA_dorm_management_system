@@ -25,7 +25,7 @@ class Manager::StudentManagementController < ManagerMainController
     end
     if @student.save
       respond_to do |format|
-        format.json {render json: {message: 'Created student account successfully!!!'}, status: :ok } 
+        format.json {render json: {message: 'Tạo tài khoản học viên thành công!!!'}, status: :ok } 
       end
     elsif
       respond_to do |format|
@@ -39,21 +39,21 @@ class Manager::StudentManagementController < ManagerMainController
     if(create_room_member_params[:create_student_id_number_confirm] == create_room_member_params[:create_student_id_number])
       student_id_number = create_room_member_params[:create_student_id_number]
       new_params = create_room_member_params.merge(password: student_id_number, password_confirmation: student_id_number, student_id_number: student_id_number, channel: generate_channel).except(:create_student_id_number_confirm, :create_student_id_number)
-      @student = Student.new(new_params)
+      @student = Student.new(new_params.merge(status: 'ACTIVE'))
       @student.student_profile = StudentProfile.new(email:"#{@student.student_id_number}@gmail.com", identity_card_number: @student.student_id_number, name: @student.name)
     else
       respond_to do |format|
-        format.json { render json: { message: "Create student failed" }, status: :bad_request }
+        format.json { render json: { message: "Xin lỗi, tạo tài khoản học viên không thành công :(" }, status: :bad_request }
       end
     end
 
     if @student.save
       respond_to do |format|
-        format.json { render json: { message: "Create student successfully" }, status: :ok }
+        format.json { render json: { message: "Tạo tài khoản học viên thành công!!" }, status: :ok }
       end
     else
       respond_to do |format|
-        format.json { render json: { message: "Create student failed" }, status: :bad_request }
+        format.json { render json: { message: "Xin lỗi, taok tài khoản học viên không thành công :(" }, status: :bad_request }
       end
     end
   end
@@ -68,7 +68,7 @@ class Manager::StudentManagementController < ManagerMainController
       end
     else
       respond_to do |format|
-        format.json { render json: {message: "Coundn't find"}, status: :unprocessable_entity }
+        format.json { render json: {message: "Không tìm thấy :("}, status: :unprocessable_entity }
       end
     end
   end
@@ -82,11 +82,11 @@ class Manager::StudentManagementController < ManagerMainController
         @student.update_attribute(:status, 'PENDING')
       end
       respond_to do |format|
-        format.json { render json: { message: "Update student profile successfully!!" }, status: :ok}
+        format.json { render json: { message: "Cập nhật thông tin cá nhân học viên thành công!" }, status: :ok}
       end
     else
       respond_to do |format|
-        format.json { render json: {errors: @student.errors, message: "Update student profile failed!!" }, status: :bad_request}
+        format.json { render json: {message: "Cập nhật thông tin cá nhân học viên thất bại :(" }, status: :bad_request}
       end
     end
   end
@@ -96,11 +96,11 @@ class Manager::StudentManagementController < ManagerMainController
     @room = @student.room
     if @student.destroy
       respond_to do |format|
-        format.json { render json: {room: @room, message: "Delete student successfully!!"}, status: :ok}
+        format.json { render json: {room: @room, message: "Xoá tài khoản học viên thành công!!"}, status: :ok}
       end
     else
       respond_to do |format|
-        format.json { render json: {message: "Delete student failed!!"}, status: :bad_request}
+        format.json { render json: {message: "Xoá tài khoản học viên không thành công :("}, status: :bad_request}
       end
     end
   end
@@ -114,19 +114,40 @@ class Manager::StudentManagementController < ManagerMainController
   end
 
   def search_student
-    if params[:q] == "" or params[:q] == nil
-      respond_to do |format|
-        format.json {render json: {is_all: true}, status: :bad_request} 
-      end
-    elsif params[:q] 
-      @students = Student.all.ransack(name_or_student_id_number_or_status_cont: params[:q]).result
-      if @students
+    if params[:status] == "PENDING" or params[:status] == "ACTIVE"
+      @students = Student.all.where(status: params[:status]).order("name DESC")
+      if params[:q] == "" or params[:q] == nil or params[:q] == "undefined"
         respond_to do |format|
           format.js {render partial: 'student_table', locals: { students: @students, is_full: false } } 
         end
-      else
+      elsif params[:q] 
+        @students = @students.ransack(name_or_student_id_number_or_status_cont: params[:q]).result
+        if @students
+          respond_to do |format|
+            format.js {render partial: 'student_table', locals: { students: @students, is_full: false } } 
+          end
+        else
+          respond_to do |format|
+            format.json {render json: {message: 'Không tìm thấy phòng nào :('}, status: :bad_request}
+          end
+        end
+      end
+    else
+      @students = Student.all.order("name DESC")
+      if params[:q] == "" or params[:q] == nil
         respond_to do |format|
-          format.json {render json: {message: 'Room not found'}, status: :bad_request}
+          format.json {render json: {is_all: true}, status: :bad_request} 
+        end
+      elsif params[:q] 
+        @students = @students.ransack(name_or_student_id_number_or_status_cont: params[:q]).result
+        if @students
+          respond_to do |format|
+            format.js {render partial: 'student_table', locals: { students: @students, is_full: false } } 
+          end
+        else
+          respond_to do |format|
+            format.json {render json: {message: 'Không tìm thấy phòng nào :('}, status: :bad_request}
+          end
         end
       end
     end
@@ -136,11 +157,11 @@ class Manager::StudentManagementController < ManagerMainController
     @student = Student.find(params[:id])
     if @student.student_profile.update_attribute(:avatar, nil)
       respond_to do |format|
-        format.json { render json: {message: "Reset avatar successfully!!"}, status: :ok}
+        format.json { render json: {message: "Xoá ảnh đại diện thành công!!"}, status: :ok}
       end
     else
       respond_to do |format|
-        format.json { render json: {message: "Reset avatar failed!!"}, status: :bad_request}
+        format.json { render json: {message: "Xin lỗi, xoá ảnh đại diện không thành công :("}, status: :bad_request}
       end
     end
   end
@@ -149,11 +170,11 @@ class Manager::StudentManagementController < ManagerMainController
     @student = Student.find(params[:id])
     if @student.student_profile.update_attribute(:avatar, params[:avatar])
       respond_to do |format|
-        format.json { render json: {message: "Update avatar successfully!!"}, status: :ok}
+        format.json { render json: {message: "Cập nhật ảnh đại diện thành công!"}, status: :ok}
       end
     else
       respond_to do |format|
-        format.json { render json: {message: "Update avatar failed!!"}, status: :bad_request}
+        format.json { render json: {message: "Cập nhật ảnh đại diện không thành công :("}, status: :bad_request}
       end
     end
   end

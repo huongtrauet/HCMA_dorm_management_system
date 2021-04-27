@@ -1,6 +1,6 @@
 class Manager < ApplicationRecord
   # belongs_to :user, as: :user_duty
-  attr_accessor :remember_token
+  attr_accessor :remember_token, :reset_token
   has_many :passive_notifications, class_name: Notification.name,
     foreign_key: :sender_id,
     dependent: :destroy
@@ -43,12 +43,27 @@ class Manager < ApplicationRecord
     update_attribute(:remember_digest, Manager.digest(remember_token))
   end
 
-  def authenticated?(remember_token)
-    return false if remember_digest.nil?
-    BCrypt::Password.new(remember_digest).is_password?(remember_token)
+  def authenticated? attribute, token
+    digest = send "#{attribute}_digest"
+    return false unless digest
+
+    BCrypt::Password.new(digest).is_password?(token)
   end
 
   def forget
     update_attribute(:remember_digest, nil)
+  end
+
+  def create_reset_digest
+    self.reset_token = Manager.new_token
+    update reset_digest: Manager.digest(reset_token), reset_sent_at: Time.zone.now
+  end
+
+  def send_password_reset_email
+    UserMailer.password_reset(self).deliver_now
+  end
+
+  def password_reset_expired?
+    reset_sent_at < 2.hours.ago
   end
 end

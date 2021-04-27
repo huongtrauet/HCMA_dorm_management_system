@@ -1,12 +1,12 @@
-vi:
-  english: Tiếng Anh
-  views:
-    pagination:
-      first: "&laquo; Đầu tiên"
-      last: "Cuối cùng &raquo;"
-      previous: "&lsaquo; Trước"
-      next: "Tiếp &rsaquo;"
-      truncate: "&hellip;"
+# vi:
+#   english: Tiếng Anh
+#   views:
+#     pagination:
+#       first: "&laquo; Đầu tiên"
+#       last: "Cuối cùng &raquo;"
+#       previous: "&lsaquo; Trước"
+#       next: "Tiếp &rsaquo;"
+#       truncate: "&hellip;"
   datetime:
     distance_in_words:
       less_than_x_minutes:
@@ -18,447 +18,602 @@ vi:
       about_x_hours:
         one: "khoảng 1 giờ"
         other: "khoảng %{count} giờ"
-  layouts:
-    manager_layout:
-      header:
-        vietnamese: Tiếng Việt
-        posts: Bài đăng
-        student_arrangement: Sắp xếp học viên
-        students: Học viên
-        rooms: Phòng
-        services: Dịch vụ
-        reports: Báo cáo
-        building: Toà nhà
-        english: Tiếng Anh
-        logout: Đăng xuất
-        login: Đăng nhập
-        notifications: Thông báo
-        no_notifications: Không có thông báo nào
-  manager:
-    homepage_management:
-      post_list:
-        view_more: Xem thêm
-      show:
-        homepage: Trang chủ
-    post_management:
-      post_management_list:
-        post_management: Quản lý bài đăng
-        search_placeholder: Tên, trạng thái...
-        id: STT
-        title: Tiêu đề
-        content: Nội dung
-        time: Thờ gian đăng
-        writer: Người viết
-        status: Trạng thái
-        action: Hành động
-        delete_form_title: Xoá bài viết
-        delete_form_confirm: Bạn có chắc muốn xoá bài viết này?
-        restore_form_title: Khôi phuc bài viết
-        restore_form_confirm: Bạn có chắc muốn khôi phục bài viết?
-        approve: Chấp nhận
-        cancel: Huỷ bỏ
-        submit: Lưu
-        edit: Chỉnh sửa
-        update: Cập nhật
-        new_post_form_title: Tạo bài viết mới
-        edit_post_form_title: Sửa bài viết
-    students_arrangement:
-      room_list_arrangement:
-        male: Nam
-        female: Nữ
-        status: Trạng thái
-        number_of_student: Số lượng
-      pending_student_list:
-        male: Nam
-        female: Nữ
-        remove_student_form_title: Xoá tài khoản học viên
-        remove_student_form_confirm: Bạn có chắc muốn xoá tài khoản học viên?
-        cancel: Huỷ bỏ
-        approve: Chấp nhận
-      main:
-        search_right_column: Tên hoặc mã học viên...
-        search_left_column: Loại phòng hoặc tên phòng...
-    room_management:
-      room_active:
-        number_of_member: Số lượng thành viên
-        room_for: Phòng dành cho
-        room_member: Thành viên
-        male: Nam
-        female: Nữ
-        remove_student_form_title: Xoá tài khoản học viên
-        remove_student_form_confirm: Bạn có chắc muốn xoá tài khoản học viên?
-        cancel: Huỷ bỏ
-        approve: Chấp nhận
-      room_management_list:
-        room_management: Quản lý phòng
-        id: STT
-        room_name: Tên phòng
-        member: Số thành viên
-        max_member: Số thành viên tối đa
-        room_type: Loại phòng
-        status: Trạng thái
-        search_placeholder: Tên trạng thái hoặc loại phòng
-        new_room_form_title: Tạo phòng mới
-        normal: Thường
-        vip: Vip
-        full: Đã đầy
-        unfilled: Chưa đầy
-        empty: Còn trống
-        submit: Tạo mới
-        cancel: Huỷ bỏ
-      room_management_sidebar:
-        informations: Thông tin
-        members: Thành viên
-        service_charges: Phí dịch vụ
-        facilities: Cơ sở vật chát
-      show_room_informations:
-        buildings: Toà nhà
-        room: Phòng
-        informations: Thông tin
-        room_name: Tên phòng
-        room_type: Loại phòng
-        room_gender: Dành cho
-        number_student: Số lượng học viên
-        max_number_student: Số lượng học viên tối đa
-        status: Trạng thái
-        confirmation: Xác nhận
-        confirmation_message: Bạn đã chắc mọi thông tin trên đều chính xác
-        update: Cập nhật
-        male: Nam
-        female: Nữ
-        normal: Thường
-        vip: Vip
-        full: Đã đầy
-        unfilled: Chưa đầy
-        empty: Còn trống
-      room_member_list:
-        buildings: Toà nhà
-        room: Phòng
-        members: Thành viên
-        search: Tìm kiếm
-        id: STT
-        student_number: Mã sinh viên
-        full_name: Họ tên
-        date_of_birth: Ngày sinh
-        class: Lớp
-        check_in_date: Ngày vào
-        status: Trạng thái
-        new_student_form_title: Tạo tài khoản học viên
-        cancel: Huỷ bỏ
-        submit: Tạo mới
-        active: Đã kích hoạt
-        pending: Đang chờ
-        student_number_confirm: Nhập lại mã học viên
-        student_profile: Thông tin học viên
-        gender: Giới tính
-        hometown: Quê quán
-        phone: Số điện thoại
-        identity_number: Số CMND
-        register_date: Ngày tạo tài khoản
-        check_in_date: Ngày vào
-        extend_time: Thời gian gia hạn
-        status: Tình trạng
-        edit: Sửa
-        cancel: Huỷ bỏ
-      room_service_charge_list:
-        buildings: Toà nhà
-        room: Phòng
-        service_charges: Phí dịch vụ
-        id: STT
-        month: Tháng
-        electricity_price: Tiền điện
-        water_price: Tiền nước
-        total_price: Tổng tiền
-        status: Trạng thái
-        paid: Đã trả
-        unpaid: Chưa trả
-        payer: Người trả
-        cancel: Huỷ bỏ
-        edit: Sửa
-        service_charge_edit: Chỉnh sửa phí dịch vụ
-        update: Cập nhật
-      room_facility_list:
-        buildings: Toà nhà
-        room: Phòng
-        facilities: Cơ sở vật chất
-        id: STT
-        facility_name: Cơ sở vật chất
-        quantity: Số lượng
-        status: Trạng thái
-        note: CHú thích
-        facility: Cơ sở vật chất
-        default: Mặc định
-        detail: Chi tiết
-        cancel: Huỷ bỏ
-        edit: Sửa
-        facility_edit: Chỉnh sửa cơ sở vật chất
-        new: Mới
-        repairing: Đang sửa chứa
-        broken: Hỏng
-        create_new_facility: Tạo cơ sở vật chất mới
-        submit: Tạo mới
-        update: Cập nhật
-    student_management:
-      student_management_list:
-        student_management: Quản lý học viên
-        id: STT
-        student_id_number: Mã học viên
-        full_name: Học và tên
-        date_of_birth: Ngày sinh
-        room: Phòng
-        class: Lớp
-        check_in_date: Ngày vào
-        status: Trạng thái
-        search_placeholder: Tên, id hoặc trạng thái ...
-        pending: Đang chờ
-        active: Đã kích hoạt
-        student_profile: Thông tin cá nhân
-        gender: Giới tính
-        home_town: Quê quán
-        phone: Số điện thoại
-        identity: Số chứng minh thư
-        register_date: Ngày tạo tài khoản
-        extend_time: Thời gian gia hạn
-        cancel: Huỷ bỏ
-        delete: Xoá
-        edit: Chỉnh sửa
-        remove_student_form_title: Xoá tài khoản học viên
-        remove_student_form_confirm: DBạn có chắc muốn xoá tài khoản học viên?
-        approve: Chấp nhận
-        new_student_title: Tạo tài khoản học viên
-        student_id_number_confirm: Nhập lại mã học viên
-        submit: Tạo mới
-    service_management:
-      service_charge_list:
-        service_charge: Phí dịch vụ
-        room: Phòng
-        status: Trạng thái
-        all: Tất cả
-        paid: Đã thanh toán
-        unpaid: Chưa thanh toán
-        min_charge: Từ
-        max_charge: Đến
-        month: Tháng
-        import_data: Nhập dữ liệu
-        id: STT
-        room: Phòng
-        month: Tháng
-        electricity_price: TIền điện
-        water_price: TIền nước
-        action: Hành động
-        total_price: Tổng tiền
-        view_more: Xem thêm
-        cancel: Huỷ bỏ
-        submit: Tạo mới
-        edit: Sửa
-        update: Cập nhật
-        service_charge_edit: Chỉnh sửa phí dịch vụ
-        reset: Xoá tuỳ chọn
-        payer: Người thanh toán
-    report_management:
-      report_management_sidebar:
-        complaint_reports: Ý kiến đóng góp
-        form_requests: Yêu cầu mẫu đơn
-        facility_reports: Báo cáo cơ sở vật chất
-      complaint_report:
-        complaint_report: Ý kiến đóng góp
-        pending: Đang xử lý
-        approved: Chấp nhận
-        rejected: Từ chối
-        id: STT
-        title: Tiêu đề
-        buildings: Toà nhà
-        content: Nội dung
-        status: Trạng thái
-        created_date: Ngày tạo
-        reject: Từ chối
-        approve: Chấp nhận
-        reject_reason: Lý do từ chói
-        cancel: Huỷ bỏ
-      pending_complaint_report:
-        complaint_report: Ý kiến đóng góp
-        pending: Đang xử lý
-        approved: Chấp nhận
-        rejected: Từ chối
-        id: STT
-        title: Tiêu đề
-        building: Toà nhà
-        content: Nội dung
-        status: Trạng thái
-        created_date: Ngày tạo
-        reject: Từ chối
-        approve: Chấp nhận
-        reject_reason: Lý do từ chói
-        cancel: Huỷ bỏ
-      approved_complaint_report:
-        complaint_report: Ý kiến đóng góp
-        pending: Đang xử lý
-        approved: Chấp nhận
-        rejected: Từ chối
-        id: STT
-        title: Tiêu đề
-        building: Toà nhà
-        content: Nội dung
-        status: Trạng thái
-        created_date: Ngày tạo
-        reject: Từ chối
-        approve: Chấp nhận
-        reject_reason: Lý do từ chói
-        cancel: Huỷ bỏ
-      rejected_complaint_report:
-        complaint_report: Ý kiến đóng góp
-        pending: Đang xử lý
-        approved: Chấp nhận
-        rejected: Từ chối
-        id: STT
-        title: Tiêu đề
-        building: Toà nhà
-        content: Nội dung
-        status: Trạng thái
-        created_date: Ngày tạo
-        reject: Từ chối
-        approve: Chấp nhận
-        reject_reason: Lý do từ chói
-        cancel: Huỷ bỏ
-      form_request:
-        form_request: Yêu cầu mẫu đơn
-        pending: Đang xử lý
-        approved: Chấp nhận
-        rejected: Từ chối
-        id: STT
-        type: Loại đơn
-        building: Toà nhà
-        content: Nội dung
-        status: Trạng thái
-        created_date: Ngày tạo
-        content: Nội dung
-        reject: Từ chối
-        approve: Chấp nhận
-        reject_reason: Lý do từ chối
-        cancel: Huỷ
-        return_date: Ngày trả đơn
-      pending_form_request:
-        form_request: Yêu cầu mẫu đơn
-        pending: Đang xử lý
-        approved: Chấp nhận
-        rejected: Từ chối
-        id: STT
-        type: Loại đơn
-        building: Toà nhà
-        content: Nội dung
-        status: Trạng thái
-        created_date: Ngày tạo
-        content: Nội dung
-        reject: Từ chối
-        approve: Chấp nhận
-        reject_reason: Lý do từ chối
-        cancel: Huỷ
-        return_date: Ngày trả đơn
-      rejected_form_request:
-        form_request: Yêu cầu mẫu đơn
-        pending: Đang xử lý
-        approved: Chấp nhận
-        rejected: Từ chối
-        id: STT
-        type: Loại đơn
-        building: Toà nhà
-        content: Nội dung
-        status: Trạng thái
-        created_date: Ngày tạo
-        content: Nội dung
-        reject: Từ chối
-        approve: Chấp nhận
-        reject_reason: Lý do từ chối
-        cancel: Huỷ
-        return_date: Ngày trả đơn
-      approved_form_request:
-        form_request: Yêu cầu mẫu đơn
-        pending: Đang xử lý
-        approved: Chấp nhận
-        rejected: Từ chối
-        id: STT
-        type: Loại đơn
-        building: Toà nhà
-        content: Nội dung
-        status: Trạng thái
-        created_date: Ngày tạo
-        content: Nội dung
-        reject: Từ chối
-        approve: Chấp nhận
-        reject_reason: Lý do từ chối
-        cancel: Huỷ
-        return_date: Ngày trả đơn
-        close: Đóng
-      facility_report:
-        facility_report: Báo cáo cơ sở vật chất
-        pending: Đang xử lý
-        approved: Chấp nhận
-        rejected: Từ chối
-        id: STT
-        title: Tiêu đề
-        building: Toà nhà
-        content: Nội dung
-        status: Trạng thái
-        created_date: Ngày tạo
-        content: Nội dung
-        reject: Từ chối
-        approve: Chấp nhận
-        reject_reason: Lý do từ chối
-        cancel: Huỷ
-        return_date: Ngày trả đơn
-        close: Đóng
-      pending_facility_report:
-        facility_report: Báo cáo cơ sở vật chất
-        pending: Đang xử lý
-        approved: Chấp nhận
-        rejected: Từ chối
-        id: STT
-        title: Tiêu đề
-        building: Toà nhà
-        content: Nội dung
-        status: Trạng thái
-        created_date: Ngày tạo
-        content: Nội dung
-        reject: Từ chối
-        approve: Chấp nhận
-        reject_reason: Lý do từ chối
-        cancel: Huỷ
-        return_date: Ngày trả đơn
-        close: Đóng
-      approved_facility_report:
-        facility_report: Báo cáo cơ sở vật chất
-        pending: Đang xử lý
-        approved: Chấp nhận
-        rejected: Từ chối
-        id: STT
-        title: Tiêu đề
-        building: Toà nhà
-        content: Nội dung
-        status: Trạng thái
-        created_date: Ngày tạo
-        content: Nội dung
-        reject: Từ chối
-        approve: Chấp nhận
-        reject_reason: Lý do từ chối
-        cancel: Huỷ
-        return_date: Ngày trả đơn
-        close: Đóng
-      rejected_facility_report:
-        facility_report: Báo cáo cơ sở vật chất
-        pending: Đang xử lý
-        approved: Chấp nhận
-        rejected: Từ chối
-        id: STT
-        title: Tiêu đề
-        building: Toà nhà
-        content: Nội dung
-        status: Trạng thái
-        created_date: Ngày tạo
-        content: Nội dung
-        reject: Từ chối
-        approve: Chấp nhận
-        reject_reason: Lý do từ chối
-        cancel: Huỷ
-        return_date: Ngày trả đơn
-        close: Đóng
-        note: Chú thích
+#   layouts:
+#     manager_layout:
+#       header:
+#         vietnamese: Tiếng Việt
+#         english: Tiếng Anh
+#         posts: Bài đăng
+#         student_arrangement: Sắp xếp học viên
+#         students: Học viên
+#         rooms: Phòng
+#         services: Dịch vụ
+#         reports: Báo cáo
+#         building: Toà nhà
+#         english: Tiếng Anh
+#         logout: Đăng xuất
+#         login: Đăng nhập
+#         notifications: Thông báo
+#         no_notifications: Không có thông báo nào
+#     student_layout:
+#       header:
+#         vietnamese: Tiếng Việt
+#         profile: Thông tin cá nhân
+#         my_room: Phòng của tôi
+#         request: Báo cáo
+#         logout: Đăng xuất
+#         login: Đăng nhập
+#         notifications: Thông báo
+#         no_notifications: Không có thông báo nào
+#   manager:
+#     homepage_management:
+#       post_list:
+#         view_more: Xem thêm
+#       show:
+#         homepage: Trang chủ
+#     post_management:
+#       post_management_list:
+#         post_management: Quản lý bài đăng
+#         search_placeholder: Tên, trạng thái...
+#         id: STT
+#         title: Tiêu đề
+#         content: Nội dung
+#         time: Thờ gian đăng
+#         writer: Người viết
+#         status: Trạng thái
+#         action: Hành động
+#         delete_form_title: Xoá bài viết
+#         delete_form_confirm: Bạn có chắc muốn xoá bài viết này?
+#         restore_form_title: Khôi phuc bài viết
+#         restore_form_confirm: Bạn có chắc muốn khôi phục bài viết?
+#         approve: Chấp nhận
+#         cancel: Huỷ
+#         submit: Lưu
+#         edit: Chỉnh sửa
+#         update: Cập nhật
+#         new_post_form_title: Tạo bài viết mới
+#         edit_post_form_title: Sửa bài viết
+#     students_arrangement:
+#       room_list_arrangement:
+#         male: Nam
+#         female: Nữ
+#         status: Trạng thái
+#         number_of_student: Số lượng
+#       pending_student_list:
+#         male: Nam
+#         female: Nữ
+#         remove_student_form_title: Xoá tài khoản học viên
+#         remove_student_form_confirm: Bạn có chắc muốn xoá tài khoản học viên?
+#         cancel: 
+
+#         approve: Chấp nhận
+#       main:
+#         search_right_column: Tên hoặc mã học viên...
+#         search_left_column: Loại phòng hoặc tên phòng...
+#     room_management:
+#       room_active:
+#         number_of_member: Số lượng thành viên
+#         room_for: Phòng dành cho
+#         room_member: Thành viên
+#         male: Nam
+#         female: Nữ
+#         remove_student_form_title: Xoá tài khoản học viên
+#         remove_student_form_confirm: Bạn có chắc muốn xoá tài khoản học viên?
+#         cancel: Huỷ
+#         approve: Chấp nhận
+#       room_management_list:
+#         room_management: Quản lý phòng
+#         id: STT
+#         room_name: Tên phòng
+#         member: Số học viên
+#         max_member: Số học viên tối đa
+#         room_type: Loại phòng
+#         status: Trạng thái
+#         search_placeholder: Tên trạng thái hoặc loại phòng
+#         new_room_form_title: Tạo phòng mới
+#         normal: Thường
+#         vip: VIP
+#         full: Đã đầy
+#         unfilled: Chưa đầy
+#         empty: Còn trống
+#         submit: Tạo
+#         cancel: Huỷ
+#       room_management_sidebar:
+#         informations: Thông tin
+#         members: Thành viên
+#         service_charges: Phí dịch vụ
+#         facilities: Cơ sở vật chát
+#       show_room_informations:
+#         buildings: Toà nhà
+#         room: Phòng
+#         informations: Thông tin
+#         room_name: Tên phòng
+#         room_type: Loại phòng
+#         room_gender: Dành cho
+#         number_student: Số lượng học viên
+#         max_number_student: Số lượng học viên tối đa
+#         status: Trạng thái
+#         confirmation: Xác nhận
+#         confirmation_message: Bạn đã chắc mọi thông tin trên đều chính xác
+#         update: Cập nhật
+#         male: Nam
+#         female: Nữ
+#         normal: Thường
+#         vip: VIP
+#         full: Đã đầy
+#         unfilled: Chưa đầy
+#         empty: Còn trống
+#       room_member_list:
+#         buildings: Toà nhà
+#         room: Phòng
+#         members: Thành viên
+#         search: Tìm kiếm
+#         id: STT
+#         student_number: Mã sinh viên
+#         full_name: Họ tên
+#         date_of_birth: Ngày sinh
+#         class: Lớp
+#         check_in_date: Ngày vào
+#         status: Trạng thái
+#         new_student_form_title: Tạo tài khoản học viên
+#         cancel: Huỷ
+#         submit: Tạo
+#         active: Đã kích hoạt
+#         pending: Đang chờ
+#         student_number_confirm: Nhập lại mã học viên
+#         student_profile: Thông tin học viên
+#         gender: Giới tính
+#         hometown: Quê quán
+#         phone: Số điện thoại
+#         identity_number: Số CMND
+#         register_date: Ngày tạo tài khoản
+#         check_in_date: Ngày vào
+#         extend_time: Thời gian gia hạn
+#         status: Tình trạng
+#         edit: Sửa
+#         cancel: Huỷ
+#       room_service_charge_list:
+#         buildings: Toà nhà
+#         room: Phòng
+#         service_charges: Phí dịch vụ
+#         id: STT
+#         month: Tháng
+#         electricity_price: Tiền điện
+#         water_price: Tiền nước
+#         total_price: Tổng tiền
+#         status: Trạng thái
+#         paid: Đã trả
+#         unpaid: Chưa trả
+#         payer: Người trả
+#         cancel: Huỷ
+#         edit: Sửa
+#         service_charge_edit: Chỉnh sửa phí dịch vụ
+#         update: Cập nhật
+#       room_facility_list:
+#         buildings: Toà nhà
+#         room: Phòng
+#         facilities: Cơ sở vật chất
+#         id: STT
+#         facility_name: Cơ sở vật chất
+#         quantity: Số lượng
+#         status: Trạng thái
+#         note: CHú thích
+#         facility: Cơ sở vật chất
+#         default: Mặc định
+#         detail: Chi tiết
+#         cancel: Huỷ
+#         edit: Sửa
+#         facility_edit: Chỉnh sửa cơ sở vật chất
+#         new: Mới
+#         repairing: Đang sửa chứa
+#         broken: Hỏng
+#         create_new_facility: Tạo cơ sở vật chất mới
+#         submit: Tạo
+#         update: Cập nhật
+#     student_management:
+#       student_management_list:
+#         student_management: Quản lý học viên
+#         id: STT
+#         student_id_number: Mã học viên
+#         full_name: Học và tên
+#         date_of_birth: Ngày sinh
+#         room: Phòng
+#         class: Lớp
+#         check_in_date: Ngày vào
+#         status: Trạng thái
+#         search_placeholder: Tên, id hoặc trạng thái ...
+#         pending: Đang chờ
+#         active: Đã kích hoạt
+#         student_profile: Thông tin cá nhân
+#         gender: Giới tính
+#         home_town: Quê quán
+#         phone: Số điện thoại
+#         identity: Số chứng minh thư
+#         register_date: Ngày tạo tài khoản
+#         extend_time: Thời gian gia hạn
+#         cancel: 
+
+#         delete: Xoá
+#         edit: Chỉnh sửa
+#         remove_student_form_title: Xoá tài khoản học viên
+#         remove_student_form_confirm: DBạn có chắc muốn xoá tài khoản học viên?
+#         approve: Chấp nhận
+#         new_student_title: Tạo tài khoản học viên
+#         student_id_number_confirm: Nhập lại mã học viên
+#         submit: Tạo
+#     service_management:
+#       service_charge_list:
+#         service_charge: Phí dịch vụ
+#         room: Phòng
+#         status: Trạng thái
+#         all: Tất cả
+#         paid: Đã thanh toán
+#         unpaid: Chưa thanh toán
+#         min_charge: Từ
+#         max_charge: Đến
+#         month: Tháng
+#         import_data: Nhập dữ liệu
+#         id: STT
+#         room: Phòng
+#         month: Tháng
+#         electricity_price: Tiền điện
+#         water_price: Tiền nước
+#         action: Hành động
+#         total_price: Tổng tiền
+#         view_more: Xem thêm
+#         cancel: 
+
+#         submit: Tạo
+#         edit: Sửa
+#         update: Cập nhật
+#         service_charge_edit: Chỉnh sửa phí dịch vụ
+#         reset: Xoá tuỳ chọn
+#         payer: Người thanh toán
+#         remind:  Nhắc nhở
+#       service_charge_table:
+#         id: STT
+#         room: Phòng
+#         month: Tháng
+#         electricity_price: Tiền điện
+#         water_price: Tiền nước
+#         total_price: Tổng tiền
+#         payer: Người thanh toán
+#         action: Hành động
+#         paid: Đã thanh toán
+#         unpaid: Chưa thanh toán
+#         view_more: Xem thêm
+#     report_management:
+#       report_management_sidebar:
+#         complaint_reports: Ý kiến đóng góp
+#         form_requests: Yêu cầu mẫu đơn
+#         facility_reports: Báo cáo cơ sở vật chất
+#       complaint_report:
+#         complaint_report: Ý kiến đóng góp
+#         pending: Đang xử lý
+#         approved: Chấp nhận
+#         rejected: Từ chối
+#         id: STT
+#         title: Tiêu đề
+#         buildings: Toà nhà
+#         content: Nội dung
+#         status: Trạng thái
+#         created_date: Ngày tạo
+#         reject: Từ chối
+#         approve: Chấp nhận
+#         reject_reason: Lý do từ chói
+#         cancel: Huỷ
+#       pending_complaint_report:
+#         complaint_report: Ý kiến đóng góp
+#         pending: Đang xử lý
+#         approved: Chấp nhận
+#         rejected: Từ chối
+#         id: STT
+#         title: Tiêu đề
+#         building: Toà nhà
+#         content: Nội dung
+#         status: Trạng thái
+#         created_date: Ngày tạo
+#         reject: Từ chối
+#         approve: Chấp nhận
+#         reject_reason: Lý do từ chói
+#         cancel: Huỷ 
+#       approved_complaint_report:
+#         complaint_report: Ý kiến đóng góp
+#         pending: Đang xử lý
+#         approved: Chấp nhận
+#         rejected: Từ chối
+#         id: STT
+#         title: Tiêu đề
+#         building: Toà nhà
+#         content: Nội dung
+#         status: Trạng thái
+#         created_date: Ngày tạo
+#         reject: Từ chối
+#         approve: Chấp nhận
+#         reject_reason: Lý do từ chói
+#         cancel: Huỷ
+#       rejected_complaint_report:
+#         complaint_report: Ý kiến đóng góp
+#         pending: Đang xử lý
+#         approved: Chấp nhận
+#         rejected: Từ chối
+#         id: STT
+#         title: Tiêu đề
+#         building: Toà nhà
+#         content: Nội dung
+#         status: Trạng thái
+#         created_date: Ngày tạo
+#         reject: Từ chối
+#         approve: Chấp nhận
+#         reject_reason: Lý do từ chói
+#         cancel: Huỷ
+#       form_request:
+#         form_request: Yêu cầu mẫu đơn
+#         pending: Đang xử lý
+#         approved: Chấp nhận
+#         rejected: Từ chối
+#         id: STT
+#         type: Loại đơn
+#         building: Toà nhà
+#         content: Nội dung
+#         status: Trạng thái
+#         created_date: Ngày tạo
+#         content: Nội dung
+#         reject: Từ chối
+#         approve: Chấp nhận
+#         reject_reason: Lý do từ chối
+#         cancel: Huỷ
+#         return_date: Ngày trả đơn
+#       pending_form_request:
+#         form_request: Yêu cầu mẫu đơn
+#         pending: Đang xử lý
+#         approved: Chấp nhận
+#         rejected: Từ chối
+#         id: STT
+#         type: Loại đơn
+#         building: Toà nhà
+#         content: Nội dung
+#         status: Trạng thái
+#         created_date: Ngày tạo
+#         content: Nội dung
+#         reject: Từ chối
+#         approve: Chấp nhận
+#         reject_reason: Lý do từ chối
+#         cancel: Huỷ
+#         return_date: Ngày trả đơn
+#       rejected_form_request:
+#         form_request: Yêu cầu mẫu đơn
+#         pending: Đang xử lý
+#         approved: Chấp nhận
+#         rejected: Từ chối
+#         id: STT
+#         type: Loại đơn
+#         building: Toà nhà
+#         content: Nội dung
+#         status: Trạng thái
+#         created_date: Ngày tạo
+#         content: Nội dung
+#         reject: Từ chối
+#         approve: Chấp nhận
+#         reject_reason: Lý do từ chối
+#         cancel: Huỷ
+#         return_date: Ngày trả đơn
+#       approved_form_request:
+#         form_request: Yêu cầu mẫu đơn
+#         pending: Đang xử lý
+#         approved: Chấp nhận
+#         rejected: Từ chối
+#         id: STT
+#         type: Loại đơn
+#         building: Toà nhà
+#         content: Nội dung
+#         status: Trạng thái
+#         created_date: Ngày tạo
+#         content: Nội dung
+#         reject: Từ chối
+#         approve: Chấp nhận
+#         reject_reason: Lý do từ chối
+#         cancel: Huỷ
+#         return_date: Ngày trả đơn
+#         close: Đóng
+#       facility_report:
+#         facility_report: Báo cáo cơ sở vật chất
+#         pending: Đang xử lý
+#         approved: Chấp nhận
+#         rejected: Từ chối
+#         id: STT
+#         title: Tiêu đề
+#         building: Toà nhà
+#         content: Nội dung
+#         status: Trạng thái
+#         created_date: Ngày tạo
+#         content: Nội dung
+#         reject: Từ chối
+#         approve: Chấp nhận
+#         reject_reason: Lý do từ chối
+#         cancel: Huỷ
+#         return_date: Ngày trả đơn
+#         close: Đóng
+#       pending_facility_report:
+#         facility_report: Báo cáo cơ sở vật chất
+#         pending: Đang xử lý
+#         approved: Chấp nhận
+#         rejected: Từ chối
+#         id: STT
+#         title: Tiêu đề
+#         building: Toà nhà
+#         content: Nội dung
+#         status: Trạng thái
+#         created_date: Ngày tạo
+#         content: Nội dung
+#         reject: Từ chối
+#         approve: Chấp nhận
+#         reject_reason: Lý do từ chối
+#         cancel: Huỷ
+#         return_date: Ngày trả đơn
+#         close: Đóng
+#       approved_facility_report:
+#         facility_report: Báo cáo cơ sở vật chất
+#         pending: Đang xử lý
+#         approved: Chấp nhận
+#         rejected: Từ chối
+#         id: STT
+#         title: Tiêu đề
+#         building: Toà nhà
+#         content: Nội dung
+#         status: Trạng thái
+#         created_date: Ngày tạo
+#         content: Nội dung
+#         reject: Từ chối
+#         approve: Chấp nhận
+#         reject_reason: Lý do từ chối
+#         cancel: Huỷ
+#         return_date: Ngày trả đơn
+#         close: Đóng
+#       rejected_facility_report:
+#         facility_report: Báo cáo cơ sở vật chất
+#         pending: Đang xử lý
+#         approved: Chấp nhận
+#         rejected: Từ chối
+#         id: STT
+#         title: Tiêu đề
+#         building: Toà nhà
+#         content: Nội dung
+#         status: Trạng thái
+#         created_date: Ngày tạo
+#         content: Nội dung
+#         reject: Từ chối
+#         approve: Chấp nhận
+#         reject_reason: Lý do từ chối
+#         cancel: Huỷ
+#         return_date: Ngày trả đơn
+#         close: Đóng
+#         note: Chú thích
+#     building_management:
+#       index:
+#         buildings: Toà nhà
+#         full_room: Phòng đã đầy
+#         unfilled_room: Phòng chưa đầy
+#         empty_room: Phòng trống
+#         room: phòng
+#       show:
+#         buildings: Toà nhà
+#         floor: Tầng
+#         male: Nam
+#         female: Nữ
+#         status: Trạng thái
+#         full_room: Phòng đã đầy
+#         unfilled_room: Phòng chưa đầy
+#         empty_room: Phòng trống
+#   student:
+#     complaint_reports:
+#       complaint_report_list:
+#         complaint_report: Ý kiến đóng góp
+#         id: STT
+#         sent_date: Ngày gửi
+#         title: Tiêu đề
+#         description: Mô tả
+#         content: Nội dung
+#         status: Trạng thái
+#         pending: Đang xử lý
+#         approved: Đã phê duyệt
+#         reject: Từ chối
+#         new_complaint_report: Ý kiến đóng góp mới
+#         submit: Tạo
+#         note: Ghi chú
+#         close: Đóng
+#     facility_reports:
+#       facility_report_list:
+#         facility_report: Báo cáo cơ sở vật chất
+#         id: STT
+#         sent_date: Ngày gửi
+#         title: Tiêu đề
+#         description: Mô tả
+#         status: Tình trạng
+#         pending: Đang xử lý
+#         approved: Đã phê duyệt
+#         rejected: Từ chối
+#         content: Nội dung
+#         note: Chú thích
+#         close: Đóng
+#         submit: Tạo
+#     form_requests:
+#       form_request_list:
+#         form_request: Yêu cầu mẫu đơn
+#         id: STT
+#         sent_date: Ngày gửi
+#         form_type: Loại mẫu đơn
+#         description: Mô tả
+#         status: Tình trạng
+#         pending: Đang xử lý
+#         approved: Đã phê duyệt
+#         rejected: Đã từ chối
+#         select_choice: Select choice
+#         confirmation_residence: giấy đăng ký tạm trú, tạm vắng
+#         entrance_card: thẻ ra vào
+#         description: Mô tả
+#         return_date: Ngày trả
+#         note: Chú thích
+#         close: Đóng
+#         submit: Tạo
+#         request: Yêu cầu
+#         content: Nội dung
+#     requests:
+#       request_sidebar:
+#         facility_report: Báo cáo cơ sở vật chất
+#         form_request: Yêu cầu mẫu đơn
+#         complaint_report: Ý kiến đóng góp
+#     student_profiles:
+#       form:
+#         informations: Thông tin
+#         student_id_number: Mã số học viên
+#         room: Phòng
+#         full_name: Họ tên
+#         class_name: Lớp
+#         email: Email
+#         identity_card_number: Số chứng minh nhân dân
+#         date_of_birth: Ngày sinh
+#         address: Địa chỉ
+#         phone_number: Số điện thoại
+#         male: Nam
+#         female: Nữ
+#         confirmation: Xác nhận
+#         confirmation_message: Bạn đã chắc mọi thông tin trên đều chính xác
+#         submit: Cập nhật
+#         security: Bảo mật
+#         current_password: Mật khẩu hiện tại
+#         new_password: Mật khẩu mới
+#         new_password_confirmation: Nhập lại mật khẩu mới
+#     rooms:
+#       room_sidebar:
+#         members: Thành viên
+#         service_charges: Phí dịch vụ
+#       member:
+#         student_information: Thông tin học viên
+#         view_more: Xem thêm
+#         student_id_number: Mã số học viên
+#         date_of_birth: Ngày sinh
+#         phone_number: Số điện thoại
+#         home_town: Quê quán
+#         gender: Giới tính
+#       room_member:
+#         room: Phòng
+#         pending: Đang xử lý
+#       show:
+#         room: Phòng
+#         pending: Đang xử lý
+#       room_service_charge:
+#         room: Phòng
+#         empty: Đang trống
+#     service_charges:
+#       service_charge_list:
+#         service_charges: Phí dịch vụ
+#         id: STT
+#         month: Tháng
+#         water_price: Tiền nước
+#         electricity_price: Tiền điện
+#         total_price: Tổng tiền
+#         status: Trạng thái
+#         payer: Người thanh toán
+#         paid: Chưa thanh toán
+#         unpaid: Đã thanh toán

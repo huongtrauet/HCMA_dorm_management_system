@@ -8,29 +8,29 @@
       <div id="complaint_report" style="margin-top: 3rem">
         <div class="header" style="display: flex; justify-content: space-between;">
           <div class="header_title">
-            <h3><%= t(".complaint_report") %></h3>
+            <h3>Ý kiến đóng góp</h3>
           </div>
         </div>
         <div class="footer_line" style="height: 1px; background-color: rgba(34,36,38,.15); margin-top: 0.5rem; margin-bottom: 1.5rem"></div>
         <div class="ui tabular menu">
           <a class="item" id="pending_tab" href="/manager/report-management/complaint-reports/pending" data-turbolinks="false">
-            <%= t(".pending") %>
+            Đang xử lý
           </a>
           <a class="item" id="approved_tab" href="/manager/report-management/complaint-reports/approved" data-turbolinks="false">
-            <%= t(".approved") %>
+            Đã thông qua
           </a>
           <a class="item active" id="rejected_tab" href="/manager/report-management/complaint-reports/rejected" data-turbolinks="false">
-            <%= t(".rejected") %>
+            Đã từ chối
           </a>
         </div>
         <table class="ui very basic selectable table" style="margin-top: 2rem">
           <thead>
             <tr>
-              <th style="text-align: center"><%= t(".id") %></th>
-              <th style="text-align: center"><%= t(".title") %></th>
-              <th style="text-align: center"><%= t(".building") %></th>
-              <th style="text-align: center"><%= t(".content") %></th>
-              <th style="text-align: right"><%= t(".status") %></th>
+              <th style="text-align: center">STT</th>
+              <th style="text-align: center">Tiêu đề</th>
+              <th style="text-align: center">Toà nhà</th>
+              <th style="text-align: center">Nội dung</th>
+              <th style="text-align: center">Trạng thái</th>
             </tr>
           </thead>
           <tbody id="reports_list">
@@ -52,13 +52,13 @@
                     <%= report.description %>
                   </span>
                 </td>
-                <td style="text-align: right">
+                <td style="text-align: center">
                   <% if report.status == "PENDING" %>
-                    <a class="ui teal tag label"><%= t(".pending") %></a>
+                    <a class="ui teal tag label">Đang xử lý</a>
                   <% elsif report.status == "APPROVED" %>
-                    <a class="ui blue tag label"><%= t(".approved") %></a>
+                    <a class="ui blue tag label">Đã thông qua</a>
                   <% elsif report.status == "REJECTED" %>
-                    <a class="ui red tag label"><%= t(".rejected") %></a>
+                    <a class="ui red tag label">Đã từ chối</a>
                   <% end  %>
                 </td>
               </tr>
@@ -84,7 +84,7 @@
       <div id="description_show"></div>
     </div>
     <div>
-      <b>Note: </b>
+      <b>Lưu ý: </b>
       <div id="note_show"></div>
     </div>
     <input type="hidden" id="report_id_show" value=""/>
@@ -96,7 +96,7 @@
     </div>
     <div>
       <div class="ui cancel button">
-        Close
+        Đóng
       </div>
     </div>
   </div>
@@ -132,7 +132,7 @@
         $('#report_id_reject').val(result.complaint_report.id)
         $('#created_at_show').html(`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`)
         $('#note_show').html(result.complaint_report.reject_reason)
-        $('#report_building').html(`Building ${result.building}/${result.room}`)
+        $('#report_building').html(`Toà nhà ${result.building}/${result.room}`)
         $('#reporter_name').html(result.reporter.name)
         if(result.reporter.avatar.url != null && result.reporter.avatar.url != ""){
           $('#reporter_image').attr("src",result.reporter.avatar.url)
@@ -190,7 +190,7 @@
         }
       },
       success: function(result){
-         toastr.success("Rejected successfully");
+         toastr.success("Từ chối báo cáo thành công!");
         $('.ui.small.second.modal.reject').modal('hide');
         $("#reports_list").html(result)
       },
@@ -211,7 +211,7 @@
         }
       },
       success: function(result){
-        toastr.success("Approved successfully");
+        toastr.success("Thông qua báo cáo thành công!");
         $('.ui.small.first.modal.report_info').modal('hide');
         $("#reports_list").html(result)
 

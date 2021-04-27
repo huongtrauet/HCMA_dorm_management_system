@@ -48,7 +48,7 @@ class Manager::ReportManagementController < ManagerMainController
     receiver_student = Student.find(student_id)
     if @complaint_report.update(deny_report_params.merge(status: 'REJECTED'))
       if deny_report_params[:reject_reason] == ""
-        @complaint_report.update_attribute(:reject_reason, "We are currently unable to process your request. Any questions please contact the management directly")
+        @complaint_report.update_attribute(:reject_reason, "Xin lỗi, chúng tôi hiện chưa thể xử lý yêu cầu của bạn. Mọi thắc mắc xin gặp cán bộ trực tiếp tại phòng tiếp nhận sinh viên để được giải đáp. Xin cám ơn!")
       end
       last_index = receiver_student.complaint_reports.last.index
       index = @complaint_report.index
@@ -58,11 +58,11 @@ class Manager::ReportManagementController < ManagerMainController
         format.js {render partial: 'report_table', locals: { reports: @pending_reports } } 
       end
       if current_user.class.name == "Manager"
-        Notification.create(message: "Sorry, Your report was rejected", sender: current_user, receiver: receiver_student, noti_type: "complaint_report", report_id: @complaint_report.id, page: page )
+        Notification.create(message: "Xin lỗi, báo cáo của bạn đã bị từ chối :(", sender: current_user, receiver: receiver_student, noti_type: "complaint_report", report_id: @complaint_report.id, page: page )
       end
     else
       respond_to do |format|
-        format.json { render json: {message: "Rejected failed!!!"}, status: :bad_request}
+        format.json { render json: {message: "Từ chối thất bại :("}, status: :bad_request}
       end
     end
   end
@@ -80,11 +80,11 @@ class Manager::ReportManagementController < ManagerMainController
         format.js {render partial: 'report_table', locals: { reports: @pending_reports } } 
       end
       if current_user.class.name == "Manager"
-        Notification.create(message: "Your report was approved", sender: current_user, receiver: receiver_student, noti_type: "complaint_report", report_id: @complaint_report.id, page: page)
+        Notification.create(message: "Báo cáo của bạn đã được thông qua.", sender: current_user, receiver: receiver_student, noti_type: "complaint_report", report_id: @complaint_report.id, page: page)
       end
     else
       respond_to do |format|
-        format.json { render json: {message: "Approved failed!!!"}, status: :bad_request}
+        format.json { render json: {message: "Thông qua thất bại :("}, status: :bad_request}
       end
     end
   end
@@ -127,7 +127,7 @@ class Manager::ReportManagementController < ManagerMainController
     receiver_student = Student.find(student_id)
     if @facility_report.update(deny_report_params.merge(status: 'REJECTED'))
       if deny_report_params[:reject_reason] == ""
-        @facility_report.update_attribute(:reject_reason, "We are currently unable to process your request. Any questions please contact the management directly")
+        @facility_report.update_attribute(:reject_reason, "Xin lỗi, chúng tôi hiện chưa thể xử lý yêu cầu của bạn. Mọi thắc mắc xin gặp cán bộ trực tiếp tại phòng tiếp nhận sinh viên để được giải đáp. Xin cám ơn!")
       end
       last_index = receiver_student.facility_reports.last.index
       index = @facility_report.index
@@ -137,11 +137,11 @@ class Manager::ReportManagementController < ManagerMainController
         format.js {render partial: 'report_table', locals: { reports: @pending_reports } } 
       end
       if current_user.class.name == "Manager"
-        Notification.create(message: "Sorry, your report was rejectd", sender: current_user, receiver: receiver_student, noti_type: "facility_report", report_id: @facility_report.id, page: page )
+        Notification.create(message: "Xin lỗi, báo cáo của bạn đã bị từ chối :(", sender: current_user, receiver: receiver_student, noti_type: "facility_report", report_id: @facility_report.id, page: page )
       end
     else
       respond_to do |format|
-        format.json { render json: {message: "Rejected failed!!!"}, status: :bad_request}
+        format.json { render json: {message: "Từ chối thất bại :("}, status: :bad_request}
       end
     end
   end
@@ -161,16 +161,16 @@ class Manager::ReportManagementController < ManagerMainController
       last_index = receiver_student.facility_reports.last.index
       index = @facility_report.index
       page = ((last_index - index + 1).to_f / Settings.pagination).ceil
-      @pending_reports = ComplaintReport.where(status: "PENDING")
+      @pending_reports = FacilityReport.where(status: "PENDING")
       respond_to do |format|
         format.js {render partial: 'report_table', locals: { reports: @pending_reports } } 
       end
       if current_user.class.name == "Manager"
-        Notification.create(message: "Your report was approved", sender: current_user, receiver: receiver_student, noti_type: "facility_report", report_id: @facility_report.id, page: page )
+        Notification.create(message: "Báo cáo của bạn đã được thông qua!", sender: current_user, receiver: receiver_student, noti_type: "facility_report", report_id: @facility_report.id, page: page )
       end
     else
       respond_to do |format|
-        format.json { render json: {message: "Approved failed!!!"}, status: :bad_request}
+        format.json { render json: {message: "Thông qua thất bại :("}, status: :bad_request}
       end
     end
   end
@@ -215,7 +215,7 @@ class Manager::ReportManagementController < ManagerMainController
     receiver_student = Student.find(student_id)
     if @form_request.update(deny_form_request_params.merge(status: 'REJECTED'))
       if deny_form_request_params[:note] == ""
-        @form_request.update_attribute(:note, "We are currently unable to process your request. Any questions please contact the management directly")
+        @form_request.update_attribute(:note, "Xin lỗi, chúng tôi hiện chưa thể xử lý yêu cầu của bạn. Mọi thắc mắc xin gặp cán bộ trực tiếp tại phòng tiếp nhận sinh viên để được giải đáp. Xin cám ơn!")
       end
       last_index = receiver_student.form_requests.last.index
       index = @form_request.index
@@ -225,11 +225,11 @@ class Manager::ReportManagementController < ManagerMainController
         format.js {render partial: 'form_request_table', locals: { requests: @pending_requests } } 
       end
       if current_user.class.name == "Manager"
-        Notification.create(message: "Sorry, your request was rejected", sender: current_user, receiver: receiver_student, noti_type: "form_request", report_id: @form_request.id, page: page)
+        Notification.create(message: "Xin lỗi, yêu cầu của bạn đã bị từ chối :(", sender: current_user, receiver: receiver_student, noti_type: "form_request", report_id: @form_request.id, page: page)
       end
     else
       respond_to do |format|
-        format.json { render json: {message: "Rejected failed!!!"}, status: :bad_request}
+        format.json { render json: {message: "Từ chối thất bại :("}, status: :bad_request}
       end
     end
   end
@@ -257,11 +257,11 @@ class Manager::ReportManagementController < ManagerMainController
         format.js {render partial: 'form_request_table', locals: { requests: @form_requests } } 
       end
       if current_user.class.name == "Manager"
-        Notification.create(message: "Your request was approved", sender: current_user, receiver: receiver_student, noti_type: "form_request", report_id: @form_request.id, page: page )
+        Notification.create(message: "Yêu cầu của bạn đã được thông qua!", sender: current_user, receiver: receiver_student, noti_type: "form_request", report_id: @form_request.id, page: page )
       end
     else
       respond_to do |format|
-        format.json { render json: {message: "Approved failed!!!"}, status: :bad_request}
+        format.json { render json: {message: "Thông qua thất bại :("}, status: :bad_request}
       end
     end
   end

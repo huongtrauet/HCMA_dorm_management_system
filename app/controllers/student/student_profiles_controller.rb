@@ -20,7 +20,7 @@ class Student::StudentProfilesController < StudentMainController
 
   # GET /student_profiles/1/edit
   def edit
-    @student = Student.find(params[:id])
+    @student = Student.find(current_user[:id])
   end
 
   # POST /student_profiles or /student_profiles.json
@@ -34,11 +34,11 @@ class Student::StudentProfilesController < StudentMainController
   def update
     if current_user.student_profile.update(student_profile_params)
       respond_to do |format|
-        format.json {render json: {message: "Update your profile successfully!!"}, status: :ok}
+        format.json {render json: {message: "Cập nhật thông tin cá nhân thành công!"}, status: :ok}
       end
     else
       respond_to do |format|
-        format.json {render json: {message: "Update your profile failed!!"}, status: :bad_request}
+        format.json {render json: {message: "Cập nhật thông tin cá nhân không thành công :("}, status: :bad_request}
       end
     end
   end
@@ -46,11 +46,11 @@ class Student::StudentProfilesController < StudentMainController
   def update_avatar
     if current_user.student_profile.update_attribute(:avatar, params[:avatar])
       respond_to do |format|
-        format.json { render json: {message: "Update avatar successfully!!"}, status: :ok}
+        format.json { render json: {message: "Cập nhật ảnh đại diện thành công!"}, status: :ok}
       end
     else
       respond_to do |format|
-        format.json { render json: {message: "Update avatar failed!!"}, status: :bad_request}
+        format.json { render json: {message: "Cập nhật ảnh đại diện thất bại :("}, status: :bad_request}
       end
     end
   end
@@ -58,11 +58,11 @@ class Student::StudentProfilesController < StudentMainController
   def reset_ava
     if current_user.student_profile.update_attribute(:avatar, nil)
       respond_to do |format|
-        format.json { render json: {message: "Reset avatar successfully!!"}, status: :ok}
+        format.json { render json: {message: "Gỡ ảnh đại diện thành công!"}, status: :ok}
       end
     else
       respond_to do |format|
-        format.json { render json: {message: "Reset avatar failed!!"}, status: :bad_request}
+        format.json { render json: {message: "Gỡ ảnh đại diện không thành công :("}, status: :bad_request}
       end
     end
   end
@@ -80,16 +80,16 @@ class Student::StudentProfilesController < StudentMainController
     if current_user&.authenticate reset_password_params[:current_password]
       if current_user.update(reset_password_params.except(:current_password))
         respond_to do |format|
-          format.json { render json: {message: "Reset password successfully"}, status: :ok}
+          format.json { render json: {message: "Cập nhật mật khẩu thành công!"}, status: :ok}
         end
       else
         respond_to do |format|
-          format.json { render json: {message: "Reset password successfully"}, status: :bad_request}
+          format.json { render json: {message: "Cập nhật mật khẩu khồng thành cồng :("}, status: :bad_request}
         end
       end
     else
       respond_to do |format|
-        format.json { render json: {message: "Current password is incorrect"}, status: :bad_request}
+        format.json { render json: {message: "Mật khẩu hiện tại không chính xác"}, status: :bad_request}
       end
     end
   end

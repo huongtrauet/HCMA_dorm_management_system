@@ -4,16 +4,16 @@
       <%= link_to manager_homepage_path, class: "item", id: "manager_home_path", data: { turbolinks: false } do %>
         <img src="/assets/HCMA-LOGO.jpeg" style="width: 8rem"/>
       <% end %>
-      <%= link_to t(".posts"), manager_post_management_path, class: "item", id: "manager_post_management_path", data: { turbolinks: false } %>
-      <%= link_to t(".student_arrangement"), manager_students_arrangement_path, class: "item", id: "manager_students_arrangement_path", data: { turbolinks: false } %>
-      <%= link_to t(".students"), manager_student_management_path, class: "item", id: "manager_student_management_path", data: { turbolinks: false } %>
-      <%= link_to t(".rooms"), manager_room_management_path, class: "item", id: "manager_room_management_path", data: { turbolinks: false } %>
-      <%= link_to t(".services"), manager_service_management_path, class: "item", id: "manager_service_management_path", data: { turbolinks: false } %>
-      <%= link_to t(".reports"), manager_report_management_path, class: "item", id: "manager_report_management_path", data: { turbolinks: false } %>
-      <%= link_to t(".building"), manager_building_management_path, class: "item", id: "manager_building_management_path", data: { turbolinks: false } %>
+      <%= link_to "Bài đăng", manager_post_management_path, class: "item", id: "manager_post_management_path", data: { turbolinks: false } %>
+      <%= link_to "Sắp xếp học viên", manager_students_arrangement_path, class: "item", id: "manager_students_arrangement_path", data: { turbolinks: false } %>
+      <%= link_to "Học viên", manager_student_management_path, class: "item", id: "manager_student_management_path", data: { turbolinks: false } %>
+      <%= link_to "Phòng", manager_room_management_path, class: "item", id: "manager_room_management_path", data: { turbolinks: false } %>
+      <%= link_to "Dịch vụ", manager_service_management_path, class: "item", id: "manager_service_management_path", data: { turbolinks: false } %>
+      <%= link_to "Báo cáo", manager_report_management_path, class: "item", id: "manager_report_management_path", data: { turbolinks: false } %>
+      <%= link_to "Toà nhà", manager_building_management_path, class: "item", id: "manager_building_management_path", data: { turbolinks: false } %>
 
     <% else %>
-      <%= link_to "Home", manager_homepage_path, class: "item", id: "manager_homepage_path", data: { turbolinks: false } %>
+      <%= link_to "Trang chủ", manager_homepage_path, class: "item", id: "manager_homepage_path", data: { turbolinks: false } %>
     <% end %>
     <div class="right menu">
       <% if logged_in? %>
@@ -46,23 +46,11 @@
           </div>
         </div>
       <% end %>
-      <div class="ui item floating dropdown labeled" id="language_dropdown" style="background-color: #ffffff; border-bottom: 2px solid rgba(34, 36, 38, 0.15)">
-        <span class="text">
-          <% if I18n.locale == :en %>
-            <%= t(".english") %>
-          <% else %>
-            <%= t(".vietnamese") %>
-          <% end %>
-        </span>
-        <div class="menu" style="z-index: 3000">
-          <%= link_to t(".english"), {locale:"en"}, class: "item", data: { turbolinks: false } %>
-          <%= link_to t(".vietnamese"), {locale:"vi"}, class: "item",  data: { turbolinks: false } %>
-        </div>
-      </div>
+   
       <% if logged_in? %>
-        <%= link_to t(".logout"), manager_logout_path, class: "item", data: { turbolinks: false } %>
+        <%= link_to "Đăng xuất", manager_logout_path, class: "item", data: { turbolinks: false } %>
       <% else %>
-        <%= link_to t(".login"), manager_login_path, class: "item", id: "student_login_path", data: { turbolinks: false } %>
+        <%= link_to "Đăng nhập", manager_login_path, class: "item", id: "student_login_path", data: { turbolinks: false } %>
       <% end %>
     </div>
     <% if logged_in? %>

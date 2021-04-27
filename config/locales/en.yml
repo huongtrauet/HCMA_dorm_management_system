@@ -1,12 +1,12 @@
 en:
-  english: English
-  views:
-    pagination:
-      first: "&laquo; First"
-      last: "Last &raquo;"
-      previous: "&lsaquo; Prev"
-      next: "Next &rsaquo;"
-      truncate: "&hellip;"
+#   english: English
+#   views:
+#     pagination:
+#       first: "&laquo; First"
+#       last: "Last &raquo;"
+#       previous: "&lsaquo; Prev"
+#       next: "Next &rsaquo;"
+#       truncate: "&hellip;"
   datetime:
     distance_in_words:
       less_than_x_minutes:
@@ -18,447 +18,596 @@ en:
       about_x_hours:
         one: "about 1 hour"
         other: "about %{count} hours"
-  layouts:
-    manager_layout:
-      header:
-        vietnamese: Vietnamese
-        posts: Posts
-        student_arrangement: Student arrangement
-        students: Students
-        rooms: Rooms
-        services: Services
-        reports: Reports
-        building: Building
-        english: English
-        logout: Logout
-        login: Login
-        notifications: Notifications
-        no_notifications: No notifications
-  manager:
-    homepage_management:
-      post_list:
-        view_more: View more
-      show:
-        homepage: Homepage
-    post_management:
-      post_management_list:
-        post_management: Post management
-        search_placeholder: Name, status...
-        id: ID
-        title: Title
-        content: Content
-        time: Created time
-        writer: Writer
-        status: Status
-        action: Action
-        delete_form_title: Delete this post
-        delete_form_confirm: Are you sure to delete this post
-        restore_form_title: Restore this post
-        restore_form_confirm: Are you sure to restore this post
-        approve: Approve
-        cancel: Cancel
-        submit: Submit
-        edit: Edit
-        update: Update
-        new_post_form_title: Create new post
-        edit_post_form_title: Edit post
-    students_arrangement:
-      room_list_arrangement:
-        male: Male
-        female: Female
-        status: Status
-        number_of_student: Number student
-      pending_student_list:
-        male: Male
-        female: Female
-        remove_student_form_title: Remove student
-        remove_student_form_confirm: Do you want to remove this student account?
-        cancel: Cancel
-        approve: Approve
-      main:
-        search_right_column: Name or student id number...
-        search_left_column: Room type or name...
-    room_management:
-      room_active:
-        number_of_member: Number of member
-        room_for: Room for
-        room_member: Room member
-        male: Male
-        female: Female
-        remove_student_form_title: Remove student
-        remove_student_form_confirm: Do you want to remove this student account?
-        cancel: Cancel
-        approve: Approve
-      room_management_list:
-        room_management: Room management
-        id: ID
-        room_name: Room name
-        member: Member
-        max_member: Max member
-        room_type: Room type
-        status: Status
-        search_placeholder: Name, status or type...
-        new_room_form_title: Create new room
-        normal: Normal
-        vip: Vip
-        full: Full
-        unfilled: Unfilled
-        empty: Empty
-        submit: Submit
-        cancel: Cancel
-      room_management_sidebar:
-        informations: Informations
-        members: Members
-        service_charges: Service charges
-        facilities: Facilities
-      show_room_informations:
-        buildings: Buildings
-        room: Room
-        informations: Informations
-        room_name: Room name
-        room_type: Room type
-        room_gender: Gender
-        number_student: Number student
-        max_number_student: Max number student
-        status: Status
-        confirmation: Confirmation
-        confirmation_message: You are sure that the information above is correct
-        update: Update
-        male: Male
-        female: Female
-        normal: Normal
-        vip: Vip
-        full: Full
-        unfilled: Unfilled
-        empty: Empty
-      room_member_list:
-        buildings: Buildings
-        room: Room
-        members: Members
-        search: Search
-        id: ID
-        student_number: Student number
-        full_name: Full name
-        date_of_birth: Date of birth
-        class: Class
-        check_in_date: Check in date
-        status: Status
-        new_student_form_title: Create new student
-        cancel: Cancel
-        submit: Submit
-        active: Active
-        pending: Pending
-        student_number_confirm: Student number confirmation
-        student_profile: Student profile
-        gender: Gender
-        hometown: Hometown
-        phone: Phone
-        identity_number: Identity number
-        register_date: Register date
-        check_in_date: Check in date
-        extend_time: Extend time
-        status: Status
-        edit: Edit
-        cancel: Cancel
-      room_service_charge_list:
-        buildings: Buildings
-        room: Room
-        service_charges: Service charges
-        id: ID
-        month: Month
-        electricity_price: Electricity price
-        water_price: Water price
-        total_price: Total price
-        status: Status
-        paid: Paid
-        unpaid: Unpaid
-        payer: Payer
-        cancel: Cancel
-        edit: Edit
-        service_charge_edit: Service charge edit
-        update: Update
-      room_facility_list:
-        buildings: Buildings
-        room: Room
-        facilities: Facilities
-        id: ID
-        facility_name: Facility name
-        quantity: Quantity
-        status: Status
-        note: Note
-        facility: Facility
-        default: Default
-        detail: Detail
-        cancel: Cancel
-        edit: Edit
-        facility_edit: Facility edit
-        new: New
-        repairing: Repairing
-        broken: Broken
-        create_new_facility: Create a new facility
-        submit: Submit
-        update: Update
-    student_management:
-      student_management_list:
-        student_management: Student management
-        id: ID
-        student_id_number: Student number
-        full_name: Full name
-        date_of_birth: Date of birth
-        room: Room
-        class: Class
-        check_in_date: Check in date
-        status: Status
-        search_placeholder: Name, id or status..
-        pending: Pending
-        active: Active
-        student_profile: Student profile
-        gender: Gender
-        home_town: Hometown
-        phone: Phone number
-        identity: Identity number
-        register_date: Register date
-        extend_time: Extend time
-        cancel: Cancel
-        delete: Delete
-        edit: Edit
-        remove_student_form_title: Remove student
-        remove_student_form_confirm: Do you want to remove this student account?
-        approve: Approve
-        new_student_title: Create new student
-        student_id_number_confirm: Student number confirmation
-        submit: Submit
-    service_management:
-      service_charge_list:
-        service_charge: Service charge
-        room: Room
-        status: Status
-        all: All
-        paid: Paid
-        unpaid: Unpaid
-        min_charge: Min charge
-        max_charge: Max charge
-        month: Month
-        import_data: Import data
-        id: ID
-        room: Room
-        month: Month
-        electricity_price: Electricity price
-        water_price: Water price
-        action: Action
-        total_price: Total price
-        view_more: View more
-        cancel: Cancel
-        submit: Submit
-        edit: Edit
-        update: Update
-        service_charge_edit: Service charge edit
-        reset: :Reset
-        payer: Payer
-    report_management:
-      report_management_sidebar:
-        complaint_reports: Complaint reports
-        form_requests: Form requests
-        facility_reports: Facility reports
-      complaint_report:
-        complaint_report: Complaint report
-        pending: Pending
-        approved: Approved
-        rejected: Rejected
-        id: ID
-        title: Title
-        buildings: Building
-        content: Content
-        status: Status
-        created_date: Created date
-        reject: Reject
-        approve: Approve
-        reject_reason: Reject reason
-        cancel: Cancel
-      pending_complaint_report:
-        complaint_report: Complaint report
-        pending: Pending
-        approved: Approved
-        rejected: Rejected
-        id: ID
-        title: Title
-        buildings: Building
-        content: Content
-        status: Status
-        created_date: Created date
-        reject: Reject
-        approve: Approve
-        reject_reason: Reject reason
-        cancel: Cancel
-      approved_complaint_report:
-        complaint_report: Complaint report
-        pending: Pending
-        approved: Approved
-        rejected: Rejected
-        id: ID
-        title: Title
-        buildings: Building
-        content: Content
-        status: Status
-        created_date: Created date
-        reject: Reject
-        approve: Approve
-        reject_reason: Reject reason
-        cancel: Cancel
-      rejected_complaint_report:
-        complaint_report: Complaint report
-        pending: Pending
-        approved: Approved
-        rejected: Rejected
-        id: ID
-        title: Title
-        buildings: Building
-        content: Content
-        status: Status
-        created_date: Created date
-        reject: Reject
-        approve: Approve
-        reject_reason: Reject reason
-        cancel: Cancel
-      form_request:
-        form_request: Form request
-        pending: Pending
-        approved: Approved
-        rejected: Rejected
-        id: ID
-        type: Type
-        building: Building
-        content: Content
-        status: Status
-        created_date: Created date
-        content: Content
-        reject: Reject
-        approve: Approve
-        reject_reason: Reject reason
-        cancel: Cancel
-        return_date: Return date
-      pending_form_request:
-        form_request: Form request
-        pending: Pending
-        approved: Approved
-        rejected: Rejected
-        id: ID
-        type: Type
-        building: Building
-        content: Content
-        status: Status
-        created_date: Created date
-        content: Content
-        reject: Reject
-        approve: Approve
-        reject_reason: Reject reason
-        cancel: Cancel
-        return_date: Return date
-      rejected_form_request:
-        form_request: Form request
-        pending: Pending
-        approved: Approved
-        rejected: Rejected
-        id: ID
-        type: Type
-        building: Building
-        content: Content
-        status: Status
-        created_date: Created date
-        content: Content
-        reject: Reject
-        approve: Approve
-        reject_reason: Reject reason
-        cancel: Cancel
-        return_date: Return date
-      approved_form_request:
-        form_request: Form request
-        pending: Pending
-        approved: Approved
-        rejected: Rejected
-        id: ID
-        type: Type
-        building: Building
-        content: Content
-        status: Status
-        created_date: Created date
-        content: Content
-        reject: Reject
-        approve: Approve
-        reject_reason: Reject reason
-        cancel: Cancel
-        return_date: Return date
-        close: Close
-      facility_report:
-        facility_report: Facility report
-        pending: Pending
-        approved: Approved
-        rejected: Rejected
-        id: ID
-        title: Title
-        building: Building
-        content: Content
-        status: Status
-        created_date: Created date
-        content: Content
-        reject: Reject
-        approve: Approve
-        reject_reason: Reject reason
-        cancel: Cancel
-        return_date: Return date
-        close: Close
-      pending_facility_report:
-        facility_report: Facility report
-        pending: Pending
-        approved: Approved
-        rejected: Rejected
-        id: ID
-        title: Title
-        building: Building
-        content: Content
-        status: Status
-        created_date: Created date
-        content: Content
-        reject: Reject
-        approve: Approve
-        reject_reason: Reject reason
-        cancel: Cancel
-        return_date: Return date
-        close: Close
-      approved_facility_report:
-        facility_report: Facility report
-        pending: Pending
-        approved: Approved
-        rejected: Rejected
-        id: ID
-        title: Title
-        building: Building
-        content: Content
-        status: Status
-        created_date: Created date
-        content: Content
-        reject: Reject
-        approve: Approve
-        reject_reason: Reject reason
-        cancel: Cancel
-        return_date: Return date
-        close: Close
-      rejected_facility_report:
-        facility_report: Facility report
-        pending: Pending
-        approved: Approved
-        rejected: Rejected
-        id: ID
-        title: Title
-        building: Building
-        content: Content
-        status: Status
-        created_date: Created date
-        content: Content
-        reject: Reject
-        approve: Approve
-        reject_reason: Reject reason
-        cancel: Cancel
-        return_date: Return date
-        close: Close
-        note: Note
+#   layouts:
+#     manager_layout:
+#       header:
+#         vietnamese: Vietnamese
+#         posts: Posts
+#         student_arrangement: Student arrangement
+#         students: Students
+#         rooms: Rooms
+#         services: Services
+#         reports: Reports
+#         building: Building
+#         english: English
+#         logout: Logout
+#         login: Login
+#         notifications: Notifications
+#         no_notifications: No notifications
+#     student_layout:
+#       header:
+#         vietnamese: Vietnamese
+#         english: English
+#         profile: Profile
+#         my_room: My room
+#         request: Request
+#         logout: Logout
+#         login: Login
+#         notifications: Notifications
+#         no_notifications: No notifications
+#   manager:
+#     homepage_management:
+#       post_list:
+#         view_more: View more
+#       show:
+#         homepage: Homepage
+#     post_management:
+#       post_management_list:
+#         post_management: Post management
+#         search_placeholder: Name, status...
+#         id: ID
+#         title: Title
+#         content: Content
+#         time: Created time
+#         writer: Writer
+#         status: Status
+#         action: Action
+#         delete_form_title: Delete this post
+#         delete_form_confirm: Are you sure to delete this post
+#         restore_form_title: Restore this post
+#         restore_form_confirm: Are you sure to restore this post
+#         approve: Approve
+#         cancel: Cancel
+#         submit: Submit
+#         edit: Edit
+#         update: Update
+#         new_post_form_title: Create new post
+#         edit_post_form_title: Edit post
+#     students_arrangement:
+#       room_list_arrangement:
+#         male: Male
+#         female: Female
+#         status: Status
+#         number_of_student: Number student
+#       pending_student_list:
+#         male: Male
+#         female: Female
+#         remove_student_form_title: Remove student
+#         remove_student_form_confirm: Do you want to remove this student account?
+#         cancel: Cancel
+#         approve: Approve
+#       main:
+#         search_right_column: Name or student id number...
+#         search_left_column: Room type or name...
+#     room_management:
+#       room_active:
+#         number_of_member: Number of member
+#         room_for: Room for
+#         room_member: Room member
+#         male: Male
+#         female: Female
+#         remove_student_form_title: Remove student
+#         remove_student_form_confirm: Do you want to remove this student account?
+#         cancel: Cancel
+#         approve: Approve
+#       room_management_list:
+#         room_management: Room management
+#         id: ID
+#         room_name: Room name
+#         member: Member
+#         max_member: Max member
+#         room_type: Room type
+#         status: Status
+#         search_placeholder: Name, status or type...
+#         new_room_form_title: Create new room
+#         normal: Normal
+#         vip: VIP
+#         full: Full
+#         unfilled: Unfilled
+#         empty: Empty
+#         submit: Submit
+#         cancel: Cancel
+#       room_management_sidebar:
+#         informations: Informations
+#         members: Members
+#         service_charges: Service charges
+#         facilities: Facilities
+#       show_room_informations:
+#         buildings: Buildings
+#         room: Room
+#         informations: Informations
+#         room_name: Room name
+#         room_type: Room type
+#         room_gender: Gender
+#         number_student: Number student
+#         max_number_student: Max number student
+#         status: Status
+#         confirmation: Confirmation
+#         confirmation_message: You are sure that the information above is correct
+#         update: Update
+#         male: Male
+#         female: Female
+#         normal: Normal
+#         vip: VIP
+#         full: Full
+#         unfilled: Unfilled
+#         empty: Empty
+#       room_member_list:
+#         buildings: Buildings
+#         room: Room
+#         members: Members
+#         search: Search
+#         id: ID
+#         student_number: Student number
+#         full_name: Full name
+#         date_of_birth: Date of birth
+#         class: Class
+#         check_in_date: Check in date
+#         status: Status
+#         new_student_form_title: Create new student
+#         cancel: Cancel
+#         submit: Submit
+#         active: Active
+#         pending: Pending
+#         student_number_confirm: Student number confirmation
+#         student_profile: Student profile
+#         gender: Gender
+#         hometown: Hometown
+#         phone: Phone
+#         identity_number: Identity number
+#         register_date: Register date
+#         check_in_date: Check in date
+#         extend_time: Extend time
+#         status: Status
+#         edit: Edit
+#         cancel: Cancel
+#       room_service_charge_list:
+#         buildings: Buildings
+#         room: Room
+#         service_charges: Service charges
+#         id: ID
+#         month: Month
+#         electricity_price: Electricity price
+#         water_price: Water price
+#         total_price: Total price
+#         status: Status
+#         paid: Paid
+#         unpaid: Unpaid
+#         payer: Payer
+#         cancel: Cancel
+#         edit: Edit
+#         service_charge_edit: Service charge edit
+#         update: Update
+#       room_facility_list:
+#         buildings: Buildings
+#         room: Room
+#         facilities: Facilities
+#         id: ID
+#         facility_name: Facility name
+#         quantity: Quantity
+#         status: Status
+#         note: Note
+#         facility: Facility
+#         default: Default
+#         detail: Detail
+#         cancel: Cancel
+#         edit: Edit
+#         facility_edit: Facility edit
+#         new: New
+#         repairing: Repairing
+#         broken: Broken
+#         create_new_facility: Create a new facility
+#         submit: Submit
+#         update: Update
+#     student_management:
+#       student_management_list:
+#         student_management: Student management
+#         id: ID
+#         student_id_number: Student number
+#         full_name: Full name
+#         date_of_birth: Date of birth
+#         room: Room
+#         class: Class
+#         check_in_date: Check in date
+#         status: Status
+#         search_placeholder: Name, id or status..
+#         pending: Pending
+#         active: Active
+#         student_profile: Student profile
+#         gender: Gender
+#         home_town: Hometown
+#         phone: Phone number
+#         identity: Identity number
+#         register_date: Register date
+#         extend_time: Extend time
+#         cancel: Cancel
+#         delete: Delete
+#         edit: Edit
+#         remove_student_form_title: Remove student
+#         remove_student_form_confirm: Do you want to remove this student account?
+#         approve: Approve
+#         new_student_title: Create new student
+#         student_id_number_confirm: Student number confirmation
+#         submit: Submit
+#     service_management:
+#       service_charge_list:
+#         service_charge: Service charge
+#         room: Room
+#         status: Status
+#         all: All
+#         paid: Paid
+#         unpaid: Unpaid
+#         min_charge: Min charge
+#         max_charge: Max charge
+#         month: Month
+#         import_data: Import data
+#         id: ID
+#         room: Room
+#         month: Month
+#         electricity_price: Electricity price
+#         water_price: Water price
+#         action: Action
+#         total_price: Total price
+#         view_more: View more
+#         cancel: Cancel
+#         submit: Submit
+#         edit: Edit
+#         update: Update
+#         service_charge_edit: Service charge edit
+#         reset: :Reset
+#         payer: Payer
+#         remind: Remind
+#       service_charge_table:
+#         id: ID
+#         room: Room
+#         month: Month
+#         electricity_price: Electricity price
+#         water_price: Water price
+#         total_price: Total price
+#         payer: Payer
+#         action: Action
+#         paid: Paid
+#         unpaid: Unpaid
+#         view_more: View more
+#     report_management:
+#       report_management_sidebar:
+#         complaint_reports: Complaint reports
+#         form_requests: Form requests
+#         facility_reports: Facility reports
+#       complaint_report:
+#         complaint_report: Complaint report
+#         pending: Pending
+#         approved: Approved
+#         rejected: Rejected
+#         id: ID
+#         title: Title
+#         buildings: Building
+#         content: Content
+#         status: Status
+#         created_date: Created date
+#         reject: Reject
+#         approve: Approve
+#         reject_reason: Reject reason
+#         cancel: Cancel
+#       pending_complaint_report:
+#         complaint_report: Complaint report
+#         pending: Pending
+#         approved: Approved
+#         rejected: Rejected
+#         id: ID
+#         title: Title
+#         buildings: Building
+#         content: Content
+#         status: Status
+#         created_date: Created date
+#         reject: Reject
+#         approve: Approve
+#         reject_reason: Reject reason
+#         cancel: Cancel
+#       approved_complaint_report:
+#         complaint_report: Complaint report
+#         pending: Pending
+#         approved: Approved
+#         rejected: Rejected
+#         id: ID
+#         title: Title
+#         buildings: Building
+#         content: Content
+#         status: Status
+#         created_date: Created date
+#         reject: Reject
+#         approve: Approve
+#         reject_reason: Reject reason
+#         cancel: Cancel
+#       rejected_complaint_report:
+#         complaint_report: Complaint report
+#         pending: Pending
+#         approved: Approved
+#         rejected: Rejected
+#         id: ID
+#         title: Title
+#         buildings: Building
+#         content: Content
+#         status: Status
+#         created_date: Created date
+#         reject: Reject
+#         approve: Approve
+#         reject_reason: Reject reason
+#         cancel: Cancel
+#       form_request:
+#         form_request: Form request
+#         pending: Pending
+#         approved: Approved
+#         rejected: Rejected
+#         id: ID
+#         type: Type
+#         building: Building
+#         content: Content
+#         status: Status
+#         created_date: Created date
+#         content: Content
+#         reject: Reject
+#         approve: Approve
+#         reject_reason: Reject reason
+#         cancel: Cancel
+#         return_date: Return date
+#       pending_form_request:
+#         form_request: Form request
+#         pending: Pending
+#         approved: Approved
+#         rejected: Rejected
+#         id: ID
+#         type: Type
+#         building: Building
+#         content: Content
+#         status: Status
+#         created_date: Created date
+#         content: Content
+#         reject: Reject
+#         approve: Approve
+#         reject_reason: Reject reason
+#         cancel: Cancel
+#         return_date: Return date
+#       rejected_form_request:
+#         form_request: Form request
+#         pending: Pending
+#         approved: Approved
+#         rejected: Rejected
+#         id: ID
+#         type: Type
+#         building: Building
+#         content: Content
+#         status: Status
+#         created_date: Created date
+#         content: Content
+#         reject: Reject
+#         approve: Approve
+#         reject_reason: Reject reason
+#         cancel: Cancel
+#         return_date: Return date
+#       approved_form_request:
+#         form_request: Form request
+#         pending: Pending
+#         approved: Approved
+#         rejected: Rejected
+#         id: ID
+#         type: Type
+#         building: Building
+#         content: Content
+#         status: Status
+#         created_date: Created date
+#         content: Content
+#         reject: Reject
+#         approve: Approve
+#         reject_reason: Reject reason
+#         cancel: Cancel
+#         return_date: Return date
+#         close: Close
+#       facility_report:
+#         facility_report: Facility report
+#         pending: Pending
+#         approved: Approved
+#         rejected: Rejected
+#         id: ID
+#         title: Title
+#         building: Building
+#         content: Content
+#         status: Status
+#         created_date: Created date
+#         content: Content
+#         reject: Reject
+#         approve: Approve
+#         reject_reason: Reject reason
+#         cancel: Cancel
+#         return_date: Return date
+#         close: Close
+#       pending_facility_report:
+#         facility_report: Facility report
+#         pending: Pending
+#         approved: Approved
+#         rejected: Rejected
+#         id: ID
+#         title: Title
+#         building: Building
+#         content: Content
+#         status: Status
+#         created_date: Created date
+#         content: Content
+#         reject: Reject
+#         approve: Approve
+#         reject_reason: Reject reason
+#         cancel: Cancel
+#         return_date: Return date
+#         close: Close
+#       approved_facility_report:
+#         facility_report: Facility report
+#         pending: Pending
+#         approved: Approved
+#         rejected: Rejected
+#         id: ID
+#         title: Title
+#         building: Building
+#         content: Content
+#         status: Status
+#         created_date: Created date
+#         content: Content
+#         reject: Reject
+#         approve: Approve
+#         reject_reason: Reject reason
+#         cancel: Cancel
+#         return_date: Return date
+#         close: Close
+#       rejected_facility_report:
+#         facility_report: Facility report
+#         pending: Pending
+#         approved: Approved
+#         rejected: Rejected
+#         id: ID
+#         title: Title
+#         building: Building
+#         content: Content
+#         status: Status
+#         created_date: Created date
+#         content: Content
+#         reject: Reject
+#         approve: Approve
+#         reject_reason: Reject reason
+#         cancel: Cancel
+#         return_date: Return date
+#         close: Close
+#         note: Note
+#     building_management:
+#       index:
+#         buildings: Buildings
+#         full_room: Full room
+#         unfilled_room: Unfilled room
+#         empty_room: Empty room
+#         room: rooms
+#       show:
+#         buildings: Buildings
+#         floor: Floor
+#         male: Male
+#         female: Female
+#         status: Status
+#   student:
+#     complaint_reports:
+#       complaint_report_list:
+#         complaint_report: Complaint report
+#         id: ID
+#         sent_date: Sent date
+#         title: Title
+#         description: Description
+#         content: Content
+#         status: Status
+#         pending: Pending
+#         approve: Approved
+#         reject: Rejected
+#         new_complaint_report: New complaint report
+#         submit: Submit
+#         note: Note
+#         close: Close
+#     facility_reports:
+#       facility_report_list:
+#         facility_report: Facility report
+#         id: ID
+#         sent_date: Sent date
+#         title: Title
+#         description: Description
+#         status: Status
+#         pending: Pending
+#         approved: Approved
+#         rejected: Rejected
+#         content: Content
+#         note: Note
+#         close: Close
+#         submit: Submit
+#     form_requests:
+#       form_request_list:
+#         form_request: Form request
+#         id: ID
+#         sent_date: Sent date
+#         form_type: Form type
+#         description: Description
+#         status: Status
+#         pending: Pending
+#         approved: Approved
+#         rejected: Rejected
+#         select_choice: Select choice
+#         confirmation_residence: The confirmation of temporary residence
+#         entrance_card: Entrance card
+#         description: Description
+#         return_date: Return date
+#         note: Note
+#         close: Close
+#         submit: Submit
+#         request: Request
+#         content: Content
+#     requests:
+#       request_sidebar:
+#         facility_report: Facility report
+#         form_request: Form request
+#         complaint_report: Complaint report
+#     student_profiles:
+#       form:
+#         informations: Informations
+#         student_id_number: Student id number
+#         room: Room
+#         full_name: Full name
+#         class_name: Class name
+#         email: Email
+#         identity_card_number: Identity card number
+#         date_of_birth: Date of birth
+#         address: Address
+#         phone_number: Phone number
+#         male: Male
+#         female: Female
+#         confirmation: Confirmation
+#         confirmation_message: You are sure that the information above is correct
+#         submit: Update
+#         security: Security
+#         current_password: Current password
+#         new_password: New password
+#         new_password_confirmation: New password confirmation
+#     rooms:
+#       room_sidebar:
+#         members: Members
+#         service_charges: Service charges
+#       member:
+#         student_information: Student information
+#         view_more: View more
+#         student_id_number: Student id number
+#         date_of_birth: Date of birth
+#         phone_number: Phone number
+#         home_town: Hometown
+#         gender: Gender
+#       room_member:
+#         room: Room
+#         pending: Pending
+#       show:
+#         room: Room
+#         pending: Pending
+#       room_service_charge:
+#         room: Room
+#         empty: Empty
+#     service_charges:
+#       service_charge_list:
+#         service_charges: Service charges
+#         id: ID
+#         month: Month
+#         water_price: Water price
+#         electricity_price: Electricity price
+#         total_price: Total price
+#         status: Status
+#         payer: Payer
+#         paid: Paid
+#         unpaid: Unpaid

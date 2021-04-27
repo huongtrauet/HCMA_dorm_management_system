@@ -35,19 +35,19 @@
 <div class="ui mini modal" id="confirm-delete-<%= student.id %>">
   <div class="ui icon header">
     <i class="archive icon"></i>
-    <%= t(".remove_student_form_title") %>
+    Xoá tài khoản học viên
   </div>
   <div class="content">
-    <p><%= t(".remove_student_form_confirm") %></p>
+    <p>Bạn có chắc muốn xoá tài khoản này?</p>
   </div>
   <div class="actions" style="display: flex; justify-content: center">
     <div class="ui negative button">
       <i class="remove icon"></i>
-      <%= t(".cancel") %>
+      Huỷ
     </div>
     <div class="ui positive right labeled icon button custom_btn" onclick="confirmRemove(<%= student.id %>)">
       <i class="checkmark icon"></i>
-      <%= t(".approve") %>
+      Xoá
     </div>
   </div>
 </div>

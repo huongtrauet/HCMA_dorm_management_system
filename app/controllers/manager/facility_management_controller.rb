@@ -16,24 +16,27 @@ class Manager::FacilityManagementController < ManagerMainController
     @facility = Facility.new(create_facility_params)
     if @facility.save
       respond_to do |format|
-        format.json {render json: {message: 'Created facility successfully'}, status: :ok } 
+        format.json {render json: {message: 'Tạo mới thiết bị thành công!'}, status: :ok } 
       end
     else
       respond_to do |format|
-        format.json {render json: {message: 'Created facility fail'}, status: :bad_request } 
+        format.json {render json: {message: 'Tạo mới thiết bị thất bại :('}, status: :bad_request } 
       end
     end
   end
 
   def update
     @facility = Facility.find(params[:id])
-    if @facility.update(update_facility_params)
+    params = update_facility_params
+    params = update_facility_params.except(:status) if update_facility_params[:status] == ""
+    
+    if @facility.update(params)
       respond_to do |format|
-        format.json {render json: {message: 'Updated facility successfully'}, status: :ok } 
+        format.json {render json: {message: 'Cập nhật thiết bị thành công!'}, status: :ok } 
       end
     else
       respond_to do |format|
-        format.json {render json: {message: 'Updated facility failed'}, status: :bad_request } 
+        format.json {render json: {message: 'Cập nhật thiết bị thất bại :('}, status: :bad_request } 
       end
     end
   end

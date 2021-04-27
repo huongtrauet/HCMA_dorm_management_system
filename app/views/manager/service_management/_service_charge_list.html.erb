@@ -14,9 +14,9 @@
   <div style="display: flex; justify-content: flex-start">
     <div class="ui selection dropdown filter_item" >
       <input type="hidden" name="room_name_filter" onchange="onHandleFilter(this)">
-      <div class="default text"><%= t(".room") %></div>
+      <div class="default text">Phòng</div>
       <div class="menu">
-        <div class="item" data-value="ALL"><%= t(".all") %></div>
+        <div class="item" data-value="ALL">Tất cả</div>
         <% @rooms.each do |r|%>
           <div class="item" data-value="<%= r.id %>"><%= r.room_name %></div>
         <% end %>
@@ -24,17 +24,17 @@
     </div>
     <div class="ui selection dropdown filter_item">
       <input type="hidden" name="status_filter" onchange="onHandleFilter(this)">
-      <div class="default text"><%= t(".status") %></div>
+      <div class="default text">Trạng thái</div>
       <div class="menu">
-        <div class="item" data-value="ALL"><%= t(".all") %></div>
-        <div class="item" data-value="PAID"><%= t(".paid") %></div>
-        <div class="item" data-value="UNPAID"><%= t(".unpaid") %></div>
+        <div class="item" data-value="ALL">Tất cả</div>
+        <div class="item" data-value="PAID">Đã thanh toán</div>
+        <div class="item" data-value="UNPAID">Chưa thanh toán</div>
       </div>
     </div>
     <div class="ui selection dropdown filter_item" id="min_charge">
       <input type="hidden" value="0" name="min_charge" onchange="onHandleFilter(this)">
       <i class="dropdown icon"></i>
-      <div class="default text"><%= t(".min_charge") %></div>
+      <div class="default text">Từ</div>
       <div class="menu">
         <div class="item" data-value="ALL"><%= t(".all") %></div>
         <div class="item" data-value="50000">50000</div>
@@ -48,7 +48,7 @@
     <div class="ui selection dropdown filter_item" id="max_charge">
       <input type="hidden" value="0" name="max_charge" onchange="onHandleFilter(this)">
       <i class="dropdown icon"></i>
-      <div class="default text"><%= t(".max_charge") %></div>
+      <div class="default text">Đến</div>
       <div class="menu">
         <div class="item" data-value="ALL"><%= t(".all") %></div>
         <div class="item" data-value="50000">50000</div>
@@ -59,47 +59,47 @@
         <div class="item" data-value="500000">500000</div>
       </div>
     </div>
-    <button class="reset_button" style="width: 9rem; color: #f4810b; border: 1px solid #f4810b; border-radius: 3px; background-color: #ffffff; outline: none" onclick="resetFilter()"><%= t(".reset") %></button>
+    <button class="reset_button" style="width: 9rem; color: #f4810b; border: 1px solid #f4810b; border-radius: 3px; background-color: #ffffff; outline: none" onclick="resetFilter()">Đặt lại</button>
   </div>
   <div style="min-width: 8px; width: 19rem !important; margin-top: 1rem; display: flex;" >
     <select id="month_filter" name="month_filter" multiple="" class="ui fluid multiple selection dropdown" onchange="onHandleFilter(this)">
-      <option value=""><%= t(".month") %></option>
-      <option value="1"><%= t(".month") %> 1</option>
-      <option value="2"><%= t(".month") %> 2</option>
-      <option value="3"><%= t(".month") %> 3</option>
-      <option value="4">T<%= t(".month") %> 4</option>
-      <option value="5">T<%= t(".month") %> 5</option>
-      <option value="6"><%= t(".month") %> 6</option>
-      <option value="7"><%= t(".month") %> 7</option>
-      <option value="8"><%= t(".month") %> 8</option>
-      <option value="9"><%= t(".month") %> 9</option>
-      <option value="10"><%= t(".month") %> 10</option>
-      <option value="11"><%= t(".month") %> 11</option>
-      <option value="12"><%= t(".month") %> 12</option>
+      <option value="">Tháng</option>
+      <option value="1">Tháng 1</option>
+      <option value="2">Tháng 2</option>
+      <option value="3">Tháng 3</option>
+      <option value="4">Tháng 4</option>
+      <option value="5">Tháng 5</option>
+      <option value="6">Tháng 6</option>
+      <option value="7">Tháng 7</option>
+      <option value="8">Tháng 8</option>
+      <option value="9">Tháng 9</option>
+      <option value="10">Tháng 10</option>
+      <option value="11">Tháng 11</option>
+      <option value="12">Tháng 12</option>
     </select>
   </div>
    <div class="remind checkbox_col" style="display: none; float:right">
-    <button class="button" id="myElement" disabled style="float: right; margin: 1rem 1.8rem 1rem 0;" onclick="remind()">Remind</button>
+    <button class="button" id="myElement" disabled style="float: right; margin: 1rem 1.8rem 1rem 0;" onclick="remind()">Nhắc nhở</button>
   </div>
   <button class="ui orange basic button" style="float:right; margin: 1rem 1rem 1rem 0" id="import_data_button">
     <input style="	width: 0.1px;	height: 0.1px;	opacity: 0;	overflow: hidden;	position: absolute;	z-index: -1;" type="file" class="inputfile" id="embedpollfileinput1" onchange="uploadData(this)" style="width: 100%; height: 100%" multiple="true" name="images_input" />
     <label id="lable_image" for="embedpollfileinput1" class="import_data_button">
-      <%= t(".import_data") %>
+      Thêm dữ liệu
     </label>
   </button>
   <div id="service_charge_table" style="margin-top: 1rem">
     <table class="ui very basic selectable table">
       <thead>
         <tr>
-          <th><%= t(".id") %></th>
-          <th><%= t(".room") %></th>
-          <th><%= t(".month") %></th>
-          <th><%= t(".electricity_price") %></th>
-          <th><%= t(".water_price") %></th>
-          <th><%= t(".total_price") %></th>
-          <th><%= t(".status") %></th>
-          <th><%= t(".payer") %></th>
-          <th><%= t(".action") %></th>
+          <th>STT</th>
+          <th>Phòng</th>
+          <th>Tháng</th>
+          <th>Tiền điện</th>
+          <th>Tiến nước</th>
+          <th>Tổng tiền</th>
+          <th>Trạng thái</th>
+          <th>Người thanh toán</th>
+          <th>Hành động</th>
           <th style="display: none" class="checkbox_col">
             <div class="ui checkbox">
               <input id="check_all" type="checkbox" name="example" onchange="selectItem(this) ">
@@ -119,14 +119,14 @@
             <td class='total_price'><%= charge.total_price %></td>
             <td class='status'>
               <% if charge.status == "PAID" %>
-                <a class="ui teal tag label"><%= t(".paid") %></a>
+                <a class="ui teal tag label">Đã thanh toán</a>
               <% elsif charge.status == "UNPAID" %>
-                <a class="ui red tag label"><%= t(".unpaid") %></a>
+                <a class="ui red tag label">Chưa thanh toán</a>
               <% end  %>
             </td>
             <td class='payer'><%= charge.payer %></td>
             <td class="view_more" onclick="showServiceChargeInfo(<%= charge.room_id %>, <%= charge.year %>, <%= charge.month %>, <%= charge.id %>, <%= index + 1%>)">
-              <%= t(".view_more") %>
+              Xem thêm
             </td>
             <td style="display: none" class="checkbox_col">
               <div class="ui checkbox">
@@ -147,7 +147,7 @@
 <div class="ui first modal service_charge_info" id="show_info_modal">
   <i class="close icon"></i>
   <div class="header">
-      <h3><%= t("service_charge") %></h3>
+      <h3>Hoá đơn dịch vụ</h3>
       <div>
         <p style="margin-bottom: -1rem" id="show_paid_at"></p>
         <p style="float: right; margin-right: 1rem; margin-right: 2.6rem;" class="show_room_name"></p>
@@ -162,28 +162,28 @@
         <div class="five wide column">
           <div class="student-info">
             <div class="ui field">
-              <label><%= t(".month") %>:</label>
+              <label>Tháng:</label>
               <p id="show_month"></p>
             </div>
-            <label><%= t(".total_price") %>:</label>
+            <label>Tồng tiền:</label>
             <p id="show_total_price"></p>
           </div>
         </div>
         <div class="five wide column">
           <div class="student-info">
-            <label><%= t(".electricity_price") %>: </label>
+            <label>Tiền điện: </label>
             <p id="show_electricity_price"></p>
-            <label><%= t(".water_price") %></label>
+            <label>Tiền nước</label>
             <p id="show_water_price"></p>
           </div>
         </div>
         <div class="five wide column">
           <div class="student-info">
-            <label><%= t(".status") %> </label>
+            <label>Trạng thái</label>
             <p>
               <span style="background-color: #f4810b; padding: 6px 10px; color: #fff; border-radius: 5px; font-weight: bold" id="show_status"></span>
             </p>
-            <label><%= t(".payer") %></label>
+            <label>Người thanh toán</label>
             <p id="show_payer"></p>
           </div>
         </div>
@@ -191,10 +191,10 @@
     </div>
     <div class="actions" style="padding: 0.7rem 1rem;">
       <div class="ui black deny button" onclick="closeModal()">
-        <%= t(".cancel") %>
+        Huỷ
       </div>
-      <div class="ui positive right labeled icon button edit">
-        <%= t(".edit") %>
+      <div class="ui right labeled icon button edit" style="background-color: #2185d0; color: white">
+        Cập nhật
         <i class="arrow right icon"></i>
       </div>
     </div>
@@ -203,7 +203,7 @@
 <div class="ui second modal service_charge_info" id="edit_info_modal">
   <i class="close icon"></i>
   <div class="header">
-    <h3><%= t(".service_charge_edit") %></h3>
+    <h3>Sửa hoá đơn dịch vụ</h3>
     <div>
       <p id="paid_at" style="margin-bottom: -1rem"></p>
       <p style="float: right; margin-right: 1rem; margin-right: 2.6rem;" class="show_room_name"></p>
@@ -214,45 +214,45 @@
   <form class="ui form" style="margin: 0 1.5rem" id="service_charge_edit_form" name="service_charge_edit_form" class="ui form segment">
     <div class="three fields">
       <div class="field">
-        <label><%= t(".month") %></label>
-        <input type="text" placeholder="<%= t(".month") %>" disabled name="month" id="month_edit_field">
+        <label>Tháng</label>
+        <input type="text" placeholder="Tháng" disabled name="month" id="month_edit_field">
       </div>
       <div class="field">
-        <label><%= t(".electricity_price") %></label>
-        <input type="number" placeholder="<%= t(".electricity_price") %>" name="electricity_price" id="electricity_price_edit_field" onkeyup="changePrice()">
+        <label>Tiền điện</label>
+        <input type="number" placeholder="Tiền điện" name="electricity_price" id="electricity_price_edit_field" onkeyup="changePrice()">
       </div>
       <div class="field">
-        <label><%= t(".status") %></label>
+        <label>Trạng thái</label>
         <div class="ui selection dropdown">
           <input type="hidden" name="status" id="status_edit_field">
           <i class="dropdown icon"></i>
           <div class="text" style="color: black;" id="selected_item"></div>
           <div class="menu">
-            <div class="item" data-value="PAID"><%= t(".paid") %></div>
-            <div class="item" data-value="UNPAID"><%= t(".unpaid") %></div>
+            <div class="item" data-value="PAID">Đã thanh toán</div>
+            <div class="item" data-value="UNPAID">Chưa thanh toán</div>
           </div>
         </div>
       </div>
     </div>
     <div class="three fields">
       <div class="field">
-        <label><%= t(".total_price") %></label>
-        <input type="number" placeholder="<%= t(".total_price") %>" name="total_price" id="total_price_edit_field" disabled>
+        <label>Tổng tiền</label>
+        <input type="number" placeholder="Tổng tiền" name="total_price" id="total_price_edit_field" disabled>
       </div>
       <div class="field">
-        <label><%= t(".water_price") %></label>
-        <input type="number" placeholder="<%= t(".water_price") %>" name="water_price" id="water_price_edit_field" onkeyup="changePrice()">
+        <label>Tiền nước</label>
+        <input type="number" placeholder="Tiền nước" name="water_price" id="water_price_edit_field" onkeyup="changePrice()">
       </div>
       <div class="field">
-        <label><%= t(".payer") %></label>
-        <input type="text" placeholder="<%= t(".payer") %>" name="payer" id="payer_edit_field">
+        <label>Người thanh toán</label>
+        <input type="text" placeholder="Người thanh toán" name="payer" id="payer_edit_field">
       </div>
     </div>
     <div class="actions" style="padding: 0.7rem 1rem; float:right; margin-right: 1.5rem">
       <div class="ui black deny button" onclick="closeModal()">
-        <%= t(".cancel") %>
+        Huỷ
       </div>
-      <div class="ui blue submit button"><%= t(".update") %></div>
+      <div class="ui blue submit button">Cập nhật</div>
     </div>
   </form>
 </div>
@@ -367,32 +367,60 @@
   function remind() {
     let item_quantity = 0
     let success_item = 0
-    const remindRoom = item => new Promise((resolve, reject) => {
-      if (item.checked == true) {
-        item_quantity += 1
-        console.log(item_quantity)
-        $.ajax({
-          type: 'POST',
-          url: '/manager/service-management/remind',
-          data: {
-            charge_id: item.value
-          },
-          success: function(result){
-            success_item += 1
-            $('.remind_checkbox').prop('checked', false);
-            $('#check_all').prop('checked', false);
-            $('.remind .button').prop('disabled', true)
-            $('.remind .button').removeClass('hover');
-            resolve();
-          },
-          error: function (error) {
-            reject()
-          }
-        })
-      } else {
-        resolve()
-      }
-    })
+    function remindRoom(item) {
+      return new Promise(function(resolve, reject) {
+        if (item.checked == true) {
+          item_quantity += 1
+          console.log(item_quantity)
+          $.ajax({
+            type: 'POST',
+            url: '/manager/service-management/remind',
+            data: {
+              charge_id: item.value
+            },
+            success: function(result){
+              success_item += 1
+              $('.remind_checkbox').prop('checked', false);
+              $('#check_all').prop('checked', false);
+              $('.remind .button').prop('disabled', true)
+              $('.remind .button').removeClass('hover');
+              resolve();
+            },
+            error: function (error) {
+              reject()
+            }
+          })
+        } else {
+          resolve()
+        }
+      })
+    }
+    // const remindRoom = (item) => new Promise((resolve, reject) => {
+    //   if (item.checked == true) {
+    //     item_quantity += 1
+    //     console.log(item_quantity)
+    //     $.ajax({
+    //       type: 'POST',
+    //       url: '/manager/service-management/remind',
+    //       data: {
+    //         charge_id: item.value
+    //       },
+    //       success: function(result){
+    //         success_item += 1
+    //         $('.remind_checkbox').prop('checked', false);
+    //         $('#check_all').prop('checked', false);
+    //         $('.remind .button').prop('disabled', true)
+    //         $('.remind .button').removeClass('hover');
+    //         resolve();
+    //       },
+    //       error: function (error) {
+    //         reject()
+    //       }
+    //     })
+    //   } else {
+    //     resolve()
+    //   }
+    // })
 
     let remindRooms = []
     for (let i = 0; i < document.getElementsByClassName('remind_checkbox').length; i++) {
@@ -404,12 +432,12 @@
       console.log(item_quantity, success_item)
       if(success_item == item_quantity) {
         console.log(item_quantity, success_item)
-        toastr.success('Send notifications to selected room successfully')
+        toastr.success('Nhắc nhở học viên thành công!')
       } else {
-        toastr.error('Send notifications to selected room failed')
+        toastr.error('Nhăc nhở học viên không thành công :(')
       }
     }).catch(() => {
-      toastr.error('Send notifications to selected room failed')
+      toastr.error('Nhắc nhở học viên khồng thành cồng :(')
     })
   }
 
@@ -435,6 +463,8 @@
         "charge_id": charge_id
       },
       success: function(result){
+        debugger
+        
         //Show modal
         $('#show_month').html(result.service_charge.month)
         $('#show_year').html(result.service_charge.year)
@@ -442,8 +472,17 @@
         $('#show_electricity_price').html(result.service_charge.electricity_price)
         $('#show_total_price').html(result.service_charge.total_price)
         $('#show_payer').html(result.service_charge.payer)
-        $('#show_status').html(result.service_charge.status)
-        $('#show_paid_at').html(result.service_charge.paid_at.split('T')[0].split('-').reverse().join('/'))
+        if (result.service_charge.status == "PAID"){
+          $('#show_status').html("Đã thanh toán")
+        }
+        else{
+          $('#show_status').html("Chưa thanh toán")
+        }
+        if(result.service_charge.paid_at){
+          $('#show_paid_at').html(result.service_charge.paid_at.split('T')[0].split('-').reverse().join('/'))
+        } else {
+          $('#show_paid_at').html('')
+        }
         $('.show_room_name').html(result.room.room_name)
         $('#room_id').val(result.room.id)
         $('#charge_id').val(result.service_charge.id)
@@ -453,10 +492,21 @@
         $('#water_price_edit_field').val(result.service_charge.water_price)
         $('#electricity_price_edit_field').val(result.service_charge.electricity_price)
         $('#total_price_edit_field').val(result.service_charge.total_price)
+
         $('#status_edit_field').val(result.service_charge.status)
         $('#payer_edit_field').val(result.service_charge.payer)
-        $('#paid_at').html(result.service_charge.paid_at.split('T')[0].split('-').reverse().join('/'))
-        $('#selected_item').html(result.service_charge.status)
+        if(result.service_charge.paid_at){
+          $('#paid_at').html(result.service_charge.paid_at.split('T')[0].split('-').reverse().join('/'))
+        } else {
+          $('#paid_at').html('')
+        }
+        if (result.service_charge.status == "UNPAID"){
+         $('#selected_item').html("Chưa thanh toán")
+        }
+        else{
+          $('#selected_item').html("Đã thanh toán")
+        }
+        
         $('#charge_index').val(index)
 
         // $('#status_edit_field').val()
@@ -568,23 +618,6 @@
             {
               type: 'integer[0..1000000000000]',
               prompt: 'Water price must be more than 0 vnd and less than 1000000000000 vnd!!'
-            }
-          ]
-        },
-        payer: {
-          identifier: 'payer',
-          rules: [
-            {
-              type: 'empty',
-              prompt: 'Please enter payer!!'
-            },
-            {
-              type: 'minLength[1]',
-              prompt: 'Title must be more than 1 letters!'
-            },
-            {
-              type: 'maxLength[10]',
-              prompt: 'Title must be less than 100 letters!'
             }
           ]
         }

@@ -1,41 +1,43 @@
 <div class="facility_management_list">
   <div class="header" style="display: flex; justify-content: space-between; align-items: flex-end">
-    <div style="font-weight: bold"><a href="/manager/building-management" class="breadcrumb"><%= t(".buildings") %></a> / 
+    <div style="font-weight: bold"><a href="/manager/building-management" class="breadcrumb">Toà nhà</a> / 
       <a href="/manager/building-management/<%= @room.building.id %>" class="breadcrumb"><%= @room.building.name %></a> /
       <a href="/manager/rooms-management/rooms/<%= @room.id %>" class="breadcrumb"><%= t(".room") %> <%= @room.room_name %></a> /
-      <a href="/manager/rooms-management/rooms/<%= @room.id %>/facilities" class="breadcrumb"><%= t(".facilities") %></a>
+      <a href="/manager/rooms-management/rooms/<%= @room.id %>/facilities" class="breadcrumb">Cơ sở vật chất</a>
     </div>
     <div class="header_search">
       <button class="ui icon button" onclick="addFacility()">
         <i class="plus icon"></i>
       </button>
-      <div class="ui icon input">
-        <input type="text" placeholder="Search...">
-        <i class="icon">
-          <img src="/assets/search.png" style="width: 1rem; height: 1rem; width: 1rem; top: 50%; position: absolute; transform: translateY(-50%);right: 0.7rem;">
-        </i> 
-      </div>
     </div>
   </div>
   <div class="ui inverted divider"></div>
   <table class="ui very basic selectable table">
     <thead>
       <tr>
-        <th><%= t(".id") %></th>
-        <th><%= t(".facility_name") %></th>
-        <th><%= t(".quantity") %></th>
-        <th><%= t(".status") %></th>
-        <th><%= t(".note") %></th>
+        <th style="text-align: center">STT</th>
+        <th style="text-align: center">Tên thiết bị</th>
+        <th style="text-align: center">Số lượng</th>
+        <th style="text-align: center">Trạng thái</th>
+        <th style="text-align: center">Mô tả</th>
       </tr>
     </thead>
     <tbody>
       <% @facilities.each_with_index do |f, index|%>
         <tr onclick="showFacilityInfo(<%= f.id %>)">
-          <td><%= index + 1 %></td>
-          <td><%= f.name %></td>
-          <td><%= f.quantity %></td>
-          <td><%= f.status %></td>
-          <td><%= f.detail %></td>
+          <td style="text-align: center"><%= index + 1 %></td>
+          <td style="text-align: center"><%= f.name %></td>
+          <td style="text-align: center"><%= f.quantity %></td>
+          <td style="text-align: center">
+          <% if f.status == "NEW"  %>
+            <a class="ui mini label" style=" background-color: #3889c8; color: #fff !important">Mới</a>
+          <% elsif f.status == "REPAIRING"  %>
+            <a class="ui mini label" style=" background-color: #3889c8; color: #fff !important">Đang sửa</a>
+          <% else %>
+            <a class="ui mini label" style=" background-color: #3889c8; color: #fff !important">Đang hỏng</a>
+          <% end %>
+          </td>
+          <td style="text-align: center"><%= f.detail %></td>
         </tr>
       <% end %>
     </tbody>
@@ -45,20 +47,20 @@
 <div class="ui first modal facility_info">
   <i class="close icon"></i>
   <div class="header">
-    <%= t(".facility") %>
+    Cơ sở vật chất
   </div>
   <div class="" style="margin-top: 2rem">
     <div class="ui grid" style="margin-bottom: 2rem">
       <div class="one wide column"></div>
       <div class="five wide column">
         <div class="facility_attr">
-          <label><%= t(".facility_name") %>:</label>
-          <div id="facility_name"><%= t(".default") %></div>
+          <label>Tên thiết bị:</label>
+          <div id="facility_name"></div>
         </div>
       </div>
       <div class="five wide column">
         <div class="facility_attr">
-          <label><%= t(".quantity") %>: </label>
+          <label>Số lượng: </label>
           <div>
             <a class="ui mini label" style=" background-color: #f4810b; color: #fff !important" id="facility_quantity">Default</a>
           </div>
@@ -66,14 +68,14 @@
       </div>
       <div class="five wide column">
         <div class="facility_attr">
-          <label><%= t(".status") %>: </label>
+          <label>Trạng thái: </label>
           <a class="ui mini label" style=" background-color: #3889c8; color: #fff !important" id="facility_status">Default</a>
         </div>
       </div>
       <div class="one wide column"></div>
       <div class="fifteen wide column">
         <div class="facility_attr">
-          <label><%= t(".detail") %>: </label>
+          <label>Mô tả: </label>
           <div id="facility_detail">Default</div>
         </div>
       </div>
@@ -90,10 +92,10 @@
   </div>
   <div class="actions" style="padding: 0.7rem 1rem;">
     <div class="ui deny button">
-      <%= t(".cancel") %>
+      Huỷ
     </div>
-    <div class="ui button edit custom_btn" style="width: 6rem">
-      <%= t(".edit") %>
+    <div class="ui button edit custom_btn">
+      Cập nhật
     </div>
   </div>
 </div>
@@ -101,43 +103,43 @@
 <div class="ui second modal facility_info">
   <i class="close icon"></i>
   <div class="header">
-    <%= t(".facility_edit") %>
+    Cập nhật cơ sở vật chất
   </div>
   <form class="ui form" style="margin: 2rem 1.5rem" id="edit_facility_form">
     <div class="three fields">
       <input type="hidden" id="facility_id_edit" value="">
       <div class="field">
-        <label><%= t(".facility_name") %></label>
-        <input type="text" id="facility_name_edit"  name="name" placeholder="Ten thiet bi">
+        <label>Tên thiết bị</label>
+        <input type="text" id="facility_name_edit"  name="name" placeholder="Tên thiết bị">
       </div>
       <div class="field">
-        <label><%= t(".quantity") %></label>
-        <input type="text" id="facility_quantity_edit" name="quantity" placeholder="So luong">
+        <label>Số lượng</label>
+        <input type="text" id="facility_quantity_edit" name="quantity" placeholder="Số lượng">
       </div>
       <div class="field">
-        <label><%= t(".status") %></label>
-        <div class="ui selection dropdown">
+        <label>Trạng thái</label>
+        <div class="ui selection dropdown" id="facility_status_edit_menu">
           <input name="status" id="facility_status_edit">
           <i class="dropdown icon"></i>
           <div class="default text" style="color: black" id="facility_status_text">Trang thai</div>
-          <div class="menu">
-            <div class="item" data-value="NEW"><%= t(".new") %></div>
-            <div class="item" data-value="REPAIRING"><%= t(".repairing") %></div>
-            <div class="item" data-value="BROKEN"><%= t(".broken") %></div>
+          <div  class="menu">
+            <div class="item" data-value="NEW">Mới</div>
+            <div class="item" data-value="REPAIRING">Đang sửa</div>
+            <div class="item" data-value="BROKEN">Bị hỏng</div>
           </div>
         </div>
       </div>
     </div>
     <div class="field">
-      <label><%= t(".detail") %></label>
+      <label>Mô tả</label>
       <textarea type="text" id="facility_detail_edit" name="detail" rows="4" placeholder="Detail"></textarea>
     </div>
     <div class="actions" style="padding: 0.7rem 1rem;">
       <div class="ui deny button">
-        <%= t(".cancel") %>
+        Huỷ
       </div>
       <div class="ui submit button" style="background-color: #3889c8; color: white">
-        <%= t(".update") %>
+        Cập nhật
       </div>
     </div>
   </form>
@@ -145,7 +147,7 @@
 
 <div class="ui longer scrolling small modal add">
   <div class="header">
-    <%= t(".create_new_facility") %>
+    Tạo mới thiết bị
   </div>
   <form id="myForm" multipart="true" name="myForm" class="ui form segment" style="border: none; -webkit-box-shadow: none; margin-top: 0">
     <input type="hidden" name="room_id" id="room_id" value="<%= @room.id %>">
@@ -154,12 +156,12 @@
         <input autofocus="true" />
       </div>
       <div class="field">
-        <label><%= t(".facility_name") %>:</label>
-        <textarea name="name" placeholder="<%= t(".facility_name") %>" rows="1"></textarea>
+        <label>Tên thiết bị:</label>
+        <textarea name="name" placeholder="Tên thiết bị" rows="1"></textarea>
       </div>
       <div class="field" style="margin-top: 2.5rem">
-        <label><%= t(".detail") %>:</label>
-        <textarea name="detail" placeholder="<%= t(".detail") %>" rows="8"></textarea>
+        <label>Mô tả:</label>
+        <textarea name="detail" placeholder="Mô tả" rows="8"></textarea>
       </div>
       <div class="content" style="margin-top: 2.5rem">
         <div class="ui special cards" id="preview_image"> 
@@ -173,9 +175,9 @@
       </div>
       <div class="actions" style="float: right; margin-top: 1rem;">
         <button class="ui cancel button" onclick="cancelCreatePost()">
-          <%= t("cancel") %>
+          Huỷ
         </button>
-        <div class="ui blue submit button custom_btn"><%= t(".submit") %></div>
+        <div class="ui blue submit button custom_btn">Cập nhật</div>
       </div>
     </div>
   </form>
@@ -198,7 +200,16 @@
       success: function(result){
         $('#facility_name').html(result.facility.name)
         $('#facility_quantity').html(result.facility.quantity)
-        $('#facility_status').html(result.facility.status)
+        if (result.facility.status == "NEW") {
+          $('#facility_status').html("Mới")
+        }
+        else if (result.facility.status == "REPAIRING"){
+          $('#facility_status').html("Đang sửa")
+        }
+        else {
+          $('#facility_status').html("Đang hỏng")
+        }
+        // $('#facility_status').html(result.facility.status)
         $('#facility_detail').html(result.facility.detail)
         $('#facility_detail_edit').val(result.facility.detail)
         $('#facility_image').html('')
@@ -208,9 +219,16 @@
         $('#facility_name_edit').val(result.facility.name)
         $('#facility_quantity_edit').val(result.facility.quantity)
         $('#facility_status_edit').val(result.facility.status)
-        $('#facility_status_text').html(result.facility.status)
+        if (result.facility.status == "NEW") {
+          $('#facility_status_text').html("Mới")
+        }
+        else if (result.facility.status == "REPAIRING"){
+          $('#facility_status_text').html("Đang sửa")
+        }
+        else{
+          $('#facility_status_text').html("Đang hỏng")
+        }
         $('#facility_id_edit').val(facility_id)
-        debugger
 
       },
       error: function(error) {
@@ -221,7 +239,7 @@
 
   function updateSubmit(e) {
     let facility_id = $('#facility_id_edit').val()
-    debugger
+    console.log($('#facility_status_edit_menu').dropdown('get value'))
     e.preventDefault()
     $.ajax({
       type: "PUT",
@@ -231,7 +249,7 @@
           "name": $('#facility_name_edit').val(), 
           "quantity": $('#facility_quantity_edit').val(), 
           "detail": $('#facility_detail_edit').val(), 
-          "status": $('#facility_status_text').html()
+          "status": $('#facility_status_edit_menu').dropdown('get value')
         }
       },
       success: function(result){
@@ -239,7 +257,7 @@
         window.location.reload()
       },
       error: function (error) {
-        toastr.error('Update post failed')
+        toastr.error('Cập nhật thiết bị thất bại :(')
       }
     })
   }
@@ -312,7 +330,7 @@
         window.location.reload()
       },
       error: function (error) {
-        toastr.error('Created post failed')
+        toastr.error('Thêm mới thiết bị thất bại :(')
       }
     })
   }
@@ -341,27 +359,14 @@
         rules: [
           {
             type: 'empty',
-            prompt: 'Please enter facility name!'
+            prompt: 'Vui lòng nhập tên thiết bị!!'
           },
           {
             type: 'maxLength[100]',
-            prompt: 'Facility name must be less than 100 letters!'
+            prompt: 'Tên thiết bị không được quá 100 ký tự!!'
           }
         ]
-      },
-      detail: {
-        identifier: 'detail',
-        rules: [
-          {
-            type: 'empty',
-            prompt: 'Please enter facility detail !!'
-          },
-          {
-            type: 'maxLength[1000]',
-            prompt: 'Detail must be less than 1000 letters!'
-          }
-        ]
-      },
+      }
     },
     inline: true,
   });
@@ -374,24 +379,11 @@
         rules: [
           {
             type: 'empty',
-            prompt: 'Please enter facility name!!'
+            prompt: 'Vui lòng nhập tên thiết bị!!'
           },
           {
             type: 'maxLength[100]',
-            prompt: 'Facility name must be less than 100 letters!!'
-          }
-        ]
-      },
-      detail: {
-        identifier: 'detail',
-        rules: [
-          {
-            type: 'empty',
-            prompt: 'Please enter facility detail!!'
-          },
-          {
-            type: 'maxLength[1000]',
-            prompt: 'Detail must be less than 1000 letters!!'
+            prompt: 'Tên thiết bị không được quá 100 ký tự!!'
           }
         ]
       },
@@ -400,7 +392,7 @@
         rules: [
           {
             type: 'empty',
-            prompt: 'Please set up status !!'
+            prompt: 'Vui lòng cập nhật trạng thái thiết bị!!'
           }
         ]
       },
@@ -409,11 +401,11 @@
         rules: [
           {
             type: 'empty',
-            prompt: 'Please enter quantity!!'
+            prompt: 'Vui lòng nhập số lương thiết bị!!'
           },
           {
             type: 'integer[0..1000]',
-            prompt: 'Quantity must be greater than 0!!'
+            prompt: 'Sô lượng thiết bị phải lớn hơn 0!!'
           }
         ]
       },

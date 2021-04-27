@@ -29,9 +29,16 @@
         <% else %>
           <td></td>
         <% end %>
-        <td>
-          <a class="ui teal tag label teal_label" style="width: 5.7rem">Active</a>
-        </td>
+        <% if student.status == "ACTIVE" %>
+          <td>
+            <a class="ui teal tag label teal_label">Đã kích hoạt</a>
+         </td>
+        <% elsif student.status == "PENDING" %>
+          <td>
+            <a class="ui tag label">Đang xử lý</a>
+         </td>
+        <% end %>
+        
       </tr>
       <div class="ui modal" id= "student_info_<%= student.id %>">
         <i class="close icon"></i>

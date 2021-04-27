@@ -5,7 +5,7 @@ class Manager::RoomManagementController < ManagerMainController
   
   # all room in room_management
   def index
-    @rooms = Room.where.not(id: 1).order('created_at DESC').page(params[:page])
+    @rooms = Room.where.not(id: 1).order('room_name DESC').page(params[:page])
     @page = 1 if params[:page].blank?
     @page = params[:page].to_i if params[:page].present?
   end
@@ -14,11 +14,11 @@ class Manager::RoomManagementController < ManagerMainController
     @room = Room.find(params[:id])
     if @room.update(update_room_params)
       respond_to do |format|
-        format.json { render json: { message: "Update success" }, status: :ok}
+        format.json { render json: { message: "Cập nhật thành công!" }, status: :ok}
       end
     else
       respond_to do |format|
-        format.json { render json: { message: "Update fail" }, status: :bad_request}
+        format.json { render json: { message: "Cập nhật thất bại :(" }, status: :bad_request}
       end
     end
   end
@@ -59,11 +59,11 @@ class Manager::RoomManagementController < ManagerMainController
 
     if @room.save
       respond_to do |format|
-        format.json { render json: { message: 'Create new building successfully'}, status: :ok}
+        format.json { render json: { message: 'Tạo mới một phòng thành công!'}, status: :ok}
       end
     else
       respond_to do |format|
-        format.json { render json: { message: 'Create new building failed'}, status: :bad_request}
+        format.json { render json: { message: 'Tạo mới phòng không thành công :('}, status: :bad_request}
       end
     end
   end
@@ -95,19 +95,40 @@ class Manager::RoomManagementController < ManagerMainController
   end
 
   def find_room
-    if params[:q] == "" or params[:q] == nil
-      respond_to do |format|
-        format.json {render json: {is_all: true}, status: :bad_request} 
-      end
-    elsif params[:q] 
-      @rooms = Room.where.not(id: 1).ransack(room_name_or_status_or_room_type_cont: params[:q]).result
-      if @rooms
+    if params[:status] == "FULL" or params[:status] == "UNFILLED" or params[:status] == "PENDING"
+      @rooms = Room.all.where.not(id: 1).where(status: params[:status])
+      if params[:q] == "" or params[:q] == nil
         respond_to do |format|
           format.js {render partial: 'room_table', locals: { rooms: @rooms } } 
         end
-      else
+      elsif params[:q] 
+        @rooms = @rooms.ransack(room_name_or_status_or_room_type_cont: params[:q]).result
+        if @rooms
+          respond_to do |format|
+            format.js {render partial: 'room_table', locals: { rooms: @rooms } } 
+          end
+        else
+          respond_to do |format|
+            format.json {render json: {message: 'Không tìm thấy phòng nào :('}, status: :bad_request}
+          end
+        end
+      end
+    else
+      @rooms = Room.where.not(id: 1)
+      if params[:q] == "" or params[:q] == nil
         respond_to do |format|
-          format.json {render json: {message: 'Room not found'}, status: :bad_request}
+          format.json {render json: {is_all: true}, status: :bad_request} 
+        end
+      elsif params[:q] 
+        @rooms = @rooms.ransack(room_name_or_status_or_room_type_cont: params[:q]).result
+        if @rooms
+          respond_to do |format|
+            format.js {render partial: 'room_table', locals: { rooms: @rooms } } 
+          end
+        else
+          respond_to do |format|
+            format.json {render json: {message: 'Không tìm thấy phòng nào :('}, status: :bad_request}
+          end
         end
       end
     end

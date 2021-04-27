@@ -29,17 +29,17 @@
         <div class="eleven wide column">
           <div class="right_column">
             <h3 class="ui dividing header">
-              Student Information
+              Thông tin cá nhân
             </h3>
             <%= form_for @student, html: {class: 'ui form', style:"border: none; -webkit-box-shadow: none;", id:"student_form"},  url: {controller: "student_management", action: "update"} do |student|%>
                 <div class="two fields"> 
                   <input type="hidden" name="student_id" id="student_id" value="<%= @student.id %>"/>
                   <div class="required field field_line">
-                    <%= student.label :student_id_number %>
+                    <%= student.label :mã_học_viên %>
                     <%= student.text_field :student_id_number, class: "input", required: true, placeholder: "Student it number" %>
                   </div>
                   <div class="field field_line">
-                    <label>Room</label>
+                    <label>Phòng</label>
                     <div class="ui fluid search selection dropdown" id="select_room">
                       <%= student.text_field :room_id, placeholder: "Select room", type: "hidden" %>
                       <i class="dropdown icon"></i>
@@ -54,13 +54,13 @@
                 </div>
                 <%= student.fields_for :student_profile do |f| %>
                   <div class="required field field_line">
-                    <%= f.label :name %>
+                    <%= f.label :tên %>
                     <%= f.text_field :name, class: "input", required: true, placeholder: "Full name" %>
                   </div>
                   <div class="field field_line">
                     <div class="two fields">
                       <div class="field">
-                        <label>Class name</label>
+                        <label>Lớp</label>
                         <%= f.text_field :class_name, class: "input", placeholder: "Clas name" %>
                       </div>
                       <div class="field">
@@ -71,32 +71,32 @@
                   </div>
                   <div class="fields field_line">
                     <div class="eight wide field">
-                      <label>Identity Card Number</label>
-                      <%= f.text_field :identity_card_number, class: "input", maxlength: "16", placeholder: "Identity card number" %>
+                      <label>Số CMND</label>
+                      <%= f.text_field :identity_card_number, class: "input", maxlength: "16", placeholder: "Số CMND" %>
                     </div>
                     <div class="eight wide field">
-                      <label>Date of Birth</label>
+                      <label>Ngày sinh</label>
                       <%= f.date_field :date_of_birth, class: "input date", data: {provide: "datepicker"}%>
                     </div>
                   </div>
                   <div class="field field_line">
-                    <label>Address</label>
-                    <%= f.text_field :address, class: "input", placeholder: "Address" %>
+                    <label>Địa chỉ</label>
+                    <%= f.text_field :address, class: "input", placeholder: "Địa chỉ" %>
                   </div>
                   <div class="field field_line">
                     <div class="two fields">
                       <div class="field">
-                        <label>Phone number</label>
-                        <%= f.text_field :phone_number, class: "input", placeholder: "Phone number" %>
+                        <label>Số điện thoại</label>
+                        <%= f.text_field :phone_number, class: "input", placeholder: "Số điện thoại" %>
                       </div>
                       <div class="field">    
-                        <%= f.label :gender %>
+                        <label>Giới tính</label>
                         <div class="options" style="height: 60%; margin-top: 0.8rem">
                           <span style="margin-right: 0.6rem">
-                            <span class="option" style="margin-right: 0.3rem">Male</span><%= f.radio_button :gender, 'MALE' %>
+                            <span class="option" style="margin-right: 0.3rem">Nam</span><%= f.radio_button :gender, 'MALE' %>
                           </span>
                           <span>
-                            <span class="option" style="margin-right: 0.3rem">Female</span><%= f.radio_button :gender, 'FEMALE' %>
+                            <span class="option" style="margin-right: 0.3rem">Nữ</span><%= f.radio_button :gender, 'FEMALE' %>
                           </span>
                         </div>
                       </div>
@@ -105,23 +105,23 @@
                 <% end %>
                 <div class="fields field_line">
                   <div class="eight wide field">
-                    <label>Check in date</label>
+                    <label>Ngày vào</label>
                     <%= student.date_field :check_in_date, class: "input date", data: {provide: "datepicker"}%>
                   </div>
                   <div class="required eight wide field">
-                    <label>Thoi gian gia han (Tháng)</label>
-                    <%= student.text_field :extended_time, class: "input", maxlength: "16", placeholder: "Identity card number" %>
+                    <label>Thời gian gia hạn (tháng)</label>
+                    <%= student.text_field :extended_time, class: "input", maxlength: "16", placeholder: "Số CMND" %>
                   </div>
                 </div>
                 <div class="ui dividing header">
-                  Confirmation
+                  Xác nhận
                 </div>
                 <div class="ui field checkbox">
                   <input type="checkbox" name="confirm">
-                  <label>You are sure that the information above is correct</label>
+                  <label>Bạn đã chắc chắn mọi thông tin đã nhập trên đều chính xác.</label>
                 </div>
                 <div class="field" style="float: right; margin-top: 4em">
-                  <button class= "ui submit primary button right">Save change</button>
+                  <button class= "ui submit primary button right">Lưu thay đổi</button>
                 </div>
               <% end %>
           </div>
@@ -166,7 +166,7 @@
         toastr.success(JSON.parse(result).message)
       },
       error: function (error){
-        toastr.success("Update avatar failed!")
+        toastr.success("Xin lỗi, cập nhật ảnh đại diện thất bại :(")
       }
     })
   }
@@ -191,6 +191,7 @@
         window.location = forwarding_url
       },
       error: function (error) {
+        debugger
         console.log(error)
         toastr.error(JSON.parse(error.responseText).message)
       }
@@ -212,7 +213,7 @@
           rules: [
             {
               type: 'checked',
-              prompt: 'Please check confirmation !'
+              prompt: 'Hãy bấm xác nhận !'
             }
           ]
         },
@@ -221,7 +222,7 @@
           rules: [
             {
               type: 'empty',
-              prompt: 'Please enter extented time!'
+              prompt: 'Vui lòng nhập thời gian gia hạn!'
             }
           ]
         }

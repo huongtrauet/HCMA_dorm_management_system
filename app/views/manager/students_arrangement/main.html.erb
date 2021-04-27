@@ -5,7 +5,7 @@
       <div class="four wide column left" style="background-color: #edeff1; overflow: auto; height: calc(100vh - 58.72px)">
         <div class="title" style="margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center">
           <div class="ui icon input" style="width: 85%;margin: 0 auto ">
-            <input type="text" placeholder="<%= t(".search_left_column") %>" name="q" id="q" class="form-control search-room-form" >
+            <input type="text" placeholder="Nhập tên phòng" name="q" id="q" class="form-control search-room-form" >
             <i class="icon">
               <img src="/assets/search.png" style="width: 1rem; height: 1rem; width: 1rem; top: 50%; position: absolute; transform: translateY(-50%);right: 0.7rem;">
             </i> 
@@ -20,7 +20,7 @@
       <div class="four wide column right" style="background-color: #edeff1; overflow: auto; height: calc(100vh - 58.72px)">
         <div class="header" style="margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center">
           <div class="ui icon input" style="width: 95%;margin: 0 auto ">
-            <input type="text" placeholder="<%= t(".search_right_column") %>" name="q" id="q" class="form-control search-student-form" >
+            <input type="text" placeholder="Tên hoặc mã học viên" name="q" id="q" class="form-control search-student-form" >
             <i class="icon">
               <img src="/assets/search.png" style="width: 1rem; height: 1rem; width: 1rem; top: 50%; position: absolute; transform: translateY(-50%);right: 0.7rem;">
             </i> 
@@ -57,7 +57,7 @@
       success: function(result){
         document.querySelector('.room_member_list').appendChild(document.getElementById(data));
         document.querySelector(`#${data}`).classList.add("eight", "wide","column");
-        toastr.success("Add student successfully");
+        toastr.success("Thêm học viên vào phòng thành công!");
         $.ajax({
           type: "GET",
           url: `room-management/${result.room.id}/number-student`,
@@ -74,7 +74,7 @@
       error: function(error){
         console.log(error)
         if(error.status == 400)
-          toastr.error("This room is full of students");
+          toastr.error("Xin lỗi, phòng này đã đủ sinh viên!");
       }
     })
   }
@@ -90,7 +90,7 @@
       url: "students-arrangement/remove-student",
       data: {student_id: data.split("_")[1]},
       success: function(result){
-        toastr.success("Removed student successfully");
+        toastr.success("Di chuyển học viên thành công!");
         $.ajax({
           type: "GET",
           url: `room-management/${result.room.id}/number-student`,

@@ -2,14 +2,14 @@
   <div class="header" style="display: flex; justify-content: space-between;">
     <input type="hidden" id="selected_post_id" value=""/>
     <div class="header_title">
-      <h3><%= t(".post_management") %>: </h3>
+      <h3>Quản lý bài đăng: </h3>
     </div>
     <div class="header_search">
       <button class="ui icon button" onclick="addPost()">
         <i class="plus icon"></i>
       </button>
       <div class="ui icon input" style="">
-        <input type="text" placeholder="<%= t(".search_placeholder")%>" name="q" id="q" class="form-control search-post-form" >
+        <input type="text" placeholder="Nhập tiêu đề, người viết" name="q" id="q" class="form-control search-post-form" >
         <i class="icon">
           <img src="/assets/search.png" style="width: 1rem; height: 1rem; width: 1rem; top: 50%; position: absolute; transform: translateY(-50%);right: 0.7rem;">
         </i> 
@@ -20,13 +20,13 @@
   <table class="ui very basic selectable table">
     <thead>
       <tr>
-        <th><%= t(".id") %></th>
-        <th><%= t(".title") %></th>
-        <th><%= t(".content") %></th>
-        <th><%= t(".created_time") %></th>
-        <th><%= t(".writer") %></th>
-        <th><%= t(".status") %></th>
-        <th><%= t(".action") %></th>
+        <th>ID</th>
+        <th>Tiêu đề</th>
+        <th>Nội dung</th>
+        <th>Ngày đăng</th>
+        <th>Người viết</th>
+        <th>Trạng thái</th>
+        <th>Hành động</th>
       </tr>
     </thead>
     <tbody id="post_list">
@@ -45,7 +45,13 @@
           </td>
           <td onclick="showPost(<%= post.id %>)"><%= post.created_at.to_date %></td>
           <td onclick="showPost(<%= post.id %>)"><%= post.writer_name %></td>
-          <td onclick="showPost(<%= post.id %>)" id="post_status_<%= post.id%>"><%= post.status%></td>
+          <td onclick="showPost(<%= post.id %>)" id="post_status_<%= post.id%>">
+          <% if post.status == 'POSTED' %>
+             Đã đăng
+          <% elsif post.status == 'DELETED'%>
+            Đã xoá
+          <% end %>
+          </td>
           <td id="post_actions_<%= post.id%>">
             <% if post.status == "POSTED" %>
               <i class="trash alternate outline icon" id="delete_post_<%= post.id %>" onclick="confirmChangePostStatus(<%= post.id %>, 'POSTED')"></i>
@@ -72,10 +78,10 @@
           </div>
           <div class="actions">
             <button class="ui cancel button">
-              <%= t(".cancel") %>
+              Huỷ
             </button>
             <div class="ui primary approve button proceed">
-              <%= t(".edit") %>
+              Cập nhật
               <i class="right chevron icon"></i>
             </div>
           </div>
@@ -90,7 +96,7 @@
 
 <div class="ui longer small modal second scrolling" id="show_modal_second">
   <div class="header">
-    <%= t(".edit_post_form_title") %>
+    Sửa bài đăng
   </div>
   <form id="myEditForm" multipart="true" name="myEditForm" class="ui form segment" style="border: none; -webkit-box-shadow: none;">
     <div style="padding: 1rem">
@@ -98,23 +104,23 @@
         <input autofocus="true" type="hidden" name="id" id="post_id_edit" value="" />
       </div>
       <div class="field">
-        <label><%= t(".title") %>: </label>
-        <textarea id="post_title_edit" name="post_title_edit" rows="5" placeholder="<%= t(".title") %>"></textarea>
+        <label>Tiêu đề: </label>
+        <textarea id="post_title_edit" name="post_title_edit" rows="5" placeholder="Tiêu đề"></textarea>
       </div>
       <div class="field" onfocusout="validateContent('content_edit_field')" id="content_edit_field">
-        <label><%= t(".content") %>: </label>
-        <textarea type="file" name="content" id="editor_edit" placeholder="<%= t(".content") %>"></textarea>
+        <label>Nội dung: </label>
+        <textarea type="file" name="content" id="editor_edit" placeholder="Nội dung"></textarea>
       </div>
       <div class="field">
-        <label><%= t(".writer") %>: </label>
-        <textarea id="writer_name_edit" name="writer_name_edit" rows="1" placeholder="<%= t(".writer") %>"></textarea>
+        <label>Người viết: </label>
+        <textarea id="writer_name_edit" name="writer_name_edit" rows="1" placeholder="Người viết"></textarea>
       </div>
       <div class="content">
         <div class="ui special cards" id="preview_image_edit"></div>
       </div>
       <div class="actions" style="float: right; margin-top: 1rem">
-        <button class="ui cancel button"><%= t(".cancel") %></button>
-        <div class="ui primary submit button"><%= t(".update") %></div>
+        <button class="ui cancel button">Huỷ</button>
+        <div class="ui primary submit button">Cập nhật</div>
       </div>
     </div>
   </form>
@@ -122,7 +128,7 @@
 
 <div class="ui longer small modal add">
   <div class="header">
-    <%= t(".new_post_form_title") %>
+    Tạo bài đăng mới
   </div>
   <form id="myForm" multipart="true" name="myForm" class="ui form segment" style="border: none; -webkit-box-shadow: none; margin-top: 0">
     <div class="ui form" style="padding: 1rem">
@@ -130,16 +136,16 @@
         <input autofocus="true" />
       </div>
       <div class="field">
-        <label><%= t(".title") %>: </label>
-        <textarea name="title" placeholder="<%= t(".title") %>" rows="5"></textarea>
+        <label>Tiêu đề: </label>
+        <textarea name="title" placeholder="Tiêu đề" rows="5"></textarea>
       </div>
       <div class="field" id="content_field" onfocusout="validateContent('content_field')">
-        <label><%= t(".content") %>: </label>
-        <textarea id="editor" name="content" placeholder="<%= t(".content") %>"></textarea>
+        <label>Nội dung: </label>
+        <textarea id="editor" name="content" placeholder="Nội dung"></textarea>
       </div>
       <div class="field" style="width: 30.6%">
-        <label><%= t(".writer") %>: </label>
-        <textarea name="writer_name" placeholder="<%= t(".writer") %>" rows="1"></textarea>
+        <label>Người viết: </label>
+        <textarea name="writer_name" placeholder="Nguời viết" rows="1"></textarea>
       </div>
       <div class="content">
         <div class="ui special cards" id="preview_image"> 
@@ -153,31 +159,31 @@
       </div>
       <div class="actions" style="float: right; margin-top: 1rem;">
         <button class="ui cancel button" onclick="cancelCreatePost()">
-          <%= t(".cancel") %>
+          Huỷ
         </button>
-        <div class="ui blue submit button"><%= t(".submit") %></div>
+        <div class="ui blue submit button">Tạo</div>
       </div>
     </div>
   </form>
 </div>
 <div class="ui mini modal confirm_delete_post">
-  <div class="header"><%= t(".delete_form_title") %></div>
+  <div class="header">Xoá bài đăng</div>
   <div class="content">
-    <p><%= t(".delete_form_confirm") %></p>
+    <p>Bạn có chắc muốn xoá bài đăng này?</p>
   </div>
   <div class="actions">
-    <div class="ui cancel button"><%= t(".cancel") %></div>
-    <div class="ui appove button custom_btn" onclick="changePostStatus()"><%= t(".approve") %></div>
+    <div class="ui cancel button">Huỷ</div>
+    <div class="ui appove button custom_btn" onclick="changePostStatus()">Xoá</div>
   </div>
 </div>
 <div class="ui mini modal confirm_restore_post">
-  <div class="header"><%= t(".restore_form_title") %></div>
+  <div class="header">Khôi phục bài đăng</div>
   <div class="content">
-    <p><%= t(".restore_form_confirm") %></p>
+    <p>Bạn có chắc muốn khôi phục bài đăng này?</p>
   </div>
   <div class="actions">
-    <div class="ui cancel button"><%= t(".cancel") %></div>
-    <div class="ui appove button custom_btn" onclick="changePostStatus()"><%= t(".approve") %></div>
+    <div class="ui cancel button">Huỷ</div>
+    <div class="ui appove button custom_btn" onclick="changePostStatus()">Khôi phục</div>
   </div>
 </div>
 
@@ -229,7 +235,12 @@ $(document).ready(function(){
         dataType:"json",
         data: {id: selected_post_id},
         success:function(result){
-          document.getElementById(`post_status_${selected_post_id}`).innerHTML = result.status;
+          if (result.status == "POSTED") {
+            document.getElementById(`post_status_${selected_post_id}`).innerHTML = "Đã đăng"
+          } 
+          else if (result.status == "DELETED") {
+            document.getElementById(`post_status_${selected_post_id}`).innerHTML = "Đã xoá"
+          }
           document.getElementById(`post_actions_${selected_post_id}`).innerHTML = `<i class='${result.status == 'POSTED' ?  'trash alternate' : 'window restore' } outline icon' onclick="confirmChangePostStatus(${selected_post_id}, '${result.status}')"></i>`;
           toastr.success(result.message);
         }
@@ -459,15 +470,11 @@ $(document).ready(function(){
           rules: [
             {
               type: 'empty',
-              prompt: 'Please enter title!!'
-            },
-            {
-              type: 'minLength[2]',
-              prompt: 'Title must be more than 2 letters!'
+              prompt: 'Vui lòng nhập tiêu đề!'
             },
             {
               type: 'maxLength[300]',
-              prompt: 'Title must be less than 300 letters!'
+              prompt: 'Tiêu đề không được quá 300 ký tự!'
             }
           ]
         },
@@ -476,15 +483,7 @@ $(document).ready(function(){
           rules: [
             {
               type: 'empty',
-              prompt: 'Please enter your name !!'
-            },
-            {
-              type: 'minLength[1]',
-              prompt: 'Content must be more than 1 letters!'
-            },
-            {
-              type: 'maxLength[100]',
-              prompt: 'Name must be less than 100 letters!'
+              prompt: 'Vui lòng nhập tên người viết!!'
             }
           ]
         }
@@ -501,15 +500,11 @@ $(document).ready(function(){
           rules: [
             {
               type: 'empty',
-              prompt: 'Please enter title!!'
-            },
-            {
-              type: 'minLength[2]',
-              prompt: 'Title must be more than 2 letters!'
+              prompt: 'Vui lòng nhập tiêu đề!'
             },
             {
               type: 'maxLength[300]',
-              prompt: 'Title must be less than 300 letters!'
+              prompt: 'Tiêu đề không quá 300 ký tự'
             }
           ]
         }

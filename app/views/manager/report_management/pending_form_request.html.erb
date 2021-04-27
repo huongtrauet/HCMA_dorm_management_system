@@ -8,29 +8,29 @@
       <div id="form_request" style="margin-top: 3rem">
         <div class="header" style="display: flex; justify-content: space-between;">
           <div class="header_title">
-            <h3><%= t(".form_request") %></h3>
+            <h3>Yêu cầu mẫu đơn</h3>
           </div>
         </div>
         <div class="footer_line" style="height: 1px; background-color: rgba(34,36,38,.15); margin-top: 0.5rem; margin-bottom: 1.5rem"></div>
         <div class="ui tabular menu">
           <a class="item active" id="pending_tab" href="/manager/report-management/form-requests/pending" data-turbolinks="false">
-            <%= t(".pending") %>
+            Đang xử lý
           </a>
           <a class="item" id="approved_tab" href="/manager/report-management/form-requests/approved" data-turbolinks="false">
-            <%= t(".approved") %>
+            Đã thông qua
           </a>
           <a class="item" id="rejected_tab" href="/manager/report-management/form-requests/rejected" data-turbolinks="false">
-            <%= t(".rejected") %>
+            Đã từ chối
           </a>
         </div>
         <table class="ui very basic selectable table" style="margin-top: 2rem">
           <thead>
             <tr>
-              <th style="text-align: center"><%= t(".id") %></th>
-              <th style="text-align: center"><%= t(".type") %></th>
-              <th style="text-align: center"><%= t(".building") %></th>
-              <th style="text-align: center"><%= t(".content") %></th>
-              <th style="text-align: right"><%= t(".status") %></th>
+              <th style="text-align: center">STT</th>
+              <th style="text-align: center">Loại mẫu</th>
+              <th style="text-align: center">Toà nhà</th>
+              <th style="text-align: center">Nội dung</th>
+              <th style="text-align: center">Trạng thái</th>
             </tr>
           </thead>
           <tbody id="reports_list">
@@ -52,13 +52,13 @@
                     <%= report.description %>
                   </span>
                 </td>
-                <td style="text-align: right">
+                <td style="text-align: center">
                   <% if report.status == "PENDING" %>
-                    <a class="ui teal tag label"><%= t(".pending") %></a>
+                    <a class="ui teal tag label">Đang xử lý</a>
                   <% elsif report.status == "APPROVED" %>
-                    <a class="ui blue tag label"><%= t(".approved") %></a>
+                    <a class="ui blue tag label">Đã thông qua</a>
                   <% elsif report.status == "REJECTED" %>
-                    <a class="ui red tag label"><%= t(".rejected") %></a>
+                    <a class="ui red tag label">Đã từ chối</a>
                   <% end  %>
                 </td>
               </tr>
@@ -78,9 +78,9 @@
   <div class="content">
     <div style="font-weight: bold; font-size: 1.5rem" id="title_show"></div>
     <div id="report_building" style="    margin-bottom: 1rem; color: #00000066;"></div>
-    <div style="margin-bottom: 0.4rem"><b><%= t(".created_date") %>: </b> <span id="created_at_show"></span></div>
+    <div style="margin-bottom: 0.4rem"><b>Ngày gửi: </b> <span id="created_at_show"></span></div>
     <div style="margin-bottom: 0.4rem">
-      <b><%= t(".content") %>: </b>
+      <b>Nội dung: </b>
       <div id="description_show"></div>
     </div>
     <input type="hidden" id="report_id_show" value=""/>
@@ -92,10 +92,10 @@
     </div>
     <div>
       <div class="ui black reject button">
-        <%= t(".reject") %>
+        Từ chối
       </div>
       <div class="ui teal approve button">
-        <%= t(".approve") %>
+        Thông qua
       </div>
     </div>
   </div>
@@ -105,52 +105,52 @@
 
 <div class="ui small second modal reject" >
   <i class="close icon"></i>
-  <div class="header"><%= t(".reject_reason") %></div>
+  <div class="header">Lý do từ chối</div>
   <div class="content ">
     <form id="reject_form" name="reject_form">
       <div class="ui form">
         <div class="field">
           <input type="hidden" id="report_id_reject" name="report_id"/>
-          <textarea name="note" placeholder= "We are currently unable to process your request. Any questions please contact the management directly" rows="5" value="" id="note"></textarea>
+          <textarea name="note" placeholder= "Xin lỗi, chúng tôi hiện chưa thể xử lý yêu cầu của bạn. Mọi thắc mắc xin gặp cán bộ trực tiếp tại phòng tiếp nhận sinh viên để được giải đáp. Xin cám ơn!" rows="5" value="" id="note"></textarea>
         </div>
       </div>
     </form>
   </div>
   <div class="actions" style="padding: 0.7rem 1rem;">
     <div class="ui black cancel button">
-      <%= t(".cancel") %>
+      Huỷ
     </div>
-    <div class="ui teal button" onclick="submitReject()">
-      <%= t(".reject") %>
+    <div class="ui button" onclick="submitReject()" style="background-color: #2185d0; color: white">
+      Gửi
     </div>
   </div>
 </div>
 
 <div class="ui small third modal approve">
   <i class="close icon"></i>
-  <div class="header"><%= t(".approve") %></div>
+  <div class="header">Thông qua</div>
   <div class="content ">
     <form id="reject_form" name="reject_form">
       <div class="ui form">
-        <h3><%= t(".return_date") %></h3>
+        <h3>Ngày trả dự kiến</h3>
         <div class="ui calendar" id="return_date">
           <div class="ui input" >
-            <input type="text" placeholder="Return date" id="return_date_input">
+            <input type="text" placeholder="Ngày trả" id="return_date_input">
           </div>
         </div>
         <div class="field" style="margin-top: 0.5rem;">
           <input type="hidden" id="report_id_reject" name="report_id"/>
-          <textarea name="note" placeholder= "Enter note for student" rows="5" value="" id="approve_note"></textarea>
+          <textarea name="note" placeholder= "Lời nhắn" rows="5" value="" id="approve_note"></textarea>
         </div>
       </div>
     </form>
   </div>
   <div class="actions" style="padding: 0.7rem 1rem;">
     <div class="ui black cancel button">
-      <%= t(".cancel") %>
+      Huỷ
     </div>
-    <div class="ui teal button" onclick="submitApprove()">
-      <%= t(".approve") %>
+    <div class="ui button" style="background-color: #2185d0; color: white" onclick="submitApprove()">
+      Thông qua
     </div>
   </div>
 </div>
@@ -195,7 +195,7 @@
         $('#report_id_reject').val(result.form_request.id)
         $('#created_at_show').html(`${created_date.getDate()}/${created_date.getMonth() + 1}/${created_date.getFullYear()}`)
         $('#note_show').html(result.form_request.note)
-        $('#report_building').html(`Building ${result.building}/${result.room}`)
+        $('#report_building').html(`Toà nhà ${result.building}/${result.room}`)
         $('#reporter_name').html(result.reporter.name)
         if(result.reporter.avatar.url != null && result.reporter.avatar.url != ""){
           $('#reporter_image').attr("src",result.reporter.avatar.url)
@@ -252,7 +252,7 @@
         }
       },
       success: function(result){
-         toastr.success("Rejected successfully");
+         toastr.success("Từ chối yêu cầu thành công!");
         $('.ui.small.second.modal.reject').modal('hide');
         $("#reports_list").html(result)
       },
@@ -275,7 +275,7 @@
         }
       },
       success: function(result){
-        toastr.success("Approved successfully");
+        toastr.success("Thông qua báo cáo thành công!");
         $('.ui.small.third.modal.approve').modal('hide');
         $("#reports_list").html(result)
 

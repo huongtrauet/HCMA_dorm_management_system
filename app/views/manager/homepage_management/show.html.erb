@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="/flexslider.css" type="text/css" media="screen" />
 
 <div class="homepage_management_show" style="width: 70%; margin: 0 auto">
-  <h5><a href="/manager/homepage" class="breadcrumb"><%= t(".homepage") %></a> / 
+  <h5><a href="/manager/homepage" class="breadcrumb">Bảng tin</a> / 
     <a href="/manager/homepage/<%= @post.id %>" class="breadcrumb">#<%= @post.id %></a> 
   </h5>
   <div class="title" style="margin-top: 2rem">
@@ -20,7 +20,7 @@
         <ul class="slides">
         <% @post.images.each do |image| %>
           <li>
-            <img src="<%= image.url %>" style="max-height: 30rem"/>
+            <img src="<%= image.url %>" style="max-height: 45rem;"/>
           </li>
         <% end %>
         </ul>

@@ -20,11 +20,11 @@ class Manager::PostManagementController < ManagerMainController
     @post_management = Post.new
     if @post.save
       respond_to do |format|
-        format.json {render json: {message: 'Created post successfully'}, status: :ok } 
+        format.json {render json: {message: 'Tạo bài đăng thành công !!'}, status: :ok } 
       end
     else
       respond_to do |format|
-        format.json {render json: {message: 'Created post fail'}, status: :bad_request } 
+        format.json {render json: {message: 'Tạo bài đăng thất bại :('}, status: :bad_request } 
       end
     end
   end
@@ -33,11 +33,11 @@ class Manager::PostManagementController < ManagerMainController
     @post = Post.find(params[:post][:id])
     if @post.update(post_params)
       respond_to do |format|
-        format.json {render json: {message: 'Update post successfully'}, status: :ok } 
+        format.json {render json: {message: 'Cập nhật bài đăng thành công !!'}, status: :ok } 
       end
     else
       respond_to do |format|
-        format.json {render json: {message: 'Update post fail'}, status: :bad_request } 
+        format.json {render json: {message: 'Cập nhật bài đăng thất bại :('}, status: :bad_request } 
       end
     end
   end
@@ -55,27 +55,27 @@ class Manager::PostManagementController < ManagerMainController
       @post.update_attribute(:status, 'DELETED')
       respond_to do |format|
         format.html
-        format.json {render json: {message: "deleted sucessfully!!!", status: @post.status}}
+        format.json {render json: {message: "Xoá bài đăng thành công!!!", status: @post.status}}
       end
     elsif @post.status == "DELETED"
       @post.update_attribute(:status, 'POSTED')
       respond_to do |format|
         format.html
-        format.json {render json: {message: "restored sucessfully!!!", status: @post.status}}
+        format.json {render json: {message: "Khôi phục bài đăng thành công!!!", status: @post.status}}
       end
     end
   end
 
   def find_post
     if params[:q] 
-      @posts = Post.all.ransack(title_or_status_or_writer_name_cont: params[:q]).result
+      @posts = Post.all.ransack(title_or_status_or_writer_name_cont: params[:q]).result.order('created_at DESC')
       if @posts
         respond_to do |format|
           format.js {render partial: 'post_table', locals: { posts: @posts } } 
         end
       else
         respond_to do |format|
-          format.json {render json: {message: 'Room not found'}, status: :bad_request}
+          format.json {render json: {message: 'Không tìm thấy bài đăng :('}, status: :bad_request}
         end
       end
     elsif params[:q] == "" or params[:q] == nil

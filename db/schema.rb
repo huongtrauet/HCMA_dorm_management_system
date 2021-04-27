@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_02_175242) do
+ActiveRecord::Schema.define(version: 2021_04_17_061223) do
 
   create_table "buildings", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
@@ -80,6 +80,8 @@ ActiveRecord::Schema.define(version: 2021_04_02_175242) do
     t.string "password_digest"
     t.string "remember_digest"
     t.string "channel"
+    t.string "reset_digest"
+    t.datetime "reset_sent_at"
     t.index ["email"], name: "index_managers_on_email", unique: true
   end
 
@@ -139,7 +141,7 @@ ActiveRecord::Schema.define(version: 2021_04_02_175242) do
     t.string "status", default: "UNPAID", null: false
     t.integer "month", null: false
     t.integer "year", null: false
-    t.string "payer", default: "Payer", null: false
+    t.string "payer"
     t.datetime "paid_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -177,6 +179,8 @@ ActiveRecord::Schema.define(version: 2021_04_02_175242) do
     t.string "remember_digest"
     t.string "status", default: "PENDING"
     t.string "channel"
+    t.string "reset_digest"
+    t.datetime "reset_sent_at"
     t.index ["room_id"], name: "index_students_on_room_id"
     t.index ["student_id_number"], name: "index_students_on_student_id_number", unique: true
   end

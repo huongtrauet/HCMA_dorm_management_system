@@ -30,20 +30,21 @@ class Student::FormRequestsController < StudentMainController
 
   # POST /form_requests or /form_requests.json
   def create
-    last_index = current_user.form_requests.last.index
+    last_index = 0
+    last_index = current_user.form_requests.last.index if current_user.form_requests.length > 0
     @form_request = FormRequest.new(form_request_params.merge(student_id: current_user.id, index: last_index + 1))
       if @form_request.save
         count = FormRequest.all.where(student_id: current_user.id).count
         page = (FormRequest.where(status: 'PENDING').count.to_f / Settings.pagination).ceil
         if current_user.class.name == "Student"
-          Notification.create(message: "#{current_user.name} created new form request", sender: current_user, receiver: Manager.first, noti_type: "create_form_request", report_id: @form_request.id, page: page )
+          Notification.create(message: "#{current_user.name} đã gửi 1 yêu cầu mẫu đơn.", sender: current_user, receiver: Manager.first, noti_type: "create_form_request", report_id: @form_request.id, page: page )
         end
         respond_to do |format|
-          format.json {render json: {message: "Created new form request successfully!!"}, status: :ok} 
+          format.json {render json: {message: "Tạo yêu cầu thành công!"}, status: :ok} 
         end
       else
         respond_to do |format|
-          format.json { render json: {message: "Created new form request failed!!!"}, status: :bad_request}
+          format.json { render json: {message: "Tạo yêu cầu thất bại :("}, status: :bad_request}
         end
       end
   end

@@ -6,21 +6,33 @@
       <a class="ui basic image mini label">
         <% if room.gender == 'MALE' %>
           <img src="/assets/elliot.jpeg">
-          <%= t(".male") %>
+          Nam
         <% elsif room.gender == 'FEMALE' %>
           <img src="/assets/stevie.jpeg">
-          <%= t(".female") %>
+          Nữ
         <% end %>
       </a>
     </div>
     <div>
-      <a class="ui mini label" class="room_content"><%= room.room_type %></a>
+      <a class="ui mini label" class="room_content">
+      <% if room.room_type == 'VIP' %>
+        Phòng VIP
+      <% elsif room.room_type == 'NORMAL'  %>
+        Phòng thường
+      <% end %>
+      </a>
     </div>
     <div>
-      <%= t(".status") %>: <a class="ui mini label" style="margin-left: 1rem; background-color: #3889c8; color: #fff !important"><%= room.status %></a>
+      <% if room.status == 'PENDING' %>
+       Trạng thái: <a class="ui mini label" style="margin-left: 1rem; background-color: #3889c8; color: #fff !important">Đang bỏ trống</a>
+      <% elsif room.status == 'UNFILLED' %>
+        Trạng thái: <a class="ui mini label" style="margin-left: 1rem; background-color: #3889c8; color: #fff !important">Đang còn chỗ</a>
+      <% elsif room.status == 'FULL' %>
+        Trạng thái: <a class="ui mini label" style="margin-left: 1rem; background-color: #3889c8; color: #fff !important">Đã đầy</a>
+      <% end %>
     </div>
     <div>
-      <%= t(".number_of_student") %>: <span style="margin-left: 1.4rem; font-size: 13px" id="room_member_card_<%= room.id%>"><%= room.number_student %></span>
+      Số lượng học viên: <span style="margin-left: 1.4rem; font-size: 13px" id="room_member_card_<%= room.id%>"><%= room.number_student %></span>
     </div>
   </div>
 <% end %>

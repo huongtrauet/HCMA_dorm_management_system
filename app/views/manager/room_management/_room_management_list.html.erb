@@ -1,14 +1,24 @@
 <div class="student_management_list">
   <div class="header" style="display: flex; justify-content: space-between;">
     <div class="header_title">
-      <h3><%= t(".room_management") %>: </h3>
+      <h3>Quản lý phòng: </h3>
     </div>
     <div class="header_search">
       <button class="ui icon button" onclick="addRoom()">
         <i class="plus icon"></i>
       </button>
+      <div class="ui selection dropdown filter_item" id="status_filter">
+        <input type="hidden" onchange="onSearch()">
+        <div class="default text">Trạng thái</div>
+        <div class="menu">
+          <div class="item" data-value="FULL">Đã đầy</div>
+          <div class="item" data-value="UNFILLED">Đang còn chỗ</div>
+          <div class="item" data-value="PENDING">Đang bỏ trống</div>
+          <div class="item" data-value="ALL">Tất cả</div>
+        </div>
+      </div>
       <div class="ui icon input" style="">
-        <input type="text" placeholder="<%= t(".search_placeholder") %>" name="q" id="q" class="form-control search-room-form" >
+        <input type="text" placeholder="Nhập tên phòng" name="q" id="q" class="form-control search-room-form" >
         <i class="icon">
           <img src="/assets/search.png" style="width: 1rem; height: 1rem; width: 1rem; top: 50%; position: absolute; transform: translateY(-50%);right: 0.7rem;">
         </i> 
@@ -20,12 +30,12 @@
     <table class="ui very basic selectable table">
       <thead>
         <tr>
-          <th><%= t(".id") %></th>
-          <th><%= t(".room_name") %></th>
-          <th><%= t(".member") %></th>
-          <th><%= t(".max_member") %></th>
-          <th><%= t(".room_type") %></th>
-          <th><%= t(".status") %></th>
+          <th>STT</th>
+          <th>Tên phòng</th>
+          <th>Số học viên</th>
+          <th>Số học viên tối đa</th>
+          <th>Loại phòng</th>
+          <th>Trạng thái</th>
         </tr>
       </thead>
       <tbody >
@@ -54,20 +64,20 @@
             <td>
             <%= link_to "/manager/room-management/rooms/#{room.id}", style: "display: block; width: 100%", data: { turbolinks: false } do %>
               <% if room.room_type == "NORMAL" %>
-                <%= t(".normal") %>
+                Phòng thường
               <% else %>
-                <%= t(".vip") %>
+                Phòng VIP
               <% end %>
             <% end %>
             </td>
             <td>
             <%= link_to "/manager/room-management/rooms/#{room.id}", style: "display: block; width: 100%", data: { turbolinks: false } do %>
               <% if room.status == 'FULL' %>
-                <a class="ui tag label" style="width: 7.3rem; background-color: #3889c8; color: #ffffff !important"><%= t(".full") %></a>
+                <a class="ui tag label" style="background-color: #3889c8; color: #ffffff !important">Đã đầy</a>
               <% elsif room.status == 'UNFILLED' %>
-                <a class="ui teal tag label teal_label" style="width: 7.3rem"><%= t(".unfilled") %></a>
+                <a class="ui teal tag label teal_label" style="">Đang còn chỗ</a>
               <% else %>
-                <a class="ui tag label" style="width: 7.3rem"><%= t(".empty") %></a>
+                <a class="ui tag label" style="">Đang bỏ trống</a>
               <% end %>
             <% end %>
             </td>
@@ -83,14 +93,18 @@
 
 <div class="ui mini modal add_room">
   <div class="header">
-    <%= t(".new_room_form_title") %>
+    Tạo một phòng mới
   </div>
+  <p style="padding-left: 3rem; padding-top: 1rem; margin-bottom: 0rem; color: #c7c7c7;">
+  Lưu ý: Đặt tên phòng với định dạng Tentoanha_tenphong
+  VD: A2_1010
+  </p>
   <form id="add_room_form" class="ui form segment" name="add_room_form" style="border: none; -webkit-box-shadow: none; margin: 0 !important">
     <div class="content">
       <div class="description">
         <div class="ui field" style="display: block; width: 85%; margin: 1rem auto;" id="room_name_field" onfocusout="checkDuplicate(this)">
           <div class="ui left corner labeled input">
-            <input type="text" placeholder="<%= t(".room_name") %>" style="display:block; width: 100%" name="room_name">
+            <input type="text" placeholder="Tên phòng" style="display:block; width: 100%" name="room_name">
             <div class="ui left corner label">
               <i class="asterisk icon"></i>
             </div>
@@ -98,7 +112,7 @@
         </div>
         <div class="ui field" style="display: block; width: 85%; margin: 1rem auto;">
           <div class="ui left corner labeled input">
-            <input type="text" placeholder="<%= t(".max_member") %>" style="display:block; width: 100%" name="max_number_student">
+            <input type="text" placeholder="Số học viên tối đa" style="display:block; width: 100%" name="max_number_student">
             <div class="ui left corner label">
               <i class="asterisk icon"></i>
             </div>
@@ -108,10 +122,10 @@
           <div class="ui selection dropdown field" id="room_type_dropdown">
             <input type="hidden" name="room_type" value="">
             <i class="dropdown icon"></i>
-            <div class="default text"><%= t(".room_type") %></div>
+            <div class="default text">Loại phòng</div>
             <div class="menu">
-              <div class="item" data-value="NORMAL" selected="">NORMAL</div>
-              <div class="item" data-value="VIP">VIP</div>
+              <div class="item" data-value="NORMAL" selected="">Phòng thường</div>
+              <div class="item" data-value="VIP">Phòng VIP</div>
             </div>
           </div>
         </div>
@@ -119,10 +133,10 @@
     </div>
     <div class="actions" style="display: flex; justify-content: center">
       <button class="ui cancel button" onclick="cancelCreateRoomModal()">
-        <%= t(".cancel") %>
+        Huỷ
       </button>
       <div class="ui blue submit button">
-        <%= t(".submit") %>
+        Tạo
         <i class="right chevron icon"></i>
       </div>
     </div>
@@ -176,7 +190,7 @@ if(window.localStorage.getItem('create_room')) {
           rules: [
             {
               type: 'empty',
-              prompt: 'Please enter room type!!'
+              prompt: 'Vui lòng chọn loại phòng!!'
             }
           ]
         },
@@ -185,11 +199,11 @@ if(window.localStorage.getItem('create_room')) {
           rules: [
             {
               type: 'empty',
-              prompt: 'Please enter max number students !!'
+              prompt: 'Vui lòng nhập số lượng học viên tối đa của phòng !!'
             },
             {
               type: 'integer[0..6]',
-              prompt: 'Max number students must be integer and greater than or equal to 0 less than 6'
+              prompt: 'Số lượng học viên của phòng phải là số tự nhiên từ 0 đến 6'
             }
           ]
         }
@@ -218,7 +232,7 @@ if(window.localStorage.getItem('create_room')) {
         if (error.responseJSON.is_duplicate == true) {
           $('#room_name_field').find('.error').removeClass('error');
           $('#room_name_field').addClass("error")
-          $('#room_name_field').append(`<div class="ui basic red pointing prompt label transition visible" id="room_name_error">This name has been taken</div>`)
+          $('#room_name_field').append(`<div class="ui basic red pointing prompt label transition visible" id="room_name_error">Tên phòng đã được tạo, vui lòng kiểm tra và đổi sang tên khác nhé!</div>`)
           result = false
         }
       }
@@ -243,11 +257,11 @@ if(window.localStorage.getItem('create_room')) {
     $('.ui.mini.modal.add_room').modal('hide');
   }
   // SEARCH ROOM
-  $(document).on("turbolinks:load", function() {
-    $(".search-room-form").on("keyup", function() {
+
+  function onSearch() {
       $.ajax({
         type: "GET",
-        url: "/manager/room-management/find-room?q=" + this.value,
+        url: "/manager/room-management/find-room?q=" + $(".search-room-form").val() + "&status=" + $("#status_filter").dropdown('get value'),
         success: function(result){
           $('#room_list').html(result)
           console.log('success' + result)
@@ -259,6 +273,10 @@ if(window.localStorage.getItem('create_room')) {
           }
         }
       })
+  }
+  $(document).on("turbolinks:load", function() {
+    $(".search-room-form").on("keyup", function() {
+     onSearch()
     });
   });
 </script>

@@ -1,6 +1,6 @@
 <div class="complaint_report_list" style="padding-top: 2rem">
   <div class="ui dividing header">
-    <h3 class="" >Complaint Report</h3>
+    <h3 class="" >Ý kiến đóng góp</h3>
     <div class="add_btn" onclick="addNewComplaintReport()">
       <img src="/assets/add.png" style="width: 1.5em; height: 1.5em; margin-right: 2.5em">
     </div>
@@ -9,10 +9,10 @@
     <thead>
       <tr>
         <th>STT</th>
-        <th>Ngay gui</th>
-        <th>Title</th>
-        <th>Description</th>
-        <th>Status</th>
+        <th>Ngày gửi</th>
+        <th>Tiêu đề</th>
+        <th>Mô tả</th>
+        <th>Trạng thái</th>
       </tr>
     </thead>
     <tbody id="report_list">
@@ -21,7 +21,7 @@
           <td><%= index + 1 + (@page - 1)*Settings.pagination %></td>
           <td style="width: 10rem"><%= report.created_at.to_date %></td>
           <td>
-           <span style="margin: 0 auto; word-wrap: break-word; max-width: 15rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+           <span style="margin: 0 auto; word-wrap: break-word; max-width: 10rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
               <%= report.title %>
             </span>
           </td>
@@ -32,11 +32,11 @@
           </td>
           <td>
             <% if report.status == "PENDING" %>
-              <a class="ui teal tag label" style="width: 7rem"><%= report.status %></a>
+              <a class="ui teal tag label">Đang xử lý</a>
             <% elsif report.status == "APPROVED" %>
-              <a class="ui blue tag label" style="width: 7rem"><%= report.status %></a>
+              <a class="ui blue tag label">Đã thông qua</a>
             <% elsif report.status == "REJECTED" %>
-              <a class="ui red tag label" style="width: 7rem"><%= report.status %></a>
+              <a class="ui red tag label">Đã từ chối</a>
             <% end  %>
           </td>
         </tr>
@@ -47,40 +47,40 @@
     <%= paginate @complaint_reports, turbolinks: false %>
   </div>
   <div class="ui modal" id="new_complaint_report">
-    <div class="header">New Complaint Report</div>
+    <div class="header">Ý kiến đóng góp</div>
     <form id="complaint_report_create_form" style="padding: 1.5rem;">
       <div class="content" >
         <div class="ui form">
           <div class="field">
-            <label>Title</label>
-            <input type="text" placeholder="Enter title" name="title" id="title">
+            <label>Tiêu đề</label>
+            <input type="text" placeholder="Nhập tiêu đề" name="title" id="title">
           </div>
         </div>
         <div class="ui form" style="margin-top:1rem">
           <div class="field">
-            <label>Description</label>
-            <textarea placeholder="Enter description" name="description" id="description"></textarea>
+            <label>Nội dung</label>
+            <textarea placeholder="Nhập nội dung" name="description" id="description"></textarea>
           </div>
         </div>
       </div>
       <div class="actions" style="display: flex; justify-content: flex-end; margin-top: 1rem">
-        <div class="ui submit button">Submit</div>
+        <div class="ui submit button" style="background-color: #2185d0; color: white">Gửi</div>
       </div>
     </form>
   </div>
 
   <div class="ui modal" id="complaint_report_detail">
-    <div class="header">Complaint Report</div>
+    <div class="header">Ý kiến đóng góp</div>
     <div class="content">
       <b id="created_date"></b>
       <h3 id="report_title_show"></h3>
-      <p><b>Content:</b></p>
+      <p><b>Nội dung:</b></p>
       <p id="report_description_show"></p>
-      <p><b>Note:</b></p>
+      <p><b>Ghi chú:</b></p>
       <p id="report_note_show"></p>
     </div>
     <div class="actions">
-      <div class="ui cancel button">Close</div>
+      <div class="ui cancel button">Đóng</div>
     </div>
   </div>
 </div>
@@ -152,15 +152,11 @@
           rules: [
             {
               type: 'empty',
-              prompt: 'Please enter title!'
-            },
-            {
-              type: 'minLength[5]',
-              prompt: 'Student name must be more than 5 letters!'
+              prompt: 'Vui lòng nhập tiêu đề!!'
             },
             {
               type: 'maxLength[100]',
-              prompt: 'Student name must be less than 100 letters!'
+              prompt: 'Tiêu đề không được quá 100 ký 100'
             }
           ]
         },
@@ -169,15 +165,11 @@
           rules: [
             {
               type: 'empty',
-              prompt: 'Please enter description!'
-            },
-            {
-              type: 'minLength[5]',
-              prompt: 'Student name must be more than 5 letters!'
+              prompt: 'Vui lòng nhập nội dung báo cáo!!'
             },
             {
               type: 'maxLength[1000]',
-              prompt: 'Student name must be less than 1000 letters!'
+              prompt: 'Nội dung giới hạn trong 1000 ký tự!!'
             }
           ]
         }

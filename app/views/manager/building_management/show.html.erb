@@ -1,5 +1,5 @@
 <div style="padding-top: 2rem; width: 100%; margin: 0 auto" >
-  <h5><a href="/manager/building-management" class="breadcrumb">Buildings</a> / 
+  <h5><a href="/manager/building-management" class="breadcrumb">Các toà nhà</a> / 
     <a href="/manager/building-management/<%= @building.id %>" class="breadcrumb"><%= @building.name %></a> 
   </h5>
   <div>
@@ -27,10 +27,22 @@
                     </a>
                 </div>
                 <div>
-                  <a class="ui mini label"><%= room.room_type %></a>
+                <% if room.room_type == 'NORMAL' %>
+                  <a class="ui mini label">Phòng thường</a>
+                <% elsif room.room_type == 'VIP'%>
+                  <a class="ui mini label">Phòng VIP</a>
+                <% end %>
                 </div>
                 <div>
-                  Trang thai: <a class="ui mini label" style="margin-left: 1rem; background-color: #3889c8; color: #fff !important"><%= room.status %></a>
+                  Trạng thái: <a class="ui mini label" style="margin-left: 1rem; background-color: #3889c8; color: #fff !important">
+                    <% if room.status == 'FULL' %>
+                     Đã đầy
+                    <% elsif room.status == 'UNFILLED' %> 
+                      Đang còn chỗ
+                    <% elsif room.status == 'PENDING' %> 
+                      Đang bbỏ trống
+                    <% end %>
+                  </a>
                 </div>
               </div>
             <% end %>

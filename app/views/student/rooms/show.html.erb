@@ -8,11 +8,11 @@
     <div class="twelve wide column" style="padding-top: 5em">
       <% if current_user.room.id != 1 %>
         <h3>
-          <strong>Room:</strong>
+          <strong>Phòng:</strong>
           <%= @room.room_name %>
         </h3>
       <% else %>
-        <h3>Đang sắp xếp..</h3>
+        <h3>Chào mừng bạn tới phòng <%= @room.room_name %></h3>
       <% end %>
       <div id="room_member">
         <%= render "student/rooms/member" %>

@@ -1,7 +1,7 @@
 <div class="room_member">
   <% if current_user.room.id != 1 %>
     <h3 class="ui dividing header">
-      Student Information
+      Thông tin cá nhân
     </h3>
   <% end %>
   <div class="content">
@@ -13,7 +13,7 @@
               <div class="ui dimmer">
                 <div class="content">
                   <div class="center">
-                    <div class="ui inverted button" onclick="viewMore(<%= member.id %>)">View more</div>
+                    <div class="ui inverted button" onclick="viewMore(<%= member.id %>)">Xem thêm</div>
                   </div> 
                 </div>
               </div>
@@ -41,15 +41,15 @@
           </div>
           <div class="description" style="width: 100%">
             <div class="ui grid">
-              <div class="four wide column">Ma hoc vien: </div>
+              <div class="four wide column">Mã số học viên: </div>
               <div class="twelve wide column" id="student_id_number"></div>
-              <div class="four wide column">Ngay sinh: </div>
+              <div class="four wide column">Ngày sinh: </div>
               <div class="twelve wide column" id="date_of_birth"></div>
-              <div class="four wide column">So dien thoai: </div>
+              <div class="four wide column">Số điện thoại: </div>
               <div class="twelve wide column" id="phone_number"></div>
-              <div class="four wide column">Que quan: </div>
+              <div class="four wide column">Địa chỉ: </div>
               <div class="twelve wide column" id="address"></div>
-              <div class="four wide column">Gioi tinh: </div>
+              <div class="four wide column">Giới tính: </div>
               <div class="twelve wide column" id="gender"></div>
             </div>
           </div>

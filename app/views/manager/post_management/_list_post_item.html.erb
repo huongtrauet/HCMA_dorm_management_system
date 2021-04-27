@@ -12,7 +12,13 @@
     </td>
     <td onclick="showPost(<%= post.id %>)"><%= post.created_at %></td>
     <td onclick="showPost(<%= post.id %>)"><%= post.writer_name %></td>
-    <td onclick="showPost(<%= post.id %>)" id="post_status_<%= post.id%>"><%= post.status%></td>
+    <td onclick="showPost(<%= post.id %>)" id="post_status_<%= post.id%>">
+    <% if post.status == 'POST' %>
+      Đã đăng
+    <% else%>
+      Đã xoá
+    <% end %>
+    </td>
     <td id="post_actions_<%= post.id%>">
       <% if post.status == "POSTED" %>
         <i class="trash alternate outline icon" id="delete_post_<%= post.id %>" onclick="changePostStatus(<%= post.id %>)"></i>

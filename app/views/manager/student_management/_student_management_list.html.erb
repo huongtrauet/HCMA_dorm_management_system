@@ -1,14 +1,23 @@
 <div class="student_management_list">
   <div class="header" style="display: flex; justify-content: space-between;">
     <div class="header_title">
-      <h3><%= t(".student_management") %>: </h3>
+      <h3>Quản lý học viên: </h3>
     </div>
     <div class="header_search">
       <button class="ui icon button" onclick="addStudent()">
         <i class="plus icon"></i>
       </button>
+      <div class="ui selection dropdown filter_item" id="status_filter">
+        <input type="hidden" onchange="onSearch()">
+        <div class="default text">Trạng thái</div>
+        <div class="menu">
+          <div class="item" data-value="ACTIVE">Đã kích hoạt</div>
+          <div class="item" data-value="PENDING">Đang xử lý</div>
+          <div class="item" data-value="ALL">Tất cả</div>
+        </div>
+      </div>
       <div class="ui icon input">
-        <input type="text" placeholder="<%= t(".search_placeholder") %>" name="q" id="q" class="form-control search-student-form" />
+        <input type="text" placeholder="Nhập ID hoặc tên" name="q" id="q" class="form-control search-student-form" />
         <i class="icon">
           <img src="/assets/search.png" style="width: 1rem; height: 1rem; width: 1rem; top: 50%; position: absolute; transform: translateY(-50%);right: 0.7rem;">
         </i> 
@@ -20,14 +29,14 @@
     <table class="ui very basic selectable table">
       <thead>
         <tr>
-          <th><%= t(".id") %></th>
-          <th><%= t(".student_id_number") %></th>
-          <th><%= t(".full_name") %></th>
-          <th><%= t(".date_of_birth") %></th>
-          <th><%= t(".room") %></th>
-          <th><%= t(".class") %></th>
-          <th><%= t(".check_in_date") %></th>
-          <th><%= t(".status") %></th>
+          <th>STT</th>
+          <th>Mã học viên</th>
+          <th>Họ và tên</th>
+          <th>Ngày sinh</th>
+          <th>Phòng</th>
+          <th>Lớp</th>
+          <th>Ngày vào</th>
+          <th>Trạng thái</th>
         </tr>
       </thead>
       <tbody> 
@@ -43,7 +52,7 @@
             <% end %>
             <td>
               <% if student.room.room_name == 'A1_0000' %>
-                <%= t(".pending") %>
+                Đang xử lý
               <% else %>
                 <%= student.room.room_name %></td>
               <% end %>
@@ -55,18 +64,18 @@
             <% end %>
             <% if student.status == "PENDING" %>
             <td>
-              <a class="ui tag label" ><%= t(".pending") %></a>
+              <a class="ui tag label" >Đang xử lý</a>
             </td>
             <% elsif student.status == "ACTIVE" %>
             <td>
-              <a class="ui teal tag label teal_label"><%= t(".active") %></a>
+              <a class="ui teal tag label teal_label">Đã kích hoạt</a>
             </td>
             <% end %>
           </tr>
           <div class="ui modal" id= "student_info_<%= student.id %>">
             <i class="close icon"></i>
             <div class="header">
-              <%= t(".student_profile") %>
+              Thông tin học viên
             </div>
             <div class="image content">
               <div class="ui grid">
@@ -103,64 +112,74 @@
                 <div class="description eleven wide column">
                   <div class="ui header" style="margin-bottom: 2rem;"><%= student.student_profile.name %></div>
                   <div class="student-info ui grid">
-                    <div class="three wide column"><b><%= t(".date_of_birth") %>:</b></div>
+                    <div class="four wide column"><b>Ngày sinh:</b></div>
                     <% if student.student_profile.date_of_birth %>
-                      <div class="thirteen wide column"><%= student.student_profile.date_of_birth.to_date %></div>
+                      <div class="twelve wide column"><%= student.student_profile.date_of_birth.to_date %></div>
                     <% else %>
-                      <div class="thirteen wide column"></div>
+                      <div class="twelve wide column"></div>
                     <% end %>
-                    <div class="three wide column"><b><%= t(".gender") %>:</b></div>
-                    <div class="thirteen wide column"><%= student.student_profile.gender %></div>
-                    <div class="three wide column"><b><%= t(".home_town") %>:</b></div>
-                    <div class="thirteen wide column"><%= student.student_profile.address %></div>
-                    <div class="three wide column"><b><%= t(".phone") %>:</b></div>
-                    <div class="thirteen wide column"><%= student.student_profile.phone_number %></div>
-                    <div class="three wide column"><b><%= t(".identity") %>:</b></div>
-                    <div class="thirteen wide column"><%= student.student_profile.identity_card_number %></div>
-                    <div class="three wide column"><b><%= t(".register_date") %>:</b></div>
-                    <div class="thirteen wide column"><%= student.created_at.to_date %></div>
-                    <div class="three wide column"><b><%= t(".check_in_date") %>:</b></div>
+                    <div class="four wide column"><b>Giới tính:</b></div>
+                    <div class="twelve wide column">
+                      <% if student.student_profile.gender == "MALE" %>
+                        Nam
+                      <% elsif student.student_profile.gender == "FEMALE" %>
+                        Nữ
+                      <% end %>
+                    </div>
+                    <div class="four wide column"><b>Địa chỉ:</b></div>
+                    <div class="twelve wide column"><%= student.student_profile.address %></div>
+                    <div class="four wide column"><b>Số điện thoại:</b></div>
+                    <div class="twelve wide column"><%= student.student_profile.phone_number %></div>
+                    <div class="four wide column"><b>Số CMND:</b></div>
+                    <div class="twelve wide column"><%= student.student_profile.identity_card_number %></div>
+                    <div class="four wide column"><b>Ngày đăng ký:</b></div>
+                    <div class="twelve wide column"><%= student.created_at.to_date %></div>
+                    <div class="four wide column"><b>Ngày vào:</b></div>
                     <% if student.check_in_date %>
-                      <div class="thirteen wide column"><%= student.check_in_date.to_date %></div>
+                      <div class="twelve wide column"><%= student.check_in_date.to_date %></div>
                     <% else %>
-                      <div class="thirteen wide column"></div>
+                      <div class="twelve wide column"></div>
                     <% end %>
-                    <div class="three wide column"><b><%= t(".extend_time") %>:</b></div>
-                    <div class="thirteen wide column"><%= student.extended_time %></div>
-                    <div class="three wide column"><b><%= t(".status") %>:</b></div>
-                    <div class="thirteen wide column"><%= student.status %></div>
+                    <div class="four wide column"><b>Thời gian gia hạn:</b></div>
+                    <div class="twelve wide column"><%= student.extended_time %> tháng</div>
+                    <div class="four wide column"><b>Trạng thái:</b></div>
+                    <% if student.status == "PENDING"  %>
+                      <div class="twelve wide column">Đang xử lý</div>
+                    <% elsif student.status == "ACTIVE" %>
+                      <div class="twelve wide column">Đã kích hoạt</div>
+                    <% end %>
                   </div>
                 </div>
               </div>
             </div>
             <div class="actions" style="padding: 0.7rem 1rem;">
               <div class="ui cancel button">
-                <%= t(".cancel") %>
+                Huỷ
               </div>
               <button class="ui youtube button" style="background-color: #db2828" onclick="deleteStudent(<%= student.id %>)">
-                <%= t(".delete") %>
+                Xoá
               </button>
-              <button class="ui teal button" style="color: #ffffff !important; width: 6rem;" onclick="editStudent(<%= student.id %>)">
-                <%= t(".edit") %>
+              <button class="ui button" style="color: #ffffff !important; background-color: #2185d0;" onclick="editStudent(<%= student.id %>)">
+                Cập nhật
               </button>
             </div>
           </div>
           <div class="ui mini modal" id="confirm-delete-<%= student.id %>">
-            <div class="ui icon header">
+            <div class="ui icon header" style="border: none !important">
               <i class="archive icon"></i>
-              <%= t(".remove_student_form_title") %>
+              Xoá tài khoản học viên
             </div>
-            <div class="content" style="padding: 0 !important">
-              <p><%= t(".remove_student_form_confirm") %></p>
+            <div class="content">
+              <p>Bạn có chắc muốn xoá tài khoản học viên?</p>
             </div>
             <div class="actions" style="display: flex; justify-content: center">
               <div class="ui negative button">
                 <i class="remove icon"></i>
-                <%= t(".cancel") %>
+                Huỷ
               </div>
               <div class="ui positive right labeled icon button custom_btn" onclick="confirmRemove(<%= student.id %>)">
                 <i class="checkmark icon"></i>
-                <%= t(".approve") %>
+                Xoá
               </div>
             </div>
           </div>
@@ -175,7 +194,7 @@
 
 <div class="ui mini modal add_student">
   <div class="header">
-    <%= t(".new_student_title") %>
+    Tạo mới tài khoản học viên
   </div>
   <div class="content" style="padding: 0 !important">
     <div class="description">
@@ -186,7 +205,7 @@
         </div>
         <div class="field" style="margin: 1rem auto;">
           <div class="ui left corner labeled input" style="display: block;" >
-            <input type="text" placeholder="<%= t(".full_name") %>" style="display:block; width: 100%" name="name" tabindex="-1">
+            <input type="text" placeholder="Họ và tên" style="display:block; width: 100%" name="name" tabindex="-1">
             <div class="ui left corner label">
               <i class="asterisk icon"></i>
             </div>
@@ -194,7 +213,7 @@
         </div>
         <div class="field" id= "student_id_number_field" style="margin: 1rem auto;" onfocusout="checkDuplicate(this)">
           <div class="ui left corner labeled input" style="display: block;">
-            <input type="text" placeholder="<%= t(".student_id_number") %>" style="display:block; width: 100%" name="student_id_number" tabindex="-1">
+            <input type="text" placeholder="Mã số học viên" style="display:block; width: 100%" name="student_id_number" tabindex="-1">
             <div class="ui left corner label">
               <i class="asterisk icon"></i>
             </div>
@@ -202,7 +221,7 @@
         </div>
         <div class="field" style="margin: 1rem auto;">
           <div class="ui left corner labeled input" style="display: block;" >
-            <input type="text" placeholder="<%= t(".student_id_number_confirm") %>" style="display:block; width: 100%" name="student_id_number_confirm" tabindex="-1">
+            <input type="text" placeholder="Nhập lại mã số học viên" style="display:block; width: 100%" name="student_id_number_confirm" tabindex="-1">
             <div class="ui left corner label">
               <i class="asterisk icon"></i>
             </div>
@@ -210,10 +229,10 @@
         </div>
         <div class="actions" style="display: flex; justify-content: center">
           <div class="ui button" onclick="cancel()">
-            <%= t(".cancel") %>
+            Huỷ
           </div>
           <%# <button class="ui primary submit button" onclick="addSubmit(event)">Add</button> %>
-          <div class="ui blue submit button"><%= t(".submit") %></div>
+          <div class="ui blue submit button">Tạo</div>
         </div>
       </form>
     </div>   
@@ -225,6 +244,8 @@
     CKEDITOR.replace( 'editor' );
 </script>
 <script>
+  $('.ui.dropdown')
+  .dropdown();
 
   function confirmRemove(student_id){
      $.ajax({
@@ -233,7 +254,7 @@
       success: function(result){
         // toastr.success(result.message)
         // $(`#student_${student_id}`).remove();
-        window.localStorage.setItem("deleted_student","Deleted student account successfully")
+        window.localStorage.setItem("deleted_student","Xoá tài khoản học viên thành công!")
         window.location.reload();
       },
       error: function (error) {
@@ -321,7 +342,7 @@
           console.log("duplicate")
           $('#student_id_number_field').find('.error').removeClass('error');
           $('#student_id_number_field').addClass("error")
-          $('#student_id_number_field').append(`<div class="ui basic red pointing prompt label transition visible">This id number has been taken</div>`)
+          $('#student_id_number_field').append(`<div class="ui basic red pointing prompt label transition visible">Tài khoản này đã được tạo</div>`)
           result = false
         }
       }
@@ -337,15 +358,11 @@
           rules: [
             {
               type: 'empty',
-              prompt: 'Please enter student name!'
-            },
-            {
-              type: 'minLength[2]',
-              prompt: 'Student name must be more than 2 letters!'
+              prompt: 'Vui lòng nhập họ và tên học viên!'
             },
             {
               type: 'maxLength[100]',
-              prompt: 'Student name must be less than 100 letters!'
+              prompt: 'Tên học viên tối đa 100 ký tự!'
             }
           ]
         },
@@ -354,15 +371,15 @@
           rules: [
             {
               type: 'empty',
-              prompt: 'Please enter student id number !!'
+              prompt: 'Vui lòng nhập mã học viên!!'
             },
             {
               type: 'minLength[5]',
-              prompt: 'Student id number must be more than 5 letters!'
+              prompt: 'Mã học viên tối thiểu 5 chữ số!'
             },
             {
               type: 'maxLength[10]',
-              prompt: 'Student id number must be less than 10 letters!'
+              prompt: 'Mã học viên tối đa 10 chữ số!'
             }
           ]
         },
@@ -371,11 +388,11 @@
           rules: [
             {
               type: 'empty',
-              prompt: 'Please enter student id number confirmation !!'
+              prompt: 'Vui lòng nhập lại mã học viên!!'
             },
             {
               type: 'match[student_id_number]',
-              prompt: 'Student id number mismatch'
+              prompt: 'Mã học viên không trùng khớp! Vui lòng nhập lại!!'
             }
           ]
         }
@@ -391,21 +408,23 @@
     $('.ui.mini.modal.add_student').modal('hide');
   }
 
+  function onSearch() {
+    $.ajax({
+      type: "GET",
+      url: "/manager/student-management/search-students?q=" + $(".search-student-form").val() + "&status=" + $("#status_filter").dropdown('get value'),
+      success: function(result){
+        $('#student_list').html(result)
+      },
+      error: function (error){
+        if(error.responseJSON.is_all) {
+          window.location = '/manager/student-management'
+        }
+      }
+    })
+  }
   $(document).on("turbolinks:load", function() {
     $(".search-student-form").on("keyup", function() {
-      // $('#student_list').html("")
-      $.ajax({
-        type: "GET",
-        url: "/manager/student-management/search-students?q=" + this.value,
-        success: function(result){
-          $('#student_list').html(result)
-        },
-        error: function (error){
-          if(error.responseJSON.is_all) {
-            window.location = '/manager/student-management'
-          }
-        }
-      })
+      onSearch()
     });
   });
 </script>

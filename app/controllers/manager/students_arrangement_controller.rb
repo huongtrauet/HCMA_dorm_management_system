@@ -10,16 +10,16 @@ class Manager::StudentsArrangementController < ManagerMainController
   def remove_student_from_room
     @student = Student.find(params[:student_id])
     @room = Room.find(@student.room_id)
-    message = "You have been removed from your room, any questions please contact the management directly"
+    message = "Xin lỗi, bạn đã bị chuyển ra khỏi phòng hiện tại. Mọi thắc vui lòng gặp trực tiếp ban quản lý tại phòng tiếp nhận sinh viên nhé!"
     @student.room.number_student = @student.room.number_student - 1
     if @student.update(room_id: 1, status: "PENDING")
       respond_to do |format|
-        format.json {render json:{message: "Remove student successfully!!!", room: @room}, status: :ok}
+        format.json {render json:{message: "Di chuyển học viên thành công!!!", room: @room}, status: :ok}
       end
       Notification.create(sender: current_user, receiver: @student, message: message, noti_type: "remove_student_from_room" )
     else
       respond_to do |format|
-        format.json {render json:{message: "Remove student fail!!!"}, status: :bad_request}
+        format.json {render json:{message: "Xin lỗi, di chuyển học viên thất bại!!!"}, status: :bad_request}
       end
     end
   end
@@ -27,20 +27,20 @@ class Manager::StudentsArrangementController < ManagerMainController
   def add_student_to_room
     @student = Student.find(params[:student_id])
     @room = Room.find(params[:room_id])
-    message = "You have been added to room #{@room.room_name}"
+    message = "Chúc mừng bạn đã được thêm vào phòng #{@room.room_name}! #{@room.room_name} chào đón bạn! "
     if @room.number_student < @room.max_number_student 
       if @student.update(room_id: @room.id, status: "ACTIVE")
         if @student.check_in_date == nil
           @student.update(check_in_date: DateTime.current.to_date)
         end
         respond_to do |format|
-          format.json {render json:{message: "Add student to room successfully!!", room: @room}, status: :ok }
+          format.json {render json:{message: "Thêm sinh viên vào phòng thành công!!", room: @room}, status: :ok }
         end
         Notification.create(sender: current_user, receiver: @student, message: message, noti_type: "add_student_to_room" )
       end
     else
       respond_to do |format|
-        format.json {render json:{message: "Add student to room fail!!", room_max_number_student: @room.max_number_student, room_student_number: @room.number_student},  status: :bad_request}
+        format.json {render json:{message: "Xin lỗi! Thêm sinh viên vào phòng thất bại :(", room_max_number_student: @room.max_number_student, room_student_number: @room.number_student},  status: :bad_request}
       end
     end
   end
@@ -54,7 +54,7 @@ class Manager::StudentsArrangementController < ManagerMainController
         end
       else
         respond_to do |format|
-          format.json {render json: {message: 'Room not found'}, status: :bad_request}
+          format.json {render json: {message: 'Không tìm thấy phòng nào :('}, status: :bad_request}
         end
       end
     elsif params[:q] == "" or params[:q] == nil
@@ -74,7 +74,7 @@ class Manager::StudentsArrangementController < ManagerMainController
         end
       else
         respond_to do |format|
-          format.json {render json: {message: 'Room not found'}, status: :bad_request}
+          format.json {render json: {message: 'Không tìm thấy phòng nào :('}, status: :bad_request}
         end
       end
     elsif params[:q] == "" or params[:q] == nil

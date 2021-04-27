@@ -32,19 +32,20 @@ class Student::ComplaintReportsController < StudentMainController
 
   # POST /complaint_reports or /complaint_reports.json
   def create
-    last_index = current_user.complaint_reports.last.index
+    last_index = 0
+    last_index = current_user.complaint_reports.last.index if current_user.complaint_reports.length > 0
     @complaint_report = ComplaintReport.new(complaint_report_params.merge(student_id: current_user.id, index: last_index + 1))
     if @complaint_report.save
       if current_user.class.name == "Student"
         page = (ComplaintReport.where(status: 'PENDING').count.to_f / Settings.pagination).ceil
-        Notification.create(message: "#{current_user.name} created new complaint report", sender: current_user, receiver: Manager.first, noti_type: "create_complaint_report", report_id: @complaint_report.id, page: page )
+        Notification.create(message: "#{current_user.name} đã gửi 1 ý kiến đóng góp.", sender: current_user, receiver: Manager.first, noti_type: "create_complaint_report", report_id: @complaint_report.id, page: page )
       end
       respond_to do |format|
-        format.json {render json: { message: "Created new complaint report successfully!!!" }, status: :ok } 
+        format.json {render json: { message: "Tạo báo cáo thành công!" }, status: :ok } 
       end
     else
       respond_to do |format|
-        format.json {render json: {message: "Create new complaint report failed!!!"}, status: :bad_request}
+        format.json {render json: {message: "Tạo báo cáo thất bại :("}, status: :bad_request}
       end
     end
   end

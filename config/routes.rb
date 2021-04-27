@@ -8,6 +8,8 @@ Rails.application.routes.draw do
   end
   mount ActionCable.server => '/cable'
   namespace :manager do
+    get "/" => redirect("/manager/students-arrangement")
+
     get "/login", to: "manager_sessions#new"
     post "/login", to: "manager_sessions#create"
     get "/logout", to: "manager_sessions#destroy"
@@ -106,40 +108,55 @@ Rails.application.routes.draw do
     get "/building-management/", to: "building_management#index"
     get "/building-management/:id", to: "building_management#show"
 
+      
+    post "/reset-password", to: "reset_password_manager#reset_manager_password"
+    get "/reset-password/edit", to: "reset_password_manager#edit_manager_password"
+    post "/reset-password/update", to: "reset_password_manager#update_manager_password"
+
+    
     resources :students
     resources :managers
     resources :rooms
   end
-
+  
   namespace :student do
+    get "/" => redirect("/student/student_profiles")
+    
     get "/login", to: "student_sessions#new"
     post "/login", to: "student_sessions#create"
     get "/logout", to: "student_sessions#destroy"
     get "/requests", to: "facility_reports#index"
-
+    
     get "/requests/facility", to: "facility_reports#index"
     get "/requests/facility/:id", to: "facility_reports#show"
     post "/facility-reports/create", to: "facility_reports#create"
-
+    
     get "/requests/form", to: "form_requests#index"
     get "/requests/form/:id", to: "form_requests#show"
     post "/requests/form/create", to: "form_requests#create"
-
+    
     get "/requests/complaint", to: "complaint_reports#index"
     get "/requests/complaint/:id", to: "complaint_reports#show"
     post "/complaint-reports/create", to: "complaint_reports#create"
-
+    
     get "/room/member/show/", to: "rooms#show_member"
-
+    
     post "/student-profile/update-avatar/", to: "student_profiles#update_avatar"
     put "/student-profile/reset-ava", to:"student_profiles#reset_ava"
     put "/student-profile/update", to:"student_profiles#update"
-
+    put "/student-profile/reset-password", to:"student_profiles#reset_password"
+    
     get "/my-room/", to: "rooms#room_member"
     get "/my-room/members", to: "rooms#room_member"
     get "/my-room/services", to: "rooms#room_service_charge"
 
-    post "/reset-password", to: "student_profiles#reset_password"
+    post "/reset-password", to: "reset_password_student#reset_student_password"
+    get "/reset-password/edit", to: "reset_password_student#edit_student_password"
+    post "/reset-password/update", to: "reset_password_student#update_student_password"
+
+    get "/homepage/", to: "homepage#index"
+    get "/posts/:id", to: "homepage#show"
+    get "/my-profile/", to: "student_profiles#edit"
     
     resources :student_profiles
     resources :rooms
@@ -151,7 +168,7 @@ Rails.application.routes.draw do
     # resources :facilities
     resources :service_charges
   end
-
+  
   get "/notifications/unread", to: "notifications#count_unread_noti"
   get "/notifications/total", to: "notifications#count_unread_noti"
   put "/notifications/:id/read", to: "notifications#read_noti"

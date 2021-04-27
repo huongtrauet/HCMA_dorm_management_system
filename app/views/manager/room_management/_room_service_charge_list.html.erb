@@ -1,21 +1,21 @@
 <div class="service_charge_list">
   <div class="header">
-    <h5><a href="/manager/building-management" class="breadcrumb"><%= t(".buildings") %></a> / 
+    <h5><a href="/manager/building-management" class="breadcrumb">Toà nhà</a> / 
       <a href="/manager/building-management/<%= @room.building.id %>" class="breadcrumb"><%= @room.building.name %></a> /
-      <a href="/manager/rooms-management/rooms/<%= @room.id %>" class="breadcrumb"><%= t(".room") %> <%= @room.room_name %></a> /
-      <a href="/manager/rooms-management/rooms/<%= @room.id %>/service-charges" class="breadcrumb"><%= t(".service_charges") %></a>
+      <a href="/manager/rooms-management/rooms/<%= @room.id %>" class="breadcrumb">Phòng <%= @room.room_name %></a> /
+      <a href="/manager/rooms-management/rooms/<%= @room.id %>/service-charges" class="breadcrumb">Hoá đơn dịch vụ</a>
     </h5>
   </div>
   <div class="ui inverted divider"></div>
   <table class="ui very basic table">
     <thead>
       <tr>
-        <th><%= t(".id") %></th>
-        <th><%= t(".month") %></th>
-        <th><%= t(".electricity_price") %></th>
-        <th><%= t(".water_price") %></th>
-        <th><%= t(".total_price") %></th>
-        <th><%= t(".status") %></th>
+        <th>STT</th>
+        <th>Tháng</th>
+        <th>Tiền điện</th>
+        <th>Tiền nước</th>
+        <th>Tổng tiền</th>
+        <th>Trạng thái</th>
       </tr>
     </thead>
     <tbody>
@@ -26,11 +26,11 @@
           <td><%= s.electricity_price %></td>
           <td><%= s.water_price %></td>
           <td><%= s.total_price %></td>
-          <td>
+          <td style="width: 14rem">
             <% if s.status == "PAID" %>
-              <a class="ui teal tag label" style="width: 6.7rem"><%= t(".piad") %></a>
+              <a class="ui teal tag label" >Đã thanh toán</a>
             <% elsif s.status == "UNPAID" %>
-              <a class="ui red tag label" style="width: 6.7rem"><%= t(".unpaid") %></a>
+              <a class="ui red tag label">Chưa thanh toán</a>
             <% end  %>
           </td> 
         </tr>
@@ -45,7 +45,7 @@
 <div class="ui first modal service_charge_info" id="show_info_modal">
   <i class="close icon"></i>
   <div class="header">
-      <h3><%= t(".service_charges") %></h3>
+      <h3>Hoá đơn dịch vụ</h3>
       <div>
         <p style="margin-bottom: -1rem" id="show_paid_at"></p>
         <p style="float: right; margin-right: 1rem; margin-right: 2.6rem;" class="show_room_name"></p>
@@ -60,28 +60,28 @@
         <div class="five wide column">
           <div class="student-info">
             <div class="ui field">
-              <label><%= t(".month") %>:</label>
+              <label>Tháng:</label>
               <p id="show_month"></p>
             </div>
-            <label><%= t(".total_price") %>:</label>
+            <label>Tổng tiền:</label>
             <p id="show_total_price"></p>
           </div>
         </div>
         <div class="five wide column">
           <div class="student-info">
-            <label><%= t(".electricity_price") %>: </label>
+            <label>Tiền điện: </label>
             <p id="show_electricity_price"></p>
-            <label><%= t(".water_price") %></label>
+            <label>Tiền nước: </label>
             <p id="show_water_price"></p>
           </div>
         </div>
         <div class="five wide column">
           <div class="student-info">
-            <label><%= t(".status") %>: </label>
+            <label>Trạng thái: </label>
             <p>
               <span style="background-color: #f4810b; padding: 6px 10px; color: #fff; border-radius: 5px; font-weight: bold" id="show_status"></span>
             </p>
-            <label><%= t(".payer") %></label>
+            <label>Người thanh toán</label>
             <p id="show_payer"></p>
           </div>
         </div>
@@ -89,10 +89,10 @@
     </div>
     <div class="actions" style="padding: 0.7rem 1rem;">
       <div class="ui deny button" onclick="closeModal()">
-        <%= t(".cancel") %>
+        Huỷ
       </div>
       <div class="ui positive right labeled icon button custom_btn edit">
-        <%= t(".edit") %>
+        Cập nhật
         <i class="arrow right icon"></i>
       </div>
     </div>
@@ -101,7 +101,7 @@
 <div class="ui second modal service_charge_info" id="edit_info_modal">
   <i class="close icon"></i>
   <div class="header">
-    <h3><%= t(".service_charge_edit") %></h3>
+    <h3>Sửa hoá đơn phí dịch vụ</h3>
     <div>
       <p id="paid_at" style="margin-bottom: -1rem"></p>
       <p style="float: right; margin-right: 1rem; margin-right: 2.6rem;" class="show_room_name"></p>
@@ -112,45 +112,45 @@
   <form class="ui form" style="margin: 0 1.5rem" id="service_charge_edit_form" name="service_charge_edit_form" class="ui form segment">
     <div class="three fields">
       <div class="field">
-        <label><%= t(".month") %></label>
+        <label>Tháng</label>
         <input type="text" placeholder="Thang" disabled value="Thang 2" name="month" id="month_edit_field">
       </div>
       <div class="field">
-        <label><%= t(".electricity_price") %></label>
+        <label>Tiền điện</label>
         <input type="number" placeholder="Tien dien" name="electricity_price" id="electricity_price_edit_field" onkeyup="changePrice()">
       </div>
       <div class="field">
-        <label><%= t(".status") %></label>
-        <div class="ui selection dropdown">
+        <label>Trạng thái</label>
+        <div class="ui selection dropdown" id="service_charge_status_dropdown">
           <input type="hidden" name="status" id="status_edit_field">
           <i class="dropdown icon"></i>
           <div class="text" style="color: black;" id="selected_item"></div>
           <div class="menu">
-            <div class="item" data-value="PAID"><%= t(".paid") %></div>
-            <div class="item" data-value="UNPAID"><%= t(".unpaid") %></div>
+            <div class="item" data-value="PAID">Đã thanh toán</div>
+            <div class="item" data-value="UNPAID">Chưa thanh toán</div>
           </div>
         </div>
       </div>
     </div>
     <div class="three fields">
       <div class="field">
-        <label><%= t(".total_price") %></label>
+        <label>Tổng tiền</label>
         <input type="number" placeholder="Tong tien" name="total_price" id="total_price_edit_field" disabled>
       </div>
       <div class="field">
-        <label><%= t(".water_price") %></label>
+        <label>Tiền nước</label>
         <input type="number" placeholder="Tien nuoc" name="water_price" id="water_price_edit_field" onkeyup="changePrice()">
       </div>
       <div class="field">
-        <label><%= t(".payer") %></label>
+        <label>Người thanh toán</label>
         <input type="text" placeholder="Nguoi nop" name="payer" id="payer_edit_field">
       </div>
     </div>
   <div class="actions" style="padding: 0.7rem 1rem; float:right; margin-right: 1.5rem">
     <div class="ui deny button" onclick="closeModal()">
-      <%= t(".cancel") %>
+      Huỷ
     </div>
-    <div class="ui blue submit button custom_btn"><%= t(".update") %></div>
+    <div class="ui blue submit button custom_btn">Cập nhật</div>
   </div>
   </form>
 </div>
@@ -179,8 +179,17 @@ function changePrice() {
         $('#show_electricity_price').html(result.service_charge.electricity_price)
         $('#show_total_price').html(result.service_charge.total_price)
         $('#show_payer').html(result.service_charge.payer)
-        $('#show_status').html(result.service_charge.status)
-        $('#show_paid_at').html(result.service_charge.paid_at.split('T')[0].split('-').reverse().join('/'))
+        if (result.service_charge.status == "PAID") {
+          $('#show_status').html("Đã thanh toán")
+        }
+        else if (result.service_charge.status == "UNPAID"){
+          $('#show_status').html("Chưa thanh toán")
+        }
+        if(result.service_charge.paid_at){
+          $('#show_paid_at').html(result.service_charge.paid_at.split('T')[0].split('-').reverse().join('/'))
+        } else {
+          $('#show_paid_at').html('')
+        }
         $('.show_room_name').html(result.room.room_name)
         $('#room_id').val(result.room.id)
         $('#charge_id').val(result.service_charge.id)
@@ -192,9 +201,18 @@ function changePrice() {
         $('#electricity_price_edit_field').val(result.service_charge.electricity_price)
         $('#total_price_edit_field').val(result.service_charge.total_price)
         $('#status_edit_field').val(result.service_charge.status)
+        if (result.service_charge.status == "PAID"){
+          $('#selected_item').html('Đã thanh toán')
+        }
+        else if (result.service_charge.status == "UNPAID"){
+          $('#selected_item').html('Chưa thanh toán')
+        }
         $('#payer_edit_field').val(result.service_charge.payer)
-        $('#paid_at').html(result.service_charge.paid_at.split('T')[0].split('-').reverse().join('/'))
-        $('#selected_item').html(result.service_charge.status)
+        if(result.service_charge.paid_at){
+          $('#paid_at').html(result.service_charge.paid_at.split('T')[0].split('-').reverse().join('/'))
+        } else {
+          $('#paid_at').html('')
+        }
         $('#charge_index').val(index)
 
         // $('#status_edit_field').val()
@@ -268,11 +286,11 @@ function changePrice() {
           rules: [
             {
               type: 'empty',
-              prompt: 'Please enter student name!!'
+              prompt: 'Vui lòng nhập tiền điện!!'
             },
             {
               type: 'integer[0..1000000000000]',
-              prompt: 'Electricity_price must be more than 0 vnd and less than 1000000000000 vnd!!'
+              prompt: 'Tiền điện phải từ 0 vnđ đến 1000000000000 vnd!!'
             }
           ]
         },
@@ -281,7 +299,7 @@ function changePrice() {
           rules: [
             {
               type: 'empty',
-              prompt: 'Please setting status!!'
+              prompt: 'Vui lòng cập nhật trạng thái!!'
             }
           ]
         },
@@ -294,7 +312,7 @@ function changePrice() {
             },
             {
               type: 'integer[0..1000000000000]',
-              prompt: 'Total price must be more than 0 vnd and less than 1000000000000 vnd!!'
+              prompt: 'Tổng tiền phải từ 0 vnđ đến 1000000000000 vnd!!'
             }
           ]
         },
@@ -303,28 +321,11 @@ function changePrice() {
           rules: [
             {
               type: 'empty',
-              prompt: 'Please enter student name!!'
+              prompt: 'Vui lòng nhập tiền điện!!'
             },
             {
               type: 'integer[0..1000000000000]',
-              prompt: 'Water price must be more than 0 vnd and less than 1000000000000 vnd!!'
-            }
-          ]
-        },
-        payer: {
-          identifier: 'payer',
-          rules: [
-            {
-              type: 'empty',
-              prompt: 'Please enter payer!!'
-            },
-            {
-              type: 'minLength[1]',
-              prompt: 'Title must be more than 1 letters!'
-            },
-            {
-              type: 'maxLength[10]',
-              prompt: 'Title must be less than 100 letters!'
+              prompt: 'Tiền nước phải từ 0 vnđ đến 1000000000000 vnd!!'
             }
           ]
         }

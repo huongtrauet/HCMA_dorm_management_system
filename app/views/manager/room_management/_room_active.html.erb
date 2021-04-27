@@ -4,7 +4,13 @@
       <input type="hidden" value="<%= room.id%>" id="room_id_input">
       <div class="">
         <p style="font-size: 4rem; margin-bottom: 0.7rem;"><%= room.room_name %></p>
-        <p style="font-size: 1.5rem"><b><%= room.room_type %></b></p>
+        <p style="font-size: 1.5rem">
+        <% if room.room_type == 'VIP' %>
+          <b><%= room.room_type %></b>
+        <% elsif room.room_type == 'NORMAL'%>
+          <b>Thường</b>
+        <% end %>
+        </p>
       </div>
       <div class="ui grid" style="margin-top: 0.5rem"> 
         <div class="ten wide column" style="font-style: italic; font-size: 1.1rem"><%= t(".number_of_member") %></div>

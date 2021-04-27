@@ -1,17 +1,17 @@
 <div class="service_charge_list">
   <h3 class="ui dividing header">
-    Service charges
+    Hoá đơn dịch vụ
   </h3>
   <table class="ui very basic table">
     <thead>
       <tr>
         <th>STT</th>
-        <th>Thang</th>
-        <th>Tien dien</th>
-        <th>Tien nuoc</th>
-        <th>Tong</th>
-        <th>Trang thai</th>
-        <th>Nguoi nop</th>
+        <th>Tháng</th>
+        <th>Tiền nước</th>
+        <th>Tiền điện</th>
+        <th>Tổng tiền</th>
+        <th>Trạng thái</th>
+        <th>Người thanh toán</th>
       </tr>
     </thead>
     <tbody id="service_charge_table">
@@ -24,9 +24,9 @@
           <td><%= charge.total_price %></td>
           <td>
             <% if charge.status == "PAID" %>
-              <a class="ui teal tag label" style="width: 6.7rem"><%= charge.status %></a>
+              <a class="ui teal tag label">Đã thanh toán</a>
             <% elsif charge.status == "UNPAID" %>
-              <a class="ui red tag label" style="width: 6.7rem"><%= charge.status %></a>
+              <a class="ui red tag label">Chưa thanh toán</a>
             <% end  %>
           </td>
           <td><%= charge.payer %></td>

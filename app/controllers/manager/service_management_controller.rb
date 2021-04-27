@@ -38,7 +38,7 @@ class Manager::ServiceManagementController < ManagerMainController
       end
     else
       respond_to do |format|
-        format.json {render message: "update fail" , status: :bad_request}
+        format.json {render message: "Cập nhật thất bại :(" , status: :bad_request}
       end
     end
   end
@@ -47,9 +47,13 @@ class Manager::ServiceManagementController < ManagerMainController
 
   def update_service_charge
     @service_charge = ServiceCharge.find(service_charge_params[:charge_id])
-    if @service_charge.update(service_charge_params.except(:charge_id, :index))
+    params = service_charge_params
+    if @service_charge.status === 'UNPAID' && service_charge_params[:status] === 'PAID'
+      params.merge!(paid_at: Time.now)
+    end
+    if @service_charge.update(params.except(:charge_id, :index))
       respond_to do |format|
-        format.json {render json: { charge: @service_charge, message: "Update service charge successfully" }, status: :ok} 
+        format.json {render json: { charge: @service_charge, message: "Cập nhật hoá đơn thành công!" }, status: :ok} 
       end
     else
       respond_to do |format|
@@ -98,18 +102,18 @@ class Manager::ServiceManagementController < ManagerMainController
     @room = @service_charge.room
     @students = @room.students
     @students.each do |student|
-      Notification.create(message: "Nop tien dien thang #{@service_charge.month}", sender: current_user, receiver: student, noti_type: "service_charge_remind")
+      Notification.create(message: "Nhắc nhờ nộp tiền dịch vụ tháng #{@service_charge.month}. Sinh viên nhanh chóng thanh toán hoá đơn phí dịch vụ tại phòng kế toán.", sender: current_user, receiver: student, noti_type: "service_charge_remind")
     end
   end
 
   def import
     if ServiceCharge.import_file params[:file]
       respond_to do |format|
-        format.json {render json: { message: "Import data successfully!" }, status: :ok} 
+        format.json {render json: { message: "Thêm dữ liệu thành công!" }, status: :ok} 
       end
     else
       respond_to do |format|
-        format.json {render json: { message: "Import data failed!" }, status: :bad_request} 
+        format.json {render json: { message: "Thêm dữ liệu không thành công :(" }, status: :bad_request} 
       end
     end
   end

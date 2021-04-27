@@ -31,17 +31,17 @@
             <div class="ui styled accordion" style="box-shadow: none; -webkit-box-shadow: none; border:none; border-bottom: 1px solid rgba(34,36,38,.15); border-radius: 0; width: 100%; padding-bottom: 1rem">
               <div class="title active">
                 <i class="dropdown icon"></i>
-                <span>Informations</span>
+                <span>Thông tin cá nhân</span>
               </div>
               <div class="content active">
                 <%= form_for @student, html: {class: 'ui form', id: "profile_form"}, url: {controller: "student_profiles", action: "update"}  do |student|%>
                   <div class="two fields">
                     <div class="required field field_line">
-                      <%= student.label :student_id_number %>
+                      <label>Mã số học viên</label>
                       <%= student.text_field :student_id_number, class: "input", required: true, placeholder: "Student it number", disabled: true %>
                     </div>
                     <div class="required field field_line">
-                      <label>Room</label>
+                      <label>Phòng</label>
                       <div class="ui input" >
                         <% if @student.room.id != 1 %>
                           <input value="<%= @student.room.room_name %>" disabled/>
@@ -53,13 +53,13 @@
                   </div>
                   <%= student.fields_for :student_profile do |f| %>
                     <div class="required field field_line">
-                      <%= f.label :full_name %>
+                      <label>Họ và tên</label>
                       <input value="<%= @student.name %>" disabled/>
                     </div>
                     <div class="field field_line">
                       <div class="two fields">
                         <div class="field">
-                          <label>Class name</label>
+                          <label>Lớp</label>
                           <%= f.text_field :class_name, class: "input", placeholder: "Clas name" %>
                         </div>
                         <div class="field">
@@ -70,32 +70,32 @@
                     </div>
                     <div class="fields field_line">
                       <div class="eight wide field">
-                        <label>Identity Card Number</label>
-                        <%= f.text_field :identity_card_number, class: "input", maxlength: "16", placeholder: "Identity card number" %>
+                        <label>Số CMND</label>
+                        <%= f.text_field :identity_card_number, class: "input", maxlength: "16", placeholder: "Số CMND" %>
                       </div>
                       <div class="eight wide field">
-                        <label>Date of Birth</label>
+                        <label>Ngày sinh</label>
                         <%= f.date_field :date_of_birth, class: "input date", data: {provide: "datepicker"} %>
                       </div>
                     </div>
                     <div class="field field_line">
-                      <label>Address</label>
+                      <label>Địa chỉ</label>
                       <%= f.text_field :address, class: "input", placeholder: "Address" %>
                     </div>
                     <div class="field field_line">
                       <div class="two fields">
                         <div class="field">
-                          <label>Phone number</label>
+                          <label>Số điện thoại</label>
                           <%= f.text_field :phone_number, class: "input", placeholder: "Phone number" %>
                         </div>
                         <div class="field">    
-                          <%= f.label :gender %>
+                          <label>Giới tính</label>
                           <div class="options" style="height: 60%; margin-top: 0.8rem">
                             <span style="margin-right: 0.6rem">
-                              <span class="option" style="margin-right: 0.3rem">Male</span><%= f.radio_button :gender, 'MALE' %>
+                              <span class="option" style="margin-right: 0.3rem">Nam</span><%= f.radio_button :gender, 'MALE' %>
                             </span>
                             <span>
-                              <span class="option" style="margin-right: 0.3rem">Female</span><%= f.radio_button :gender, 'FEMALE' %>
+                              <span class="option" style="margin-right: 0.3rem">Nữ</span><%= f.radio_button :gender, 'FEMALE' %>
                             </span>
                           </div>
                         </div>
@@ -103,14 +103,14 @@
                     </div>
                   <% end %>
                   <div class="ui dividing header">
-                    Confirmation
+                    Xác nhận
                   </div>
                   <div class="ui field checkbox">
                     <input type="checkbox" name="confirmation">
-                    <label>You are sure that the information above is correct</label>
+                    <label>Bạn đã chắc mọi thông tin nhập trên đều chính xác.</label>
                   </div>
                   <div class="field" style="float: right; margin-top: 2em">
-                    <div class="ui blue submit button" >Submit</div>
+                    <div class="ui blue submit button" >Cập nhật</div>
                   </div>
                 <% end %>
               </div>
@@ -118,24 +118,24 @@
             <div class="ui styled accordion" style="box-shadow: none; -webkit-box-shadow: none; border:none; border-bottom: 1px solid rgba(34,36,38,.15); border-radius: 0; width: 100%; padding-bottom: 1rem">
               <div class="title">
                 <i class="dropdown icon"></i>
-                <span>Bảo mật</span>
+                <span>Bảo mật tài khoản</span>
               </div>
               <div class="content">
                 <form class="ui form" id="reset_password_form">
                   <div class="required field field_line" style="width: 50%">
-                    <label>Current password</label>
+                    <label>Mật khẩu hiện tại</label>
                     <input type="password" name="current_password"/>
                   </div>
                   <div class="required field field_line" style="width: 50%">
-                    <label>New password</label>
+                    <label>Mật khẩu mới</label>
                     <input type="password" name="password"/>
                   </div>
                   <div class="required field field_line" style="width: 50%">
-                    <label>New password confirmation</label>
+                    <label>Nhập lại mật khẩu</label>
                     <input type="password" name="password_confirmation"/>
                   </div>
                   <div class="field" style="">
-                    <div class="ui blue submit button">Submit</div>
+                    <div class="ui blue submit button">Cập nhật</div>
                   </div>
                 </form>
               </div>
@@ -213,8 +213,8 @@
     let formPass = new FormData(myPasswordForm);
     e.preventDefault();
     $.ajax({
-      type: "POST",
-      url: "/student/reset-password",
+      type: "PUT",
+      url: "/student/student-profile/reset-password",
       processData: false,
       contentType: false,
       cache: false,
@@ -245,7 +245,7 @@
           rules: [
             {
               type: 'checked',
-              prompt: 'Please check confirmation !'
+              prompt: 'Vui lòng bấm chọn để xác nhận!'
             }
           ]
         },
@@ -254,7 +254,7 @@
           rules: [
             {
               type: 'email',
-              prompt: 'Email sai dinh dang !'
+              prompt: 'Email sai định dạng!'
             }
           ]
         },
@@ -263,7 +263,7 @@
           rules: [
             {
               type: 'regExp[/([0-9]{9})/]',
-              prompt: 'So cmt sai dinh dang !'
+              prompt: 'Số chứng minh nhân dân không hợp lệ!'
             }
           ]
         },
@@ -298,7 +298,7 @@
           rules: [
             {
               type: 'empty',
-              prompt: 'Please enter current your password!'
+              prompt: 'Vui lòng nhập mật khẩu hiện tại!'
             }
           ]
         },
@@ -307,7 +307,7 @@
           rules: [
             {
               type: 'empty',
-              prompt: 'Please enter new password!!'
+              prompt: 'Vui lòng nhập mật khẩu mới!!'
             },
           ]
         },
@@ -316,11 +316,11 @@
           rules: [
             {
               type: 'empty',
-              prompt: 'Please enter password confirmation !!'
+              prompt: 'Vui lòng nhập lại mật khẩu!!'
             },
             {
               type: 'match[password]',
-              prompt: 'Password confirmation mismatch'
+              prompt: 'Mật khẩu không khớp'
             }
           ]
         }
