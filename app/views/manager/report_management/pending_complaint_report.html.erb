@@ -168,40 +168,6 @@
     })
   }
 
-  // function findComplaintReportByStatus(status){
-  //   $.ajax({
-  //     type: "GET",
-  //     url: "/manager/report-management/complaint-reports/find-by-status",
-  //     data: { 
-  //       "status": status 
-  //     },
-  //     success: function(result){
-  //       console.log("success")
-  //       $("#reports_list").html(result)
-  //       $("#pagination").html(`<%= j paginate @complaint_reports, turbolinks: false, remove: true %>`)
-  //       if (status == "PENDING") {
-  //         $("#pending_tab").addClass("active");
-  //         $("#approved_tab").removeClass("active");
-  //         $("#rejected_tab").removeClass("active");
-  //       }
-  //       else if (status == "APPROVED"){
-  //         $("#pending_tab").removeClass("active");
-  //         $("#approved_tab").addClass("active");
-  //         $("#rejected_tab").removeClass("active");
-  //       }
-  //       else if (status == "REJECTED"){
-  //         $("#pending_tab").removeClass("active");
-  //         $("#approved_tab").removeClass("active");
-  //         $("#rejected_tab").addClass("active");
-  //       }
-  //     },
-  //     error: function (error) {
-
-  //     }
-
-  //     })
-  // }
-
   function submitReject(){
     let report_id = $('#report_id_reject').val();
     $.ajax({

@@ -39,24 +39,24 @@
   }
 
   function drag(ev) {
-    ev.dataTransfer.setData("text", ev.target.id);
+    ev.dataTransfer.setData("text", ev.target.id); //lưu id của cái đã giữ vào biến text của dataTransfer
 
   }
   // add student
   function drop(ev) {
     ev.preventDefault();
-    var data = ev.dataTransfer.getData("text");
-    var count = document.querySelector('.room_member_list').childElementCount;
+    var data = ev.dataTransfer.getData("text"); // lấy  id thẻ đã giữ từ dataTransfer
+    var count = document.querySelector('.room_member_list').childElementCount; //đếm sô lưogj học viên hiện tại của phòng
     $.ajax({
       type: "POST",
       url: "students-arrangement/add-student",
       data: {
-        student_id: data.split("_")[1],
+        student_id: data.split("_")[1], // lấy id của học viên bănhgf div data
         room_id: $("#room_id_input").val()
       },
       success: function(result){
-        document.querySelector('.room_member_list').appendChild(document.getElementById(data));
-        document.querySelector(`#${data}`).classList.add("eight", "wide","column");
+        document.querySelector('.room_member_list').appendChild(document.getElementById(data)); // thêm 1 thẻ hvien có id là data đã set trên
+        document.querySelector(`#${data}`).classList.add("eight", "wide","column"); // thêm class vào cho đúng định dạng
         toastr.success("Thêm học viên vào phòng thành công!");
         $.ajax({
           type: "GET",
@@ -78,6 +78,8 @@
       }
     })
   }
+
+  //chi duyển học viên ra ngoài. chỉ bắt sự kiện khi thả vào div pending_students_list chưa onDrop dropRevert
   function dropRevert(ev){
     ev.preventDefault();
     var data = ev.dataTransfer.getData("text");
@@ -88,7 +90,7 @@
     $.ajax({
       type: "POST",
       url: "students-arrangement/remove-student",
-      data: {student_id: data.split("_")[1]},
+      data: {student_id: data.split("_")[1]}, //lấy id của học viên 
       success: function(result){
         toastr.success("Di chuyển học viên thành công!");
         $.ajax({
@@ -110,7 +112,9 @@
     })
 
   }
-  //get all room
+  //show tất cả các room ban đầu( sd hàm seaarch khi ô search k có gì)
+  // student_arrangement_controller # search_rooms_arrangement
+  // result là student_arrangement/room_list_arrangement
   $.ajax({
     type: "GET",
     url: "students-arrangement/all-rooms-arrangement",
@@ -119,20 +123,24 @@
     }
 
   })
-
+//hiển thị danh sách student ban đầu. 
+//student_management_controller # find_pending_student
+// result là partial students_arrangement/pending_student_list
   $.ajax({
     type: "GET",
-    url: "student-management/pending-students",
+    url: "student-management/pending-students", 
     success: function(result){
       $('#pending_students_list').html(result)
     }
   })
-
-  function activeRoom(room_id){
+//room được chon
+// room_management_controller
+// result laf partial room_manageemnt/activeroom
+  function activeRoom(room_id){ //room_management_controller
     $.ajax({
       type: "GET",
       url: `room-management/rooms/${room_id}/active_room`,
-      success: function(result){
+      success: function(result){ //result là một partial tên _room_active của room_management
         $("#active_room_box").html(result)
          console.log("oke")
 
@@ -143,16 +151,17 @@
     })
   }
   
-  // SEARCH ROOM
+  // //tìm kiếm phòng
+  // controller students_arrangement#search_rooms_arrangement
+  // partial student_arrangement/room_list_arrangement
+
 $(document).on("turbolinks:load", function() {
     $(".search-room-form").on("keyup", function() {
-      // $(".students").html("");
-      // $('#room_list_arrangement').html("")
       $.ajax({
         type: "GET",
         url: "/manager/students-arrangement/all-rooms-arrangement?q=" + this.value,
         success: function(result){
-          $('#room_list_arrangement').html(result)
+          $('#room_list_arrangement').html(result) 
           console.log('success' + result)
         },
         error: function (error){
@@ -162,7 +171,10 @@ $(document).on("turbolinks:load", function() {
     });
   });
 
-    // SEARCH STUDENT
+// SEARCH STUDENT
+// controller "students_arrangement#search_pending_students_arrangement"
+// partial  student_arrangement /pending_student_list
+
   $(document).on("turbolinks:load", function() {
     $(".search-student-form").on("keyup", function() {
       // $(".students").html("");
@@ -171,7 +183,7 @@ $(document).on("turbolinks:load", function() {
         type: "GET",
         url: "/manager/students-arrangement/all-pending-students-arrangement?q=" + this.value,
         success: function(result){
-          $('#pending_students_list').html(result)
+          $('#pending_students_list').html(result) 
           console.log('success' + result)
         },
         error: function (error){

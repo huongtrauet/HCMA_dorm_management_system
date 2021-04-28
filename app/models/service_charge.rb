@@ -9,7 +9,7 @@ class ServiceCharge < ApplicationRecord
   validates :status, presence: true, allow_nil: false
   validates :month, presence: true, allow_nil: false
   validates :year, presence: true, allow_nil: false
-  validates :payer, presence: true, allow_nil: true
+  validates :payer, presence: true, allow_nil: true, allow_blank: true
   validates :paid_at, presence: true, allow_nil: true
 
   class << self

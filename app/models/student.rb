@@ -52,6 +52,13 @@ class Student < ApplicationRecord
     SecureRandom.urlsafe_base64
   end
 
+  after_create do 
+    if self.room.id
+      @room = Room.find(self.room.id)
+      @room.update(number_student: @room.number_student + 1)
+    end
+  end
+
   after_update do
     #room
     room_after = Room.find(self.room.id)

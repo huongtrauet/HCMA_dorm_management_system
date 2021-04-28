@@ -21,7 +21,9 @@ class Manager::StudentManagementController < ManagerMainController
       @student = Student.new(new_params)
       @student.student_profile = StudentProfile.new(email:"#{@student.student_id_number}@gmail.com", name: @student.name)
     else
-      redirect_to manager_student_management_path
+      rrespond_to do |format|
+        format.json { render json: { message: 'Nhập lại mã học viên không khớp!' } }
+      end
     end
     if @student.save
       respond_to do |format|
@@ -29,7 +31,7 @@ class Manager::StudentManagementController < ManagerMainController
       end
     elsif
       respond_to do |format|
-        format.json { render json: @student.errors, status: :unprocessable_entity }
+        format.json { render json: {message: 'Tạo tài khoản không thành công :('}, status: :unprocessable_entity }
       end
     end
   end

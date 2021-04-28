@@ -2,8 +2,8 @@
   <div class="header">
     <h5><a href="/manager/building-management" class="breadcrumb">Toà nhà</a> / 
       <a href="/manager/building-management/<%= @room.building.id %>" class="breadcrumb"><%= @room.building.name %></a> /
-      <a href="/manager/rooms-management/rooms/<%= @room.id %>" class="breadcrumb">Phòng <%= @room.room_name %></a> /
-      <a href="/manager/rooms-management/rooms/<%= @room.id %>/service-charges" class="breadcrumb">Hoá đơn dịch vụ</a>
+      <a href="/manager/room-management/rooms/<%= @room.id %>" class="breadcrumb">Phòng <%= @room.room_name %></a> /
+      <a href="/manager/room-management/rooms/<%= @room.id %>/service-charges" class="breadcrumb">Hoá đơn dịch vụ</a>
     </h5>
   </div>
   <div class="ui inverted divider"></div>
@@ -222,7 +222,8 @@ function changePrice() {
       }
     })
   }
-
+//service_management_controller
+//partial room_management/charge_item
   function submitUpdateServiceCharge(e){
     let room_id = $('#room_id').val()
     let year = $('#year_edit_field').val();
@@ -254,8 +255,11 @@ function changePrice() {
       success: function(result){
         console.log(result)
         $(`#tr_service_charge_${charge_id}`).html(result)
+        toastr.success("Cập nhật hoá đơn dịch vụ thành công!")
       },
-      error: function (error) {}
+      error: function (error) {
+        toastr.error("Cập nhật hoá đơn dịch vụ không thành công!")
+      }
     })
   }
 

@@ -94,6 +94,7 @@
           <th>STT</th>
           <th>Phòng</th>
           <th>Tháng</th>
+          <th>Năm</th>
           <th>Tiền điện</th>
           <th>Tiến nước</th>
           <th>Tổng tiền</th>
@@ -114,6 +115,7 @@
             <td class='index'><%= index + 1 %></td>
             <td class='room_name'><%= charge.room.room_name %></td>
             <td class='month'><%= charge.month %></td>
+            <td class='month'><%= charge.year %></td>
             <td class='electricity_price'><%= charge.electricity_price %></td>
             <td class='water_price'><%= charge.water_price %></td>
             <td class='total_price'><%= charge.total_price %></td>
@@ -162,7 +164,7 @@
         <div class="five wide column">
           <div class="student-info">
             <div class="ui field">
-              <label>Tháng:</label>
+              <label>Thời gian:</label>
               <p id="show_month"></p>
             </div>
             <label>Tồng tiền:</label>
@@ -313,12 +315,11 @@
     else if (checkboxes <= 0)
     {
       $('.remind .button').removeClass('hover');
+      $('.remind .button').prop('disabled', true)
     }
   }
 
   function onHandleFilter (event) {
-    console.log($("#month_filter").dropdown("get value") )
-
     $.ajax({
       type: "GET",
       url: "/manager/service-management/filter",
@@ -395,33 +396,6 @@
         }
       })
     }
-    // const remindRoom = (item) => new Promise((resolve, reject) => {
-    //   if (item.checked == true) {
-    //     item_quantity += 1
-    //     console.log(item_quantity)
-    //     $.ajax({
-    //       type: 'POST',
-    //       url: '/manager/service-management/remind',
-    //       data: {
-    //         charge_id: item.value
-    //       },
-    //       success: function(result){
-    //         success_item += 1
-    //         $('.remind_checkbox').prop('checked', false);
-    //         $('#check_all').prop('checked', false);
-    //         $('.remind .button').prop('disabled', true)
-    //         $('.remind .button').removeClass('hover');
-    //         resolve();
-    //       },
-    //       error: function (error) {
-    //         reject()
-    //       }
-    //     })
-    //   } else {
-    //     resolve()
-    //   }
-    // })
-
     let remindRooms = []
     for (let i = 0; i < document.getElementsByClassName('remind_checkbox').length; i++) {
       const item = document.getElementsByClassName('remind_checkbox')[i];
@@ -463,10 +437,7 @@
         "charge_id": charge_id
       },
       success: function(result){
-        debugger
-        
-        //Show modal
-        $('#show_month').html(result.service_charge.month)
+        $('#show_month').html(`${result.service_charge.month}/${result.service_charge.year}`)
         $('#show_year').html(result.service_charge.year)
         $('#show_water_price').html(result.service_charge.water_price)
         $('#show_electricity_price').html(result.service_charge.electricity_price)
@@ -551,9 +522,9 @@
         $(`#tr_service_charge_${charge_id} .year`).html(result.charge.year)
         $(`#tr_service_charge_${charge_id} .payer`).html(result.charge.payer)
         if (result.charge.status == 'PAID') {
-          $(`#tr_service_charge_${charge_id} .status`).html(`<a class="ui teal tag label" style="width: 6.7rem">PAID</a>`)
+          $(`#tr_service_charge_${charge_id} .status`).html(`<a class="ui teal tag label">Đã thanh toán</a>`)
         } else if (result.charge.status == 'UNPAID') {
-          $(`#tr_service_charge_${charge_id} .status`).html(`<a class="ui red tag label" style="width: 6.7rem">UNPAID</a>`)
+          $(`#tr_service_charge_${charge_id} .status`).html(`<a class="ui red tag label">Chưa thanh toán</a>`)
         }
         toastr.success(result.message)
       },
@@ -578,11 +549,11 @@
           rules: [
             {
               type: 'empty',
-              prompt: 'Please enter student name!!'
+              prompt: 'Vui lòng nhập tiền điện!!'
             },
             {
               type: 'integer[0..1000000000000]',
-              prompt: 'Electricity_price must be more than 0 vnd and less than 1000000000000 vnd!!'
+              prompt: 'Tiền điện không được quá 1000000000000 vnd!!'
             }
           ]
         },
@@ -591,7 +562,7 @@
           rules: [
             {
               type: 'empty',
-              prompt: 'Please setting status!!'
+              prompt: 'Vui lòng cập nhật trạng thái hoá đơn!!'
             }
           ]
         },
@@ -600,11 +571,11 @@
           rules: [
             {
               type: 'empty',
-              prompt: 'Please enter student name!!'
+              prompt: 'Vui lòng nhập tổng tiền!!'
             },
             {
               type: 'integer[0..1000000000000]',
-              prompt: 'Total price must be more than 0 vnd and less than 1000000000000 vnd!!'
+              prompt: 'Tổng tiền hoá đơn không được quá 1000000000000 vnd!!'
             }
           ]
         },
@@ -613,11 +584,11 @@
           rules: [
             {
               type: 'empty',
-              prompt: 'Please enter student name!!'
+              prompt: 'Vui lòng nhập tiền nước!!'
             },
             {
               type: 'integer[0..1000000000000]',
-              prompt: 'Water price must be more than 0 vnd and less than 1000000000000 vnd!!'
+              prompt: 'Tiền nước không được quá 1000000000000 vnd!!'
             }
           ]
         }
@@ -632,21 +603,6 @@
     $('#edit_info_modal').modal('hide');
   }
 
-  $(document).on("turbolinks:load", function() {
-    $(".search-service-charge-form").on("keyup", function() {
-      // $('#room_list').html("")
-      $.ajax({
-        type: "GET",
-        url: "/manager/service-management/find?q=" + this.value,
-        success: function(result){
-          $('#service_charge_table').html(result)
-        },
-        error: function (error){
-          console.log('error', error)
-        }
-      })
-    });
-  });
 
   function resetFilter(){
     window.location.reload();

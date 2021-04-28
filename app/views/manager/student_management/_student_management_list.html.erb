@@ -292,7 +292,7 @@
     let addForm = document.getElementById('add-form');
     let formData = new FormData(addForm);
       e.preventDefault();
-      console.log("helloooo", $('#add-form').form('is valid'))
+      // console.log("helloooo", $('#add-form').form('is valid'))
         $.ajax({
         type: "POST",
         url: "/manager/student-management/create",
@@ -311,7 +311,6 @@
       })
   }
   
-
   $('#add-form').off('submit').submit(async function(e){
     e.preventDefault();
     if($('#add-form').form('is valid')) {

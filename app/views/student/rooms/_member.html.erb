@@ -72,14 +72,22 @@
       }, 
       success: function(result){
         console.log(result.student_profile)
-        let date = new Date(result.student_profile.date_of_birth)
+        let date = result.student_profile.date_of_birth ? new Date(result.student_profile.date_of_birth) : null
+
         $('#student_name').html(result.student.name)
         $('#student_id_number').html(result.student.student_id_number)
-        $('#date_of_birth').html(`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`)
+        $('#date_of_birth').html(date ? `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}` : null)
         $('#phone_number').html(result.student_profile.phone_number)
         $('#address').html(result.student_profile.address)
-        $('#gender').html(result.student_profile.gender)
-        // document.getElementById("student_ava").src = result.student_profile.avatar
+        if(result.student_profile.gender == "MALE"){
+          $('#gender').html("Nam")
+        }
+        else if(result.student_profile.gender == "FEMALE"){
+          $('#gender').html("Nữ")
+        }
+        else{
+           $('#gender').html("")
+        }
         
         $("#student_ava").attr("src", result.student_profile.avatar.url ? result.student_profile.avatar.url : '/assets/profile.png');
 

@@ -77,8 +77,8 @@ Rails.application.routes.draw do
 
     get "/managers/search", to: "managers#search_student_and_room"
 
-    get "/report-management/", to: "report_management#complaint_report"
-    get "/report-management/complaint-reports", to: "report_management#complaint_report"
+    get "/report-management/", to: "report_management#pending_complaint_report"
+    get "/report-management/complaint-reports", to: "report_management#pending_complaint_report"
     get "/report-management/complaint-reports/pending", to: "report_management#pending_complaint_report"
     get "/report-management/complaint-reports/approved", to: "report_management#approved_complaint_report"
     get "/report-management/complaint-reports/rejected", to: "report_management#rejected_complaint_report"
@@ -87,7 +87,7 @@ Rails.application.routes.draw do
     put "/report-management/complaint-reports/:id/reject", to: "report_management#deny_complaint_report"
     put "/report-management/complaint-reports/:id/approve", to: "report_management#approve_complaint_report"
 
-    get "/report-management/facility-reports", to: "report_management#facility_report"
+    get "/report-management/facility-reports", to: "report_management#pending_facility_report"
     get "/report-management/facility-reports/pending", to: "report_management#pending_facility_report"
     get "/report-management/facility-reports/approved", to: "report_management#approved_facility_report"
     get "/report-management/facility-reports/rejected", to: "report_management#rejected_facility_report"
@@ -96,7 +96,7 @@ Rails.application.routes.draw do
     put "/report-management/facility-reports/:id/reject", to: "report_management#reject_facility_report"
     put "/report-management/facility-reports/:id/approve", to: "report_management#approve_facility_report"
 
-    get "/report-management/form-requests", to: "report_management#form_request"
+    get "/report-management/form-requests", to: "report_management#pending_form_request"
     get "/report-management/form-requests/pending", to: "report_management#pending_form_request"
     get "/report-management/form-requests/approved", to: "report_management#approved_form_request"
     get "/report-management/form-requests/rejected", to: "report_management#rejected_form_request"

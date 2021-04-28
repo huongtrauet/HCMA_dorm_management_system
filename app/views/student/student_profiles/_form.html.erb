@@ -14,7 +14,7 @@
               </div>
               <div class="ava_icon">
                 <button id="insert_image_button" class="ui icon button" style="padding: 1px 11px">
-                  <input style="	width: 0.1px;	height: 0.1px;	opacity: 0;	overflow: hidden;	position: absolute;	z-index: -1;" type="file" class="inputfile" id="embedpollfileinput1" onchange="generatePreviewImage(this)" style="width: 100%; height: 100%" multiple="true" accept="image/png, image/jpeg" name="images_input" />
+                  <input style="	width: 0.1px;	height: 0.1px;	opacity: 0;	overflow: hidden;	position: absolute;	z-index: -1;" type="file" class="inputfile" id="embedpollfileinput1" onchange="generatePreviewImage(this)" style="width: 100%; height: 100%" multiple="false" accept="image/png, image/jpeg" name="images_input" />
                   <label id="lable_image" for="embedpollfileinput1" class="ui button" style="margin: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; padding: 0">
                     <i class="edit outline icon" style="margin: 0"></i>
                   </label>
@@ -180,7 +180,7 @@
         toastr.success(JSON.parse(result).message)
       },
       error: function (error){
-        toastr.success("Update avatar failed!")
+        toastr.success("Cập nhật ảnh đại diện thất bại :(")
       }
     })
   }
@@ -281,6 +281,7 @@
       inline: true
     })
   ;
+  //mở thanh thông tin cá nhân, bảo mật
    $('.accordion')
   .accordion();
 

@@ -2,8 +2,8 @@
   <div class="header" style="display: flex; justify-content: space-between; align-items: flex-end">
     <div style="font-weight: bold"><a href="/manager/building-management" class="breadcrumb">Toà nhà</a> / 
       <a href="/manager/building-management/<%= @room.building.id %>" class="breadcrumb"><%= @room.building.name %></a> /
-      <a href="/manager/rooms-management/rooms/<%= @room.id %>" class="breadcrumb"><%= t(".room") %> <%= @room.room_name %></a> /
-      <a href="/manager/rooms-management/rooms/<%= @room.id %>/facilities" class="breadcrumb">Cơ sở vật chất</a>
+      <a href="/manager/room-management/rooms/<%= @room.id %>" class="breadcrumb"><%= t(".room") %> <%= @room.room_name %></a> /
+      <a href="/manager/room-management/rooms/<%= @room.id %>/facilities" class="breadcrumb">Cơ sở vật chất</a>
     </div>
     <div class="header_search">
       <button class="ui icon button" onclick="addFacility()">

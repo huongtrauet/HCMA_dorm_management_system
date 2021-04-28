@@ -60,6 +60,7 @@
             <% end %>
           </td>
         </tr>
+        <%# modal xem %>
         <div class="ui long small modal first scrolling" id="show_modal_first_<%= post.id %>">
           <div class="scrolling content" style="padding: 3rem">
             <div class="description">
@@ -93,7 +94,7 @@
     <%= paginate @posts, turbolinks: false %>
   </div>
 </div>
-
+<%# modal sửa %>
 <div class="ui longer small modal second scrolling" id="show_modal_second">
   <div class="header">
     Sửa bài đăng
@@ -125,7 +126,7 @@
     </div>
   </form>
 </div>
-
+<%# modal tạo mới %>
 <div class="ui longer small modal add">
   <div class="header">
     Tạo bài đăng mới
@@ -166,6 +167,7 @@
     </div>
   </form>
 </div>
+<%# modal confirm xoá %>
 <div class="ui mini modal confirm_delete_post">
   <div class="header">Xoá bài đăng</div>
   <div class="content">
@@ -176,6 +178,7 @@
     <div class="ui appove button custom_btn" onclick="changePostStatus()">Xoá</div>
   </div>
 </div>
+<%# modal khôi phục %>
 <div class="ui mini modal confirm_restore_post">
   <div class="header">Khôi phục bài đăng</div>
   <div class="content">
@@ -201,20 +204,20 @@ if(localStorage.getItem("update_post")) {
   localStorage.removeItem("update_post")
 }
 
-$(document).ready(function(){
-  $("#editor").validate({
-    rules: {
-      content: {
-        required: true
-      }
-    }
-    });
-  });
+// $(document).ready(function(){
+//   $("#editor").validate({
+//     rules: {
+//       content: {
+//         required: true
+//       }
+//     }
+//     });
+//   });
 
-  $('.special.cards .card .image').dimmer({
-    on: 'hover'
-  });
-
+  // $('.special.cards .card .image').dimmer({
+  //   on: 'hover'
+  // });
+// hHIỂN THỊ MODAL COFIRM SẼ XOÁ HOẶC KHÔI PHỤC
   function confirmChangePostStatus(post_id, post_status){
     $('#selected_post_id').val(post_id)
     if (post_status =="POSTED") {
@@ -224,7 +227,7 @@ $(document).ready(function(){
       $(".ui.mini.modal.confirm_restore_post").modal('show');
     }
   }
-
+// SAU KHI BẤM NÚT XOÁ HOẶC KHÔI PHỤC Ở MODAL CONFIRM
   function changePostStatus() {
       let selected_post_id = $("#selected_post_id").val()
       $(".ui.mini.modal.confirm_delete_post").modal('hide');
@@ -246,7 +249,7 @@ $(document).ready(function(){
         }
       })
   }
-
+//CKEDITOR TẠO MỚI
   document.addEventListener("DOMContentLoaded", function(event) { 
     ClassicEditor
       .create(document.querySelector( '#editor' ), {
@@ -263,7 +266,7 @@ $(document).ready(function(){
       .catch( error => {
         console.error( error );
       })
-
+//CKEDITOR SỬA 
     ClassicEditor
       .create(document.getElementById('editor_edit'), {
         toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'imageInsert'],
@@ -282,7 +285,7 @@ $(document).ready(function(){
     }
 
   );
-
+//show post mở cả 2 modal và fill dữ liệu cả 2 modal
   function showPost(post_id) {
     $(`#show_modal_first_${post_id}`).modal('show');
     $(`#show_modal_second`)
@@ -325,34 +328,35 @@ $(document).ready(function(){
   }
 
   //ADD POST
-  var allImage = [] 
+  // var allImage = [] 
   let myForm = document.getElementById('myForm');
-  let formData = new FormData(myForm);
-  function generatePreviewImage(image){
+  let formData = new FormData(myForm); //FORM DATA CHÍNH ĐỂ GỬI VỀ CONTROLLER
+  function generatePreviewImage(image){ //IMAGE LÀ TẤT CẢ CÁC ẢNH ĐÃ CHỌN
     var index = 0;
     count = image.files.length;
+    //IN RA THẺ TẤT CẢ CÁC ẢNH ĐÃ CHỌN DƯỚI DẠNG PREVIEW
     for (let i = 0; i < image.files.length; i++) {
       $('#preview_image').append(`<div class='card' style="height: 20rem" id="image_${index}">
                                 <i class="ui window close outline icon" style="position: absolute; top: 0.5rem; right: 0.5rem; cursor: pointer;", onclick="removeImage(this)"></i>
                                 <img style="width: 100%; height: 100%;" src='${URL.createObjectURL(image.files[i])}' />
                                 </div>`)
-    }
-    let myFormImage = document.getElementById('myForm');
-    let formDataImage = new FormData(myForm);
-    index++;
-    for (let index = 0; index < formDataImage.getAll("images_input").length; index++) {
-      formData.append('images', formDataImage.getAll("images_input")[index]);
-    }
+      }
+      // let myFormImage = document.getElementById('myForm');
+      let formDataImage = new FormData(myForm); //FORM DATA CHỨA TẤT CẢ ẢNH ĐÃ CHỌN
+      index++;
+      for (let index = 0; index < formDataImage.getAll("images_input").length; index++) {
+        formData.append('images', formDataImage.getAll("images_input")[index]); //THÊM ẢNH ĐÃ CHỌN VÀO FORMDATA CHÍNH
+      }
   }
 
   function removeImage(_this){
-    const preview_images = Array.prototype.slice.call( document.getElementById('preview_image').children )
-    $(_this).parent().remove();
-    const index =  preview_images.indexOf( _this.parentElement )
-    let images = formData.getAll("images")
-    images.splice(index-1, 1)
-    formData.delete('images')
-    for (let index = 0; index < images.length; index++) {
+    const preview_images = Array.prototype.slice.call( document.getElementById('preview_image').children )//LẤY MẢNG TÁT CẢ CÁC ẢNH HIỆN TẠI ĐANG CÓ Ở PREVIEW == CHÍNH
+    $(_this).parent().remove();//XOÁ LUÔN CARD CHỨA ẢNH ĐA CHỌN XOÁ
+    const index =  preview_images.indexOf( _this.parentElement ) //TÌM VỊ TRÍ CỦA THẰNG ĐÃ ĐƯỢC CHỌN XOÁ , MỤC
+    let images = formData.getAll("images") //LẤY TẤT CẢ ANHE Ở FORMDATA CHÍNH RA
+    images.splice(index-1, 1) //XOÁ ĐI ĐÚNG ẢNH CÓ VỊ TRÍ NÃY TÌM ĐƯỢC
+    formData.delete('images') //XOÁ HẾT ẢNH TRONG DFORMDATA CHÍNH
+    for (let index = 0; index < images.length; index++) { // THÊM LẠI SAU KHI ĐÃ XOÁ ẢNH
       formData.append('images', images[index])
     }
   }
@@ -394,7 +398,7 @@ $(document).ready(function(){
     console.log(post_content.length)
     if (post_content.replace(/<[^>]*>/gi, '').length < 1) {
       $(`#${field_id}`).append(`<div class="ui pointing red basic label validate content " style="color: #9f3a38!important; border-color: #e0b4b4!important">
-                                    Please enter content!!
+                                    Vui lòng nhập nội dung!!
                                   </div>`)
     }
   }

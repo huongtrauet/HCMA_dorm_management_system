@@ -2,8 +2,8 @@
   <div class="header" style="display: flex; justify-content: space-between; align-items: flex-end">
     <div style="font-weight: bold"><a href="/manager/building-management" class="breadcrumb">Toà nhà</a> / 
       <a href="/manager/building-management/<%= @room.building.id %>" class="breadcrumb"><%= @room.building.name %></a> /
-      <a href="/manager/rooms-management/rooms/<%= @room.id %>" class="breadcrumb">Phòng <%= @room.room_name %></a> /
-      <a href="/manager/rooms-management/rooms/<%= @room.id %>/members" class="breadcrumb">Thành viên</a>
+      <a href="/manager/room-management/rooms/<%= @room.id %>" class="breadcrumb">Phòng <%= @room.room_name %></a> /
+      <a href="/manager/room-management/rooms/<%= @room.id %>/members" class="breadcrumb">Thành viên</a>
     </div>
     <div class="header_search">
       <% if @room_members.length < @room.max_number_student %>
@@ -185,7 +185,7 @@
     toastr.success(window.localStorage.getItem('new_student'))
     window.localStorage.removeItem('new_student')
   }
-
+//FILL VAO MODAL SHOW
   function showStudentInfo(member_id) {
     $('.ui.modal.student_info').modal('show');
     $.ajax({
@@ -226,7 +226,7 @@
       }
     })
   }
-
+//EDIT CHUYEN DI TRANG KHAC
   function editMemberInfo() {
     let member_id = $('#member_id').val()
     forwarding_url = document.location.href;
@@ -237,7 +237,7 @@
     $('#add-form').form('reset');
     $('.ui.mini.modal.add_student').modal('show');
   }
-
+//student_management_controller
   function addSubmit(e) {
     let addForm = document.getElementById('add-form');
     let formData = new FormData(addForm);

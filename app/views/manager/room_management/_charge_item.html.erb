@@ -5,8 +5,8 @@
 <td><%= service_charge.total_price %></td>
 <td>
   <% if service_charge.status == "PAID" %>
-  <a class="ui teal tag label" style="width: 6.7rem"><%= service_charge.status %></a>
+  <a class="ui teal tag label" style="">Đã thanh toán</a>
   <% elsif service_charge.status == "UNPAID" %>
-  <a class="ui red tag label" style="width: 6.7rem"><%= service_charge.status %></a>
+  <a class="ui red tag label" style="">Chưa thanh toán</a>
   <% end  %>
 </td> 
