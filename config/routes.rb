@@ -120,12 +120,12 @@ Rails.application.routes.draw do
   end
   
   namespace :student do
-    get "/" => redirect("/student/student_profiles")
+    get "/" => redirect("/student/my-profile")
     
     get "/login", to: "student_sessions#new"
     post "/login", to: "student_sessions#create"
     get "/logout", to: "student_sessions#destroy"
-    get "/requests", to: "facility_reports#index"
+    get "/requests", to: "complaint_reports#index"
     
     get "/requests/facility", to: "facility_reports#index"
     get "/requests/facility/:id", to: "facility_reports#show"

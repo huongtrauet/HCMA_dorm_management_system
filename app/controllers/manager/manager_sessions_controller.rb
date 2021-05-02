@@ -1,7 +1,8 @@
 class Manager::ManagerSessionsController < ManagerMainController
   layout 'manager_layout/manager'
   skip_before_action :verify_authenticity_token
-  
+  before_action :not_logged_in, only: [:create, :new]
+
   def new
   end
   def create
@@ -11,9 +12,7 @@ class Manager::ManagerSessionsController < ManagerMainController
         log_in manager
         # remember student
         params[:remember_me] == 'on' ? remember(manager) : forget(manager)
-        respond_to do |format|
-          format.json {render json: {message: "Đăng nhập thành công!!"}, status: :ok}
-        end
+        redirect_back_or '/manager'
       else
         respond_to do |format|
           format.json {render json: {message: "Mật khẩu không chính xác!!"}, status: :bad_request}
@@ -36,5 +35,11 @@ class Manager::ManagerSessionsController < ManagerMainController
 
   def find_manager_by_email
     return Manager.find_by email: params[:email].downcase
+  end
+
+  def not_logged_in
+    return if !logged_in_manager?
+
+    redirect_to "/manager"
   end
 end

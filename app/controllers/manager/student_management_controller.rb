@@ -109,7 +109,7 @@ class Manager::StudentManagementController < ManagerMainController
 
   def find_pending_student
     # @room_service_charges = ServiceCharge.where(room_id: params[:id]).order("year DESC").order("month DESC")
-    @pending_students = Student.where(status: "PENDING").order("name DESC")
+    @pending_students = Student.where(status: "PENDING").order("name ASC")
     respond_to do |format|
       format.js {render partial: '/manager/students_arrangement/pending_student_list', locals: { pending_students: @pending_students } } 
     end
@@ -117,13 +117,13 @@ class Manager::StudentManagementController < ManagerMainController
 
   def search_student
     if params[:status] == "PENDING" or params[:status] == "ACTIVE"
-      @students = Student.all.where(status: params[:status]).order("name DESC")
+      @students = Student.all.where(status: params[:status]).order("name ASC")
       if params[:q] == "" or params[:q] == nil or params[:q] == "undefined"
         respond_to do |format|
           format.js {render partial: 'student_table', locals: { students: @students, is_full: false } } 
         end
       elsif params[:q] 
-        @students = @students.ransack(name_or_student_id_number_or_status_cont: params[:q]).result
+        @students = @students.ransack(name_or_student_id_number_or_status_cont: params[:q]).result.order("name ASC")
         if @students
           respond_to do |format|
             format.js {render partial: 'student_table', locals: { students: @students, is_full: false } } 
@@ -135,13 +135,13 @@ class Manager::StudentManagementController < ManagerMainController
         end
       end
     else
-      @students = Student.all.order("name DESC")
+      @students = Student.all.order("name ASC")
       if params[:q] == "" or params[:q] == nil
         respond_to do |format|
           format.json {render json: {is_all: true}, status: :bad_request} 
         end
       elsif params[:q] 
-        @students = @students.ransack(name_or_student_id_number_or_status_cont: params[:q]).result
+        @students = @students.ransack(name_or_student_id_number_or_status_cont: params[:q]).result.order("name ASC")
         if @students
           respond_to do |format|
             format.js {render partial: 'student_table', locals: { students: @students, is_full: false } } 

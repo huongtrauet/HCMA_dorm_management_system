@@ -1,32 +1,32 @@
 <% posts.each_with_index do |post, index|%>  
   <tr>
-      <td onclick="showPost(<%= post.id %>)"><%= index + 1 %></td>
-      <td style="width: 20rem" onclick="showPost(<%= post.id %>)">
-        <span style="margin: 0 auto; word-wrap: break-word; max-width: 16rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
-          <%= post.title %>
-        </span>
-      </td onclick="showPost(<%= post.id %>)">
-      <td style="max-width: 25rem"onclick="showPost(<%= post.id %>)">
-        <span style="margin: 0 auto; word-wrap: break-word; max-width: 26rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
-          <%= post.content.html_safe %>
-        </span>
-      </td>
-      <td onclick="showPost(<%= post.id %>)"><%= post.created_at.to_date %></td>
-      <td onclick="showPost(<%= post.id %>)"><%= post.writer_name %></td>
-      <td onclick="showPost(<%= post.id %>)" id="post_status_<%= post.id%>">
-      <% if post.status == 'POSTED' %>
-        Đã đăng
-      <% elsif post.status == 'DELETED'%>
-        Đã xoá
+    <td onclick="showPost(<%= post.id %>)"><%= index + 1 %></td>
+    <td style="width: 20rem" onclick="showPost(<%= post.id %>)">
+      <span style="margin: 0 auto; word-wrap: break-word; max-width: 16rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+        <%= post.title %>
+      </span>
+    </td onclick="showPost(<%= post.id %>)">
+    <td style="max-width: 25rem"onclick="showPost(<%= post.id %>)">
+      <span style="margin: 0 auto; word-wrap: break-word; max-width: 26rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+        <%= post.content.html_safe %>
+      </span>
+    </td>
+    <td onclick="showPost(<%= post.id %>)"><%= post.created_at.to_date %></td>
+    <td onclick="showPost(<%= post.id %>)"><%= post.writer_name %></td>
+    <td onclick="showPost(<%= post.id %>)" id="post_status_<%= post.id%>">
+    <% if post.status == 'POSTED' %>
+      Đã đăng
+    <% elsif post.status == 'DELETED'%>
+      Đã xoá
+    <% end %>
+    </td>
+    <td id="post_actions_<%= post.id%>">
+      <% if post.status == "POSTED" %>
+        <i class="trash alternate outline icon" id="delete_post_<%= post.id %>" onclick="confirmChangePostStatus(<%= post.id %>, 'POSTED')"></i>
+      <% elsif post.status == "DELETED" %>
+        <i class="window restore outline icon" id="delete_post_<%= post.id %>" onclick="confirmChangePostStatus(<%= post.id %>, 'DELETED')"></i>
       <% end %>
-      </td>
-      <td id="post_actions_<%= post.id%>">
-        <% if post.status == "POSTED" %>
-          <i class="trash alternate outline icon" id="delete_post_<%= post.id %>" onclick="confirmChangePostStatus(<%= post.id %>, 'POSTED')"></i>
-        <% elsif post.status == "DELETED" %>
-          <i class="window restore outline icon" id="delete_post_<%= post.id %>" onclick="confirmChangePostStatus(<%= post.id %>, 'DELETED')"></i>
-        <% end %>
-      </td>
+    </td>
   </tr>
   <div class="ui long small modal first scrolling" id="show_modal_first_<%= post.id %>">
     <div class="scrolling content" style="padding: 3rem">

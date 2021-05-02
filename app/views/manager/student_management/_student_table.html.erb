@@ -119,13 +119,13 @@
         </div>
         <div class="actions" style="padding: 0.7rem 1rem;">
           <div class="ui black cancel button">
-            Cancel
+            Huỷ
           </div>
           <button class="ui youtube button" style="background-color: #db2828" onclick="deleteStudent(<%= student.id %>)">
-            Delete
+            Xoá
           </button>
-          <%= link_to "/manager/student-management/#{student.id}/edit", class: "ui positive right labeled icon button", data: { turbolinks: false } do %>
-            Edit
+          <%= link_to "/manager/student-management/#{student.id}/edit", class: "ui right labeled icon button", style: "color: #ffffff !important; background-color: #2185d0 !important;", data: { turbolinks: false } do %>
+            Cập nhật
             <i class="arrow right icon"></i>
           <% end %>
 

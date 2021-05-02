@@ -27,7 +27,7 @@ class Manager::StudentsArrangementController < ManagerMainController
   def add_student_to_room
     @student = Student.find(params[:student_id])
     @room = Room.find(params[:room_id])
-    message = "Chúc mừng bạn đã được thêm vào phòng #{@room.room_name}! #{@room.room_name} chào đón bạn! "
+    message = "Bạn đã được thêm vào phòng #{@room.room_name}! Chúc bạn có những khoảng thời gian thật vui vẻ! "
     if @room.number_student < @room.max_number_student 
       if @student.update(room_id: @room.id, status: "ACTIVE")
         if @student.check_in_date == nil

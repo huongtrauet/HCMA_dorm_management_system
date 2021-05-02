@@ -51,5 +51,5 @@ test:
 production:
   <<: *default
   database: HCMA_dorm_management_production
-  username: HCMA_dorm_management
-  password: <%= ENV['HCMA_DORM_MANAGEMENT_DATABASE_PASSWORD'] %>
+  username: root
+  password: huongtra

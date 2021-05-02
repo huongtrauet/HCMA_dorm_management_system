@@ -67,21 +67,41 @@ class Manager::PostManagementController < ManagerMainController
   end
 
   def find_post
-    if params[:q] 
-      @posts = Post.all.ransack(title_or_status_or_writer_name_cont: params[:q]).result.order('created_at DESC')
-      if @posts
+    if params[:status] == "POSTED" or params[:status] == "DELETED"
+      @posts = Post.all.where(status: params[:status]).order("created_at DESC")
+      if params[:q] != "" && params[:q] != nil
+        @posts = @posts.ransack(title_or_status_or_writer_name_cont: params[:q]).result.order('created_at DESC')
+        if @posts
+          respond_to do |format|
+            format.js {render partial: 'post_table', locals: { posts: @posts } } 
+          end
+        else
+          respond_to do |format|
+            format.json {render json: {message: 'Không tìm thấy bài đăng :('}, status: :bad_request}
+          end
+        end
+      elsif params[:q] == "" or params[:q] == nil
         respond_to do |format|
           format.js {render partial: 'post_table', locals: { posts: @posts } } 
         end
-      else
-        respond_to do |format|
-          format.json {render json: {message: 'Không tìm thấy bài đăng :('}, status: :bad_request}
-        end
       end
-    elsif params[:q] == "" or params[:q] == nil
-      @posts = Post.all
-      respond_to do |format|
-        format.js {render partial: 'post_table', locals: { posts: @posts } } 
+    else
+      @posts = Post.all.order('created_at DESC')
+      if params[:q] != "" && params[:q] != nil
+        @posts = @posts.ransack(title_or_status_or_writer_name_cont: params[:q]).result.order('created_at DESC')
+        if @posts
+          respond_to do |format|
+            format.js {render partial: 'post_table', locals: { posts: @posts } } 
+          end
+        else
+          respond_to do |format|
+            format.json {render json: {message: 'Không tìm thấy bài đăng :('}, status: :bad_request}
+          end
+        end
+      elsif params[:q] == "" or params[:q] == nil
+        respond_to do |format|
+          format.js {render partial: 'post_table', locals: { posts: @posts } } 
+        end
       end
     end
   end

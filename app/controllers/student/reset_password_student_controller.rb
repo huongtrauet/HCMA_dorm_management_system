@@ -10,11 +10,11 @@ class Student::ResetPasswordStudentController < StudentMainController
       @student.send_password_reset_email
       log_out if logged_in?
       respond_to do |format|
-        format.json {render json: {message: 'Email reset password was sent successfully'}, status: :ok}
+        format.json {render json: {message: 'Đường dẫn thay đổi mật khẩu đã được gửi tới email của bạn'}, status: :ok}
       end
     else
       respond_to do |format|
-        format.json {render json: {message: 'Email reset password was sent fail'}, status: :bad_request}
+        format.json {render json: {message: 'Đã xảy ra lỗi khi gửi email'}, status: :bad_request}
       end
     end
   end

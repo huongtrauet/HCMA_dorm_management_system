@@ -5,14 +5,14 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-Manager.create!(email: 'manager123@gmail.com', phone_number: "0972403331", password: '999999', password_confirmation: '999999', channel: "manager")
+Manager.create!(email: 'manager123@gmail.com', phone_number: "0972403331", password: '888888', password_confirmation: '888888', channel: "manager")
 
 18.times do |index|
   Building.create!(name: "A#{index + 1}", total_floor: 10)
 end
 
-Room.create!(room_name: 'A1_0000', number_student: 16, max_number_student: 100000, room_type: 'NORMAL', gender: "FEMALE", building_id: 1, status: 'UNFILLED')
-Room.create!(room_name: 'A1_0201', number_student: 5, max_number_student: 6, room_type: 'VIP', gender: "MALE", building_id: 1, status: 'UNFILLED')
+Room.create!(room_name: 'A1_0000', number_student: 0, max_number_student: 100000, room_type: 'NORMAL', gender: "FEMALE", building_id: 1, status: 'UNFILLED')
+Room.create!(room_name: 'A1_0201', number_student: 0, max_number_student: 6, room_type: 'VIP', gender: "MALE", building_id: 1, status: 'UNFILLED')
 Room.create!(room_name: 'A1_0202', number_student: 0, max_number_student: 6, room_type: 'VIP', gender: "MALE", building_id: 1, status: 'PENDING')
 Room.create!(room_name: 'A1_0203', number_student: 0, max_number_student: 6, room_type: 'VIP', gender: "MALE", building_id: 1, status: 'PENDING')
 Room.create!(room_name: 'A1_0204', number_student: 0, max_number_student: 6, room_type: 'VIP', gender: "MALE", building_id: 1, status: 'PENDING')

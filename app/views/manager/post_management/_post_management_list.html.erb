@@ -8,6 +8,15 @@
       <button class="ui icon button" onclick="addPost()">
         <i class="plus icon"></i>
       </button>
+       <div class="ui selection dropdown filter_item" id="status_filter">
+        <input type="hidden" onchange="onSearch()">
+        <div class="default text">Trạng thái</div>
+        <div class="menu">
+          <div class="item" data-value="POSTED">Đã đăng</div>
+          <div class="item" data-value="DELETED">Đã xoá</div>
+          <div class="item" data-value="ALL">Tất cả</div>
+        </div>
+      </div>
       <div class="ui icon input" style="">
         <input type="text" placeholder="Nhập tiêu đề, người viết" name="q" id="q" class="form-control search-post-form" >
         <i class="icon">
@@ -82,7 +91,7 @@
               Huỷ
             </button>
             <div class="ui primary approve button proceed">
-              Cập nhật
+              Chỉnh sửa
               <i class="right chevron icon"></i>
             </div>
           </div>
@@ -121,7 +130,7 @@
       </div>
       <div class="actions" style="float: right; margin-top: 1rem">
         <button class="ui cancel button">Huỷ</button>
-        <div class="ui primary submit button">Cập nhật</div>
+        <div class="ui primary submit button">Chỉnh sửa</div>
       </div>
     </div>
   </form>
@@ -203,6 +212,8 @@ if(localStorage.getItem("update_post")) {
   toastr.success(localStorage.getItem("update_post"))
   localStorage.removeItem("update_post")
 }
+ $('.ui.dropdown')
+  .dropdown();
 
 // $(document).ready(function(){
 //   $("#editor").validate({
@@ -446,14 +457,10 @@ if(localStorage.getItem("update_post")) {
     }
   })
 
-
-  // Search
-
-  $(document).on("turbolinks:load", function() {
-    $(".search-post-form").on("keyup", function() {
-      $.ajax({
+ function onSearch(){
+   $.ajax({
         type: "GET",
-        url: "/manager/post-management/find-post?q=" + this.value,
+        url: "/manager/post-management/find-post?q=" + $(".search-post-form").val() + "&status=" + $("#status_filter").dropdown('get value'),
         success: function(result){
           $('#post_list').html(result)
           console.log('success' + result)
@@ -462,6 +469,12 @@ if(localStorage.getItem("update_post")) {
           console.log('error', error)
         }
       })
+ }
+  // Search
+
+  $(document).on("turbolinks:load", function() {
+    $(".search-post-form").on("keyup", function() {
+      onSearch();
     });
   });
   //VALIDATION
@@ -477,8 +490,8 @@ if(localStorage.getItem("update_post")) {
               prompt: 'Vui lòng nhập tiêu đề!'
             },
             {
-              type: 'maxLength[300]',
-              prompt: 'Tiêu đề không được quá 300 ký tự!'
+              type: 'maxLength[200]',
+              prompt: 'Tiêu đề không được quá 200 ký tự!'
             }
           ]
         },

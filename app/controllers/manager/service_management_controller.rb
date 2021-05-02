@@ -5,7 +5,7 @@ class Manager::ServiceManagementController < ManagerMainController
 
   def index
     @service_charges = ServiceCharge.all.order("year DESC").order("month DESC").order("created_at DESC").page(params[:page])
-    @rooms = Room.all.select(:id, :room_name)
+    @rooms = Room.all.where("room_name != 'A1_0000'").select(:id, :room_name)
   end
 
   def room_service_charge
@@ -107,11 +107,17 @@ class Manager::ServiceManagementController < ManagerMainController
   end
 
   def import
-    if ServiceCharge.import_file params[:file]
-      respond_to do |format|
-        format.json {render json: { message: "Thêm dữ liệu thành công!" }, status: :ok} 
+    begin
+      if ServiceCharge.import_file params[:file]
+        respond_to do |format|
+          format.json {render json: { message: "Thêm dữ liệu thành công!" }, status: :ok} 
+        end
+      else
+        respond_to do |format|
+          format.json {render json: { message: "Thêm dữ liệu không thành công :(" }, status: :bad_request} 
+        end
       end
-    else
+    rescue Exception => e
       respond_to do |format|
         format.json {render json: { message: "Thêm dữ liệu không thành công :(" }, status: :bad_request} 
       end

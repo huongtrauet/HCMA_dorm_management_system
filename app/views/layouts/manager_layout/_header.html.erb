@@ -1,8 +1,8 @@
 <div class="manager_header">
   <div class="ui secondary pointing menu">
-    <% if logged_in? %>
+    <% if logged_in_manager? %>
       <%= link_to manager_homepage_path, class: "item", id: "manager_home_path", data: { turbolinks: false } do %>
-        <img src="/assets/hcma logo.png" style="width: 6.7rem"/>
+        <img src="/assets/logo1.jpeg" style="width: 7.8rem"/>
       <% end %>
       <%= link_to "Bài đăng", manager_post_management_path, class: "item", id: "manager_post_management_path", data: { turbolinks: false } %>
       <%= link_to "Sắp xếp học viên", manager_students_arrangement_path, class: "item", id: "manager_students_arrangement_path", data: { turbolinks: false } %>
@@ -11,12 +11,9 @@
       <%= link_to "Dịch vụ", manager_service_management_path, class: "item", id: "manager_service_management_path", data: { turbolinks: false } %>
       <%= link_to "Báo cáo", manager_report_management_path, class: "item", id: "manager_report_management_path", data: { turbolinks: false } %>
       <%= link_to "Toà nhà", manager_building_management_path, class: "item", id: "manager_building_management_path", data: { turbolinks: false } %>
-
-    <% else %>
-      <%= link_to "Trang chủ", manager_homepage_path, class: "item", id: "manager_homepage_path", data: { turbolinks: false } %>
     <% end %>
     <div class="right menu">
-      <% if logged_in? %>
+      <% if logged_in_manager? %>
         <div class="ui floating labeled icon dropdown button" style="position: relative; background-color: #ffffff" id="noti_button" >
           <img src="/assets/bell.png" style="width: 1.5rem; height: 1.5rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)" onclick="showNotiList()"/>
           <div id="unread" class="floating ui red label" style="display: none; top: 0.5rem; left: 3rem; padding: 0.3rem; border-radius: 0.2rem;"><%= current_user.notifications.where(is_read: 'false').count %></div>
@@ -47,13 +44,13 @@
         </div>
       <% end %>
    
-      <% if logged_in? %>
+      <% if logged_in_manager? %>
         <%= link_to "Đăng xuất", manager_logout_path, class: "item", data: { turbolinks: false } %>
       <% else %>
         <%= link_to "Đăng nhập", manager_login_path, class: "item", id: "student_login_path", data: { turbolinks: false } %>
       <% end %>
     </div>
-    <% if logged_in? %>
+    <% if logged_in_manager? %>
      <input type="hidden" name="current_channel" id="current_channel" value="<%= current_user.channel%>">
     <% end %>
   </div>

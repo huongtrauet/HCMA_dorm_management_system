@@ -3,8 +3,8 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.7.0'
 
+gem 'mysql2'
 gem 'rails', '~> 6.0.3', '>= 6.0.3.4'
-gem 'mysql2', '>= 0.4.4'
 gem 'puma', '~> 4.1'
 gem 'sass-rails', '>= 6'
 gem 'webpacker', '~> 4.0'
@@ -21,13 +21,14 @@ gem 'redis'
 gem 'pusher'
 gem 'ransack'
 gem 'jquery-rails'
-gem 'kaminari' 
+gem 'kaminari'
 gem 'paypal-checkout-sdk'
 gem 'roo'
 gem "activerecord-import"
 gem "flex-slider-rails"
 gem "rails-i18n"
-
+gem 'mimemagic', github: 'mimemagicrb/mimemagic', ref: '01f92d86d15d85cfd0f20dabd025dcbd36a8a60f'
+gem 'sassc', '~>2.4.0'
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
 end

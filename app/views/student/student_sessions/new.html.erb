@@ -25,8 +25,8 @@
             <label>Lưu đăng nhập</label>
             </div>
           </div>
-          <div class="actions" style="display: flex; justify-content: flex-start; margin-top: 1rem;">
-            <button class="ui submit button custom_btn" style="background-color: #246966 !important">
+          <div class="field" style="display: flex; justify-content: flex-start; margin-top: 1rem;">
+            <button class="ui button" style="background-color: #246966 !important">
               Đăng nhập
             </button>
           </div>
@@ -39,11 +39,13 @@
   <div class="ui small modal" id="reset_password">
     <div class="header">Quên mật khẩu</div>
     <div class="content">
-    <form class="ui form" id="reset_password_form">
-      <div class="required field field_line">
-        <label>Mã học viên</label>
-        <input type="text" name="student_id_number" id="student_id_number"/>
-      </div>
+      <form id="reset_password_form">
+        <div class="ui form">
+          <div class="field">
+            <label>Mã học viên</label>
+            <input type="text" name="student_id_number" id="student_id_number"/>
+          </div>
+        </div>
       </form>
     </div>
     <div class="actions">
@@ -75,9 +77,11 @@
       },
       success: function(result){
         toastr.success(result.message)
+        $('#reset_password').modal('hide')
       },
       error: function (error) {
         toastr.error(error.responseJSON.message)
+        $('#reset_password').modal('hide')
       }
     })
   }
@@ -105,7 +109,9 @@
   };
 
   $('#student_login_form').off('submit').submit(function(e){
+    debugger
     if($('#student_login_form').form('is valid')) {
+      debugger
       loginSubmit(e);
     }
   })

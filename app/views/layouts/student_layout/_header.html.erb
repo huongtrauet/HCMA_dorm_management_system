@@ -1,10 +1,12 @@
   <div class="student_header">
     <div class="ui secondary pointing menu">
+    <% if logged_in_student? %>
       <%= link_to student_homepage_path, class: "item", id: "manager_home_path", data: { turbolinks: false } do %>
-        <img src="/assets/HCMA-LOGO.jpeg" style="width: 8rem"/>
+        <img src="/assets/logo1.jpeg" style="width: 7.8rem"/>
       <% end %>
+    <% end %>
       <div class="right menu">
-        <% if logged_in? %>
+        <% if logged_in_student? %>
           <input type="hidden" name="current_channel" id="current_channel" value="<%= current_user.channel%>">
           <%= link_to "Thông tin cá nhân", "/student/my-profile/", class: "item", id: "student_student_profiles_path", data: { turbolinks: false } %>
           <%= link_to "Phòng của tôi", "/student/my-room", class: "item", id: "student_room_path", data: { turbolinks: false } %>
@@ -41,13 +43,13 @@
         <% else %>
           <%= link_to "Đăng nhập", student_login_path, class: "item", id: "student_login_path", data: { turbolinks: false } %>
         <% end %>
-        <% if logged_in? %>
+        <% if logged_in_student? %>
         <div class="item" style="height: 100%">
           <%= current_user.name %>
         </div>
           
         <% end %>
-        <% if logged_in? %>
+        <% if logged_in_student? %>
           <%= link_to "Đăng xuất", student_logout_path, class: "item", data: { turbolinks: false } %>
         <% end %>
       </div>

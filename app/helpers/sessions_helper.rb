@@ -66,4 +66,24 @@ module SessionsHelper
   # def find_student_by_student_id_number
   #   return Student.find_by student_id_number: params[:student_session][:student_id_number].downcase
   # end
+
+  def logged_in_manager?
+    return true if logged_in? && current_user.class.name == "Manager"
+  end
+
+  def logged_in_student?
+    return true if logged_in? && current_user.class.name == "Student"
+  end
+
+  def logged_in_student
+    return if logged_in? && current_user.class.name == "Student"
+
+    redirect_to "/student/login"
+  end
+
+  def logged_in_manager
+    return if logged_in? && current_user.class.name == "Manager"
+
+    redirect_to "/manager/login"
+  end
 end
