@@ -10,11 +10,11 @@ class Student::ResetPasswordStudentController < StudentMainController
       @student.send_password_reset_email
       log_out if logged_in?
       respond_to do |format|
-        format.json {render json: {message: 'Đường dẫn thay đổi mật khẩu đã được gửi tới email của bạn'}, status: :ok}
+        format.json {render json: {message: 'Đường dẫn thay đổi mật khẩu đã được gửi tới email của bạn! Vui lòng kiểm tra email!'}, status: :ok}
       end
     else
       respond_to do |format|
-        format.json {render json: {message: 'Đã xảy ra lỗi khi gửi email'}, status: :bad_request}
+        format.json {render json: {message: 'Mã học viên không tồn tại'}, status: :bad_request}
       end
     end
   end
@@ -27,15 +27,15 @@ class Student::ResetPasswordStudentController < StudentMainController
     @student = Student.find_by(student_id_number: params[:student_id_number])
     if params[:password].blank?
       respond_to do |format|
-        format.json {render json: {message: 'Password is required'}, status: :bad_request}
+        format.json {render json: {message: 'Mật khẩu không được để trống'}, status: :bad_request}
       end
     elsif @student.update user_params.merge reset_digest: nil
       respond_to do |format|
-        format.json {render json: {message: 'Reset password successfully'}, status: :ok}
+        format.json {render json: {message: 'Đổi mật khẩu thành công! Đăng nhập lại tại đây!'}, status: :ok}
       end
     else
       respond_to do |format|
-        format.json {render json: {message: 'Reset password failed'}, status: :bad_request}
+        format.json {render json: {message: 'Đổi mật khấu không thành công :('}, status: :bad_request}
       end
     end
   end
@@ -46,9 +46,9 @@ class Student::ResetPasswordStudentController < StudentMainController
 
   def valid_student
     @student = Student.find_by(student_id_number: params[:student_id_number])
-    unless @student&.authenticated?(:reset, params[:token])
+    unless @student&.authenticated?(:reset, params[:token]) #check reset_token co khop voi reset_token_digest trong db khong
       respond_to do |format|
-        format.json {render json: {message: 'Token is invalid'}, status: :bad_request}
+        format.json {render json: {message: 'Đường link thay đổi mật khẩu này không hợp lệ, vui lòng thực hiện lại'}, status: :bad_request}
       end
     end
   end
@@ -56,7 +56,7 @@ class Student::ResetPasswordStudentController < StudentMainController
   def check_expiration
     return unless @student.password_reset_expired?
     respond_to do |format|
-      format.json {render json: {message: 'Reset password token is expired'}, status: :bad_request}
+      format.json {render json: {message: 'Đường link thay đổi mật khẩu này đã hết hạn! Vui lòng thực hiện lại'}, status: :bad_request}
     end
   end
 end

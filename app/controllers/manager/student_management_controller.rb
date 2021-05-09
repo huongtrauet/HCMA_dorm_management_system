@@ -15,13 +15,14 @@ class Manager::StudentManagementController < ManagerMainController
   end
 
   def create
+    byebug
     if(student_create_params[:student_id_number_confirm] == student_create_params[:student_id_number])
       student_id_number = student_create_params[:student_id_number]
       new_params = student_create_params.merge(password: student_id_number, password_confirmation: student_id_number, channel: generate_channel).except(:student_id_number_confirm)
       @student = Student.new(new_params)
       @student.student_profile = StudentProfile.new(email:"#{@student.student_id_number}@gmail.com", name: @student.name)
     else
-      rrespond_to do |format|
+      respond_to do |format|
         format.json { render json: { message: 'Nhập lại mã học viên không khớp!' } }
       end
     end
@@ -95,8 +96,9 @@ class Manager::StudentManagementController < ManagerMainController
 
   def destroy
     @student = Student.find(params[:id])
-    @room = @student.room
+    room_id = @student.room.id
     if @student.destroy
+      @room = Room.find(room_id)
       respond_to do |format|
         format.json { render json: {room: @room, message: "Xoá tài khoản học viên thành công!!"}, status: :ok}
       end
@@ -193,6 +195,36 @@ class Manager::StudentManagementController < ManagerMainController
       end
     end
   end
+
+  # def check_duplicate_informations
+  #   byebug
+  #   is_duplicate_student_id_number = false
+  #   is_duplicate_email = false
+  #   is_duplicate_identity = false
+  #   if Student.find_by(student_id_number: params[:student_id_number])
+  #     is_duplicate_student_id_number = true
+  #   end
+  #   if Student.find_by(email: params[:email])
+  #     is_duplicate_email = true
+  #   end
+  #   if Student.find_by(identity_card_number: params[:identity_card_number])
+  #     is_duplicate_identity = true
+  #   end
+
+  #   if is_duplicate_student_id_number == false and is_duplicate_email == false and is_duplicate_identity == false
+  #     respond_to do |format|
+  #       format.json { render json: {is_duplicate: false},  status: :ok } 
+  #     end
+  #   elsif is_duplicate_student_id_number == true || is_duplicate_email == true || is_duplicate_identity == true
+  #     respond_to do |format|
+  #       format.json { render json: {is_duplicate_student_id_number: is_duplicate_student_id_number, is_duplicate_email: is_duplicate_email, is_duplicate_identity: is_duplicate_identity, is_duplicate: true },  status: :ok } 
+  #     end
+  #   else
+  #     respond_to do |format|
+  #       format.json { render json: {message: "Kiểm tra trùng lặp thông tin gặp chút vấn đề!"},  status: :bad_request } 
+  #     end
+  #   end
+  # end
 
   private
 

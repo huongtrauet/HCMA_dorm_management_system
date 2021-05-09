@@ -1,6 +1,6 @@
 <style>
 .filter_item{
-  width: 9rem !important;
+  width: 11rem !important;
   min-width: 9rem !important;
   margin-right: 1rem;
 }
@@ -8,7 +8,7 @@
 <div class="service_charge_list">
   <div class="header" style="display: flex; justify-content: space-between; margin-bottom: 1rem">
     <div class="header_title">
-      <h3><%= t(".service_charge") %>: </h3>
+      <h3>Hoá đơn dịch vụ: </h3>
     </div>
   </div>
   <div style="display: flex; justify-content: flex-start">
@@ -36,7 +36,7 @@
       <i class="dropdown icon"></i>
       <div class="default text">Từ</div>
       <div class="menu">
-        <div class="item" data-value="ALL"><%= t(".all") %></div>
+        <div class="item" data-value="ALL">Tất cả</div>
         <div class="item" data-value="50000">50000</div>
         <div class="item" data-value="100000">100000</div>
         <div class="item" data-value="200000">200000</div>
@@ -50,7 +50,7 @@
       <i class="dropdown icon"></i>
       <div class="default text">Đến</div>
       <div class="menu">
-        <div class="item" data-value="ALL"><%= t(".all") %></div>
+        <div class="item" data-value="ALL">Tất cả</div>
         <div class="item" data-value="50000">50000</div>
         <div class="item" data-value="100000">100000</div>
         <div class="item" data-value="200000">200000</div>
@@ -61,7 +61,7 @@
     </div>
     <button class="reset_button" style="width: 9rem; color: #f4810b; border: 1px solid #f4810b; border-radius: 3px; background-color: #ffffff; outline: none" onclick="resetFilter()">Đặt lại</button>
   </div>
-  <div style="min-width: 8px; width: 19rem !important; margin-top: 1rem; display: flex;" >
+  <div style="min-width: 8px; width: 23rem !important; margin-top: 1rem; display: flex;" >
     <select id="month_filter" name="month_filter" multiple="" class="ui fluid multiple selection dropdown" onchange="onHandleFilter(this)">
       <option value="">Tháng</option>
       <option value="1">Tháng 1</option>
@@ -112,7 +112,7 @@
       <tbody>
         <% @service_charges.each_with_index do |charge, index| %>
           <tr id="tr_service_charge_<%= charge.id %>">
-            <td class='index'><%= index + 1 %></td>
+            <td class='index'><%= index + 1 + (@page - 1)* Settings.report_pagination%></td>
             <td class='room_name'><%= charge.room.room_name %></td>
             <td class='month'><%= charge.month %></td>
             <td class='year'><%= charge.year %></td>
@@ -281,7 +281,7 @@
 
   function uploadData(data) {
     let form = new FormData()
-    form.set('file', data.files[0])
+    form.set('file', data.files[0])// lấy file đầu tiên trong đống ng dùng chọn thêm vào
     $.ajax({
       type: "POST",
       url: "/manager/service-management/import",

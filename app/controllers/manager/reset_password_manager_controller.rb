@@ -49,15 +49,15 @@ class Manager::ResetPasswordManagerController < ManagerMainController
     @manager = Manager.first
     unless @manager&.authenticated?(:reset, params[:token])
       respond_to do |format|
-        format.json {render json: {message: 'Token không hợp lệ'}, status: :bad_request}
+        format.json {render json: {message: 'Đường link thay đổi mật khẩu này không hợp lệ! Vui lòng thực hiện lại!'}, status: :bad_request}
       end
     end
   end
 
   def check_expiration
-    return unless @manager.password_reset_expired?
+    return unless @manager.password_reset_expired? #nếu chưa hết hạn
     respond_to do |format|
-      format.json {render json: {message: 'Token đổi mật khẩu đã hết hạn'}, status: :bad_request}
+      format.json {render json: {message: 'Đường link thay đổi mật khẩu này đã hết hạn! Vui lòng thực hiện lại!'}, status: :bad_request}
     end
   end
 end

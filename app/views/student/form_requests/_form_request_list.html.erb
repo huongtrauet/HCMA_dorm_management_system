@@ -18,7 +18,7 @@
     <tbody id="list_request">
       <% @form_requests.each_with_index do |request, index| %>
         <tr onclick="viewMoreFormRequest(<%= request.id %>)" id="report_<%= request.id %>">
-          <td><%= index + 1 + (@page - 1)*Settings.pagination %></td>
+          <td><%= index + 1 + (@page - 1)*Settings.report_pagination %></td>
           <td style="width: 10rem"><%= request.created_at.to_date %></td>
           <td>
            <span style="margin: 0 auto; word-wrap: break-word; width: 10rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">

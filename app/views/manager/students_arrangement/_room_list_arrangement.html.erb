@@ -26,11 +26,11 @@
     </div>
     <div>
       <% if room.status == 'PENDING' %>
-       Trạng thái: <a class="ui mini label" style="margin-left: 1rem; background-color: #3889c8; color: #fff !important">Đang bỏ trống</a>
+       Trạng thái: <a class="ui mini label" id="room_status_card_<%= room.id%>" style="margin-left: 1rem; background-color: #3889c8; color: #fff !important">Đang bỏ trống</a>
       <% elsif room.status == 'UNFILLED' %>
-        Trạng thái: <a class="ui mini label" style="margin-left: 1rem; background-color: #3889c8; color: #fff !important">Đang còn chỗ</a>
+        Trạng thái: <a class="ui mini label" id="room_status_card_<%= room.id%>" style="margin-left: 1rem; background-color: #3889c8; color: #fff !important">Đang còn chỗ</a>
       <% elsif room.status == 'FULL' %>
-        Trạng thái: <a class="ui mini label" style="margin-left: 1rem; background-color: #3889c8; color: #fff !important">Đã đầy</a>
+        Trạng thái: <a class="ui mini label" id="room_status_card_<%= room.id%>" style="margin-left: 1rem; background-color: #3889c8; color: #fff !important">Đã đầy</a>
       <% end %>
     </div>
     <div>

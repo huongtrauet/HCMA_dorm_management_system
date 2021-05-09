@@ -162,7 +162,6 @@ ActiveRecord::Schema.define(version: 2021_04_17_061223) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "student_id", null: false
-    t.index ["email"], name: "index_student_profiles_on_email", unique: true
     t.index ["student_id"], name: "index_student_profiles_on_student_id"
   end
 

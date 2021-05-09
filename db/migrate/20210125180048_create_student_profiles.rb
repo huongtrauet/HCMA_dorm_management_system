@@ -1,7 +1,7 @@
 class CreateStudentProfiles < ActiveRecord::Migration[6.0]
   def change
     create_table :student_profiles do |t|
-      t.string :email, null: false, index: {unique: true}
+      t.string :email, null: false
       t.string :class_name
       t.string :name, null: false
       t.datetime :date_of_birth

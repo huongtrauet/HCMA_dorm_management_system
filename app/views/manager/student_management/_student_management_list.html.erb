@@ -42,7 +42,7 @@
       <tbody> 
         <% @students.each_with_index do | student, index|%>
           <tr onclick="showStudentInfo(<%= student.id %>)">
-            <td><%= index + 1 + (@page - 1)*Settings.pagination %></td>
+            <td><%= index + 1 + (@page - 1)*Settings.report_pagination %></td>
             <td><%= student.student_id_number %></td>
             <td><%= student.student_profile.name %></td>
             <% if student.student_profile.date_of_birth %>
@@ -373,12 +373,12 @@
               prompt: 'Vui lòng nhập mã học viên!!'
             },
             {
-              type: 'minLength[5]',
-              prompt: 'Mã học viên tối thiểu 5 chữ số!'
+              type: 'minLength[6]',
+              prompt: 'Mã học viên tối thiểu 6 chữ số!'
             },
             {
               type: 'maxLength[10]',
-              prompt: 'Mã học viên tối đa 10 chữ số!'
+              prompt: 'Mã học viên tối đa 12 chữ số!'
             }
           ]
         },
@@ -421,11 +421,11 @@
       }
     })
   }
-  $(document).on("turbolinks:load", function() {
-    $(".search-student-form").on("keyup", function() {
-      onSearch()
-    });
+
+  $(".search-student-form").on("keyup", function() {
+    onSearch()
   });
+
 </script>
 
 <style>

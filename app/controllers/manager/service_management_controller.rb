@@ -6,6 +6,8 @@ class Manager::ServiceManagementController < ManagerMainController
   def index
     @service_charges = ServiceCharge.all.order("year DESC").order("month DESC").order("created_at DESC").page(params[:page])
     @rooms = Room.all.where("room_name != 'A1_0000'").select(:id, :room_name)
+    @page = 1 if params[:page].blank?
+    @page = params[:page].to_i if params[:page].present?
   end
 
   def room_service_charge

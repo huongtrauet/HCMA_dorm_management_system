@@ -25,7 +25,9 @@ class Manager::StudentsArrangementController < ManagerMainController
   end
 
   def add_student_to_room
+    # byebug
     @student = Student.find(params[:student_id])
+    room_id = @student.room.id
     @room = Room.find(params[:room_id])
     message = "Bạn đã được thêm vào phòng #{@room.room_name}! Chúc bạn có những khoảng thời gian thật vui vẻ! "
     if @room.number_student < @room.max_number_student 
@@ -34,7 +36,7 @@ class Manager::StudentsArrangementController < ManagerMainController
           @student.update(check_in_date: DateTime.current.to_date)
         end
         respond_to do |format|
-          format.json {render json:{message: "Thêm sinh viên vào phòng thành công!!", room: @room}, status: :ok }
+          format.json {render json:{message: "Thêm sinh viên vào phòng thành công!!", room: @room, room_id: room_id}, status: :ok }
         end
         Notification.create(sender: current_user, receiver: @student, message: message, noti_type: "add_student_to_room" )
       end

@@ -91,8 +91,8 @@
     </div>
   </div>
   <div class="actions" style="padding: 0.7rem 1rem;">
-    <div class="ui deny button">
-      Huỷ
+    <div class="ui delete button">
+      Xoá
     </div>
     <div class="ui button edit custom_btn">
       Cập nhật
@@ -143,6 +143,27 @@
       </div>
     </div>
   </form>
+</div>
+
+<div class="ui mini modal" id="confirm-delete">
+  <input type="hidden" id="facility_id_delete" value="">
+  <div class="ui icon header" style="border: none !important">
+    <i class="archive icon"></i>
+    Xoá thiết bị cơ sở vật chất
+  </div>
+  <div class="content">
+    <p>Bạn có chắc muốn xoá thiết bị này?</p>
+  </div>
+  <div class="actions" style="display: flex; justify-content: center">
+    <div class="ui negative button">
+      <i class="remove icon"></i>
+      Huỷ
+    </div>
+    <div class="ui positive right labeled icon button custom_btn" onclick="confirmRemove()">
+      <i class="checkmark icon"></i>
+      Xoá
+    </div>
+  </div>
 </div>
 
 <div class="ui longer scrolling small modal add">
@@ -229,6 +250,7 @@
           $('#facility_status_text').html("Đang hỏng")
         }
         $('#facility_id_edit').val(facility_id)
+        $('#facility_id_delete').val(facility_id)
 
       },
       error: function(error) {
@@ -262,11 +284,33 @@
     })
   }
 
+  $('#confirm-delete')
+    .modal('attach events', '.ui.delete.button');
+
   $('.second.modal')
     .modal('attach events', '.first.modal .button.edit');
 
   $('.ui.dropdown')
   .dropdown();
+
+  function confirmRemove() {
+    facility_id = $('#facility_id_delete').val()
+    $.ajax({
+      type: "POST",
+      url: `/manager/facility-management/${facility_id}/delete`,
+      data: { 
+        "facility_id": facility_id
+      },
+      success: function(result){
+        toastr.success(result.message);
+        window.location.reload();
+      },
+      error: function (error) {
+        toastr.success(error.responseJSON.message)
+      }
+      
+    })
+  }
 
   function addFacility(){
     $('.ui.longer.small.modal.add').modal('show')

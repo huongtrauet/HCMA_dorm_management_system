@@ -17,7 +17,7 @@
             <input type="text" name="student_id_number" placeholder="Mã học viên" class="input field_line" style="margin-bottom: 0 !important " />
           </div>
           <div class="field ui field_line" style="position: relative">
-            <input type="password" name="password" placeholder="Password" class="input field_line" style="margin-bottom: 0 !important;" />
+            <input type="password" name="password" placeholder="Mật khẩu" class="input field_line" style="margin-bottom: 0 !important;" />
           </div>
           <div class="ui checkbox" style="">
             <div class="field">
@@ -26,7 +26,7 @@
             </div>
           </div>
           <div class="field" style="display: flex; justify-content: flex-start; margin-top: 1rem;">
-            <button class="ui button" style="background-color: #246966 !important">
+            <button class="ui summit button" style="background-color: #246966 !important">
               Đăng nhập
             </button>
           </div>
@@ -109,9 +109,7 @@
   };
 
   $('#student_login_form').off('submit').submit(function(e){
-    debugger
     if($('#student_login_form').form('is valid')) {
-      debugger
       loginSubmit(e);
     }
   })

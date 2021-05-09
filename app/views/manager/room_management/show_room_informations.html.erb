@@ -17,7 +17,7 @@
             <div class="required ui field field_line" >
               <div class="ui field" id="room_field_name">
                 <label for="room_name">Tên phòng</label>
-                <input type="text" id="room_name" name="room_name" style="display:block" required placeholder="Room name" value="<%= @room.room_name %>" onfocusout="checkDuplicate(this)" disabled/>
+                <input type="text" id="room_name" name="room_name" style="display:block" required placeholder="Room name" value="<%= @room.room_name %>" disabled/>
               </div>
             </div>
             <div class="required field field_line">
@@ -48,17 +48,17 @@
             </div>
             <div class="required field field_line">
               <label>Trạng thái</label>
-              <input type="text" name="status" required placeholder="Room name" disabled value="<%= @room.status%>"/>
+              <input type="text" name="status" required placeholder="Tên phòng" disabled value="<%= @room.status%>"/>
             </div>
           </div>
           <div class="two fields">
             <div class="required field field_line">
               <label>Số lượng học viên</label>
-              <input type="text" name="number_student" required placeholder="Number student" disabled  value="<%= @room.number_student%>"/>
+              <input type="text" name="number_student" required placeholder="Số lượng học viên" disabled  value="<%= @room.number_student%>"/>
             </div>
             <div class="required field field_line">
               <label>Số học viên tối đa</label>
-              <input type="text" name="max_number_student" required placeholder="Max number student"value="<%= @room.max_number_student%>" />
+              <input type="text" name="max_number_student" required placeholder="Số học viện tối đa"value="<%= @room.max_number_student%>" onchange="checkValidation(this)" />
             </div>
           </div>
           <div class="ui dividing header">
@@ -103,31 +103,64 @@
       }
     })
   }
-   async function checkDuplicate(){
-    current_name = document.querySelectorAll('input[name=room_name]')[0].value
-    let result
-    await $.ajax({
+  //  async function checkDuplicate(){
+  //   current_name = document.querySelectorAll('input[name=room_name]')[0].value
+  //   let result
+  //   await $.ajax({
+  //     type: "POST",
+  //     url: "/manager/room-management/checkduplicate",
+  //     data: {
+  //       "room_name": current_name
+  //     },
+  //     success: function(_result){
+  //       console.log("not dup")
+  //       result = true
+  //     },
+  //     error: function (error) {
+  //       console.log(error)
+  //       if (error.responseJSON.is_duplicate == true) {
+  //         console.log("duplicate")
+  //         $('#room_field_name').find('.error').removeClass('error');
+  //         $('#room_field_name').addClass("error")
+  //         $('#room_field_name').append(`<div class="ui basic red pointing prompt label transition visible">Tên phòng đã được tạo, vui lòng kiểm tra và đổi sang tên khác nhé!</div>`)
+  //         result = false
+  //       }
+  //     }
+  //   })
+  //   return result
+  // }
+
+  function checkValidation(data){
+    let room_id = $("#room_id").val();
+    let max_number_student = data.value
+    let validation
+    $.ajax({
       type: "POST",
-      url: "/manager/room-management/checkduplicate",
-      data: {
-        "room_name": current_name
+      url: "/manager/room-management/validation/",
+      data: { 
+        max_number_student: max_number_student,
+        room_id: room_id
       },
-      success: function(_result){
-        console.log("not dup")
-        result = true
+      success: function(result){
+        if (result.validation == false){
+          debugger
+          $('#room_info_form')
+          .form('add rule', 'max_number_student', {
+            rules: [
+              {
+                type   : `integer[${result.number_student}..6]`,
+                prompt : 'Số lượng học viên tối đa không được ít hơn số lượng học viên hiện tại của phòng'
+              }
+            ],
+            inline: true,
+            on: 'blur'
+          })
+        }
       },
       error: function (error) {
-        console.log(error)
-        if (error.responseJSON.is_duplicate == true) {
-          console.log("duplicate")
-          $('#room_field_name').find('.error').removeClass('error');
-          $('#room_field_name').addClass("error")
-          $('#room_field_name').append(`<div class="ui basic red pointing prompt label transition visible">Tên phòng đã được tạo, vui lòng kiểm tra và đổi sang tên khác nhé!</div>`)
-          result = false
-        }
+        console.log(error.responseJSON.message)
       }
     })
-    return result
   }
 
   $('#room_info_form').off('submit').submit(async function(e){

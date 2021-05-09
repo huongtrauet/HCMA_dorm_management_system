@@ -108,12 +108,12 @@
       if (data.notification.is_read) {
         $('#list_noti').prepend(`<div class="item noti_item" style="width: 20rem; max-height: 9.5rem; overflow: hidden; display: block; background-color: #e0e0e0">
                                 <div onclick="readNotification(${data.notification.id}, '${data.notification.noti_type}', ${data.notification.report_id || 0}, ${data.notification.page || 0})" style= "width: 17rem; overflow: hidden;text-overflow: ellipsis;word-wrap: break-word;-webkit-line-clamp: 2;-webkit-box-orient: vertical;line-height: 2.25rem;  white-space: pre-wrap; display: flex; align-items: center">${data.notification.message}</div>
-                                <p style="font-size: 0.7rem; color: #b8b8b8">Just now</p>
+                                <p style="font-size: 0.7rem; color: #b8b8b8">Vừa xong</p>
                               </div>`)
       } else {
         $('#list_noti').prepend(`<div class="item noti_item" style="width: 20rem; max-height: 9.5rem; overflow: hidden; display: block; background-color: #e0e0e0">
                                 <div onclick="readNotification(${data.notification.id}, '${data.notification.noti_type}', ${data.notification.report_id || 0}, ${data.notification.page || 0})" style= "width: 17rem; overflow: hidden;text-overflow: ellipsis;word-wrap: break-word;-webkit-line-clamp: 2;-webkit-box-orient: vertical;line-height: 2.25rem;  white-space: pre-wrap; display: flex; align-items: center">${data.notification.message}</div>
-                                <p style="font-size: 0.7rem; color: #b8b8b8">Just now</p>
+                                <p style="font-size: 0.7rem; color: #b8b8b8">Vừa xong</p>
                               </div>`)
       }
       
@@ -144,7 +144,7 @@
         redirect_url = `/student/requests/facility?focus_id=${report_id}&page=${page}`
       } else if (noti_type == "form_request") {
         redirect_url = `/student/requests/form?focus_id=${report_id}&page=${page}`
-      } else if (noti_type == "add_student_to_room") {
+      } else if (noti_type == "add_student_to_room" || noti_type == "remove_student_from_room") {
         redirect_url = `/student/my-room`
       }
       else if (noti_type == "service_charge_remind") {
@@ -157,7 +157,7 @@
           window.location = redirect_url
         },
         error: function (error) {
-          toastr.error('Something went wrong')
+          toastr.error('Xin lỗi, chức năng đọc thông báo đang được bảo trì! Vui lòng truy cập bằng cách khác!')
         }
       })
       

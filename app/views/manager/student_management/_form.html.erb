@@ -36,7 +36,7 @@
                   <input type="hidden" name="student_id" id="student_id" value="<%= @student.id %>"/>
                   <div class="required field field_line">
                     <%= student.label :mã_học_viên %>
-                    <%= student.text_field :student_id_number, class: "input", required: true, placeholder: "Student it number" %>
+                    <%= student.text_field :student_id_number, class: "input", id: "student_id_number_field", required: true, placeholder: "Student it number" %>
                   </div>
                   <div class="field field_line">
                     <label>Phòng</label>
@@ -61,7 +61,7 @@
                     <div class="two fields">
                       <div class="field">
                         <label>Lớp</label>
-                        <%= f.text_field :class_name, class: "input", placeholder: "Clas name" %>
+                        <%= f.text_field :class_name, class: "input", placeholder: "Lớp" %>
                       </div>
                       <div class="field">
                         <label>Email</label>
@@ -70,9 +70,9 @@
                     </div>
                   </div>
                   <div class="fields field_line">
-                    <div class="eight wide field">
+                    <div class="eight wide field" onfocusout="checkDuplicate(this)">
                       <label>Số CMND</label>
-                      <%= f.text_field :identity_card_number, class: "input", maxlength: "16", placeholder: "Số CMND" %>
+                      <%= f.text_field :identity_card_number, class: "input", id: "identity_card_number_field", placeholder: "Số CMND" %>
                     </div>
                     <div class="eight wide field">
                       <label>Ngày sinh</label>
@@ -87,7 +87,7 @@
                     <div class="two fields">
                       <div class="field">
                         <label>Số điện thoại</label>
-                        <%= f.text_field :phone_number, class: "input", placeholder: "Số điện thoại" %>
+                        <%= f.text_field :phone_number, class: "input", id: "phone_number_field", placeholder: "Số điện thoại" %>
                       </div>
                       <div class="field">    
                         <label>Giới tính</label>
@@ -191,7 +191,6 @@
         window.location = forwarding_url
       },
       error: function (error) {
-        debugger
         console.log(error)
         toastr.error(JSON.parse(error.responseText).message)
       }
@@ -225,12 +224,175 @@
               prompt: 'Vui lòng nhập thời gian gia hạn!'
             }
           ]
-        }
+        },
+        'student[student_profile_attributes][address]': {
+          identifier: 'student[student_profile_attributes][address]',
+          rules: [
+            {
+              type: 'maxLength[100]',
+              prompt: 'Vui lòng nhập địa chỉ giới hạn trong 100 ký tự!'
+            }
+          ]
+        },
+        'student[student_profile_attributes][identity_card_number]': {
+          identifier: 'student[student_profile_attributes][identity_card_number]',
+          rules: [
+            {
+              type: 'integer',
+              prompt: 'Số chứng minh thư chỉ chứa kí tự số!'
+            },
+            {
+              type: 'maxLength[12]',
+              prompt: 'Số chứng minh thư buộc phải từ 9 đến 12 chữ số!'
+            },
+            {
+              type: 'minLength[9]',
+              prompt: 'Số chứng minh thư buộc phải từ 9 đến 12 chữ số!'
+            }
+          ]
+        },
+        'student[student_id_number]': {
+          identifier: 'student[student_id_number]',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Vui lòng nhập mã học viên!'
+            },
+            {
+              type: 'maxLength[12]',
+              prompt: 'Mã bọc viên buộc phải từ 6 đến 12 ký tự!'
+            },
+            {
+              type: 'minLength[6]',
+              prompt: 'Mã học viên buộc phải từ 6 đến 12 ký tự!'
+            }
+          ]
+        },
+        'student[student_profile_attributes][name]': {
+          identifier: 'student[student_profile_attributes][name]',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Vui lòng nhập họ và tên học viên!'
+            },
+            {
+              type: 'maxLength[100]',
+              prompt: 'Tên học viên không quá 100 ký tự!'
+            }
+          ]
+        },
+        'student[student_profile_attributes][phone_number]': {
+          identifier: 'student[student_profile_attributes][phone_number]',
+          rules: [
+            {
+              type: 'integer',
+              prompt: 'Số điên thoại chỉ chứa kí tự số!'
+            }
+          ]
+        },
       },
       inline: true,
       on: 'blur'
     })
   ;
+
+    $('#student_form').form('remove fields', ['student[student_profile_attributes][identity_card_number]', 'student[student_profile_attributes][phone_number]' ])
+    function checkValidation(){
+      // identity_card_number
+      if ($("#identity_card_number_field").val() == "" || $("#identity_card_number_field").val() == null){
+        $('#student_form').form('remove fields', ['student[student_profile_attributes][identity_card_number]'])
+      } else{
+        $('#student_form')
+        .form('add rule', 'student[student_profile_attributes][identity_card_number]', {
+          identifier: 'student[student_profile_attributes][identity_card_number]',
+          rules: [
+            {
+              type: 'integer',
+              prompt: 'Số chứng minh thư chỉ chứa kí tự số!'
+            },
+            {
+              type: 'maxLength[12]',
+              prompt: 'Số chứng minh thư buộc phải từ 9 đến 12 chữ số!'
+            },
+            {
+              type: 'minLength[9]',
+              prompt: 'Số chứng minh thư buộc phải từ 9 đến 12 chữ số!'
+            }
+          ]
+        })
+      }
+      //phone_number
+      if ($("#phone_number_field").val() == "" || $("#phone_number_field").val() == null){
+        $('#student_form').form('remove fields', ['student[student_profile_attributes][phone_number]'])
+      } else{
+        $('#student_form')
+        .form('add rule', 'student[student_profile_attributes][phone_number]', {
+          identifier: 'student[student_profile_attributes][phone_number]',
+          rules: [
+            {
+              type: 'integer',
+              prompt: 'Số điên thoại chỉ chứa kí tự số!'
+            }
+          ]
+        })
+      }
+    };
+    // checkValidation();
+     $(document).on("turbolinks:load", function() {
+        $("#identity_card_number_field").on("keyup", function() {
+        checkValidation();
+        });
+    });
+
+    $(document).on("turbolinks:load", function() {
+      $("#phone_number_field").on("keyup", function() {
+      checkValidation();
+      });
+    });
+
+    console.log($('#student_id_number_field').val())
+    // async function checkDuplicate(){
+    //   student_id_number = $('#student_id_number_field').val();
+    //   email = $('email_field').val();
+    //   identity_card_number = $('identity_card_number_field').val();
+    //   let result
+    //   await $.ajax({
+    //     type: "POST",
+    //     url: "/manager/student-management/checkduplicate-informations",
+    //     data: {
+    //       "student_id_number": student_id_number,
+    //       "email": email,
+    //       "identity_card_number": identity_card_number
+    //     },
+    //     success: function(_result){
+    //       if (_result.is_duplicate == false){
+    //         result = true;
+    //       } else{
+    //         if (_result.is_duplicate_student_id_number == true){
+    //           $('#student_id_number_field').find('.error').removeClass('error');
+    //           $('#student_id_number_field').addClass("error")
+    //           $('#student_id_number_field').append(`<div class="ui basic red pointing prompt label transition visible">Mã học viên này đã được sử dụng</div>`)
+    //         }
+    //         if (_result.is_duplicate_email == true){
+    //           $('#email_field').find('.error').removeClass('error');
+    //           $('#email_field').addClass("error")
+    //           $('#email_field').append(`<div class="ui basic red pointing prompt label transition visible">Email này đã được sử dụng</div>`)
+    //         }
+    //         if (_result.is_duplicate_identity == true){
+    //           $('#identity_card_number_field').find('.error').removeClass('error');
+    //           $('#identity_card_number_field').addClass("error")
+    //           $('#identity_card_number_field').append(`<div class="ui basic red pointing prompt label transition visible">Số chứng minh thư nhân dân này đã được sử dụng</div>`)
+    //         }
+    //         result = false;
+    //       }
+    //     },
+    //     error: function (error) {
+
+    //     }
+    //   })
+    //   return result;
+    // }
+
 </script>
 <style>
 #insert_image_button:hover #lable_image{

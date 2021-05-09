@@ -69,6 +69,15 @@
       success: function(result){
         toastr.success(result.message)
         $(`#student_${student_id}`).remove();
+        console.log(result.room)
+        if (result.room.status == "PENDING") {
+            $(`#room_status_card_${result.room.id}`).html('Đang bỏ trống')
+        } else if (result.room.status == "UNFILLED"){
+          $(`#room_status_card_${result.room.id}`).html('Đang còn chỗ')
+        }
+        else{
+          $(`#room_status_card_${result.room.id}`).html('Đã đầy')
+        }
 
       },
       error: function (error) {

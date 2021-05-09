@@ -39,7 +39,7 @@ class Manager < ApplicationRecord
   end
 
   def remember
-    self.remember_token
+    self.remember_token #taoj remember_token luu vao cookies remember_digest vao db
     update_attribute(:remember_digest, Manager.digest(remember_token))
   end
 

@@ -141,6 +141,19 @@ class Manager::RoomManagementController < ManagerMainController
     end
   end
 
+  def check_room_max_number_student_validation
+     if @room = Room.find(params[:room_id])
+      validation = @room.number_student > params[:max_number_student].to_i ? false : true
+      respond_to do |format|
+        format.json { render json: { validation: validation, number_student: @room.number_student}, status: :ok} 
+      end
+     else
+      respond_to do |format|
+        format.json {render json: {message: 'Không tìm thấy phòng!'}, status: :bad_request}
+      end
+     end
+  end
+
   private
 
   def room_params

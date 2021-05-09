@@ -36,7 +36,7 @@
           <tbody id="reports_list">
             <% @facility_reports.each_with_index do |report, index| %>
               <tr onclick="showReportInfo(<%= report.id %>)" id="report_<%= report.id %>">
-                <td style="text-align: center"><%= (index + 1) + (@page - 1) * Settings.pagination %></td>
+                <td style="text-align: center"><%= (index + 1) + (@page - 1) * Settings.report_pagination %></td>
                 <td>
                   <p style="text-align: center;margin: 0 auto; word-wrap: break-word; width: 12rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
                     <%= report.title %>

@@ -8,7 +8,7 @@
       <button class="ui icon button" onclick="addPost()">
         <i class="plus icon"></i>
       </button>
-       <div class="ui selection dropdown filter_item" id="status_filter">
+      <div class="ui selection dropdown filter_item" id="status_filter">
         <input type="hidden" onchange="onSearch()">
         <div class="default text">Trạng thái</div>
         <div class="menu">
@@ -26,81 +26,83 @@
     </div>
   </div>
   <div class="footer_line" style="height: 1px; background-color: rgba(34,36,38,.15); margin-top: 0.5rem; margin-bottom: 1.5rem"></div>
-  <table class="ui very basic selectable table">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Tiêu đề</th>
-        <th>Nội dung</th>
-        <th>Ngày đăng</th>
-        <th>Người viết</th>
-        <th>Trạng thái</th>
-        <th>Hành động</th>
-      </tr>
-    </thead>
-    <tbody id="post_list">
-      <% @posts.each_with_index do |post, index|%>  
+  <div id="post_list">
+    <table class="ui very basic selectable table">
+      <thead>
         <tr>
-          <td onclick="showPost(<%= post.id %>)"><%= index + 1 + (@page - 1)*Settings.pagination %></td>
-          <td style="width: 20rem" onclick="showPost(<%= post.id %>)">
-            <span style="margin: 0 auto; word-wrap: break-word; max-width: 16rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
-              <%= post.title %>
-            </span>
-          </td onclick="showPost(<%= post.id %>)">
-          <td style="max-width: 25rem"onclick="showPost(<%= post.id %>)">
-            <span style="margin: 0 auto; word-wrap: break-word; max-width: 26rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
-              <%= remove_html_tag(post.content).html_safe %>
-            </span>
-          </td>
-          <td onclick="showPost(<%= post.id %>)"><%= post.created_at.to_date %></td>
-          <td onclick="showPost(<%= post.id %>)"><%= post.writer_name %></td>
-          <td onclick="showPost(<%= post.id %>)" id="post_status_<%= post.id%>">
-          <% if post.status == 'POSTED' %>
-             Đã đăng
-          <% elsif post.status == 'DELETED'%>
-            Đã xoá
-          <% end %>
-          </td>
-          <td id="post_actions_<%= post.id%>">
-            <% if post.status == "POSTED" %>
-              <i class="trash alternate outline icon" id="delete_post_<%= post.id %>" onclick="confirmChangePostStatus(<%= post.id %>, 'POSTED')"></i>
-            <% elsif post.status == "DELETED" %>
-              <i class="window restore outline icon" id="delete_post_<%= post.id %>" onclick="confirmChangePostStatus(<%= post.id %>, 'DELETED')"></i>
-            <% end %>
-          </td>
+          <th>ID</th>
+          <th>Tiêu đề</th>
+          <th>Nội dung</th>
+          <th>Ngày đăng</th>
+          <th>Người viết</th>
+          <th>Trạng thái</th>
+          <th>Hành động</th>
         </tr>
-        <%# modal xem %>
-        <div class="ui long small modal first scrolling" id="show_modal_first_<%= post.id %>">
-          <div class="scrolling content" style="padding: 3rem">
-            <div class="description">
-              <div class="ui header"><h2><%= post.title %></h2></div>
-              <div class="content" style="margin-top: 2rem"><%= post.content.html_safe %></div>
-              <div class="content">
-                <div class="ui special cards" style="margin-top: 2rem">
-                  <% post.images.each do |image| %>
-                    <div class='card' style="max-height: 20rem; height: 20rem" id="image_${i}">
-                      <img style="width: 100%; height: 100%;" src="<%= image.url %>" />
-                    </div>
-                  <% end %>
+      </thead>
+      <tbody>
+        <% @posts.each_with_index do |post, index|%>  
+          <tr>
+            <td onclick="showPost(<%= post.id %>)"><%= index + 1 + (@page - 1)*Settings.report_pagination %></td>
+            <td style="width: 20rem" onclick="showPost(<%= post.id %>)">
+              <span style="margin: 0 auto; word-wrap: break-word; max-width: 16rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+                <%= post.title %>
+              </span>
+            </td onclick="showPost(<%= post.id %>)">
+            <td style="max-width: 25rem"onclick="showPost(<%= post.id %>)">
+              <span style="margin: 0 auto; word-wrap: break-word; max-width: 26rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+                <%= remove_html_tag(post.content).html_safe %>
+              </span>
+            </td>
+            <td onclick="showPost(<%= post.id %>)"><%= post.created_at.to_date %></td>
+            <td onclick="showPost(<%= post.id %>)"><%= post.writer_name %></td>
+            <td onclick="showPost(<%= post.id %>)" id="post_status_<%= post.id%>">
+            <% if post.status == 'POSTED' %>
+              Đã đăng
+            <% elsif post.status == 'DELETED'%>
+              Đã xoá
+            <% end %>
+            </td>
+            <td id="post_actions_<%= post.id%>">
+              <% if post.status == "POSTED" %>
+                <i class="trash alternate outline icon" id="delete_post_<%= post.id %>" onclick="confirmChangePostStatus(<%= post.id %>, 'POSTED')"></i>
+              <% elsif post.status == "DELETED" %>
+                <i class="window restore outline icon" id="delete_post_<%= post.id %>" onclick="confirmChangePostStatus(<%= post.id %>, 'DELETED')"></i>
+              <% end %>
+            </td>
+          </tr>
+          <%# modal xem %>
+          <div class="ui long small modal first scrolling" id="show_modal_first_<%= post.id %>">
+            <div class="scrolling content" style="padding: 3rem">
+              <div class="description">
+                <div class="ui header"><h2><%= post.title %></h2></div>
+                <div class="content" style="margin-top: 2rem"><%= post.content.html_safe %></div>
+                <div class="content">
+                  <div class="ui special cards" style="margin-top: 2rem">
+                    <% post.images.each do |image| %>
+                      <div class='card' style="max-height: 20rem; height: 20rem" id="image_${i}">
+                        <img style="width: 100%; height: 100%;" src="<%= image.url %>" />
+                      </div>
+                    <% end %>
+                  </div>
                 </div>
+              </div>   
+            </div>
+            <div class="actions">
+              <button class="ui cancel button">
+                Huỷ
+              </button>
+              <div class="ui primary approve button proceed">
+                Chỉnh sửa
+                <i class="right chevron icon"></i>
               </div>
-            </div>   
-          </div>
-          <div class="actions">
-            <button class="ui cancel button">
-              Huỷ
-            </button>
-            <div class="ui primary approve button proceed">
-              Chỉnh sửa
-              <i class="right chevron icon"></i>
             </div>
           </div>
-        </div>
-      <% end %>
-    </tbody>
-  </table>
-  <div class="mt-4" style="float: right">
-    <%= paginate @posts, turbolinks: false %>
+        <% end %>
+      </tbody>
+    </table>
+    <div class="mt-4" style="float: right">
+      <%= paginate @posts, turbolinks: false %>
+    </div>
   </div>
 </div>
 <%# modal sửa %>
@@ -108,7 +110,7 @@
   <div class="header">
     Sửa bài đăng
   </div>
-  <form id="myEditForm" multipart="true" name="myEditForm" class="ui form segment" style="border: none; -webkit-box-shadow: none;">
+  <form id="myEditForm" multipart="true" name="myEditForm" class="ui form segment" style="border: none; -webkit-box-shadow: none; overflow: auto; max-height: 80vh; padding-bottom: 1rem;">
     <div style="padding: 1rem">
       <div style="max-width: 0; max-height: 0; overflow: hidden;">
         <input autofocus="true" type="hidden" name="id" id="post_id_edit" value="" />
@@ -129,7 +131,7 @@
         <div class="ui special cards" id="preview_image_edit"></div>
       </div>
       <div class="actions" style="float: right; margin-top: 1rem">
-        <button class="ui cancel button">Huỷ</button>
+        <div class="ui cancel button">Huỷ</div>
         <div class="ui primary submit button">Chỉnh sửa</div>
       </div>
     </div>
@@ -215,19 +217,7 @@ if(localStorage.getItem("update_post")) {
  $('.ui.dropdown')
   .dropdown();
 
-// $(document).ready(function(){
-//   $("#editor").validate({
-//     rules: {
-//       content: {
-//         required: true
-//       }
-//     }
-//     });
-//   });
 
-  // $('.special.cards .card .image').dimmer({
-  //   on: 'hover'
-  // });
 // hHIỂN THỊ MODAL COFIRM SẼ XOÁ HOẶC KHÔI PHỤC
   function confirmChangePostStatus(post_id, post_status){
     $('#selected_post_id').val(post_id)
@@ -298,6 +288,9 @@ if(localStorage.getItem("update_post")) {
   );
 //show post mở cả 2 modal và fill dữ liệu cả 2 modal
   function showPost(post_id) {
+    window.setTimeout(function() {
+      $('.dimmer').css('min-height', '100vh')
+    }, 1000)
     $(`#show_modal_first_${post_id}`).modal('show');
     $(`#show_modal_second`)
     .modal('attach events', `#show_modal_first_${post_id} .button.proceed`);
@@ -310,6 +303,8 @@ if(localStorage.getItem("update_post")) {
         $('#preview_image_edit').html(null);
         $('#post_title_edit').val(result.object.title);
         $('#editor_edit').next().children().next().next().children().children().html(result.object.content);
+        console.log($('.ck-editor__editable').html())
+        console.log(result.object.content)
         $('#post_id_edit').val(result.object.id);
         $('#writer_name_edit').val(result.object.writer_name);
         let images = result.object.images
@@ -466,6 +461,9 @@ if(localStorage.getItem("update_post")) {
           console.log('success' + result)
         },
         error: function (error){
+          if(error.responseJSON.is_all) {
+          window.location = '/manager/post-management'
+        }
           console.log('error', error)
         }
       })
@@ -510,25 +508,25 @@ if(localStorage.getItem("update_post")) {
     })
   ;
   $('#myEditForm')
-     .form({
-      fields: {
-        title: {
-          identifier: 'title',
-          rules: [
-            {
-              type: 'empty',
-              prompt: 'Vui lòng nhập tiêu đề!'
-            },
-            {
-              type: 'maxLength[300]',
-              prompt: 'Tiêu đề không quá 300 ký tự'
-            }
-          ]
-        }
-      },
-      inline: true,
-      on: 'blur'
-    });
+    .form({
+    fields: {
+      title: {
+        identifier: 'title',
+        rules: [
+          {
+            type: 'empty',
+            prompt: 'Vui lòng nhập tiêu đề!'
+          },
+          {
+            type: 'maxLength[300]',
+            prompt: 'Tiêu đề không quá 300 ký tự'
+          }
+        ]
+      }
+    },
+    inline: true,
+    on: 'blur'
+  });
 
 
 </script>
@@ -554,5 +552,6 @@ if(localStorage.getItem("update_post")) {
     }
 .dimmer {
   padding-top: 4rem !important;
+  min-height: 100vh !important;
 }
 </style>

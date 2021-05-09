@@ -60,18 +60,18 @@
                       <div class="two fields">
                         <div class="field">
                           <label>Lớp</label>
-                          <%= f.text_field :class_name, class: "input", placeholder: "Clas name" %>
+                          <%= f.text_field :class_name, class: "input", placeholder: "Tên lớp" %>
                         </div>
                         <div class="field">
                           <label>Email</label>
-                          <%= f.text_field :email, class: "input", placeholder: "Email" %>
+                          <%= f.text_field :email, class: "input", id: "email_field", placeholder: "Địa chỉ email", disabled: true %>
                         </div>
                       </div>
                     </div>
                     <div class="fields field_line">
                       <div class="eight wide field">
                         <label>Số CMND</label>
-                        <%= f.text_field :identity_card_number, class: "input", maxlength: "16", placeholder: "Số CMND" %>
+                        <%= f.text_field :identity_card_number, class: "input", maxlength: "16", id: "identity_card_number_field", placeholder: "Số CMND" %>
                       </div>
                       <div class="eight wide field">
                         <label>Ngày sinh</label>
@@ -80,13 +80,13 @@
                     </div>
                     <div class="field field_line">
                       <label>Địa chỉ</label>
-                      <%= f.text_field :address, class: "input", placeholder: "Address" %>
+                      <%= f.text_field :address, class: "input", id: "address_field", placeholder: "Địa chỉ" %>
                     </div>
                     <div class="field field_line">
                       <div class="two fields">
                         <div class="field">
                           <label>Số điện thoại</label>
-                          <%= f.text_field :phone_number, class: "input", placeholder: "Phone number" %>
+                          <%= f.text_field :phone_number, class: "input", id: "phone_number_field", placeholder: "Số điện thoại" %>
                         </div>
                         <div class="field">    
                           <label>Giới tính</label>
@@ -249,21 +249,38 @@
             }
           ]
         },
-        'student[student_profile_attributes][email]': {
-          identifier: 'student[student_profile_attributes][email]',
-          rules: [
-            {
-              type: 'email',
-              prompt: 'Email sai định dạng!'
-            }
-          ]
-        },
         'student[student_profile_attributes][identity_card_number]': {
           identifier: 'student[student_profile_attributes][identity_card_number]',
           rules: [
             {
-              type: 'regExp[/([0-9]{9})/]',
-              prompt: 'Số chứng minh nhân dân không hợp lệ!'
+              type: 'integer',
+              prompt: 'Số chứng minh thư chỉ chứa kí tự số!'
+            },
+            {
+              type: 'maxLength[12]',
+              prompt: 'Số chứng minh thư buộc phải từ 9 đến 12 chữ số!'
+            },
+            {
+              type: 'minLength[9]',
+              prompt: 'Số chứng minh thư buộc phải từ 9 đến 12 chữ số!'
+            }
+          ]
+        },
+        'student[student_profile_attributes][address]': {
+          identifier: 'student[student_profile_attributes][address]',
+          rules: [
+            {
+              type: 'maxLength[100]',
+              prompt: 'Vui lòng nhập địa chỉ giới hạn trong 100 ký tự!'
+            }
+          ]
+        },
+        'student[student_profile_attributes][phone_number]': {
+          identifier: 'student[student_profile_attributes][phone_number]',
+          rules: [
+            {
+              type: 'integer',
+              prompt: 'Số điên thoại chỉ chứa kí tự số!'
             }
           ]
         },
@@ -281,6 +298,87 @@
       inline: true
     })
   ;
+
+  $('#profile_form').form('remove fields', ['student[student_profile_attributes][identity_card_number]', 'student[student_profile_attributes][phone_number]', 'student[student_profile_attributes][address]' ])
+    function checkValidation(){
+
+      // identity_card_number
+      if ($("#identity_card_number_field").val() == "" || $("#identity_card_number_field").val() == null){
+        $('#profile_form').form('remove fields', ['student[student_profile_attributes][identity_card_number]'])
+      } else{
+        $('#profile_form')
+        .form('add rule', 'student[student_profile_attributes][identity_card_number]', {
+          identifier: 'student[student_profile_attributes][identity_card_number]',
+          rules: [
+            {
+              type: 'integer',
+              prompt: 'Số chứng minh thư chỉ chứa kí tự số!'
+            },
+            {
+              type: 'maxLength[12]',
+              prompt: 'Số chứng minh thư buộc phải từ 9 đến 12 chữ số!'
+            },
+            {
+              type: 'minLength[9]',
+              prompt: 'Số chứng minh thư buộc phải từ 9 đến 12 chữ số!'
+            }
+          ]
+        })
+      }
+
+      //phone_number
+      if ($("#phone_number_field").val() == "" || $("#phone_number_field").val() == null){
+        $('#profile_form').form('remove fields', ['student[student_profile_attributes][phone_number]'])
+      } else{
+        $('#profile_form')
+        .form('add rule', 'student[student_profile_attributes][phone_number]', {
+          identifier: 'student[student_profile_attributes][phone_number]',
+          rules: [
+            {
+              type: 'integer',
+              prompt: 'Số điên thoại chỉ chứa kí tự số!'
+            }
+          ]
+        })
+      }
+
+      //address
+      if ($("#address_field").val() == "" || $("#address_field").val() == null){
+        $('#profile_form').form('remove fields', ['student[student_profile_attributes][address]'])
+      } else{
+        $('#profile_form')
+        .form('add rule', 'student[student_profile_attributes][address]', {
+          identifier: 'student[student_profile_attributes][address]',
+          rules: [
+            {
+              type: 'maxLength[100]',
+              prompt: 'Vui lòng nhập địa chỉ giới hạn trong 100 ký tự!'
+            }
+          ]
+        })
+      }
+    };
+
+
+$(document).on("turbolinks:load", function() {
+  $("#identity_card_number_field").on("keyup", function() {
+  checkValidation();
+  });
+});
+
+$(document).on("turbolinks:load", function() {
+  $("#phone_number_field").on("keyup", function() {
+  checkValidation();
+  });
+});
+
+$(document).on("turbolinks:load", function() {
+  $("#address_field").on("keyup", function() {
+  checkValidation();
+  });
+});
+
+
   //mở thanh thông tin cá nhân, bảo mật
    $('.accordion')
   .accordion();
@@ -329,6 +427,7 @@
       inline: true,
     })
   ;
+
 
 
 </script>

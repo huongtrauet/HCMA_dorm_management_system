@@ -75,7 +75,7 @@ StudentProfile.create!(email: '17021071@gmail.com', student_id: 3, name: "Nguy�
 StudentProfile.create!(email: '17021072@gmail.com', student_id: 4, name: "Nguyễn Anh Khoa", avatar: "https://i.pravatar.cc/150?img=6")
 StudentProfile.create!(email: '17021073@gmail.com', student_id: 5, name: "Nguyễn Đức Mạnh", avatar: "https://i.pravatar.cc/150?img=7")
 StudentProfile.create!(email: '17021074@gmail.com', student_id: 6, name: "Nguyen Thu Trang", avatar: "https://i.pravatar.cc/150?img=8")
-StudentProfile.create!(email: '17021075@gmail.com', student_id: 7, name: "Nguyễn Thu Trang", avatar: "https://i.pravatar.cc/150?img=9")
+StudentProfile.create!(email: '17021075@gmail.com', student_id: 7, name: "Trần Minh Hùng", avatar: "https://i.pravatar.cc/150?img=9")
 StudentProfile.create!(email: '17021077@gmail.com', student_id: 8, name: "Thái Đức Tùng", avatar: "https://i.pravatar.cc/150?img=10")
 StudentProfile.create!(email: '17021078@gmail.com', student_id: 9, name: "Nguyễn Bảo Minh Châu", avatar: "https://i.pravatar.cc/150?img=11")
 StudentProfile.create!(email: '17021079@gmail.com', student_id: 10, name: "Nguyễn Thị Linh", avatar: "https://i.pravatar.cc/150?img=12")

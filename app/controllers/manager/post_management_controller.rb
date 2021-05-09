@@ -100,7 +100,7 @@ class Manager::PostManagementController < ManagerMainController
         end
       elsif params[:q] == "" or params[:q] == nil
         respond_to do |format|
-          format.js {render partial: 'post_table', locals: { posts: @posts } } 
+          format.json {render json: {is_all: true}, status: :bad_request}  
         end
       end
     end

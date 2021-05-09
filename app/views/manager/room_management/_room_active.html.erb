@@ -43,7 +43,7 @@
   <div  style= "margin-top: 2rem; height: 100%; width: 100%;"  ondrop="drop(event)" ondragover="allowDrop(event)">
       <div class="room_member_list ui grid">
       <% room.students.each do |student|%>
-        <div class="students_item eight wide column" id="student_<%= student.id %>" draggable="true" ondragstart="drag(event)" style="background-color: white; position:relative; height: 9rem">
+        <div class="students_item eight wide column" id="student_<%= student.id %>" roomId="room_<%= student.room.id %>" draggable="true" ondragstart="drag(event)" style="background-color: white; position:relative; height: 9rem">
         <div class="ui grid" >
           <button onclick="removeStudent(<%= student.id%>)" class="ui compact icon button" style="position: absolute; right: 0.5rem; top: 0.5rem; z-index: 100; padding: 0.3rem">
             <i class="close icon"></i>
@@ -113,8 +113,19 @@
       success: function(result){
         toastr.success(result.message)
         $(`#student_${student_id}`).remove();
-        $('#room_current_member').html((result.room.number_student - 1) + "/" + result.room.max_number_student)
-        $(`#room_member_card_${result.room.id}`).html(result.room.number_student - 1)
+        $('#room_current_member').html((result.room.number_student) + "/" + result.room.max_number_student)
+        $(`#room_member_card_${result.room.id}`).html(result.room.number_student)
+        console.log(result.room)
+        debugger
+        if (result.room.status == "PENDING") {
+          debugger
+            $(`#room_status_card_${result.room.id}`).html('Đang bỏ trống')
+        } else if (result.room.status == "UNFILLED"){
+          $(`#room_status_card_${result.room.id}`).html('Đang còn chỗ')
+        }
+        else{
+          $(`#room_status_card_${result.room.id}`).html('Đã đầy')
+        }
 
       },
       error: function (error) {

@@ -41,6 +41,19 @@ class Manager::FacilityManagementController < ManagerMainController
     end
   end
 
+  def destroy
+    @facility = Facility.find(params[:facility_id])
+    if @facility.destroy
+      respond_to do |format|
+        format.json { render json: { message: "Xoá thiết bị thành công!!"}, status: :ok}
+      end
+    else
+      respond_to do |format|
+        format.json { render json: {message: "Xoá thiết bị không thành công :(" }, status: :bad_request}
+      end
+    end
+  end
+
   private
 
   def create_facility_params

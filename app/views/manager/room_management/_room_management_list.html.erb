@@ -43,7 +43,7 @@
           <tr>
             <td>
             <%= link_to "/manager/room-management/rooms/#{room.id}", style: "display: block; width: 100%", data: { turbolinks: false } do %>
-              <%= index + 1 + (@page - 1)* Settings.pagination%>
+              <%= index + 1 + (@page - 1)* Settings.report_pagination%>
             <% end %>
             </td>
             <td>

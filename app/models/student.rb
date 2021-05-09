@@ -21,10 +21,10 @@ class Student < ApplicationRecord
   #   source: :sender, source_type: Student.name
   has_many :notifications, as: :receiver
   has_many :sent_notifications, as: :sender
-
+  # student_id_number 8 - 12
   validates :student_id_number, presence: true, allow_nil: false,
             length: {
-              minimum: Settings.validations.student.student_id_number.min_length,
+              minimum: Settings.validations.student.student_id_number.min_length, 
               maximum: Settings.validations.student.student_id_number.max_length,
               too_short: "ma hoc vien qua ngan",
               too_long: "ma hoc vien qua dai"
@@ -38,9 +38,7 @@ class Student < ApplicationRecord
             }
   validates :name, presence: true, allow_nil: false,
             length: {
-              minimum: Settings.validations.student.name.min_length,
               maximum: Settings.validations.student.name.max_length,
-              too_short: "Ten qua ngan!!",
               too_long: "Ten qua dai!!"
             }
   validates :check_in_date, presence: true, allow_nil: true
@@ -63,17 +61,21 @@ class Student < ApplicationRecord
     #room
     room_after = Room.find(self.room.id)
     room_after.update(number_student: room_after.students.count)
-    if room_after.number_student < room_after.max_number_student
-      room_after.update(status: "UNFILLED")
+    if room_after.number_student == 0
+      room_after.update(status: "PENDING") 
     elsif room_after.number_student == room_after.max_number_student
       room_after.update(status: "FULL")
+    elsif room_after.number_student < room_after.max_number_student
+      room_after.update(status: "UNFILLED")
     end
     room_before = Room.find(self.room_id_before_last_save)
     room_before.update(number_student: room_before.students.count)
-    if room_before.number_student < room_before.max_number_student
-      room_before.update(status: "UNFILLED")
+    if room_before.number_student == 0
+      room_before.update(status: "PENDING")
     elsif room_before.number_student == room_before.max_number_student
       room_before.update(status: "FULL")
+    elsif room_before.number_student < room_before.max_number_student 
+      room_before.update(status: "UNFILLED")
     end
 
   end
@@ -81,10 +83,12 @@ class Student < ApplicationRecord
   after_destroy do
     room = Room.find(self.room_id)
     room.update(number_student: room.students.count)
-    if room.number_student < room.max_number_student
-      room.update(status: "NOT FULL")
+    if room.number_student == 0
+      room.update(status: "PENDING")
     elsif room.number_student == room.max_number_student
       room.update(status: "FULL")
+    elsif room.number_student < room.max_number_student
+      room.update(status: "UNFILLED")
     end
   end
   class << self

@@ -18,7 +18,7 @@
     <tbody id="report_list">
       <% @complaint_reports.each_with_index do |report, index| %>
         <tr onclick="viewMoreComplaintReport(<%= report.id %>)" id="report_<%= report.id %>">
-          <td><%= index + 1 + (@page - 1)*Settings.pagination %></td>
+          <td><%= index + 1 + (@page - 1)*Settings.report_pagination %></td>
           <td style="width: 10rem"><%= report.created_at.to_date %></td>
           <td>
            <span style="margin: 0 auto; word-wrap: break-word; max-width: 10rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
@@ -156,7 +156,7 @@
             },
             {
               type: 'maxLength[100]',
-              prompt: 'Tiêu đề không được quá 100 ký 100'
+              prompt: 'Tiêu đề không được quá 100 ký tự!'
             }
           ]
         },

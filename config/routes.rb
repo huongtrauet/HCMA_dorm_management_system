@@ -47,6 +47,7 @@ Rails.application.routes.draw do
     patch  "/student-management/:id/update", to: "student_management#update"
     delete  "/student-management/:id/delete", to: "student_management#destroy"
     post "/student-management/checkduplicate", to: "student_management#check_duplicate_student"
+    post "/student-management/checkduplicate-informations", to: "student_management#check_duplicate_informations"
     # get "/student-management/find-student", to: "student_management#find_student"
     
     get "/room-management/", to: "room_management#index"
@@ -65,9 +66,11 @@ Rails.application.routes.draw do
     post "/room-management/rooms/:room_id/service-charge/:year/:month/update", to: "service_management#update_room_service_charge"
     get "/room-management/find-room", to: "room_management#find_room"
     get "/room-management/:id/number-student", to: "room_management#room_number_student"
+    post "/room-management/validation", to: "room_management#check_room_max_number_student_validation"
 
     post "/facility-management/create", to: "facility_management#create"
     put "/facility-management/:id/update", to: "facility_management#update"
+    post "/facility-management/:id/delete", to: "facility_management#destroy"
     get "/facility-management/:id", to: "facility_management#show"
 
     post "/students-arrangement/remove-student", to: "students_arrangement#remove_student_from_room"

@@ -18,7 +18,7 @@
     <tbody>
       <% @facility_reports.each_with_index do |report, index| %>
         <tr onclick="viewMoreFacilityReport(<%= report.id %>)" id="report_<%= report.id %>" >
-          <td><%= index + 1 + (@page - 1)*Settings.pagination %></td>
+          <td><%= index + 1 + (@page - 1)*Settings.report_pagination %></td>
           <td style="width: 10rem"><%= report.created_at.to_date %></>
           <td>
            <span style="margin: 0 auto; word-wrap: break-word; width: 10rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
@@ -121,6 +121,7 @@
   }
 
   function addSubmit(e){
+    $('#new_facility_report').modal('hide');
     e.preventDefault();
     $.ajax({
       type: "POST",
@@ -141,7 +142,11 @@
     })
 
   }
-
+    $('#facility_report_create_form').off('submit').submit(function(e){
+      if ($('#facility_report_create_form').form('is valid')){
+        addSubmit(e)
+      }
+    });
   //VALIDATE
 
   $('#facility_report_create_form')
@@ -177,12 +182,5 @@
       inline: true,
       on: 'blur'
     });
-
-    $('#facility_report_create_form').off('submit').submit(function(e){
-      if ($('#facility_report_create_form').form('is valid')){
-        addSubmit(e)
-      }
-    });
-
 
 </script>

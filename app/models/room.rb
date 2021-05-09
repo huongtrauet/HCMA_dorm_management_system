@@ -20,7 +20,7 @@ class Room < ApplicationRecord
                           }
   validates :max_number_student, presence: true, allow_nil: false,
             numericality: {greater_than_or_equal_to: 0,
-                          message: "Max number students must be integer and greater than or equal to 0"
+                          message: "Số học viên tối đa phải lớn hơn 0"
             }
   validates :room_type, presence: true, allow_nil: false, inclusion: { in: ['NORMAL', 'VIP']}
   validates :status, presence: true, allow_nil: false, inclusion: { in: ['PENDING', 'UNFILLED','FULL']}

@@ -53,7 +53,7 @@ class Manager::ReportManagementController < ManagerMainController
       last_index = receiver_student.complaint_reports.last.index
       index = @complaint_report.index
       # ceil lm tròn lên
-      page = ((last_index - index + 1).to_f / Settings.pagination).ceil 
+      page = ((last_index - index + 1).to_f / Settings.report_pagination).ceil 
       @pending_reports = ComplaintReport.where(status: "PENDING")
       respond_to do |format|
         format.js {render partial: 'report_table', locals: { reports: @pending_reports } } 
@@ -76,7 +76,7 @@ class Manager::ReportManagementController < ManagerMainController
       @pending_reports = ComplaintReport.where(status: "PENDING")
       last_index = receiver_student.complaint_reports.last.index
       index = @complaint_report.index
-      page = ((last_index - index + 1).to_f / Settings.pagination).ceil
+      page = ((last_index - index + 1).to_f / Settings.report_pagination).ceil
       respond_to do |format|
         format.js {render partial: 'report_table', locals: { reports: @pending_reports } } 
       end
@@ -132,7 +132,7 @@ class Manager::ReportManagementController < ManagerMainController
       end
       last_index = receiver_student.facility_reports.last.index
       index = @facility_report.index
-      page = ((last_index - index + 1).to_f / Settings.pagination).ceil
+      page = ((last_index - index + 1).to_f / Settings.report_pagination).ceil
       @pending_reports = FacilityReport.where(status: "PENDING")
       respond_to do |format|
         format.js {render partial: 'report_table', locals: { reports: @pending_reports } } 
@@ -155,7 +155,7 @@ class Manager::ReportManagementController < ManagerMainController
     if @facility_report.update_attribute(:status, "APPROVED")
       last_index = receiver_student.facility_reports.last.index
       index = @facility_report.index
-      page = ((last_index - index + 1).to_f / Settings.pagination).ceil
+      page = ((last_index - index + 1).to_f / Settings.report_pagination).ceil
       @pending_reports = FacilityReport.where(status: "PENDING")
       respond_to do |format|
         format.js {render partial: 'report_table', locals: { reports: @pending_reports } } 
@@ -214,7 +214,7 @@ class Manager::ReportManagementController < ManagerMainController
       end
       last_index = receiver_student.form_requests.last.index
       index = @form_request.index
-      page = ((last_index - index + 1).to_f / Settings.pagination).ceil
+      page = ((last_index - index + 1).to_f / Settings.report_pagination).ceil
       @pending_requests = FormRequest.where(status: "PENDING")
       respond_to do |format|
         format.js {render partial: 'form_request_table', locals: { requests: @pending_requests } } 
@@ -240,7 +240,7 @@ class Manager::ReportManagementController < ManagerMainController
       end
       last_index = receiver_student.form_requests.last.index
       index = @form_request.index
-      page = ((last_index - index + 1).to_f / Settings.pagination).ceil
+      page = ((last_index - index + 1).to_f / Settings.report_pagination).ceil
       @form_requests = FormRequest.where(status: "PENDING")
       respond_to do |format|
         format.js {render partial: 'form_request_table', locals: { requests: @form_requests } } 

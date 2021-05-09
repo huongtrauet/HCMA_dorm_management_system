@@ -12,6 +12,7 @@
           </div>
         </div>
         <div id="room_list_arrangement">
+
         </div>
       </div>
       <div class="eight wide column center" style="background-color: white; height: calc(100vh - 58.72px); overflow: auto;" id="active_room_box">
@@ -27,6 +28,7 @@
           </div>
         </div>
         <div class="students_list" id="pending_students_list" ondrop="dropRevert(event)" ondragover="allowDrop(event)" style="height: calc(100vh - 58.72px)">
+
         </div>
       </div>
     </div>
@@ -46,30 +48,41 @@
   function drop(ev) {
     ev.preventDefault();
     var data = ev.dataTransfer.getData("text"); // lấy  id thẻ đã giữ từ dataTransfer
-    var count = document.querySelector('.room_member_list').childElementCount; //đếm sô lưogj học viên hiện tại của phòng
+    var count = document.querySelector('.room_member_list').childElementCount; //đếm sô lưogj học viên hiện tại của phòng -> thực chất không sd đến
+    //check số lượng ở controller
     $.ajax({
       type: "POST",
       url: "students-arrangement/add-student",
       data: {
-        student_id: data.split("_")[1], // lấy id của học viên bănhgf div data
-        room_id: $("#room_id_input").val()
+        student_id: data.split("_")[1], // lấy id của học viên bănhgf id của div data
+        room_id: $("#room_id_input").val() // id ở partial _room_active
       },
       success: function(result){
-        document.querySelector('.room_member_list').appendChild(document.getElementById(data)); // thêm 1 thẻ hvien có id là data đã set trên
-        document.querySelector(`#${data}`).classList.add("eight", "wide","column"); // thêm class vào cho đúng định dạng
-        toastr.success("Thêm học viên vào phòng thành công!");
-        $.ajax({
-          type: "GET",
-          url: `room-management/${result.room.id}/number-student`,
-          success: function(result){
-            $('#room_current_member').html(result.room.number_student + "/" + result.room.max_number_student)
-            $(`#room_member_card_${result.room.id}`).html(result.room.number_student + "/" + result.room.max_number_student)
-          },
-          error: function (error) {
+        if (result.room_id != result.room.id){
+          console.log()
+          document.querySelector('.room_member_list').appendChild(document.getElementById(data)); // thêm 1 thẻ hvien có id là data đã set trên
+          document.querySelector(`#${data}`).classList.add("eight", "wide","column"); // thêm class vào cho đúng định dạng
+          toastr.success("Thêm học viên vào phòng thành công!");
+          $.ajax({
+            type: "GET",
+            url: `room-management/${result.room.id}/number-student`,
+            success: function(result){
+              $('#room_current_member').html(result.room.number_student + "/" + result.room.max_number_student)
+              $(`#room_member_card_${result.room.id}`).html(result.room.number_student + "/" + result.room.max_number_student)
+              if (result.room.status == "PENDING") {
+                  $(`#room_status_card_${result.room.id}`).html('Đang bỏ trống')
+              } else if (result.room.status == "UNFILLED"){
+                $(`#room_status_card_${result.room.id}`).html('Đang còn chỗ')
+              }
+              else{
+                $(`#room_status_card_${result.room.id}`).html('Đã đầy')
+              }
+            },
+            error: function (error) {
 
-          }
-        })
-        
+            }
+          })
+        }
       },
       error: function(error){
         console.log(error)
@@ -86,19 +99,28 @@
     document.querySelector('.students_list').appendChild(document.getElementById(data));
     document.querySelector(`#${data}`).classList.remove("eight", "wide", "column");
     console.log(data)
-
     $.ajax({
       type: "POST",
       url: "students-arrangement/remove-student",
       data: {student_id: data.split("_")[1]}, //lấy id của học viên 
       success: function(result){
-        toastr.success("Di chuyển học viên thành công!");
         $.ajax({
           type: "GET",
           url: `room-management/${result.room.id}/number-student`,
           success: function(result){
+            if (result.room.id != 1){
+            toastr.success("Di chuyển học viên thành công!");
             $('#room_current_member').html(result.room.number_student + "/" + result.room.max_number_student)
             $(`#room_member_card_${result.room.id}`).html(result.room.number_student + "/" + result.room.max_number_student)
+            if (result.room.status == "PENDING") {
+                $(`#room_status_card_${result.room.id}`).html('Đang bỏ trống')
+            } else if (result.room.status == "UNFILLED"){
+              $(`#room_status_card_${result.room.id}`).html('Đang còn chỗ')
+            }
+            else{
+              $(`#room_status_card_${result.room.id}`).html('Đã đầy')
+            }
+            }
           },
           error: function (error) {
 
@@ -143,10 +165,8 @@
       success: function(result){ //result là một partial tên _room_active của room_management
         $("#active_room_box").html(result)
          console.log("oke")
-
       },
       error: function (error) {
-
       }
     })
   }

@@ -21,7 +21,7 @@
     <tbody>
       <% @room_service_charges.each_with_index do |s, index| %>
         <tr onclick="showServiceChargeInfo(<%= s.room_id %>, <%= s.year %>, <%= s.month %>, <%= s.id %>, <%= index+1%>)" id="tr_service_charge_<%= s.id %>">
-          <td><%= index + 1 + (@page - 1)*Settings.pagination %></td>
+          <td><%= index + 1 + (@page - 1)*Settings.report_pagination %></td>
           <td><%= s.month %></td>
           <td><%= s.electricity_price %></td>
           <td><%= s.water_price %></td>

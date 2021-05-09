@@ -188,6 +188,7 @@
 //FILL VAO MODAL SHOW
   function showStudentInfo(member_id) {
     $('.ui.modal.student_info').modal('show');
+    console.log(member_id);
     $.ajax({
       type: 'GET',
       url: `/manager/student-management/${member_id}/show`,
@@ -204,8 +205,18 @@
         $('#address').html(result.student_profile.address)
         $('#phone_number').html(result.student_profile.phone_number)
         $('#identity_card_number').html(result.student_profile.identity_card_number)
-        $('#created_at').html(result.student.created_at.split("T")[0])
-        $('#check_in_date').html(result.student.check_in_date.split("T")[0])
+        if (result.student.created_at){
+           $('#created_at').html(result.student.created_at.split("T")[0])
+        }
+        else{
+          $('#created_at').html("");
+        }
+        if(result.student.check_in_date){
+          $('#check_in_date').html(result.student.check_in_date.split("T")[0])
+        } else{
+           $('#check_in_date').html("");
+        }
+        
         $('#check_out_date').html(result.student.extended_time)
         if (result.student.status == "ACTIVE"){
           $('#status').html("Đã kích hoạt")

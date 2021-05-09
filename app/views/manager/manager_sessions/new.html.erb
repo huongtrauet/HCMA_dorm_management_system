@@ -13,7 +13,7 @@
             <input type="text" name="email" placeholder="Email" class="input field_line" style="margin-bottom: 0 !important " />
           </div>
           <div class="field ui field_line" style="position: relative">
-            <input type="password" name="password" placeholder="Password" class="input field_line" style="margin-bottom: 0 !important;" />
+            <input type="password" name="password" placeholder="Mật khẩu" class="input field_line" style="margin-bottom: 0 !important;" />
           </div>
           <div class="ui checkbox">
             <div class="field">
@@ -59,7 +59,6 @@
   }
 
   function loginSubmit(e){
-    debugger
     e.preventDefault();
     let loginForm = document.getElementById('login_form');
     let formData = new FormData(loginForm);  
@@ -75,15 +74,12 @@
       },
       error: function (error) {
         toastr.error(JSON.parse(error.responseText).message)
-        debugger
       }
     })
   };
   
   $('#login_form').off('submit').submit(function(e){
-    debugger
     if($('#login_form').form('is valid')) {
-    debugger
       loginSubmit(e);
     }
   })
