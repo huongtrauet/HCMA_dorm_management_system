@@ -36,6 +36,4 @@ yarn-debug.log*
 .yarn-integrity
 
 # Ignore application configuration
-/config/application.yml
-.env
 db_key
