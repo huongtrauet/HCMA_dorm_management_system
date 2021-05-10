@@ -1,5 +1,5 @@
 # Change these
-server '3.14.150.77', port: 22, roles: [:web, :app, :db], primary: true
+server '52.14.4.206', port: 22, roles: [:web, :app, :db], primary: true
 
 set :repo_url,        'git@github.com:huongtrauet/HCMA_dorm_management_system.git'
 set :application,     'HCMA_dorm_management_system'
