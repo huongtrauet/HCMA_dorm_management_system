@@ -31,7 +31,7 @@ gem "rails-i18n"
 gem 'sassc', '~>2.4.0'
 gem 'ed25519'
 gem 'bcrypt_pbkdf'
-gem 'nokogiri'
+gem 'nokogiri', '>= 0'
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
 end
