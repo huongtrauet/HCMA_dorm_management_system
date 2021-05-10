@@ -343,6 +343,7 @@ DEPENDENCIES
   listen (~> 3.2)
   mini_magick (~> 4.0)
   mysql2
+  nokogiri
   paypal-checkout-sdk
   puma (~> 4.1)
   pusher
