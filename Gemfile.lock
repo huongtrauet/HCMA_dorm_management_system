@@ -326,6 +326,7 @@ PLATFORMS
 DEPENDENCIES
   active_storage_validations (~> 0.8)
   activerecord-import
+  activesupport (~> 6.0.3.7)
   bcrypt
   bcrypt_pbkdf
   bootsnap (>= 1.4.2)
