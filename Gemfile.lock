@@ -69,12 +69,32 @@ GEM
       zeitwerk (~> 2.2, >= 2.2.2)
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
+    airbrussh (1.4.0)
+      sshkit (>= 1.6.1, != 1.7.0)
     bcrypt (3.1.16)
+    bcrypt_pbkdf (1.1.0)
     bindex (0.8.1)
     bootsnap (1.5.1)
       msgpack (~> 1.0)
     builder (3.2.4)
     byebug (11.1.3)
+    capistrano (3.16.0)
+      airbrussh (>= 1.0.0)
+      i18n
+      rake (>= 10.0.0)
+      sshkit (>= 1.9.0)
+    capistrano-bundler (2.0.1)
+      capistrano (~> 3.1)
+    capistrano-rails (1.6.1)
+      capistrano (~> 3.1)
+      capistrano-bundler (>= 1.1, < 3)
+    capistrano-rvm (0.1.2)
+      capistrano (~> 3.0)
+      sshkit (~> 1.2)
+    capistrano3-puma (5.0.4)
+      capistrano (~> 3.7)
+      capistrano-bundler
+      puma (>= 4.0, < 6.0)
     capybara (3.34.0)
       addressable
       mini_mime (>= 0.1.3)
@@ -136,6 +156,7 @@ GEM
       dry-equalizer (~> 0.2)
       dry-initializer (~> 3.0)
       dry-schema (~> 1.5, >= 1.5.2)
+    ed25519 (1.2.4)
     erubi (1.10.0)
     ffi (1.14.2)
     flex-slider-rails (2.7.0)
@@ -183,6 +204,9 @@ GEM
     msgpack (1.3.3)
     multi_json (1.15.0)
     mysql2 (0.5.3)
+    net-scp (3.0.0)
+      net-ssh (>= 2.6.5, < 7.0.0)
+    net-ssh (6.1.0)
     nio4r (2.5.4)
     nokogiri (1.11.1)
       mini_portile2 (~> 2.5.0)
@@ -273,6 +297,9 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
+    sshkit (1.21.2)
+      net-scp (>= 1.1.2)
+      net-ssh (>= 2.8.0)
     ssrf_filter (1.0.7)
     thor (1.1.0)
     thread_safe (0.3.6)
@@ -309,11 +336,18 @@ DEPENDENCIES
   active_storage_validations (~> 0.8)
   activerecord-import
   bcrypt
+  bcrypt_pbkdf
   bootsnap (>= 1.4.2)
   byebug
+  capistrano
+  capistrano-bundler
+  capistrano-rails
+  capistrano-rvm
+  capistrano3-puma
   capybara (>= 2.15)
   carrierwave (~> 2.2.0)
   config
+  ed25519
   flex-slider-rails
   image_processing (~> 1.7.1)
   jbuilder (~> 2.7)
@@ -332,7 +366,6 @@ DEPENDENCIES
   redis
   roo
   sass-rails (>= 6)
-  sassc (~> 2.4.0)
   selenium-webdriver
   spring
   spring-watcher-listen (~> 2.0.0)
