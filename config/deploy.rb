@@ -27,7 +27,7 @@ set :puma_init_active_record, true  # Change to false when not using ActiveRecor
 
 ## Defaults:
 # set :scm,           :git
-# set :branch,        :main
+set :branch,        :manager_backend
 # set :format,        :pretty
 # set :log_level,     :debug
 # set :keep_releases, 5
@@ -54,8 +54,8 @@ namespace :deploy do
     on roles(:app) do
 
       # Update this to your branch name: master, main, etc. Here it's main
-      unless `git rev-parse HEAD` == `git rev-parse origin/main`
-        puts "WARNING: HEAD is not the same as origin/main"
+      unless `git rev-parse HEAD` == `git rev-parse origin/manager_backend`
+        puts "WARNING: HEAD is not the same as origin/manager_backend"
         puts "Run `git push` to sync changes."
         exit
       end
