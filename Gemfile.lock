@@ -353,6 +353,7 @@ DEPENDENCIES
   puma (~> 4.1)
   pusher
   rails (~> 6.0.3, >= 6.0.3.4)
+  rails-dom-testing (~> 2.0.3)
   rails-i18n
   ransack
   redis

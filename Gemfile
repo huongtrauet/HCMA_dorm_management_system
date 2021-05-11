@@ -28,6 +28,7 @@ gem "activerecord-import"
 gem "flex-slider-rails"
 gem "rails-i18n"
 gem "activesupport", '~> 6.0.3.7'
+gem 'rails-dom-testing', '~> 2.0.3' 
 # gem 'mimemagic', github: 'mimemagicrb/mimemagic', ref: '01f92d86d15d85cfd0f20dabd025dcbd36a8a60f'
 gem 'sassc', '~>2.4.0'
 gem 'ed25519'
