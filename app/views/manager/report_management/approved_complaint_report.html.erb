@@ -1,0 +1,227 @@
+<p id="notice"><%= notice %></p>
+<div class="room_management_show">
+  <div class="ui grid">
+    <div class="four wide column" style="padding-top: 5em">
+      <%= render partial: "report_management_sidebar", locals: {active: 'complaint_report'} %>
+    </div>
+    <div class="twelve wide column">
+      <div id="complaint_report" style="margin-top: 3rem">
+        <div class="header" style="display: flex; justify-content: space-between;">
+          <div class="header_title">
+            <h3>Ý kiến đóng góp</h3>
+          </div>
+        </div>
+        <div class="footer_line" style="height: 1px; background-color: rgba(34,36,38,.15); margin-top: 0.5rem; margin-bottom: 1.5rem"></div>
+        <div class="ui tabular menu">
+          <a class="item" id="pending_tab" href="/manager/report-management/complaint-reports/pending" data-turbolinks="false">
+            Đang xử lý
+          </a>
+          <a class="item active" id="approved_tab"  href="/manager/report-management/complaint-reports/approved" data-turbolinks="false">
+            Đã thông qua
+          </a>
+          <a class="item" id="rejected_tab"  href="/manager/report-management/complaint-reports/rejected" data-turbolinks="false">
+            Đã từ chối
+          </a>
+        </div>
+        <table class="ui very basic selectable table" style="margin-top: 2rem">
+          <thead>
+            <tr>
+              <th style="text-align: center">STT</th>
+              <th style="text-align: center">Tiều đề</th>
+              <th style="text-align: center">Toà nhà</th>
+              <th style="text-align: center">Nội dung</th>
+              <th style="text-align: center">Trạng thái</th>
+            </tr>
+          </thead>
+          <tbody id="reports_list">
+            <% @complaint_reports.each_with_index do |report, index| %>
+              <tr onclick="showReportInfo(<%= report.id %>)" id="report_<%= report.id %>">
+                <td style="text-align: center"><%=  (index + 1) + (@page - 1) * Settings.report_pagination%></td>
+                <td>
+                  <p style="text-align: center; margin: 0 auto; word-wrap: break-word; width: 12rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+                    <%= report.title %>
+                  </p>
+                </td>
+                <td>
+                  <p style="text-align: center; margin: 0 auto; word-wrap: break-word; width: 7rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+                    <%= report.student.room.building.name %> / <%= report.student.room.room_name %>
+                  </p>
+                </td>
+                <td>
+                  <span style="text-align: center; margin: 0 auto; word-wrap: break-word; width: 25rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+                    <%= report.description %>
+                  </span>
+                </td>
+                <td style="text-align: center">
+                  <% if report.status == "PENDING" %>
+                    <a class="ui teal tag label">Đang xử lý</a>
+                  <% elsif report.status == "APPROVED" %>
+                    <a class="ui blue tag label">Đã thông qua</a>
+                  <% elsif report.status == "REJECTED" %>
+                    <a class="ui red tag label">Đã từ chối</a>
+                  <% end  %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+        <div class="mt-4" style="float: right" id="pagination">
+          <%= paginate @complaint_reports, turbolinks: false, remove: true %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<%# MODAL SHOW INFO %>
+<div class="ui small first modal report_info" id="show_info_modal">
+  <i class="close icon"></i>
+  <div class="content">
+    <div style="font-weight: bold; font-size: 1.5rem" id="title_show"></div>
+    <div id="report_building" style="    margin-bottom: 1rem; color: #00000066;"></div>
+    <div style="margin-bottom: 0.4rem"><b>Ngày gửi: </b> <span id="created_at_show"></span></div>
+    <div style="margin-bottom: 0.4rem">
+      <b>Nội dung: </b>
+      <div id="description_show"></div>
+    </div>
+    <input type="hidden" id="report_id_show" value=""/>
+  </div>
+  <div class="actions" style="padding: 0.7rem 1rem; display: flex; justify-content: space-between; align-items: center">
+    <div style="display: flex; align-items: center">
+      <img id="reporter_image" src="/assets/profile.png" style="width: 2rem; height: 2rem; border-radius: 50%; margin-right: 1rem"/>
+      <b id="reporter_name"></b>
+    </div>
+    <div>
+      <div class="ui cancel button">
+        Đóng
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $("#manager_report_management_path").addClass("active");
+  $('.coupled.modal')
+    .modal({
+      allowMultiple: false
+    })
+  ;
+  // attach events to buttons
+  $('.second.modal')
+    .modal('attach events', '.first.modal .reject')
+  ;
+
+  function showReportInfo(report_id){
+    $('.ui.small.first.modal.report_info').modal('show');
+  //  reset form phake
+  $('#reject_reason').val("")
+    $.ajax({
+      type: "GET",
+      url: `/manager/report-management/complaint-reports/${report_id}`, 
+      data: {
+        "id": report_id
+      },
+      success: function(result){
+        let date = new Date(result.complaint_report.created_at)
+        $('#title_show').html(result.complaint_report.title)
+        $('#description_show').html(result.complaint_report.description)
+        $('#report_id_show').val(result.complaint_report.id)
+        $('#report_id_reject').val(result.complaint_report.id)
+        $('#created_at_show').html(`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`)
+        $('#report_building').html(`Toà nhà ${result.building}/${result.room}`)
+        $('#reporter_name').html(result.reporter.name)
+        if(result.reporter.avatar.url != null && result.reporter.avatar.url != ""){
+          $('#reporter_image').attr("src",result.reporter.avatar.url)
+        }
+      },
+      error: function (error) {
+        console.log(error)
+      }
+    })
+  }
+
+  function findComplaintReportByStatus(status){
+    $.ajax({
+      type: "GET",
+      url: "/manager/report-management/complaint-reports/find-by-status",
+      data: { 
+        "status": status 
+      },
+      success: function(result){
+        console.log("success")
+        $("#reports_list").html(result)
+        $("#pagination").html(`<%= j paginate @complaint_reports, turbolinks: false, remove: true %>`)
+        if (status == "PENDING") {
+          $("#pending_tab").addClass("active");
+          $("#approved_tab").removeClass("active");
+          $("#rejected_tab").removeClass("active");
+        }
+        else if (status == "APPROVED"){
+          $("#pending_tab").removeClass("active");
+          $("#approved_tab").addClass("active");
+          $("#rejected_tab").removeClass("active");
+        }
+        else if (status == "REJECTED"){
+          $("#pending_tab").removeClass("active");
+          $("#approved_tab").removeClass("active");
+          $("#rejected_tab").addClass("active");
+        }
+      },
+      error: function (error) {
+
+      }
+
+      })
+  }
+
+  function submitReject(){
+    let report_id = $('#report_id_reject').val();
+    $.ajax({
+      type: "PUT",
+      url: `/manager/report-management/complaint-reports/${report_id}/reject`,
+      data: { 
+        "report": {
+          "id" : report_id,
+          "reject_reason": $("#reject_reason").val()
+        }
+      },
+      success: function(result){
+         toastr.success("Từ chối báo cáo thành công!");
+        $('.ui.small.second.modal.reject').modal('hide');
+        $("#reports_list").html(result)
+      },
+      error: function (error) {
+        toastr.success(error.message)
+      }
+    })
+  }
+
+  function submitApprove(){
+    let report_id = $('#report_id_show').val();
+    $.ajax({
+      type: "PUT",
+      url: `/manager/report-management/complaint-reports/${report_id}/approve`,
+      data: { 
+        "report": {
+          "id" : report_id,
+        }
+      },
+      success: function(result){
+        toastr.success("Thông qua báo cáo thành công!");
+        $('.ui.small.first.modal.report_info').modal('hide');
+        $("#reports_list").html(result)
+
+      },
+      error: function (error) {
+        toastr.success(error.message)
+      }
+    })
+  }
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const focusParam = urlParams.get('focus_id');
+  if (document.querySelector(`#report_${focusParam}`)) {
+    document.querySelector(`#report_${focusParam}`).classList.add("active");
+  }
+  
+    // show first now
+</script>

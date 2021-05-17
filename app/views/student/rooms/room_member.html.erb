@@ -1,0 +1,24 @@
+<div class="room_show">
+  <div class="ui grid">
+    <div class="four wide column" style="padding-top: 5em">
+      <%= render "student/rooms/room_sidebar" %>
+    </div>
+    <div class="twelve wide column" style="padding-top: 5em">
+    <% if current_user.room.id != 1 %>
+      <h3>
+        <strong>Phòng:</strong>
+        <%= @room.room_name %>
+      </h3>
+      <div id="room_member">
+        <%= render "student/rooms/member" %>
+      </div>
+    <% else %>
+      <h3>Chào mừng bạn đến với Ký túc xá Học viện Chính trị Quốc gia Hồ Chí Minh </h3>
+    <% end %>
+    </div>
+  </div>
+</div>
+<script>
+  const memberBtn = document.querySelector('#room_member_btn');
+  memberBtn.classList.add('active');
+</script>

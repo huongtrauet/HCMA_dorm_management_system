@@ -1,6 +1,6 @@
 <div class="form_request_list" style="padding-top: 2rem">
   <div class="ui dividing header">
-    <h3 class="" >Form request</h3>
+    <h3 class="">Yêu cầu mẫu đơn</h3>
     <div class="add_btn" onclick="addNewFormRequest()">
       <img src="/assets/add.png" style="width: 1.5em; height: 1.5em; margin-right: 2.5em">
     </div>
@@ -9,66 +9,85 @@
     <thead>
       <tr>
         <th>STT</th>
-        <th>Type</th>
-        <th>Title</th>
-        <th>Description</th>
-        <th>Status</th>
+        <th>Ngày gửi</th>
+        <th>Loại mẫu</th>
+        <th>Nội dung</th>
+        <th style="text-align: center">Trạng thái</th>
       </tr>
     </thead>
-    <tbody>
-      <% for i in 0..5 do %>
-        <tr onclick="viewMoreFormRequest()">
-          <td>1</td>
-          <td>Giay xac nhan o KTX</td>
-          <td>Ve an ninh KTX</td>
-          <td>KTX quan ly long leo</td>
+    <tbody id="list_request">
+      <% @form_requests.each_with_index do |request, index| %>
+        <tr onclick="viewMoreFormRequest(<%= request.id %>)" id="report_<%= request.id %>">
+          <td><%= index + 1 + (@page - 1)*Settings.report_pagination %></td>
+          <td style="width: 10rem"><%= request.created_at.to_date %></td>
           <td>
-            <a class="ui teal tag label">Pending</a>
+           <span style="margin: 0 auto; word-wrap: break-word; width: 10rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+              <%= request.form_type %>
+            </span>
+          </td>
+          <td>
+            <span style="margin: 0 auto; word-wrap: break-word; max-width: 20rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+              <%= request.description %>
+            </span>
+          </td>
+          <td style="text-align: right">
+            <% if request.status == "PENDING" %>
+              <a class="ui teal tag label">Đang xử lý</a>
+            <% elsif request.status == "APPROVED" %>
+              <a class="ui blue tag label">Đã thông qua</a>
+            <% elsif request.status == "REJECTED" %>
+              <a class="ui red tag label">Đã từ chối</a>
+            <% end  %>
           </td>
         </tr>
       <% end %>
     </tbody>
   </table>
+   <div class="mt-4" style="float: right">
+    <%= paginate @form_requests, turbolinks: false %>
+  </div>
   <div class="ui modal" id="new_form_request">
     <div class="header">
-      <span class="">Request form</span>
-      <span class="">
-        <div class="ui scrolling dropdown">
-          <input type="hidden" name="gender">
-          <div class="default text">Select choice</div>
-          <div class="menu">
-            <div class="item">Choice 1</div>
-            <div class="item">Choice 2</div>
+      <span class="">Yêu cầu </span>
+        <span class="">
+          <div class="ui scrolling dropdown">
+            <input type="hidden" id="form_type" value="Thẻ ra vào">
+            <div class="default text">Thẻ ra vào</div>
+            <div class="menu">
+              <div class="item active selected">Giấy tạm trú tạm vắng</div>
+              <div class="item">Giấy chứng nhận nối trú tại ký túc xá Học viện</div>
+            </div>
+          </div>
+        </span>
+    </div>
+    <div class="content">
+      <form class="ui form segment" id="validate_description" style="border: none; -webkit-box-shadow: none">
+        <div class="ui form" id="request_form" style="margin-top:1rem">
+          <div class="field">
+            <label>Nội dung</label>
+            <textarea placeholder="Nhập nội dung" id="description" name="description"></textarea>
           </div>
         </div>
-      </span>
-    </div>
-    <div class="content">
-      <div class="ui form">
-        <div class="field">
-          <label>Title</label>
-          <input type="text" placeholder="Enter title">
-        </div>
-      </div>
-      <div class="ui form" style="margin-top:1rem">
-        <div class="field">
-          <label>Description</label>
-          <textarea placeholder="Enter description"></textarea>
-        </div>
-      </div>
-      <%# <button class="ui approved primary basic button" style="margin: 1rem 0; float: right">Primary</button> %>
       <div class="actions" style="display: flex; justify-content: flex-end; margin-top: 1rem">
-        <div class="ui cancel button">Submit</div>
+        <div class="ui submit button" style="background-color: #2185d0 !important; color: white">Gửi</div>
       </div>
+      </form>
     </div>
   </div>
+
   <div class="ui modal" id="form_request_detail">
-    <div class="header">Header</div>
+    <div class="header">Yều cầu mẫu đơn</div>
     <div class="content">
-      <p></p>
+      <b id="created_date"></b>
+      <h3 id="request_form_type_show"></h3>
+      <p><b>Ngày trả: </b><span id="return_date_show"></span></p>
+      <p><b>Nội dung:</b></p>
+      <p id="request_description_show"></p>
+      <p><b>Lưu ý:</b></p>
+      <p id="request_note_show"></p>
     </div>
     <div class="actions">
-      <div class="ui cancel button">Close</div>
+      <div class="ui cancel button">Đóng</div>
     </div>
   </div>
 </div>
@@ -79,7 +98,91 @@
   function addNewFormRequest(){
     $('#new_form_request').modal('show');
   }
-  function viewMoreFormRequest(){
+  function viewMoreFormRequest(request_id){
+    if(document.querySelector(`#report_${focusParam}`)){
+      document.querySelector(`#report_${focusParam}`).classList.remove("active");
+    }
     $('#form_request_detail').modal('show');
+    $.ajax({
+      type: "GET",
+      url: `/student/requests/form/${request_id}`,
+      data: {
+        "id": request_id
+      },
+      success: function(result){
+        let date = new Date(result.form_request.created_at)
+        // console.log(result.form_request)
+        let return_date = new Date(result.form_request.return_date)
+        $('#created_date').html(`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`)
+        $('#request_form_type_show').html(result.form_request.form_type);
+        $('#request_description_show').html(result.form_request.description)
+        $('#request_note_show').html(result.form_request.note)
+        if(result.form_request.return_date != null){
+          $('#return_date_show').html(`${return_date.getDate()}/${return_date.getMonth() + 1}/${return_date.getFullYear()}`)
+        }
+      },
+      error: function(error){
+      }
+    })
+  }
+
+  function addSubmit(e) {
+    $('#new_form_request').modal('hide');
+    let form_type = $("#form_type").val()
+    e.preventDefault();
+    $.ajax({
+      type: "POST",
+      url: "/student/requests/form/create",
+      data: {
+        "form_request": {
+          "form_type": form_type[0].toUpperCase() + form_type.substring(1, form_type.length),
+          description: $("#description").val()
+        }
+      },
+      success: function(result){
+        window.localStorage.setItem('new_form_request', result.message);
+        window.location = '/student/requests/form'
+      },
+      error: function (error) {
+        toastr.error(error.responseJSON.message);
+      }
+    })
+  }
+
+
+  $('#validate_description').off('submit').submit(async function(e){
+    e.preventDefault();
+    if($('#validate_description').form('is valid')) {
+      addSubmit(e)
+    }
+  })
+
+  $('#validate_description')
+    .form({
+      fields: {
+        description: {
+          identifier: 'description',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Vui lòng nhập nội dung!!'
+            },
+            {
+              type: 'maxLength[1000]',
+              prompt: 'Nội dung trong giới hạn 1000 ký tự'
+            }
+          ]
+        },
+      },
+      inline: true,
+      on: 'blur'
+    })
+  ;
+
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const focusParam = urlParams.get('focus_id');
+  if (document.querySelector(`#report_${focusParam}`)) {
+    document.querySelector(`#report_${focusParam}`).classList.add("active");
   }
 </script>

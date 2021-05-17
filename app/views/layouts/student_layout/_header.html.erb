@@ -1,44 +1,56 @@
   <div class="student_header">
     <div class="ui secondary pointing menu">
-      <%= link_to "Home", "/students" %>
+    <% if logged_in_student? %>
+      <%= link_to student_homepage_path, class: "item", id: "manager_home_path", data: { turbolinks: false } do %>
+        <img src="/assets/logo1.jpeg" style="width: 7.8rem"/>
+      <% end %>
+    <% end %>
       <div class="right menu">
-        <% if logged_in? %>
-          <%= link_to "Profile", student_student_profiles_path, class: "item", id: "student_student_profiles_path", data: { turbolinks: false } %>
-          <%= link_to "Request", student_requests_path, class: "item", id: "student_requests_path", data: { turbolinks: false } %>
+        <% if logged_in_student? %>
+          <input type="hidden" name="current_channel" id="current_channel" value="<%= current_user.channel%>">
+          <%= link_to "Thông tin cá nhân", "/student/my-profile/", class: "item", id: "student_student_profiles_path", data: { turbolinks: false } %>
+          <%= link_to "Phòng của tôi", "/student/my-room", class: "item", id: "student_room_path", data: { turbolinks: false } %>
+          <%= link_to "Báo cáo", student_requests_path, class: "item", id: "student_requests_path", data: { turbolinks: false } %>
           <div class="ui floating labeled icon dropdown button" style="position: relative; background-color: #ffffff" id="noti_button" >
             <img src="/assets/bell.png" style="width: 1.5rem; height: 1.5rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)" onclick="showNotiList()"/>
-            <div class="floating ui red label" style="top: 0.5rem; left: 1.5rem; padding: 0.3rem; border-radius: 0.2rem;">22</div>
-            <div class="menu">
-              <div class="item noti_item" style="width: 20rem; height: 4.5rem">
-                Important
-              </div>
-              <div class="item noti_item" style="width: 20rem; height: 4.5rem">
-                Announcement
-              </div>
-              <div class="item noti_item" >
-                <p style="width: 17rem; height: 4.5rem; overflow: hidden;text-overflow: ellipsis;word-wrap: break-word;-webkit-line-clamp: 2;-webkit-box-orient: vertical;line-height: 2.25rem;  white-space: pre-wrap; display: -webkit-box"
-   >Discussio nDi scussionDis cussio nDiscu ssionDiscuss ionDiscussionDiscuss ionDiscussionDiscussionDiscussionDiscussionDiscussion</p>
+            <div id="unread" class="floating ui red label" style="display: none; top: 0.5rem; left: 1.5rem; padding: 0.3rem; border-radius: 0.2rem;"><%= current_user.notifications.where(is_read: 'false').count %></div>
+            <div class="ui menu">
+              <h3 style="margin: 1rem;">Thông báo</h3>
+              <div id="list_noti" style="max-height: 30rem; overflow: auto;">
+                <% if current_user.notifications.length > 0 %>
+                  <% current_user.notifications.order('created_at DESC').each do |notification| %>
+                    <% if notification.is_read %>
+                      <div class="item noti_item" style="width: 20rem; max-height: 9.5rem; overflow: hidden; display: block">
+                        <div onclick="readNotification(<%= notification.id %>, '<%= notification.noti_type %>', <%= notification.report_id || 0 %>, <%= notification.page || 0 %>)" style= "width: 17rem; line-height: 1.5rem;  white-space: pre-wrap;"><%= notification.message %></div>
+                        <p style="font-size: 0.7rem; color: #b8b8b8"><%= time_ago(notification.created_at) %></p>
+                      </div>
+                    <% else %>
+                      <div class="item noti_item" style="width: 20rem; max-height: 9.5rem; overflow: hidden; display: block; background-color: #e0e0e0">
+                        <div onclick="readNotification(<%= notification.id %>, '<%= notification.noti_type %>', <%= notification.report_id || 0 %>, <%= notification.page || 0 %>)" style= "width: 17rem; overflow: hidden;text-overflow: ellipsis;word-wrap: break-word;-webkit-line-clamp: 2;-webkit-box-orient: vertical;line-height: 2.25rem;  white-space: pre-wrap;"><%= notification.message %></div>
+                        <p style="font-size: 0.7rem; color: #b8b8b8"><%= time_ago(notification.created_at) %></p>
+                      </div>
+                    <% end %>
+                    
+                  <% end %>
+                <% elsif current_user.notifications.length == 0 %>
+                  <div class="item noti_item" style="width: 20rem; height: 4.5rem" id="no_notification">
+                    <div class="" style= "width: 17rem; height: 4.5rem; overflow: hidden;text-overflow: ellipsis;word-wrap: break-word;-webkit-line-clamp: 2;-webkit-box-orient: vertical;line-height: 2.25rem;  white-space: pre-wrap; display: flex; align-items: center">Không có thông báo</div>
+                  </div>
+                <% end %>
               </div>
             </div>
           </div>
         <% else %>
-          <%= link_to "Login", student_login_path, class: "item", id: "student_login_path", data: { turbolinks: false } %>
+          <%= link_to "Đăng nhập", student_login_path, class: "item", id: "student_login_path", data: { turbolinks: false } %>
         <% end %>
-        <div class="ui floating dropdown labeled search icon button" id="language_dropdown" style="background-color: #ffffff">
-          <span class="text">
-            <% if I18n.locale == :en %>
-              <%= t(".english") %>
-            <% else %>
-              <%= t(".vienamese") %>
-            <% end %>
-          </span>
-          <div class="menu" style="z-index: 3000">
-            <%= link_to t(".english"), {locale:"en"}, class: "item", data: { turbolinks: false } %>
-            <%= link_to t(".vienamese"), {locale:"vi"}, class: "item",  data: { turbolinks: false } %>
-          </div>
+        <% if logged_in_student? %>
+        <div class="item" style="height: 100%">
+          <%= current_user.name %>
         </div>
-        <% if logged_in? %>
-          <%= link_to t(".logout"), student_logout_path, class: "item", data: { turbolinks: false } %>
+          
+        <% end %>
+        <% if logged_in_student? %>
+          <%= link_to "Đăng xuất", student_logout_path, class: "item", data: { turbolinks: false } %>
         <% end %>
       </div>
     </div>
@@ -51,7 +63,10 @@
   if (current_url.indexOf("/student/requests") != -1) {
     $("#student_requests_path").addClass("active");
   }
-  else if (current_url.indexOf("/student/student_profiles") != -1){
+  if (current_url.indexOf("/student/my-room") != -1) {
+    $("#student_room_path").addClass("active");
+  }
+  else if (current_url.indexOf("/student/my-profile") != -1){
     $("#student_student_profiles_path").addClass("active");
   }
   else if (current_url.indexOf("students") != -1){
@@ -62,3 +77,102 @@
     $('#noti_button').dropdown();
   }
 </script>
+<script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+<script>
+//hiển thị số lượng tb chưa đọc, nếu = 0 thì k hiển thị
+    $.ajax({
+      type: 'GET',
+      url: '/notifications/unread',
+      success: function(result){
+        if(result.unread == 0) {
+          $("#unread").hide()
+        } else {
+          $("#unread").show()
+        }
+      }, 
+      error: function (error) {
+
+      }
+    })
+
+    let current_channel = document.querySelector("#current_channel").value;
+    Pusher.logToConsole = true;
+    //kết nối topiws server của pusher
+    var pusher = new Pusher('29056021d38b15b42578', {
+      cluster: 'ap1',
+      encrypted: true
+    });
+
+    var channel = pusher.subscribe(current_channel);
+    channel.bind('new', function(data){
+      if (data.notification.is_read) {
+        $('#list_noti').prepend(`<div class="item noti_item" style="width: 20rem; max-height: 9.5rem; overflow: hidden; display: block; background-color: #e0e0e0">
+                                <div onclick="readNotification(${data.notification.id}, '${data.notification.noti_type}', ${data.notification.report_id || 0}, ${data.notification.page || 0})" style= "width: 17rem; overflow: hidden;text-overflow: ellipsis;word-wrap: break-word;-webkit-line-clamp: 2;-webkit-box-orient: vertical;line-height: 2.25rem;  white-space: pre-wrap; display: flex; align-items: center">${data.notification.message}</div>
+                                <p style="font-size: 0.7rem; color: #b8b8b8">Vừa xong</p>
+                              </div>`)
+      } else {
+        $('#list_noti').prepend(`<div class="item noti_item" style="width: 20rem; max-height: 9.5rem; overflow: hidden; display: block; background-color: #e0e0e0">
+                                <div onclick="readNotification(${data.notification.id}, '${data.notification.noti_type}', ${data.notification.report_id || 0}, ${data.notification.page || 0})" style= "width: 17rem; overflow: hidden;text-overflow: ellipsis;word-wrap: break-word;-webkit-line-clamp: 2;-webkit-box-orient: vertical;line-height: 2.25rem;  white-space: pre-wrap; display: flex; align-items: center">${data.notification.message}</div>
+                                <p style="font-size: 0.7rem; color: #b8b8b8">Vừa xong</p>
+                              </div>`)
+      }
+      
+      $("#no_notification").remove();
+      //cập nhậtk lại số luọng tbao chuq đoc
+      $.ajax({
+        type: 'GET',
+        url: '/notifications/unread',
+        success: function(result){
+          if (result.unread == 0) {
+            $("#unread").hide()
+          } else {
+            $("#unread").show()
+          }
+          $("#unread").html(result.unread)
+        }, 
+        error: function (error) {
+
+        }
+      })
+    });
+    function readNotification(noti_id, noti_type, report_id, page) {
+      // $(item).css("background-color", "white");
+      let redirect_url = ''
+      if (noti_type == "complaint_report") {
+        redirect_url = `/student/requests/complaint?focus_id=${report_id}&page=${page}`
+      } else if (noti_type == "facility_report") {
+        redirect_url = `/student/requests/facility?focus_id=${report_id}&page=${page}`
+      } else if (noti_type == "form_request") {
+        redirect_url = `/student/requests/form?focus_id=${report_id}&page=${page}`
+      } else if (noti_type == "add_student_to_room" || noti_type == "remove_student_from_room") {
+        redirect_url = `/student/my-room`
+      }
+      else if (noti_type == "service_charge_remind") {
+        redirect_url = `/student/my-room/services`
+      }
+      $.ajax({
+        type: "PUT",
+        url: `/notifications/${noti_id}/read`,
+        success: function(result){
+          window.location = redirect_url
+        },
+        error: function (error) {
+          toastr.error('Xin lỗi, chức năng đọc thông báo đang được bảo trì! Vui lòng truy cập bằng cách khác!')
+        }
+      })
+      
+    }    
+</script>
+<style>
+  .active.selected {
+    font-weight: normal !important;
+    border: none !important;
+  }
+
+  .noti_item{
+    cursor: pointer;
+  }
+  .noti_item:hover {
+    background-color: #e8e8e8 !important;
+  }
+</style>

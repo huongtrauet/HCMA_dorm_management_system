@@ -1,0 +1,29 @@
+<% requests.each_with_index do |report, index| %>
+  <tr onclick="showReportInfo(<%= report.id %>)" id="report_<%= report.id %>">
+    <td style="text-align: center"><%= index + 1 %></td>
+    <td>
+      <p style="text-align: center;margin: 0 auto; word-wrap: break-word; width: 12rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+        <%= report.form_type %>
+      </p>
+    </td>
+    <td>
+      <p style="text-align: center; margin: 0 auto; word-wrap: break-word; width: 12rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+        <%= report.student.room.building.name %> / <%= report.student.room.room_name %>
+      </p>
+    </td>
+    <td>
+      <span style="text-align: center; margin: 0 auto; word-wrap: break-word; width: 12rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+        <%= report.description %>
+      </span>
+    </td>
+    <td style="text-align: center">
+      <% if report.status == "PENDING" %>
+        <a class="ui teal tag label">Đang xử lý</a>
+      <% elsif report.status == "APPROVED" %>
+        <a class="ui blue tag label">Đã thông qua</a>
+      <% elsif report.status == "REJECTED" %>
+        <a class="ui red tag label">Đã từ chối</a>
+      <% end  %>
+    </td>
+  </tr>
+<% end %>

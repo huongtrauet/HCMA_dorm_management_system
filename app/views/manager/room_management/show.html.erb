@@ -3,19 +3,13 @@
 <div class="room_management_show">
   <div class="ui grid">
     <div class="four wide column" style="padding-top: 5em">
-      <%= render "manager/room_management/room_management_sidebar" %>
+      <%= render partial: "manager/room_management/room_management_sidebar", locals: {active: 'information'} %>
     </div>
     <div class="twelve wide column">
       <p>
-        <strong>Room:</strong>
+        <strong>Phòng:</strong>
         <%= @room.room_name %>
       </p>
-      <div id="room_service_charge">
-        <%= render "room_service_charge_list" %>
-      </div>
-      <div id="room_facility">
-        <%= render "room_facility_list" %>
-      </div>
       <div id="room_member">
         <%= render "room_member_list" %>
       </div>
@@ -61,4 +55,9 @@
   }
 
   $("#manager_room_management_path").addClass("active");
+  if (window.localStorage.getItem('updated_student')) {
+    toastr.success(window.localStorage.getItem('updated_student'))
+    localStorage.removeItem('updated_student');
+    
+  }
 </script>

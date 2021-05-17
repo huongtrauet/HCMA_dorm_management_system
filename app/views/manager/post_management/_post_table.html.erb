@@ -1,0 +1,73 @@
+<table class="ui very basic selectable table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Tiêu đề</th>
+      <th>Nội dung</th>
+      <th>Ngày đăng</th>
+      <th>Người viết</th>
+      <th>Trạng thái</th>
+      <th>Hành động</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% posts.each_with_index do |post, index|%>  
+      <tr>
+        <td onclick="showPost(<%= post.id %>)"><%= index + 1%></td>
+        <td style="width: 20rem" onclick="showPost(<%= post.id %>)">
+          <span style="margin: 0 auto; word-wrap: break-word; max-width: 16rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+            <%= post.title %>
+          </span>
+        </td onclick="showPost(<%= post.id %>)">
+        <td style="max-width: 25rem"onclick="showPost(<%= post.id %>)">
+          <span style="margin: 0 auto; word-wrap: break-word; max-width: 26rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+            <%= remove_html_tag(post.content).html_safe %>
+          </span>
+        </td>
+        <td onclick="showPost(<%= post.id %>)"><%= post.created_at.to_date %></td>
+        <td onclick="showPost(<%= post.id %>)"><%= post.writer_name %></td>
+        <td onclick="showPost(<%= post.id %>)" id="post_status_<%= post.id%>">
+        <% if post.status == 'POSTED' %>
+          Đã đăng
+        <% elsif post.status == 'DELETED'%>
+          Đã xoá
+        <% end %>
+        </td>
+        <td id="post_actions_<%= post.id%>">
+          <% if post.status == "POSTED" %>
+            <i class="trash alternate outline icon" id="delete_post_<%= post.id %>" onclick="confirmChangePostStatus(<%= post.id %>, 'POSTED')"></i>
+          <% elsif post.status == "DELETED" %>
+            <i class="window restore outline icon" id="delete_post_<%= post.id %>" onclick="confirmChangePostStatus(<%= post.id %>, 'DELETED')"></i>
+          <% end %>
+        </td>
+      </tr>
+      <%# modal xem %>
+      <div class="ui long small modal first scrolling" id="show_modal_first_<%= post.id %>">
+        <div class="scrolling content" style="padding: 3rem">
+          <div class="description">
+            <div class="ui header"><h2><%= post.title %></h2></div>
+            <div class="content" style="margin-top: 2rem"><%= post.content.html_safe %></div>
+            <div class="content">
+              <div class="ui special cards" style="margin-top: 2rem">
+                <% post.images.each do |image| %>
+                  <div class='card' style="max-height: 20rem; height: 20rem" id="image_${i}">
+                    <img style="width: 100%; height: 100%;" src="<%= image.url %>" />
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>   
+        </div>
+        <div class="actions">
+          <button class="ui cancel button">
+            Huỷ
+          </button>
+          <div class="ui primary approve button proceed">
+            Chỉnh sửa
+            <i class="right chevron icon"></i>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </tbody>
+</table>

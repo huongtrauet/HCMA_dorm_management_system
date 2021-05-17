@@ -1,9 +1,12 @@
 class Student::ServiceChargesController < StudentMainController
   before_action :set_service_charge, only: %i[ show edit update destroy ]
+  before_action :logged_in_student
 
   # GET /service_charges or /service_charges.json
   def index
-    @service_charges = ServiceCharge.all
+    @service_charges = ServiceCharge.all.where(room_id: current_user.room.id)
+    @service_charges = @service_charges.order("year DESC").order("month DESC").page(params[:page])
+    @rooms = Room.all.select(:id, :room_name)
   end
 
   # GET /service_charges/1 or /service_charges/1.json
@@ -55,6 +58,7 @@ class Student::ServiceChargesController < StudentMainController
       format.json { head :no_content }
     end
   end
+
 
   private
     # Use callbacks to share common setup or constraints between actions.

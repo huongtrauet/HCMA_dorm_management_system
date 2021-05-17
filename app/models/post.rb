@@ -7,5 +7,7 @@ class Post < ApplicationRecord
   validates :writer_name, presence: true, allow_nil: false, 
             length: {maximum: Settings.validations.post.writer_name.max_length}
   validates :status, presence: true, allow_nil: false, inclusion: { in: ['POSTED', 'DELETED']}
-            
-end
+  mount_uploaders :images, PictureUploader
+  serialize :images
+  # has_many_attached :images
+end 

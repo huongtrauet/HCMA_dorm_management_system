@@ -1,66 +1,37 @@
 class Student::RoomsController < StudentMainController
   layout 'student_layout/student'
   before_action :set_room, only: %i[ show edit update destroy ]
+  before_action :logged_in_student
 
-  # GET /rooms or /rooms.json
-  def index
-    @rooms = Room.all
+  def room_member
+    @room =current_user.room
+    if @room.id != 1
+      @members = Student.all.where(room_id: @room.id)
+    else
+      @members = nil
+      # @service_charges = ServiceCharge.new
+    end  
   end
 
-  # GET /rooms/1 or /rooms/1.json
-  def show
+  def room_service_charge
+    @room = current_user.room
+    @service_charges = ServiceCharge.all.where(room_id: current_user.room.id).order("year DESC").order("month DESC").page(params[:page])
+    @page = 1 if params[:page].blank?
+    @page = params[:page].to_i if params[:page].present?
   end
 
-  # GET /rooms/new
-  def new
-    @room = Room.new
-  end
-
-  # GET /rooms/1/edit
-  def edit
-  end
-
-  # POST /rooms or /rooms.json
-  def create
-    @room = Room.new(room_params)
-
+  def show_member
+    @student = Student.find(params[:id])
+    @student_profile = @student.student_profile
     respond_to do |format|
-      if @room.save
-        format.html { redirect_to @room, notice: "Room was successfully created." }
-        format.json { render :show, status: :created, location: @room }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @room.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # PATCH/PUT /rooms/1 or /rooms/1.json
-  def update
-    respond_to do |format|
-      if @room.update(room_params)
-        format.html { redirect_to @room, notice: "Room was successfully updated." }
-        format.json { render :show, status: :ok, location: @room }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @room.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # DELETE /rooms/1 or /rooms/1.json
-  def destroy
-    @room.destroy
-    respond_to do |format|
-      format.html { redirect_to rooms_url, notice: "Room was successfully destroyed." }
-      format.json { head :no_content }
+      format.json {render json: {student: @student, student_profile: @student_profile}}
     end
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_room
-      @room = Room.find(params[:id])
+      @room = current_user.room
     end
 
     # Only allow a list of trusted parameters through.

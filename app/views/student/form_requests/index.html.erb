@@ -13,4 +13,8 @@
 </div>
 <script>
   $("#form_request_btn").addClass("active");
+  if(window.localStorage.getItem("new_form_request")) {
+    toastr.success(window.localStorage.getItem("new_form_request"))
+    window.localStorage.removeItem("new_form_request");
+  }
 </script>

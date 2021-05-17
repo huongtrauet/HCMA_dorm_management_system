@@ -1,4 +1,3 @@
-<% provide :title, t(".title") %>
 <div class="container manager_session new">
   <div class="ui grid">
     <div class="eight wide column">
@@ -6,31 +5,30 @@
         <div class="hcma_logo">
           <img class="logo_image" style=""src="/assets/hcma logo.png"/>
         </div>
-        <div class="title">
-         Login to dormitory
+        <div class="title" style="line-height: 4rem !important">
+         Đăng nhập vào <br/> ký túc xá
         </div>
-        <%= form_for :manager_session, class: "ui form", url: manager_login_path do |f| %>
-          <div class="ui left icon input">
-            <%= f.text_field :email, class: "input", required: true, placeholder: "Email" %>
-            <i class="icon" style="left: 20px;">
-              <img class="icon" src="/assets/email.png" style="width: 1.5rem; height: 1.5rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-            </i>
+        <form class="ui form segment" id="login_form" style="border: none; -webkit-box-shadow: none">
+          <div class="ui field field_line" style="position: relative">
+            <input type="text" name="email" placeholder="Email" class="input field_line" style="margin-bottom: 0 !important " />
           </div>
-          <div class="field ui left icon input">
-            <%= f.password_field :password, class: "input", required: true, placeholder: "Password" %>
-            <i class="icon" style="left: 20px;">
-              <img class="icon" src="/assets/padlock.png" style="width: 1.5rem; height: 1.5rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-            </i>
+          <div class="field ui field_line" style="position: relative">
+            <input type="password" name="password" placeholder="Mật khẩu" class="input field_line" style="margin-bottom: 0 !important;" />
           </div>
-           <%= f.label :remember_me, class: "checkbox inline", style: "margin-top: 1rem; margin-left: 2.6rem;" do %>
-              <%= f.check_box :remember_me %>
-              <span>Remember </span>
-            <% end %>
-          <div style="text-align: center; margin-top: 1.5rem">
-            <%= f.submit "Submit", class: "ui inverted brown button manager_login_submit", style: "width: 10rem; color: #f4810b;"%>
+          <div class="ui checkbox">
+            <div class="field">
+            <input type="checkbox" name="remember_me">
+            <label>Lưu đăng nhập</label>
+            </div>
+          </div>
+          <div class="actions" style="display: flex; justify-content: flex-start; margin-top: 1rem;">
+            <button class="ui button custom_btn">
+              Đăng nhập
+            </button>
           </div>
           <%# <button class="ui inverted primary button">Primary</button> %>
-        <% end %>
+          <div class="reset_btn" onclick="resetPassword()">Quên mật khẩu</div>
+         <form> 
       </div>
     </div>
     <div class="eight wide column" style="padding-right: 5rem">
@@ -38,3 +36,82 @@
     </div>
   </div>
 </div>
+
+<style>
+  .reset_btn:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+</style>
+
+<script>
+  function resetPassword() {
+    $.ajax({
+      type: 'POST',
+      url: '/manager/reset-password',
+      success: function(result){
+        toastr.success(result.message)
+      },
+      error: function (error) {
+        toastr.error(error.responseJSON.message)
+      }
+    })
+  }
+
+  function loginSubmit(e){
+    e.preventDefault();
+    let loginForm = document.getElementById('login_form');
+    let formData = new FormData(loginForm);  
+    $.ajax({
+      type: 'POST',
+      url: '/manager/login',
+      processData: false,
+      contentType: false,
+      mimeType: 'multipart/form-data',
+      data: formData,
+      success: function(result){
+        window.location = "/manager/students-arrangement"
+      },
+      error: function (error) {
+        toastr.error(JSON.parse(error.responseText).message)
+      }
+    })
+  };
+  
+  $('#login_form').off('submit').submit(function(e){
+    if($('#login_form').form('is valid')) {
+      loginSubmit(e);
+    }
+  })
+
+  $('#login_form')
+    .form({
+      fields: {
+        email: {
+          identifier: 'email',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Vui lòng nhập email để đăng nhập!!'
+            },
+            {
+              type: 'email',
+              prompt: 'Email không đúng định dạng!!'
+            }
+          ]
+        },
+        password: {
+          identifier: 'password',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Vui lòng nhập mật khẩu!!'
+            },
+          ]
+        }
+      },
+      inline: true,
+      on: 'blur'
+    })
+  ;
+</script>

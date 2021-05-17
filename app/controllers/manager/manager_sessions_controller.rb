@@ -1,29 +1,45 @@
 class Manager::ManagerSessionsController < ManagerMainController
+  layout 'manager_layout/manager'
+  skip_before_action :verify_authenticity_token
+  before_action :not_logged_in, only: [:create, :new]
+
   def new
   end
   def create
     manager = find_manager_by_email
-    if manager&.authenticate params[:manager_session][:password]
-      flash[:success] = t ".login_success"
-      log_in manager
-      params[:manager_session][:remember_me] == '1' ? remember(manager) : forget(manager)
-      # remember student
-      redirect_to manager_students_arrangement_path
-    else
-      flash[:error] = t ".invalid_login"
-      render :new
-    end
+    # if manager != nil
+      if manager&.authenticate params[:password]
+        log_in manager
+        # remember student
+        params[:remember_me] == 'on' ? remember(manager) : forget(manager)
+        redirect_back_or '/manager'
+      else
+        respond_to do |format|
+          format.json {render json: {message: "Mật khẩu không chính xác!!"}, status: :bad_request}
+        end
+      end
+    # else
+    #   respond_to do |format|
+    #     format.json {render json: {message: "Tài khoản không tồn tại!!"}, status: :bad_request}
+    #   end
+    # end
   end
 
   def destroy
     log_out if logged_in?
-    flash[:success] = t ".logout_success"
+    flash[:success] = "Đã đăn xuất"
     redirect_to manager_login_path
   end
 
   private
 
   def find_manager_by_email
-    return Manager.find_by email: params[:manager_session][:email].downcase
+    return Manager.find_by email: params[:email].downcase
+  end
+
+  def not_logged_in
+    return if !logged_in_manager?
+
+    redirect_to "/manager"
   end
 end

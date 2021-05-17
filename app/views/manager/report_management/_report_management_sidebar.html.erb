@@ -1,0 +1,21 @@
+<div class="room_sidebar">
+  <div class="ui secondary vertical pointing menu">
+    <% if active == 'complaint_report' %>
+      <%= link_to "Ý kiến đóng góp", "/manager/report-management/complaint-reports/", class: "item active", id: "complaint_report_btn", data: { turbolinks: false } %>
+      <%= link_to "Yêu cầu mẫu đơn", "/manager/report-management/form-requests", class: "item", id: "form_request_btn", data: { turbolinks: false } %>
+      <%= link_to "Báo cáo cơ sở vật chất", "/manager/report-management/facility-reports/", class: "item", id: "facility_report_btn", data: { turbolinks: false } %>
+    <% end %>
+      
+    <% if active == 'form_request' %>
+      <%= link_to "Ý kiến đóng góp", "/manager/report-management/complaint-reports/", class: "item", id: "complaint_report_btn", data: { turbolinks: false } %>
+      <%= link_to "Yêu cầu mẫu đơn", "/manager/report-management/form-requests", class: "item active", id: "form_request_btn", data: { turbolinks: false } %>
+      <%= link_to "Báo cáo cơ sở vật chất", "/manager/report-management/facility-reports/", class: "item", id: "facility_report_btn", data: { turbolinks: false } %>
+    <% end %>
+
+    <% if active == 'facility_report' %>
+      <%= link_to "Ý kiến đóng góp", "/manager/report-management/complaint-reports/", class: "item", id: "complaint_report_btn", data: { turbolinks: false } %>
+      <%= link_to "Yêu cầu mẫu đơn", "/manager/report-management/form-requests", class: "item", id: "form_request_btn", data: { turbolinks: false } %>
+      <%= link_to "Báo cáo cơ sở vật chất", "/manager/report-management/facility-reports/", class: "item active", id: "facility_report_btn", data: { turbolinks: false } %>
+    <% end %>
+  </div>
+</div>

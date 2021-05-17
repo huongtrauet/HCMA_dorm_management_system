@@ -1,71 +1,25 @@
+<%# Danh sách tất cả các bài post ở trang homepage manager %>
 <div class="ui divided items" style="width: 85%; margin: 0 auto; background-color: #f4f4f6" >
-  <div class="item" style="padding: 2rem 2rem; padding-top: 2rem !important;">
-    <div class="ui small image">
-      <img src="/assets/ava.jpg" style="border-top-left-radius: 0.5rem; border-bottom-left-radius: 0.5rem;">
-    </div>
-    <div class="content">
-      <div class="header">Arrowhead Valley Camp</div>
-      <div class="meta">
-        <span style="margin-bottom: 1rem; line-height: 1.7rem; word-wrap: break-word; overflow: hidden; -webkit-line-clamp: 4 ; -webkit-box-orient: vertical; display: -webkit-box">A Personal Financial Management (PFM) service that visualizes in real-time the current state of and issues concerning personal finance; e.g., 
-        household accounts and financial assets, with an aim to resolve identified issues.
-        A Personal Financial Management (PFM) service that visualizes in real-time the current state of and issues concerning personal finance; e.g., 
-        household accounts and financial assets, with an aim to resolve identified issues.
-        A Personal Financial Management (PFM) service that visualizes in real-time the current state of and issues concerning personal finance; e.g., 
-        household accounts and financial assets, with an aim to resolve identified issues.
-        A Personal Financial Management (PFM) service that visualizes in real-time the current state of and issues concerning personal finance; e.g., 
-        household accounts and financial assets, with an aim to resolve identified issues.
-        </span>
-        <a href="posts/1">Xem them	&rarr;</a>
+  <% @posts.each do |post| %>
+    <div class="item" style="padding: 2rem 2rem; padding-top: 2rem !important;">
+      <div class="ui small image">
+        <img src="/assets/noti.jpeg" style="border-top-left-radius: 0.5rem; border-bottom-left-radius: 0.5rem;">
       </div>
-      <div class="description">
-        <p></p>
+      <div class="content">
+        <div class="header"><%= post.title %></div>
+        <div class="meta" style="display: flex; flex-direction: column; justify-content: space-between; height: 8.5rem">
+          <span style="margin-bottom: 1rem; line-height: 1.7rem; word-wrap: break-word; overflow: hidden; -webkit-line-clamp: 4 ; -webkit-box-orient: vertical; display: -webkit-box">
+            <%= remove_html_tag(post.content).html_safe %>
+          </span>
+          <a href="posts/<%= post.id %>" data-turbolinks="false">Xem thêm&rarr;</a>
+        </div>
+        <div class="description">
+          <p></p>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="item" style="padding: 2rem 2rem; padding-top: 2rem !important">
-    <div class="ui small image">
-      <img src="/assets/ava.jpg" style="border-top-left-radius: 0.5rem; border-bottom-left-radius: 0.5rem;">
-    </div>
-    <div class="content">
-      <div class="header">Buck's Homebrew Stayaway</div>
-      <div class="meta">
-        <span style=" margin-bottom: 1rem; line-height: 1.7rem; word-wrap: break-word; overflow: hidden; -webkit-line-clamp: 4 ; -webkit-box-orient: vertical; display: -webkit-box">A Personal Financial Management (PFM) service that visualizes in real-time the current state of and issues concerning personal finance; e.g., 
-        household accounts and financial assets, with an aim to resolve identified issues.
-        A Personal Financial Management (PFM) service that visualizes in real-time the current state of and issues concerning personal finance; e.g., 
-        household accounts and financial assets, with an aim to resolve identified issues.
-        A Personal Financial Management (PFM) service that visualizes in real-time the current state of and issues concerning personal finance; e.g., 
-        household accounts and financial assets, with an aim to resolve identified issues.
-        A Personal Financial Management (PFM) service that visualizes in real-time the current state of and issues concerning personal finance; e.g., 
-        household accounts and financial assets, with an aim to resolve identified issues.
-        </span>
-        <a href="posts/1">Xem them	&rarr;</a>
-      </div>
-      <div class="description">
-        <p></p>
-      </div>
-    </div>
-  </div>
-  <div class="item" style="padding: 2rem 2rem; padding-top: 2rem !important">
-    <div class="ui small image">
-      <img src="/assets/ava.jpg" style="border-top-left-radius: 0.5rem; border-bottom-left-radius: 0.5rem;">
-    </div>
-    <div class="content">
-      <div class="header">Astrology Camp</div>
-      <div class="meta">
-        <span style="margin-bottom: 1rem; line-height: 1.7rem; word-wrap: break-word; overflow: hidden; -webkit-line-clamp: 4 ; -webkit-box-orient: vertical; display: -webkit-box">A Personal Financial Management (PFM) service that visualizes in real-time the current state of and issues concerning personal finance; e.g., 
-        household accounts and financial assets, with an aim to resolve identified issues.
-        A Personal Financial Management (PFM) service that visualizes in real-time the current state of and issues concerning personal finance; e.g., 
-        household accounts and financial assets, with an aim to resolve identified issues.
-        A Personal Financial Management (PFM) service that visualizes in real-time the current state of and issues concerning personal finance; e.g., 
-        household accounts and financial assets, with an aim to resolve identified issues.
-        A Personal Financial Management (PFM) service that visualizes in real-time the current state of and issues concerning personal finance; e.g., 
-        household accounts and financial assets, with an aim to resolve identified issues.
-        </span>
-        <a href="posts/1">Xem them &rarr;</a>
-      </div>
-      <div class="description">
-        <p></p>
-      </div>
-    </div>
+  <% end %>
+  <div class="mt-4" style="float: right; margin-top: 1rem;">
+    <%= paginate @posts, turbolinks: false %>
   </div>
 </div>

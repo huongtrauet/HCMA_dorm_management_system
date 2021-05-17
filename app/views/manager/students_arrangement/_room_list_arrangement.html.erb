@@ -1,0 +1,53 @@
+
+<%# student_arrangement_controller # search_rooms_arrangement  trường hợp ô tìm kiếm k có gì %>
+<% rooms.each do |room|  %>
+  <div class="three wide column room" style="background-color: #ffffff; border: 1px solid #f4f4f6; border-radius: 5px; padding: 1rem; line-height: 2rem; margin: 1rem 0.6rem" onclick="activeRoom(<%= room.id %>)" > 
+  <%# hàm activeRoom định nghĩa bên main %>
+    <div style="display: flex; justify-content: space-between; align-items: center">
+      <h3 style='margin: 0' class="room_name"><%= room.room_name %></h3>
+      <a class="ui basic image mini label">
+        <% if room.gender == 'MALE' %>
+          <img src="/assets/elliot.jpeg">
+          Nam
+        <% elsif room.gender == 'FEMALE' %>
+          <img src="/assets/stevie.jpeg">
+          Nữ
+        <% end %>
+      </a>
+    </div>
+    <div>
+      <a class="ui mini label" class="room_content">
+      <% if room.room_type == 'VIP' %>
+        Phòng VIP
+      <% elsif room.room_type == 'NORMAL'  %>
+        Phòng thường
+      <% end %>
+      </a>
+    </div>
+    <div>
+      <% if room.status == 'PENDING' %>
+       Trạng thái: <a class="ui mini label" id="room_status_card_<%= room.id%>" style="margin-left: 1rem; background-color: #3889c8; color: #fff !important">Đang bỏ trống</a>
+      <% elsif room.status == 'UNFILLED' %>
+        Trạng thái: <a class="ui mini label" id="room_status_card_<%= room.id%>" style="margin-left: 1rem; background-color: #3889c8; color: #fff !important">Đang còn chỗ</a>
+      <% elsif room.status == 'FULL' %>
+        Trạng thái: <a class="ui mini label" id="room_status_card_<%= room.id%>" style="margin-left: 1rem; background-color: #3889c8; color: #fff !important">Đã đầy</a>
+      <% end %>
+    </div>
+    <div>
+      Số lượng học viên: <span style="margin-left: 1.4rem; font-size: 13px" id="room_member_card_<%= room.id%>"><%= room.number_student %></span>
+    </div>
+  </div>
+<% end %>
+
+
+
+
+<style>
+.room {
+  cursor: pointer;
+  transition: .2s
+}
+.room:hover {
+  transform: scale(1.1)
+}
+</style>

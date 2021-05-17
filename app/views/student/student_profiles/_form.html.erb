@@ -6,13 +6,20 @@
           <div class="left_column">
             <div class="ava">
               <div class="ava_image">
-                <img class="ui medium circular image" src="/assets/ava.jpg">
+                <% if @student.student_profile.avatar.url != nil %>
+                  <img class="ui medium circular image" id="preview_image_card" src="<%= @student.student_profile.avatar.url %>" style="border-radius: 50%; height: 10.4rem; width: 10.4rem">
+                <% else %>
+                  <img class="ui medium circular image" id="preview_image_card" src="/assets/profile.png" style="border-radius: 50%; height: 10.4rem; width: 10.4rem">
+                <% end %>
               </div>
               <div class="ava_icon">
-                <button class="ui icon button">
-                  <i class="edit outline icon"></i>
+                <button id="insert_image_button" class="ui icon button" style="padding: 1px 11px">
+                  <input style="	width: 0.1px;	height: 0.1px;	opacity: 0;	overflow: hidden;	position: absolute;	z-index: -1;" type="file" class="inputfile" id="embedpollfileinput1" onchange="generatePreviewImage(this)" style="width: 100%; height: 100%" multiple="false" accept="image/png, image/jpeg" name="images_input" />
+                  <label id="lable_image" for="embedpollfileinput1" class="ui button" style="margin: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; padding: 0">
+                    <i class="edit outline icon" style="margin: 0"></i>
+                  </label>
                 </button>
-                <button class="ui icon button">
+                <button class="ui icon button" onclick="resetAva()">
                   <i class="trash alternate outline icon"></i>
                 </button>
               </div>
@@ -21,103 +28,412 @@
         </div>
         <div class="eleven wide column">
           <div class="right_column">
-            <h3 class="ui dividing header">
-              Student Information
-            </h3>
-            <%= form_for [:student, @student_profile], html: { class: "ui form" } do |f| %>
-                <% if @student_profile.errors.any? %>
-                  <div id="error_explanation">
-                    <h2><%= pluralize(student_profile.errors.count, "error") %> prohibited this student_profile from being saved:</h2>
-                    <ul>
-                      <% student_profile.errors.full_messages.each do |message| %>
-                        <li><%= message %></li>
-                      <% end %>
-                    </ul>
+            <div class="ui styled accordion" style="box-shadow: none; -webkit-box-shadow: none; border:none; border-bottom: 1px solid rgba(34,36,38,.15); border-radius: 0; width: 100%; padding-bottom: 1rem">
+              <div class="title active">
+                <i class="dropdown icon"></i>
+                <span>Thông tin cá nhân</span>
+              </div>
+              <div class="content active">
+                <%= form_for @student, html: {class: 'ui form', id: "profile_form"}, url: {controller: "student_profiles", action: "update"}  do |student|%>
+                  <div class="two fields">
+                    <div class="required field field_line">
+                      <label>Mã số học viên</label>
+                      <%= student.text_field :student_id_number, class: "input", required: true, placeholder: "Student it number", disabled: true %>
+                    </div>
+                    <div class="required field field_line">
+                      <label>Phòng</label>
+                      <div class="ui input" >
+                        <% if @student.room.id != 1 %>
+                          <input value="<%= @student.room.room_name %>" disabled/>
+                        <% else %>
+                          <input value="PENDING" disabled/>
+                        <% end %>            
+                      </div>
+                    </div>
+                  </div>
+                  <%= student.fields_for :student_profile do |f| %>
+                    <div class="required field field_line">
+                      <label>Họ và tên</label>
+                      <input value="<%= @student.name %>" disabled/>
+                    </div>
+                    <div class="field field_line">
+                      <div class="two fields">
+                        <div class="field">
+                          <label>Lớp</label>
+                          <%= f.text_field :class_name, class: "input", placeholder: "Tên lớp" %>
+                        </div>
+                        <div class="field">
+                          <label>Email</label>
+                          <%= f.text_field :email, class: "input", id: "email_field", placeholder: "Địa chỉ email", disabled: true %>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="fields field_line">
+                      <div class="eight wide field">
+                        <label>Số CMND</label>
+                        <%= f.text_field :identity_card_number, class: "input", maxlength: "16", id: "identity_card_number_field", placeholder: "Số CMND" %>
+                      </div>
+                      <div class="eight wide field">
+                        <label>Ngày sinh</label>
+                        <%= f.date_field :date_of_birth, class: "input date", data: {provide: "datepicker"} %>
+                      </div>
+                    </div>
+                    <div class="field field_line">
+                      <label>Địa chỉ</label>
+                      <%= f.text_field :address, class: "input", id: "address_field", placeholder: "Địa chỉ" %>
+                    </div>
+                    <div class="field field_line">
+                      <div class="two fields">
+                        <div class="field">
+                          <label>Số điện thoại</label>
+                          <%= f.text_field :phone_number, class: "input", id: "phone_number_field", placeholder: "Số điện thoại" %>
+                        </div>
+                        <div class="field">    
+                          <label>Giới tính</label>
+                          <div class="options" style="height: 60%; margin-top: 0.8rem">
+                            <span style="margin-right: 0.6rem">
+                              <span class="option" style="margin-right: 0.3rem">Nam</span><%= f.radio_button :gender, 'MALE' %>
+                            </span>
+                            <span>
+                              <span class="option" style="margin-right: 0.3rem">Nữ</span><%= f.radio_button :gender, 'FEMALE' %>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  <% end %>
+                  <div class="ui dividing header">
+                    Xác nhận
+                  </div>
+                  <div class="ui field checkbox">
+                    <input type="checkbox" name="confirmation">
+                    <label>Bạn đã chắc mọi thông tin nhập trên đều chính xác.</label>
+                  </div>
+                  <div class="field" style="float: right; margin-top: 2em">
+                    <div class="ui blue submit button" >Cập nhật</div>
                   </div>
                 <% end %>
-                <div class="required field field_line">
-                  <%= f.label :name %>
-                  <%= f.text_field :name, class: "input", required: true, placeholder: "Full name" %>
-                </div>
-                <div class="required field field_line">
-                  <div class="two fields">
-                    <div class="required field">
-                      <label>Class name</label>
-                      <%= f.text_field :class_name, class: "input", required: true, placeholder: "Class name" %>
-                    </div>
-                    <div class="required field">
-                      <label>Email</label>
-                      <%= f.text_field :email, class: "input", required: true, placeholder: "Email" %>
-                    </div>
+              </div>
+            </div>
+            <div class="ui styled accordion" style="box-shadow: none; -webkit-box-shadow: none; border:none; border-bottom: 1px solid rgba(34,36,38,.15); border-radius: 0; width: 100%; padding-bottom: 1rem">
+              <div class="title">
+                <i class="dropdown icon"></i>
+                <span>Bảo mật tài khoản</span>
+              </div>
+              <div class="content">
+                <form class="ui form" id="reset_password_form">
+                  <div class="required field field_line" style="width: 50%">
+                    <label>Mật khẩu hiện tại</label>
+                    <input type="password" name="current_password"/>
                   </div>
-                </div>
-                <div class="fields field_line">
-                  <div class="required eight wide field">
-                    <label>Identity Card Number</label>
-                    <%= f.text_field :identity_card_number, class: "input",  required: true, maxlength: "16", placeholder: "Identity card number" %>
+                  <div class="required field field_line" style="width: 50%">
+                    <label>Mật khẩu mới</label>
+                    <input type="password" name="password"/>
                   </div>
-                  <div class="required eight wide field">
-                    <label>Date of Birth</label>
-                    <%= f.date_field :date_of_birth, class: "input date", data: {provide: "datepicker"}, required: true%>
+                  <div class="required field field_line" style="width: 50%">
+                    <label>Nhập lại mật khẩu</label>
+                    <input type="password" name="password_confirmation"/>
                   </div>
-                </div>
-                <div class="required field field_line">
-                  <label>Address</label>
-                  <%= f.text_field :address, class: "input", required: true, placeholder: "Address" %>
-                </div>
-                <div class="field field_line">
-                  <div class="two fields">
-                    <div class="required field">
-                      <label>Phone number</label>
-                      <%= f.text_field :phone_number, class: "input", required: true, placeholder: "Phone number" %>
-                    </div>
-                    <%# <div class="required field">
-                      <label for="gender">Select your gender</label>
-                      <div class="inline fields">
-                        <div class="field gender_field">
-                          <div class="ui radio checkbox">
-                            <input type="radio" name="gender" checked="" tabindex="0" class="hidden">
-                            <label>Male</label>
-                          </div>
-                        </div>
-                        <div class="field gender_field">
-                          <div class="ui radio checkbox">
-                            <input type="radio" name="gender" tabindex="0" class="hidden">
-                            <label>Female</label>
-                          </div>
-                        </div>
-                      </div>
-                    </div> %>
-                    <div class="field">    
-                      <%= f.label :gender %>
-                      <div class="options" style="height: 60%; margin-top: 0.8rem">
-                        <span style="margin-right: 0.6rem">
-                          <span class="option" style="margin-right: 0.3rem">Male</span><%= f.radio_button :gender, 'nam' %>
-                        </span>
-                        <span>
-                          <span class="option" style="margin-right: 0.3rem">Female</span><%= f.radio_button :gender, 'nu' %>
-                        </span>
-                      </div>
-                    </div>
+                  <div class="field" style="">
+                    <div class="ui blue submit button">Cập nhật</div>
                   </div>
-                </div>
-                <div class="ui dividing header">
-                  Confirmation
-                </div>
-                <div class="ui checkbox">
-                  <input type="checkbox" name="example">
-                  <label>You are sure that the information above is correct</label>
-                </div>
-                <div class="field" style="float: right; margin-top: 4em">
-                  <%= f.submit "Cancel", class: "ui primary button right"%>
-                  <%= f.submit "Save change", class: "ui primary button right"%>
-                </div>
-              <% end %>
+                </form>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+
 <script>
+  function resetAva(){
+    console.log("reste")
+    $.ajax({
+      type: "PUT",
+      url: "/student/student-profile/reset-ava",
+      success: function(result){
+        document.getElementById("preview_image_card").src = "/assets/profile.png"
+        toastr.success(result.message)
+      },
+      error: function(error){
+          toastr.success(error.message)
+      }
+    })
+  }
+
+  function generatePreviewImage(image){
+    document.getElementById("preview_image_card").src = URL.createObjectURL(image.files[0])
+    let form = new FormData()
+    form.set('avatar', image.files[0])
+    $.ajax({
+      type: "POST",
+      url: "/student/student-profile/update-avatar",
+      processData: false,
+      contentType: false,
+      cache: false,
+      mimeType: 'multipart/form-data',
+      data: form,
+      success: function(result){
+        toastr.success(JSON.parse(result).message)
+      },
+      error: function (error){
+        toastr.success("Cập nhật ảnh đại diện thất bại :(")
+      }
+    })
+  }
+
+  function updateSubmit(e) {
+    let myForm = document.getElementById('profile_form');
+    let formData = new FormData(myForm);
+    e.preventDefault();
+    $.ajax({
+      type: "PUT",
+      url: "/student/student-profile/update",
+      processData: false,
+      contentType: false,
+      cache: false,
+      mimeType: 'multipart/form-data',
+      data: formData,
+      success: function(result){
+        console.log(result)
+        toastr.success(JSON.parse(result).message)
+      },
+      error: function (error) {
+        console.log(error)
+        toastr.error(JSON.parse(error.responseText).message)
+      }
+    })
+  }
+
+  function submitResetPassword(e){
+    let myPasswordForm = document.getElementById('reset_password_form');
+    let formPass = new FormData(myPasswordForm);
+    e.preventDefault();
+    $.ajax({
+      type: "PUT",
+      url: "/student/student-profile/reset-password",
+      processData: false,
+      contentType: false,
+      cache: false,
+      mimeType: 'multipart/form-data',
+      data: formPass,
+      success: function(result){
+        toastr.success(JSON.parse(result).message)
+        $('#reset_password_form').form('reset');
+      },
+      error: function (error) {
+        toastr.error(JSON.parse(error.responseText).message)
+         $('#reset_password_form').form('reset');
+      }
+    })
+  }
+
+   $('#profile_form').off('submit').submit(function(e){
+    if($('#profile_form').form('is valid')) {
+      updateSubmit(e);
+    }
+  })
+
+  $('#profile_form')
+    .form({
+      fields: {
+        confirmation: {
+          identifier: 'confirmation',
+          rules: [
+            {
+              type: 'checked',
+              prompt: 'Vui lòng bấm chọn để xác nhận!'
+            }
+          ]
+        },
+        'student[student_profile_attributes][identity_card_number]': {
+          identifier: 'student[student_profile_attributes][identity_card_number]',
+          rules: [
+            {
+              type: 'integer',
+              prompt: 'Số chứng minh thư chỉ chứa kí tự số!'
+            },
+            {
+              type: 'maxLength[12]',
+              prompt: 'Số chứng minh thư buộc phải từ 9 đến 12 chữ số!'
+            },
+            {
+              type: 'minLength[9]',
+              prompt: 'Số chứng minh thư buộc phải từ 9 đến 12 chữ số!'
+            }
+          ]
+        },
+        'student[student_profile_attributes][address]': {
+          identifier: 'student[student_profile_attributes][address]',
+          rules: [
+            {
+              type: 'maxLength[100]',
+              prompt: 'Vui lòng nhập địa chỉ giới hạn trong 100 ký tự!'
+            }
+          ]
+        },
+        'student[student_profile_attributes][phone_number]': {
+          identifier: 'student[student_profile_attributes][phone_number]',
+          rules: [
+            {
+              type: 'integer',
+              prompt: 'Số điên thoại chỉ chứa kí tự số!'
+            }
+          ]
+        },
+        // 'student[student_profile_attributes][phone_number]': {
+        //   identifier: 'student[student_profile_attributes][phone_number]',
+        //   rules: [
+        //     {
+        //       type: 'regExp[/(03|05|07|08|09|01)+([0-9]{8})\b/]',
+        //       prompt: 'So dien thoai khong ton tai !'
+        //     }
+        //   ]
+        // },
+      },
+      on: 'blur',
+      inline: true
+    })
+  ;
+
+  $('#profile_form').form('remove fields', ['student[student_profile_attributes][identity_card_number]', 'student[student_profile_attributes][phone_number]', 'student[student_profile_attributes][address]' ])
+    function checkValidation(){
+
+      // identity_card_number
+      if ($("#identity_card_number_field").val() == "" || $("#identity_card_number_field").val() == null){
+        $('#profile_form').form('remove fields', ['student[student_profile_attributes][identity_card_number]'])
+      } else{
+        $('#profile_form')
+        .form('add rule', 'student[student_profile_attributes][identity_card_number]', {
+          identifier: 'student[student_profile_attributes][identity_card_number]',
+          rules: [
+            {
+              type: 'integer',
+              prompt: 'Số chứng minh thư chỉ chứa kí tự số!'
+            },
+            {
+              type: 'maxLength[12]',
+              prompt: 'Số chứng minh thư buộc phải từ 9 đến 12 chữ số!'
+            },
+            {
+              type: 'minLength[9]',
+              prompt: 'Số chứng minh thư buộc phải từ 9 đến 12 chữ số!'
+            }
+          ]
+        })
+      }
+
+      //phone_number
+      if ($("#phone_number_field").val() == "" || $("#phone_number_field").val() == null){
+        $('#profile_form').form('remove fields', ['student[student_profile_attributes][phone_number]'])
+      } else{
+        $('#profile_form')
+        .form('add rule', 'student[student_profile_attributes][phone_number]', {
+          identifier: 'student[student_profile_attributes][phone_number]',
+          rules: [
+            {
+              type: 'integer',
+              prompt: 'Số điên thoại chỉ chứa kí tự số!'
+            }
+          ]
+        })
+      }
+
+      //address
+      if ($("#address_field").val() == "" || $("#address_field").val() == null){
+        $('#profile_form').form('remove fields', ['student[student_profile_attributes][address]'])
+      } else{
+        $('#profile_form')
+        .form('add rule', 'student[student_profile_attributes][address]', {
+          identifier: 'student[student_profile_attributes][address]',
+          rules: [
+            {
+              type: 'maxLength[100]',
+              prompt: 'Vui lòng nhập địa chỉ giới hạn trong 100 ký tự!'
+            }
+          ]
+        })
+      }
+    };
+
+
+$(document).on("turbolinks:load", function() {
+  $("#identity_card_number_field").on("keyup", function() {
+  checkValidation();
+  });
+});
+
+$(document).on("turbolinks:load", function() {
+  $("#phone_number_field").on("keyup", function() {
+  checkValidation();
+  });
+});
+
+$(document).on("turbolinks:load", function() {
+  $("#address_field").on("keyup", function() {
+  checkValidation();
+  });
+});
+
+
+  //mở thanh thông tin cá nhân, bảo mật
+   $('.accordion')
+  .accordion();
+
+ $('#reset_password_form').off('submit').submit(function(e){
+    if($('#reset_password_form').form('is valid')) {
+      submitResetPassword(e);
+    }
+  })
+
+  $('#reset_password_form')
+    .form({
+      fields: {
+        current_password: {
+          identifier: 'current_password',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Vui lòng nhập mật khẩu hiện tại!'
+            }
+          ]
+        },
+        password: {
+          identifier: 'password',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Vui lòng nhập mật khẩu mới!!'
+            },
+          ]
+        },
+        password_confirmation: {
+          identifier: 'password_confirmation',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Vui lòng nhập lại mật khẩu!!'
+            },
+            {
+              type: 'match[password]',
+              prompt: 'Mật khẩu không khớp'
+            }
+          ]
+        }
+      },
+      inline: true,
+    })
+  ;
+
+
+
 </script>
+<style>
+#insert_image_button:hover #lable_image{
+  background-color: #cacbcd;
+}
+
+</style>

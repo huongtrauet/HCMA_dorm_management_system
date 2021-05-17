@@ -13,4 +13,8 @@
 </div>
 <script>
   $("#facility_report_btn").addClass("active");
+  if (localStorage.getItem("new_facility_report")) {
+    toastr.success(localStorage.getItem("new_facility_report"))
+    localStorage.removeItem("new_facility_report")
+  }
 </script>

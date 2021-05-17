@@ -1,0 +1,42 @@
+
+<p id="notice"><%= notice %></p>
+<div class="room_management_show">
+  <div class="ui grid">
+    <div class="four wide column" style="padding-top: 5em">
+      <%= render partial: "manager/report_management/report_management_sidebar", locals: {active: 'complaint_report'} %>
+    </div>
+    <div class="twelve wide column">
+      <div id="complaint_report">
+        <%= render "manager/report_management/complaint_report_list" %>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  const complaintBtn = document.querySelector('#complaint_report_btn')
+  const formBtn = document.querySelector('#form_request_btn')
+  const facilityBtn = document.querySelector('#facility_report_btn')
+
+
+  comlaintList.style.display = 'block'
+  formList.style.display = 'none'
+  facilityList.style.display = 'none'
+
+  complaintBtn.onclick = () => {
+    memberBtn.classList.add('active')
+    serviceBtn.classList.remove('active')
+    facilityBtn.classList.remove('active')
+  }
+  serviceBtn.onclick = () => {
+    memberBtn.classList.remove('active')
+    serviceBtn.classList.add('active')
+    facilityBtn.classList.remove('active')
+  }
+  facilityBtn.onclick = () => {
+    memberBtn.classList.remove('active')
+    serviceBtn.classList.remove('active')
+    facilityBtn.classList.add('active')
+  }
+
+  $("#manager_room_management_path").addClass("active");
+</script>

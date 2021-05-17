@@ -1,6 +1,6 @@
 <div class="facility_report_list" style="padding-top: 2rem">
   <div class="ui dividing header">
-    <h3 class="" >Facility Report</h3>
+    <h3 class="" >Báo cáo cơ sở vật chất</h3>
     <div class="add_btn" onclick="addNewFacilityReport()">
       <img src="/assets/add.png" style="width: 1.5em; height: 1.5em; margin-right: 2.5em">
     </div>
@@ -9,59 +9,178 @@
     <thead>
       <tr>
         <th>STT</th>
-        <th>Title</th>
-        <th>Description</th>
-        <th>Status</th>
+        <th>Ngày gửi</th>
+        <th>Tiêu đề</th>
+        <th>Nội dung</th>
+        <th>Trạng thái</th>
       </tr>
     </thead>
     <tbody>
-      <% for i in 0..5 do %>
-        <tr onclick="viewMoreFacilityReport()">
-          <td>1</td>
-          <td>Ve an ninh KTX</td>
-          <td>KTX quan ly long leo</td>
+      <% @facility_reports.each_with_index do |report, index| %>
+        <tr onclick="viewMoreFacilityReport(<%= report.id %>)" id="report_<%= report.id %>" >
+          <td><%= index + 1 + (@page - 1)*Settings.report_pagination %></td>
+          <td style="width: 10rem"><%= report.created_at.to_date %></>
           <td>
-            <a class="ui teal tag label">Pending</a>
+           <span style="margin: 0 auto; word-wrap: break-word; width: 10rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+              <%= report.title %>
+            </span>
+          </td>
+          <td>
+            <span style="margin: 0 auto; word-wrap: break-word; width: 20rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box">
+              <%= report.description %>
+            </span>
+          </td>
+          <td>
+            <% if report.status == "PENDING" %>
+              <a class="ui teal tag label">Đang xử lý</a>
+            <% elsif report.status == "APPROVED" %>
+              <a class="ui blue tag label">Đã thông qua</a>
+            <% elsif report.status == "REJECTED" %>
+              <a class="ui red tag label">Đã từ chối</a>
+            <% end  %>
           </td>
         </tr>
       <% end %>
     </tbody>
   </table>
-  <div class="ui modal" id="new_facility_report">
-    <div class="header">Facility Report</div>
-    <div class="content">
-      <div class="ui form">
-        <div class="field">
-          <label>Title</label>
-          <input type="text" placeholder="Enter title">
-        </div>
-      </div>
-      <div class="ui form" style="margin-top:1rem">
-        <div class="field">
-          <label>Description</label>
-          <textarea placeholder="Enter description"></textarea>
-        </div>
-      </div>
-    </div>
-    <div class="actions" style="display: flex; justify-content: flex-end; margin-top: 1rem">
-      <div class="ui cancel button">Submit</div>
-    </div>
+  <div class="mt-4" style="float: right">
+    <%= paginate @facility_reports, turbolinks: false %>
   </div>
+  <div class="ui modal" id="new_facility_report">
+    <div class="header">Báo cáo cơ sở vật chất</div>
+    <form id="facility_report_create_form" style="padding: 1.5rem; " class="form ui segment">
+      <div class="content" >
+        <div class="ui form">
+          <div class="field">
+            <label>Tiêu đề</label>
+            <input type="text" placeholder="Nhập tiêu đề" name="title" id="title">
+          </div>
+        </div>
+        <div class="ui form" style="margin-top:1rem">
+          <div class="field">
+            <label>Nội dung</label>
+            <textarea placeholder="Nhập nội dung" name="description" id="description"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="actions" style="display: flex; justify-content: flex-end; margin-top: 1rem">
+        <div class="ui submit button" style="background-color: #2185d0; color: white">Gửi</div>
+      </div>
+    </form>
+  </div>
+
   <div class="ui modal" id="facility_report_detail">
-    <div class="header">Header</div>
+    <div class="header">Báo cáo cơ sở vật chất</div>
     <div class="content">
-      <p></p>
+      <b id="created_date"></b>
+      <h3 id="report_title_show"></h3>
+      <p><b>Nội dung:</b></p>
+      <p id="report_description_show"></p>
+      <p><b>Ghi chú:</b></p>
+      <p id="report_note_show"></p>
     </div>
     <div class="actions">
-      <div class="ui cancel button">Close</div>
+      <div class="ui cancel button">Đóng</div>
     </div>
   </div>
 </div>
 <script>
+  const urlParams = new URLSearchParams(window.location.search);
+  const focusParam = urlParams.get('focus_id');
+  if (document.querySelector(`#report_${focusParam}`)) {
+    document.querySelector(`#report_${focusParam}`).classList.add("active");
+  }
+
   function addNewFacilityReport(){
     $('#new_facility_report').modal('show');
+
   }
-  function viewMoreFacilityReport(){
+  function viewMoreFacilityReport(report_id){
+    if(document.querySelector(`#report_${focusParam}`)) {
+      document.querySelector(`#report_${focusParam}`).classList.remove("active");
+    }
     $('#facility_report_detail').modal('show');
+    $.ajax({
+      type: "GET",
+      url: `/student/requests/facility/${report_id}`,
+      data: {
+        "id": report_id
+      },
+      success: function(result){
+        let date = new Date(result.facility_report.created_at)
+        $('#created_date').html(`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`)
+        $('#report_title_show').html(result.facility_report.title)
+        $('#report_description_show').html(result.facility_report.description)
+        $('#report_note_show').html(result.facility_report.reject_reason)
+      },
+      error: function(error){
+
+      }
+    })
+    
   }
+
+  function addSubmit(e){
+    $('#new_facility_report').modal('hide');
+    e.preventDefault();
+    $.ajax({
+      type: "POST",
+      url:"/student/facility-reports/create",
+      data: {
+        "facility_report": {
+          "title": document.querySelector('#title').value,
+          "description": document.querySelector('#description').value
+       },
+      },
+      success:function(result){
+        window.localStorage.setItem('new_facility_report', result.message);
+        window.location = '/student/requests/facility'
+      },
+      error: function(error){
+        toastr.error(error.responseJSON.message)
+      }
+    })
+
+  }
+    $('#facility_report_create_form').off('submit').submit(function(e){
+      if ($('#facility_report_create_form').form('is valid')){
+        addSubmit(e)
+      }
+    });
+  //VALIDATE
+
+  $('#facility_report_create_form')
+    .form({
+      fields:{
+        title: {
+          identifer: 'title',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Vui lòng nhập tiêu đề!'
+            },
+            {
+              type: 'maxLength[100]',
+              prompt: 'Tiêu đề giới hạn 100 ký tự!'
+            }
+          ]
+        },
+        description: {
+          identifer: 'description',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Vui lòng nhập nội dung!'
+            },
+            {
+              type: 'maxLength[1000]',
+              prompt: 'Nội dung bị giới hạn 1000 ký tự!'
+            }
+          ]
+        }
+      },
+      inline: true,
+      on: 'blur'
+    });
+
 </script>

@@ -1,0 +1,17 @@
+
+<p id="notice"><%= notice %></p>
+<div class="room_management_show">
+  <div class="ui grid" style="padding-top: 2rem">
+    <div class="four wide column" style="padding-top: 3rem">
+      <%= render partial: "manager/room_management/room_management_sidebar", locals: {active: 'charge'} %>
+    </div>
+    <div class="twelve wide column" style="padding-top: 0.7rem">
+      <div id="room_service_charge">
+        <%= render "room_service_charge_list" %>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $("#manager_room_management_path").addClass("active");
+</script>

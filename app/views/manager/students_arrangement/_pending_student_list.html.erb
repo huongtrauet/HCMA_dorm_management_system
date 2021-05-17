@@ -1,0 +1,88 @@
+<%# student_management_controller find_pending_student %>
+<% pending_students.each do |student|  %> 
+ <div class="students_item" id="student_<%= student.id %>" draggable="true" ondragstart="drag(event)" style="background-color: white; position:relative; height: 9rem">
+  <div class="ui grid" >
+    <button onclick="removeStudent(<%= student.id%>)" class="ui compact icon button" style="position: absolute; right: 0.5rem; top: 0.5rem; z-index: 100; padding: 0.3rem">
+      <i class="close icon"></i>
+    </button>
+    <div class="three wide column avatar" style="">
+      <% if student.student_profile.avatar.url %>
+        <img src="<%= student.student_profile.avatar.url %>" style="width: 2.5rem; height: 2.5rem; border-radius: 50%">
+      <% else %>
+        <img src="/assets/profile.png" style="width: 2.5rem; height: 2.5rem; border-radius: 50%">
+      <% end %>
+    </div>
+    <div class="thirteen wide column student_information" style="">
+      <h4><%= student.name %></h4>
+      <div style="display: flex; justify-content: flex-start; align-items: center">
+        <a class="ui mini label" style="background-color: #3889c8; color: #fff !important; font-size: .9rem; margin-right: 1rem"><%= student.student_id_number %></a>
+        <% if student.student_profile.gender == 'MALE' %>
+          <a class="ui basic image mini label">
+            <img src="/assets/elliot.jpeg"> <%= t(".male") %>
+          </a>
+        <% elsif student.student_profile.gender == 'FEMALE' %>
+          <a class="ui basic image mini label">
+            <img src="/assets/stevie.jpeg"> <%= t(".female") %>
+          </a>
+        <% end %>
+      </div>
+      <div class="ui label" style="margin-top: 0.5rem">
+        <i class="ui edit outline icon"></i>
+        <%= student.created_at.to_date %>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="ui mini modal" id="confirm-delete-<%= student.id %>">
+  <div class="ui icon header">
+    <i class="archive icon"></i>
+    Xoá tài khoản học viên
+  </div>
+  <div class="content">
+    <p>Bạn có chắc muốn xoá tài khoản này?</p>
+  </div>
+  <div class="actions" style="display: flex; justify-content: center">
+    <div class="ui negative button">
+      <i class="remove icon"></i>
+      Huỷ
+    </div>
+    <div class="ui positive right labeled icon button custom_btn" onclick="confirmRemove(<%= student.id %>)">
+      <i class="checkmark icon"></i>
+      Xoá
+    </div>
+  </div>
+</div>
+<% end %>
+
+<script>
+    function removeStudent(student_id){
+      console.log("tra")
+      $(`#confirm-delete-${student_id}`)
+    .modal('show')
+  ;
+  }
+
+  function confirmRemove(student_id){
+     $.ajax({
+      type: "DELETE",
+      url: `/manager/student-management/${student_id}/delete`,
+      success: function(result){
+        toastr.success(result.message)
+        $(`#student_${student_id}`).remove();
+        console.log(result.room)
+        if (result.room.status == "PENDING") {
+            $(`#room_status_card_${result.room.id}`).html('Đang bỏ trống')
+        } else if (result.room.status == "UNFILLED"){
+          $(`#room_status_card_${result.room.id}`).html('Đang còn chỗ')
+        }
+        else{
+          $(`#room_status_card_${result.room.id}`).html('Đã đầy')
+        }
+
+      },
+      error: function (error) {
+        toastr.error(error.responseJSON.message)
+      }
+    })
+  }
+</script>

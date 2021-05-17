@@ -1,47 +1,57 @@
 <div class="student_management_list">
-  <div class="header" style="display: flex; justify-content: space-between;">
-    <div class="header_title">
-      <h3>Student Management: </h3>
+  <div class="header" style="display: flex; justify-content: space-between; align-items: flex-end">
+    <div style="font-weight: bold"><a href="/manager/building-management" class="breadcrumb">Toà nhà</a> / 
+      <a href="/manager/building-management/<%= @room.building.id %>" class="breadcrumb"><%= @room.building.name %></a> /
+      <a href="/manager/room-management/rooms/<%= @room.id %>" class="breadcrumb">Phòng <%= @room.room_name %></a> /
+      <a href="/manager/room-management/rooms/<%= @room.id %>/members" class="breadcrumb">Thành viên</a>
     </div>
     <div class="header_search">
-      <button class="ui icon button" onclick="addStudent()">
-        <i class="plus icon"></i>
-      </button>
-      <div class="ui icon input">
-        <input type="text" placeholder="Search...">
-        <i class="icon">
-          <img src="/assets/search.png" style="width: 1rem; height: 1rem; width: 1rem; top: 50%; position: absolute; transform: translateY(-50%);right: 0.7rem;">
-        </i> 
-      </div>
+      <% if @room_members.length < @room.max_number_student %>
+        <button class="ui icon button" onclick="addStudent()">
+          <i class="plus icon"></i>
+        </button>
+      <% else %>
+        <button class="ui icon button" data-tooltip="Room is full">
+          <i class="plus icon"></i>
+        </button>
+      <% end %>
     </div>
   </div>
-  <div class="footer_line" style="height: 1px; background-color: rgba(34,36,38,.15); margin-top: 0.5rem; margin-bottom: 1.5rem"></div>
+  <div class="ui inverted divider"></div>
   <table class="ui very basic selectable table">
     <thead>
       <tr>
         <th>STT</th>
-        <th>MSSV</th>
-        <th>HO VA TEN</th>
-        <th>NGAY SINH</th>
-        <th>LOP</th>
-        <th>NGAY VAO</th>
-        <th>ACTIVE</th>
+        <th>Mã học viên</th>
+        <th>Họ và tên</th>
+        <th>Ngày sinh</th>
+        <th>Lớp</th>
+        <th>Ngày vào</th>
+        <th>Trạng thái</th>
       </tr>
     </thead>
-    <tbody>
-      <% for i in 0..5 do %>
-        <tr onclick="showStudentInfo()">
-          <td>1</td>
-          <td>17021070</td>
-          <td>Nguyen Thi Huong Tra</td>
-          <td>21/11/1999</td>
-          <td>K62J</td>
-          <td>20/11/2001</td>
+    <tbody id="members_list">
+      <% @room_members.each_with_index do |member, index| %>
+        <tr onclick="showStudentInfo(<%= member.id %>)">
+          <td><%= index + 1 %></td>
+          <td><%= member.student_id_number %></td>
+          <td><%= member.student_profile.name %></td>
+          <% if member.student_profile.date_of_birth %>
+            <td><%= member.student_profile.date_of_birth.to_date %></td>
+          <% else %>
+            <td></td>
+          <% end %>
+          <td><%= member.student_profile.class_name %></td>
+          <% if member.check_in_date %>
+            <td><%= member.check_in_date.to_date %></td>
+          <% else %>
+            <td></td>
+          <% end %>
           <td>
-           <% if i % 2 == 0 %>
-              <a class="ui teal tag label teal_label" style="width: 5.7rem">Active</a>
-            <% else  %>
-              <a class="ui tag label danger_label" style="width: 5.7rem">Pending</a>
+           <% if member.status == "ACTIVE" %>
+              <a class="ui teal tag label teal_label">Đã kích hoạt</a>
+            <% elsif member.status == "PENDING" %>
+              <a class="ui tag label danger_label">Đang xử lý</a>
             <% end  %>
           </td>
         </tr>
@@ -53,66 +63,67 @@
 <div class="ui modal student_info">
   <i class="close icon"></i>
   <div class="header">
-    Student profiles
+    Thông tin học viên
   </div>
   <div class="image content">
     <div class="ui grid">
       <div class="five wide column">
         <div class="" style="width: 15rem; margin: 0 auto;">
-          <img src="/assets/ava.jpg" style="width: 15rem; height: 15rem; margin: 0 auto;">
+          <img src="/assets/ava.jpg" id="ava_img" style="width: 15rem; height: 15rem; margin: 0 auto;">
           <div class="sub-info ui grid" style="padding-top: 1rem">
             <div class="two wide column" style="padding-bottom: 0!important">
               <i class="icon address card outline"></i>
             </div>
-            <div class="fourteen wide column" style="padding-bottom: 0!important">
+            <div class="fourteen wide column" style="padding-bottom: 0!important" id="student_id_number">
               17021070
             </div>
             <div class="two wide column" style="padding-bottom: 0!important">
               <i class="icon check square outline"></i>
             </div>
-            <div class="fourteen wide column" style="padding-bottom: 0!important">
+            <div class="fourteen wide column" style="padding-bottom: 0!important" id="class_name">
               K62J
             </div>
             <div class="two wide column">
               <i class="icon envelope outline"></i>
             </div>
-            <div class="fourteen wide column">
+            <div class="fourteen wide column" id="email">
               huongtra@gmail.com
             </div>
           </div>
         </div>
       </div>
       <div class="description eleven wide column">
-        <div class="ui header" style="margin-bottom: 2rem;">Nguyen Thi Huong Tra</div>
+        <div class="ui header" style="margin-bottom: 2rem;" id="name">Nguyen Thi Huong Tra</div>
         <div class="student-info ui grid">
-          <div class="three wide column"><b>Ngay sinh:</b></div>
-          <div class="thirteen wide column">21/11/1999</div>
-          <div class="three wide column"><b>Gioi tinh:</b></div>
-          <div class="thirteen wide column">Nu</div>
-          <div class="three wide column"><b>Que quan:</b></div>
-          <div class="thirteen wide column">30A, Le Hong Phong, Vinh, Nghe An</div>
-          <div class="three wide column"><b>SDT:</b></div>
-          <div class="thirteen wide column">0972403331</div>
-          <div class="three wide column"><b>So CMND:</b></div>
-          <div class="thirteen wide column">0972403331</div>
-          <div class="three wide column"><b>Ngay dang ky:</b></div>
-          <div class="thirteen wide column">20/11/2006</div>
-          <div class="three wide column"><b>Ngay vao:</b></div>
-          <div class="thirteen wide column">20/12/2006</div>
-          <div class="three wide column"><b>Thoi gian gia han:</b></div>
-          <div class="thirteen wide column">1 nam</div>
-          <div class="three wide column"><b>Trang thai:</b></div>
-          <div class="thirteen wide column">Active</div>
+          <div class="three wide column"><b>Ngày sinh</b>:</b></div>
+          <div class="thirteen wide column" id="birthday">21/11/1999</div>
+          <div class="three wide column"><b>Giới tính:</b></div>
+          <div class="thirteen wide column" id="gender">Nu</div>
+          <div class="three wide column"><b>Địa chỉ:</b></div>
+          <div class="thirteen wide column" id="address">30A, Le Hong Phong, Vinh, Nghe An</div>
+          <div class="three wide column"><b>Số điện thoại:</b></div>
+          <div class="thirteen wide column" id="phone_number">0972403331</div>
+          <div class="three wide column"><b>Số CMND:</b></div>
+          <div class="thirteen wide column" id="identity_card_number">0972403331</div>
+          <div class="three wide column"><b>Ngày đăng ký:</b></div>
+          <div class="thirteen wide column" id="created_at">20/11/2006</div>
+          <div class="three wide column"><b>Ngày vào:</b></div>
+          <div class="thirteen wide column" id="check_in_date">20/12/2006</div>
+          <div class="three wide column"><b>Thời gian gia hạn:</b></div>
+          <div class="thirteen wide column" id="check_out_date">1 nam</div>
+          <div class="three wide column"><b>Trạng thái:</b></div>
+          <div class="thirteen wide column" id="status">Active</div>
         </div>
       </div>
     </div>
   </div>
   <div class="actions" style="padding: 0.7rem 1rem;">
+    <input type="hidden" id="member_id" />
     <div class="ui black deny button">
-      Cancel
+      Huỷ
     </div>
-    <div class="ui positive right labeled icon button">
-      Edit
+    <div class="ui right labeled icon button" style="background-color: #2185d0 !important; color: white" onclick="editMemberInfo()">
+      Cập nhật
       <i class="arrow right icon"></i>
     </div>
   </div>
@@ -120,27 +131,48 @@
 
 <div class="ui mini modal add_student">
   <div class="header">
-    Create new student
+    Tạo mới tài khoản học viên
   </div>
-  <div class="content">
+  <div class="content" style="padding: 0 !important">
     <div class="description">
-      <%# <label style="display: inline-block">Ho va ten</label> %>
-      <div class="ui left corner labeled input" style="display: block; width: 85%; margin: 1rem auto;">
-        <input type="text" placeholder="MSSV..." style="display:block; width: 100%">
-        <div class="ui left corner label">
-          <i class="asterisk icon"></i>
+      <form id="add-form" class="ui form segment" style="border: none; -webkit-box-shadow: none; padding: 1rem 2rem !important">
+        <input type="hidden" name="room_id" value="<%= @room.id %>">
+        <div style="max-width: 0; max-height: 0; overflow: hidden;">
+          <input autofocus="true" />
         </div>
-      </div>
+        <div class="field" style="margin: 1rem auto;">
+          <div class="ui left corner labeled input" style="display: block;" >
+            <input type="text" placeholder="Họ và tên" style="display:block; width: 100%" name="name" tabindex="-1">
+            <div class="ui left corner label">
+              <i class="asterisk icon"></i>
+            </div>
+          </div>
+        </div>
+        <div class="field" id= "student_id_number_field" style="margin: 1rem auto;" onfocusout="checkDuplicate(this)">
+          <div class="ui left corner labeled input" style="display: block;">
+            <input type="text" placeholder="Mã học viên" style="display:block; width: 100%" name="create_student_id_number" tabindex="-1">
+            <div class="ui left corner label">
+              <i class="asterisk icon"></i>
+            </div>
+          </div>
+        </div>
+        <div class="field" style="margin: 1rem auto;">
+          <div class="ui left corner labeled input" style="display: block;" >
+            <input type="text" placeholder="Nhập lại mã học viên" style="display:block; width: 100%" name="create_student_id_number_confirm" tabindex="-1">
+            <div class="ui left corner label">
+              <i class="asterisk icon"></i>
+            </div>
+          </div>
+        </div>
+        <div class="actions" style="display: flex; justify-content: center">
+          <div class="ui button" onclick="cancel()">
+            Huỷ
+          </div>
+          <%# <button class="ui primary submit button" onclick="addSubmit(event)">Add</button> %>
+          <div class="ui blue submit button">Tạo</div>
+        </div>
+      </form>
     </div>   
-  </div>
-  <div class="actions">
-    <button class="ui cancel button">
-      Cancel
-    </button>
-    <div class="ui primary approve button proceed">
-      Add
-      <i class="right chevron icon"></i>
-    </div>
   </div>
 </div>
 
@@ -149,27 +181,164 @@
     CKEDITOR.replace( 'editor' );
 </script>
 <script>
-  function showStudentInfo() {
+  if(window.localStorage.getItem('new_student')) {
+    toastr.success(window.localStorage.getItem('new_student'))
+    window.localStorage.removeItem('new_student')
+  }
+//FILL VAO MODAL SHOW
+  function showStudentInfo(member_id) {
     $('.ui.modal.student_info').modal('show');
+    console.log(member_id);
+    $.ajax({
+      type: 'GET',
+      url: `/manager/student-management/${member_id}/show`,
+      data: { 
+        id: member_id
+      },
+      success: function(result){
+        $('#student_id_number').html(result.student.student_id_number)
+        $('#class_name').html(result.student_profile.class_name)
+        $('#email').html(result.student_profile.email)
+        $('#name').html(result.student_profile.name)
+        $('#birthday').html(result.student_profile.date_of_birth)
+        $('#gender').html(result.student_profile.gender)
+        $('#address').html(result.student_profile.address)
+        $('#phone_number').html(result.student_profile.phone_number)
+        $('#identity_card_number').html(result.student_profile.identity_card_number)
+        if (result.student.created_at){
+           $('#created_at').html(result.student.created_at.split("T")[0])
+        }
+        else{
+          $('#created_at').html("");
+        }
+        if(result.student.check_in_date){
+          $('#check_in_date').html(result.student.check_in_date.split("T")[0])
+        } else{
+           $('#check_in_date').html("");
+        }
+        
+        $('#check_out_date').html(result.student.extended_time)
+        if (result.student.status == "ACTIVE"){
+          $('#status').html("Đã kích hoạt")
+        }
+        else if (result.student.status == "PENDING"){
+           $('#status').html("Đang xử lý")
+        }
+        $('#member_id').val(member_id)
+        if (result.student_profile.avatar.url) {
+          document.getElementById('ava_img').src = result.student_profile.avatar.url;
+        }
+        else{
+          document.getElementById('ava_img').src = "/assets/profile.png"
+        }
+      },
+      error: function (error) {
+        toastr.error(error.message)
+      }
+    })
+  }
+//EDIT CHUYEN DI TRANG KHAC
+  function editMemberInfo() {
+    let member_id = $('#member_id').val()
+    forwarding_url = document.location.href;
+    window.localStorage.setItem('forwarding_url', forwarding_url)
+    window.location.href= `/manager/student-management/${member_id}/edit`
   }
   function addStudent() {
+    $('#add-form').form('reset');
     $('.ui.mini.modal.add_student').modal('show');
   }
+//student_management_controller
+  function addSubmit(e) {
+    let addForm = document.getElementById('add-form');
+    let formData = new FormData(addForm);
+      e.preventDefault();
+      $.ajax({
+        type: "POST",
+        url: "/manager/student-management/create-member",
+        processData: false,
+        contentType: false,
+        cache: false,
+        mimeType: 'multipart/form-data',
+        data: formData,
+        success: function(result){
+          window.localStorage.setItem('new_student', JSON.parse(result).message)
+          window.location.reload()
+        },
+        error: function (error) {
+          $('#add-form').form('reset');
+          toastr.error(JSON.parse(error.responseText).message);
+        }
+      })
+  }
 
-  // $('.coupled.modal')
-  //   .modal({
-  //     allowMultiple: false
-  //   })
-  // ;
-  // // attach events to buttons
-  // $('.second.modal')
-  //   .modal('attach events', '.first.modal .button.proceed')
-  // ;
+  $('#add-form').unbind('submit').submit(function(e){
+    if($('#add-form').form('is valid')) {
+      addSubmit(e);
+    }
+  })
 
+  $('#add-form')
+    .form({
+      fields: {
+        name: {
+          identifier: 'name',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Vui lòng nhập họ và tên học viên!!'
+            },
+            {
+              type: 'maxLength[100]',
+              prompt: 'Tên học viên không quá 100 ký tự!!'
+            }
+          ]
+        },
+        create_student_id_number: {
+          identifier: 'create_student_id_number',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Vui lòng nhập mã học viên!!'
+            },
+            {
+              type: 'minLength[5]',
+              prompt: 'Mã học viên tối thiểu 5 chữ số!!'
+            },
+            {
+              type: 'maxLength[10]',
+              prompt: 'Mã học viên tối đa 10 chữ số!!'
+            }
+          ]
+        },
+        create_student_id_number_confirm: {
+          identifier: 'create_student_id_number_confirm',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Vui lòng nhập lại mã học viên!!'
+            },
+            {
+              type: 'match[create_student_id_number]',
+              prompt: 'Mã học viên không trùng khớp! Vui lòng nhập lại!!'
+            }
+          ]
+        }
+      },
+      inline: true,
+      on: 'blur'
+    })
+  ;
 
+  function cancel(){
+    // $("#add-form")[0].reset();
+    $('#add-form').form('reset');
+    $('.ui.mini.modal.add_student').modal('hide');
+  }
 
-  // CKEDITOR.replace('content',{ toolbar :[ ['Subscript','Superscript'] ], height: '35px', width: '100%' });
-
-
+  if (window.localStorage.getItem('updated_student')) {
+    toastr.success(window.localStorage.getItem('updated_student'))
+    localStorage.removeItem('updated_student');
+  }
 
 </script>

@@ -1,0 +1,20 @@
+{
+  "name": "HCMA_dormitory_management_system",
+  "description": "",
+  "main": "",
+  "authors": [
+    "huongtrauet <huongtrauet@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/huongtrauet/HCMA_dorm_management_system",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "semantic-ui-calendar": "^0.0.8"
+  }
+}

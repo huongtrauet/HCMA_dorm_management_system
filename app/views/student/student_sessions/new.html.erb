@@ -1,31 +1,144 @@
 <% provide :title, t(".title") %>
 <div class="container student_session new">
-  <div class="ui grid" style="overflow: auto">
+  <div class="ui grid" style="margin: 0">
     <div class="eight wide column" style="display: flex; justify-content: center; align-item: center">
-      <img class="ui image" style="height: 70vh; width: 70%;" src="/assets/campus.jpg"/>
+      <img class="ui image" style="height: 70vh; width: 70%;" src="/assets/campus1.png"/>
     </div>
-    <div class="eight wide column" style="overflow: auto">
+    <div class="eight wide column">
       <div class="right_column">
         <div class="hcma_logo" style="display:flex; justify-content: center">
           <img class="logo_image" style="width: 15rem"src="/assets/favicon.ico"/>
         </div>
         <div class="title">
-         Login to dormitory
+          Đăng nhập
         </div>
-        <%= form_for :student_session, class: "ui form", url: student_login_path do |f| %>
-          <div class="field">
-            <%= f.text_field :student_id_number, class: "input", required: true, placeholder: "Student number" %>
+        <form class="ui form segment" id="student_login_form" style="border: none; -webkit-box-shadow: none; background-color: #f9f9f9">
+           <div class="ui field field_line" style="position: relative">
+            <input type="text" name="student_id_number" placeholder="Mã học viên" class="input field_line" style="margin-bottom: 0 !important " />
           </div>
-          <div class="field">
-            <%= f.password_field :password, class: "input", required: true, placeholder: "Password" %>
+          <div class="field ui field_line" style="position: relative">
+            <input type="password" name="password" placeholder="Mật khẩu" class="input field_line" style="margin-bottom: 0 !important;" />
           </div>
-           <%= f.label :remember_me, class: "checkbox inline" do %>
-              <%= f.check_box :remember_me %>
-              <span>Remember </span>
-            <% end %>
-          <%= f.submit "Submit", class: "ui button submit" %>
-        <% end %>
+          <div class="ui checkbox" style="">
+            <div class="field">
+            <input type="checkbox" name="remember_me">
+            <label>Lưu đăng nhập</label>
+            </div>
+          </div>
+          <div class="field" style="display: flex; justify-content: flex-start; margin-top: 1rem;">
+            <button class="ui summit button" style="background-color: #246966 !important">
+              Đăng nhập
+            </button>
+          </div>
+        <form>
+        <div class="reset_btn" onclick="openModal()">Quên mật khẩu</div>
       </div>
     </div>
   </div>
+
+  <div class="ui small modal" id="reset_password">
+    <div class="header">Quên mật khẩu</div>
+    <div class="content">
+      <form id="reset_password_form">
+        <div class="ui form">
+          <div class="field">
+            <label>Mã học viên</label>
+            <input type="text" name="student_id_number" id="student_id_number"/>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="actions">
+      <div class="ui button custom_btn" onclick="resetPassword()">Gửi</div>
+    </div>
+  </div>
 </div>
+
+<style>
+  .reset_btn:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+</style>
+
+<script>
+  $('#reset_password')
+    .modal()
+  ;
+  function openModal() {
+    $('#reset_password').modal('show')
+  }
+  function resetPassword() {
+    $.ajax({
+      type: 'POST',
+      url: '/student/reset-password',
+      data: {
+        student_id_number: $('#student_id_number').val()
+      },
+      success: function(result){
+        toastr.success(result.message)
+        $('#reset_password').modal('hide')
+      },
+      error: function (error) {
+        toastr.error(error.responseJSON.message)
+        $('#reset_password').modal('hide')
+      }
+    })
+  }
+
+  function loginSubmit(e){
+    e.preventDefault();
+    let loginForm = document.getElementById('student_login_form');
+    let formData = new FormData(loginForm);  
+    $.ajax({
+      type: 'POST',
+      url: '/student/login',
+      processData: false,
+      contentType: false,
+      mimeType: 'multipart/form-data',
+      data: formData,
+      success: function(result){
+        window.location = "/student/my-room"
+        console.log("oke")
+      },
+      error: function (error) {
+        toastr.error(JSON.parse(error.responseText).message)
+        // debugger
+      }
+    })
+  };
+
+  $('#student_login_form').off('submit').submit(function(e){
+    if($('#student_login_form').form('is valid')) {
+      loginSubmit(e);
+    }
+  })
+
+  $('#student_login_form')
+    .form({
+      fields: {
+        student_id_number: {
+          identifier: 'student_id_number',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Vui lòng nhập mã học viên để đăng nhập!!'
+            }
+          ]
+        },
+        password: {
+          identifier: 'password',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Vui lòng nhập mật khẩu!!'
+            },
+          ]
+        }
+      },
+      inline: true,
+      on: 'blur'
+    })
+  ;
+ 
+</script>

@@ -1,16 +1,7 @@
 <div class="room_sidebar">
   <div class="ui secondary vertical pointing menu">
-    <%# <a class="item active" id="facility_report_btn">
-      Facility report
-    </a> %>
-    <%= link_to "Facility report", student_requests_facility_path, class: "item", id: "facility_report_btn", data: { turbolinks: false }  %>
-    <%= link_to "Complaint report", student_requests_complaint_path, class: "item", id: "complaint_report_btn", data: { turbolinks: false }  %>
-    <%= link_to "Form request", student_requests_form_path, class: "item", id: "form_request_btn", data: { turbolinks: false } %>
-    <%# <a class="item" id="complaint_report_btn">
-      Complaint report
-    </a>
-    <a class="item" id="form_request_btn">
-      Form request
-    </a> %>
+    <%= link_to "Ý kiến đóng góp", student_requests_complaint_path, class: "item", id: "complaint_report_btn", data: { turbolinks: false }  %>
+    <%= link_to "Yêu cầu mẫu đơn", student_requests_form_path, class: "item", id: "form_request_btn", data: { turbolinks: false } %>
+    <%= link_to "Báo cáo cơ sở vật chất", student_requests_facility_path, class: "item", id: "facility_report_btn", data: { turbolinks: false }  %>
   </div>
 </div>

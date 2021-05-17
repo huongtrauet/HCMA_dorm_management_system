@@ -1,0 +1,74 @@
+<div style="padding-top: 2rem; width: 100%; margin: 0 auto" >
+  <h5><a href="/manager/building-management" class="breadcrumb">Các toà nhà</a> / 
+    <a href="/manager/building-management/<%= @building.id %>" class="breadcrumb"><%= @building.name %></a> 
+  </h5>
+  <div>
+  <% for index in 1..@building.total_floor %>
+    <div class="ui styled accordion" style="box-shadow: none; -webkit-box-shadow: none; border:none; border-bottom: 1px solid rgba(34,36,38,.15); border-radius: 0; width: 100%">
+      <div class="title">
+        <i class="dropdown icon"></i>
+        <span>Tầng <%= index %></span>
+      </div>
+      <div class="content">
+        <div class="ui grid">
+          <% @rooms.each do |room| %>
+            <% if room.floor == index %>
+              <div onclick="showRoom(<%= room.id %>)" class="three wide column room", style="display:block; background-color: #ffffff; border: 1px solid #f4f4f6; border-radius: 5px; padding: 1rem; line-height: 2rem; margin: 0.4rem">
+                <div style="display: flex; justify-content: space-between; align-items: center">
+                  <h3 style='margin: 0'><%= room.room_name %></h3>
+                  <a class="ui basic image mini label">
+                    <% if room.gender == 'MALE' %>
+                      <img src="/assets/elliot.jpeg">
+                      Nam
+                    <% elsif room.gender == 'FEMALE' %>
+                      <img src="/assets/stevie.jpeg">
+                      Nữ
+                    <% end %>
+                  </a>
+                </div>
+                <div>
+                <% if room.room_type == 'NORMAL' %>
+                  <a class="ui mini label">Phòng thường</a>
+                <% elsif room.room_type == 'VIP'%>
+                  <a class="ui mini label">Phòng VIP</a>
+                <% end %>
+                </div>
+                <div>
+                  Trạng thái: <a class="ui mini label" style="margin-left: 1rem; background-color: #3889c8; color: #fff !important">
+                    <% if room.status == 'FULL' %>
+                     Đã đầy
+                    <% elsif room.status == 'UNFILLED' %> 
+                      Đang còn chỗ
+                    <% elsif room.status == 'PENDING' %> 
+                      Đang bỏ trống
+                    <% end %>
+                  </a>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  </div>
+<div>
+<script>
+  $('.accordion')
+  .accordion()
+
+  function showRoom(room_id) {
+    window.location = `/manager/room-management/rooms/${room_id}`
+  }
+;
+</script>
+<style>
+  .room {
+    transition: .2s
+  }
+  .room:hover {
+    transform: scale(1.2);
+    z-index: 1000;
+    cursor: pointer;
+  }
+</style>

@@ -1,150 +1,347 @@
 <div class="service_charge_list">
-  <h3 class="ui dividing header">
-    Service charges
-  </h3>
+  <div class="header">
+    <h5><a href="/manager/building-management" class="breadcrumb">Toà nhà</a> / 
+      <a href="/manager/building-management/<%= @room.building.id %>" class="breadcrumb"><%= @room.building.name %></a> /
+      <a href="/manager/room-management/rooms/<%= @room.id %>" class="breadcrumb">Phòng <%= @room.room_name %></a> /
+      <a href="/manager/room-management/rooms/<%= @room.id %>/service-charges" class="breadcrumb">Hoá đơn dịch vụ</a>
+    </h5>
+  </div>
+  <div class="ui inverted divider"></div>
   <table class="ui very basic table">
     <thead>
       <tr>
         <th>STT</th>
-        <th>Thang</th>
-        <th>Tien dien</th>
-        <th>Tien nuoc</th>
-        <th>Tong</th>
-        <th>Trang thai</th>
+        <th>Tháng</th>
+        <th>Tiền điện</th>
+        <th>Tiền nước</th>
+        <th>Tổng tiền</th>
+        <th>Trạng thái</th>
       </tr>
     </thead>
     <tbody>
-      <% for i in 0..5 do %>
-        <tr onclick="showServiceChargeInfo()">
-          <td>1</td>
-          <td>2</td>
-          <td>200,000</td>
-          <td>300,000</td>
-          <td>500,000</td>
-          <td>
-            <% if i % 2 == 0 %>
-              <a class="ui teal tag label" style="width: 6.7rem">Paid</a>
-            <% else  %>
-              <a class="ui red tag label" style="width: 6.7rem">Unpaid</a>
+      <% @room_service_charges.each_with_index do |s, index| %>
+        <tr onclick="showServiceChargeInfo(<%= s.room_id %>, <%= s.year %>, <%= s.month %>, <%= s.id %>, <%= index+1%>)" id="tr_service_charge_<%= s.id %>">
+          <td><%= index + 1 + (@page - 1)*Settings.report_pagination %></td>
+          <td><%= s.month %></td>
+          <td><%= s.electricity_price %></td>
+          <td><%= s.water_price %></td>
+          <td><%= s.total_price %></td>
+          <td style="width: 14rem">
+            <% if s.status == "PAID" %>
+              <a class="ui teal tag label" >Đã thanh toán</a>
+            <% elsif s.status == "UNPAID" %>
+              <a class="ui red tag label">Chưa thanh toán</a>
             <% end  %>
-          </td>
+          </td> 
         </tr>
       <% end %>
     </tbody>
   </table>
-</div>
-
-<div class="ui first modal service_charge_info">
-  <i class="close icon"></i>
-  <div class="header">
-    Service charge
-  </div>
-  <div class="ui header" style="margin-bottom: 2rem; border: none">P1410</div>
-  <div class="">
-    <div class="ui grid">
-      <div class="one wide column"></div>
-      <div class="five wide column">
-        <div class="student-info">
-          <label>Thang:</label>
-          <p>Thang 2</p>
-          <label>Tong tien:</label>
-          <p>500000</p>
-        </div>
-      </div>
-      <div class="five wide column">
-        <div class="student-info">
-          <label>Tien dien: </label>
-          <p>200000</p>
-          <label>Tien nuoc</label>
-          <p>300000</p>
-        </div>
-      </div>
-      <div class="five wide column">
-        <div class="student-info">
-          <label>Trang thai: </label>
-          <p>
-            <span style="background-color: #f4810b; padding: 6px 10px; color: #fff; border-radius: 5px; font-weight: bold">Paid</span>
-          </p>
-          <label>Nguoi nop</label>
-          <p>Tra</p>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="actions" style="padding: 0.7rem 1rem;">
-    <div class="ui black deny button">
-      Cancel
-    </div>
-    <div class="ui positive right labeled icon button edit">
-      Edit
-      <i class="arrow right icon"></i>
-    </div>
+  <div class="mt-4" style="float: right">
+    <%= paginate @room_service_charges, turbolinks: false %>
   </div>
 </div>
 
-<div class="ui second modal service_charge_info">
+<div class="ui first modal service_charge_info" id="show_info_modal">
   <i class="close icon"></i>
   <div class="header">
-    Service charge edit
+      <h3>Hoá đơn dịch vụ</h3>
+      <div>
+        <p style="margin-bottom: -1rem" id="show_paid_at"></p>
+        <p style="float: right; margin-right: 1rem; margin-right: 2.6rem;" class="show_room_name"></p>
+        <input type="hidden" name="room_id" id="room_id">
+        <input type="hidden" name="charge_id" id="charge_id">
+      </div>
   </div>
-  <div class="ui header" style="margin-bottom: 2rem; border: none">P1410</div>
-  <form class="ui form" style="margin: 0 1.5rem">
+  <div class="ui header" style="margin-bottom: 2rem; border: none"><%=  %></div>
+    <div class="">
+      <div class="ui grid">
+        <div class="one wide column"></div>
+        <div class="five wide column">
+          <div class="student-info">
+            <div class="ui field">
+              <label>Tháng:</label>
+              <p id="show_month"></p>
+            </div>
+            <label>Tổng tiền:</label>
+            <p id="show_total_price"></p>
+          </div>
+        </div>
+        <div class="five wide column">
+          <div class="student-info">
+            <label>Tiền điện: </label>
+            <p id="show_electricity_price"></p>
+            <label>Tiền nước: </label>
+            <p id="show_water_price"></p>
+          </div>
+        </div>
+        <div class="five wide column">
+          <div class="student-info">
+            <label>Trạng thái: </label>
+            <p>
+              <span style="background-color: #f4810b; padding: 6px 10px; color: #fff; border-radius: 5px; font-weight: bold" id="show_status"></span>
+            </p>
+            <label>Người thanh toán</label>
+            <p id="show_payer"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="actions" style="padding: 0.7rem 1rem;">
+      <div class="ui deny button" onclick="closeModal()">
+        Huỷ
+      </div>
+      <div class="ui positive right labeled icon button custom_btn edit">
+        Cập nhật
+        <i class="arrow right icon"></i>
+      </div>
+    </div>
+</div>
+
+<div class="ui second modal service_charge_info" id="edit_info_modal">
+  <i class="close icon"></i>
+  <div class="header">
+    <h3>Sửa hoá đơn phí dịch vụ</h3>
+    <div>
+      <p id="paid_at" style="margin-bottom: -1rem"></p>
+      <p style="float: right; margin-right: 1rem; margin-right: 2.6rem;" class="show_room_name"></p>
+      <input type="hidden" name="charge_index" id="charge_index">
+    </div>
+  </div>
+  <div class="ui header" style="margin-bottom: 2rem; border: none"></div>
+  <form class="ui form" style="margin: 0 1.5rem" id="service_charge_edit_form" name="service_charge_edit_form" class="ui form segment">
     <div class="three fields">
       <div class="field">
-        <label>Thang</label>
-        <input type="text" placeholder="Thang" disabled value="Thang 2">
+        <label>Tháng</label>
+        <input type="text" placeholder="Thang" disabled value="Thang 2" name="month" id="month_edit_field">
       </div>
       <div class="field">
-        <label>Tien dien</label>
-        <input type="text" placeholder="Tien dien">
+        <label>Tiền điện</label>
+        <input type="number" placeholder="Tien dien" name="electricity_price" id="electricity_price_edit_field" onkeyup="changePrice()">
       </div>
       <div class="field">
-        <label>Trang thai</label>
-        <div class="ui selection dropdown">
-          <input type="hidden" name="gender">
+        <label>Trạng thái</label>
+        <div class="ui selection dropdown" id="service_charge_status_dropdown">
+          <input type="hidden" name="status" id="status_edit_field">
           <i class="dropdown icon"></i>
-          <div class="default text">Trang thai</div>
+          <div class="text" style="color: black;" id="selected_item"></div>
           <div class="menu">
-            <div class="item" data-value="1">Paid</div>
-            <div class="item" data-value="0">Unpaid</div>
+            <div class="item" data-value="PAID">Đã thanh toán</div>
+            <div class="item" data-value="UNPAID">Chưa thanh toán</div>
           </div>
         </div>
       </div>
     </div>
     <div class="three fields">
       <div class="field">
-        <label>Tong tien</label>
-        <input type="text" placeholder="Tong tien">
+        <label>Tổng tiền</label>
+        <input type="number" placeholder="Tong tien" name="total_price" id="total_price_edit_field" disabled>
       </div>
       <div class="field">
-        <label>Tien nuoc</label>
-        <input type="text" placeholder="Tien nuoc">
+        <label>Tiền nước</label>
+        <input type="number" placeholder="Tien nuoc" name="water_price" id="water_price_edit_field" onkeyup="changePrice()">
       </div>
       <div class="field">
-        <label>Nguoi nop</label>
-        <input type="text" placeholder="Nguoi nop">
+        <label>Người thanh toán</label>
+        <input type="text" placeholder="Nguoi nop" name="payer" id="payer_edit_field">
       </div>
     </div>
-  </form>
-  <div class="actions" style="padding: 0.7rem 1rem;">
-    <div class="ui black deny button">
-      Cancel
+  <div class="actions" style="padding: 0.7rem 1rem; float:right; margin-right: 1.5rem">
+    <div class="ui deny button" onclick="closeModal()">
+      Huỷ
     </div>
-    <div class="ui positive right labeled icon button">
-      Submit
-      <i class="arrow right icon"></i>
-    </div>
+    <div class="ui blue submit button custom_btn">Cập nhật</div>
   </div>
+  </form>
 </div>
 
 <script>
-  function showServiceChargeInfo() {
+function changePrice() {
+  $('#total_price_edit_field').val(parseInt($('#electricity_price_edit_field').val()) + parseInt($('#water_price_edit_field').val()))
+}
+  function showServiceChargeInfo(room_id, year, month, charge_id, index ){
     $('.ui.modal.first.service_charge_info').modal('show');
+    $('#service_charge_edit_form').form('reset');
+    $("#service_charge_edit_form").find('.error').removeClass('error');
+    console.log("show")
+    $.ajax({
+      type: "POST",
+      url: `/manager/room-management/rooms/${room_id}/service-charge/${year}/${month}`,
+      data: {
+        "charge_id": charge_id
+      },
+      success: function(result){
+        console.log(result)
+        //Show modal
+        $('#show_month').html(result.service_charge.month)
+        $('#show_year').html(result.service_charge.year)
+        $('#show_water_price').html(result.service_charge.water_price)
+        $('#show_electricity_price').html(result.service_charge.electricity_price)
+        $('#show_total_price').html(result.service_charge.total_price)
+        $('#show_payer').html(result.service_charge.payer)
+        if (result.service_charge.status == "PAID") {
+          $('#show_status').html("Đã thanh toán")
+        }
+        else if (result.service_charge.status == "UNPAID"){
+          $('#show_status').html("Chưa thanh toán")
+        }
+        if(result.service_charge.paid_at){
+          $('#show_paid_at').html(result.service_charge.paid_at.split('T')[0].split('-').reverse().join('/'))
+        } else {
+          $('#show_paid_at').html('')
+        }
+        $('.show_room_name').html(result.room.room_name)
+        $('#room_id').val(result.room.id)
+        $('#charge_id').val(result.service_charge.id)
+        // console.log(result.room)
+        //Edit modal
+        $('#month_edit_field').val(result.service_charge.month)
+        $('#year_edit_field').val(result.service_charge.year)
+        $('#water_price_edit_field').val(result.service_charge.water_price)
+        $('#electricity_price_edit_field').val(result.service_charge.electricity_price)
+        $('#total_price_edit_field').val(result.service_charge.total_price)
+        $('#status_edit_field').val(result.service_charge.status)
+        if (result.service_charge.status == "PAID"){
+          $('#selected_item').html('Đã thanh toán')
+        }
+        else if (result.service_charge.status == "UNPAID"){
+          $('#selected_item').html('Chưa thanh toán')
+        }
+        $('#payer_edit_field').val(result.service_charge.payer)
+        if(result.service_charge.paid_at){
+          $('#paid_at').html(result.service_charge.paid_at.split('T')[0].split('-').reverse().join('/'))
+        } else {
+          $('#paid_at').html('')
+        }
+        $('#charge_index').val(index)
+
+        // $('#status_edit_field').val()
+      },
+      error: function (error) {
+        console.log(error)
+      }
+    })
   }
+//service_management_controller
+//partial room_management/charge_item
+  function submitUpdateServiceCharge(e){
+    let room_id = $('#room_id').val()
+    let year = $('#year_edit_field').val();
+    let month = $('#month_edit_field').val();
+    let charge_id = $('#charge_id').val();
+    console.log("room_id: " + room_id)
+    console.log("update sycyy")
+    // $('#service_charge_edit_form').form('reset');
+    $("#service_charge_edit_form").find('.error').removeClass('error');
+    $('#show_info_modal').modal('hide');
+    $('#edit_info_modal').modal('hide');
+    e.preventDefault();
+    $.ajax({
+      type: "POST",
+      url: `/manager/room-management/rooms/${room_id}/service-charge/${year}/${month}/update`,
+      data: {
+        service_charge: {
+          "charge_id": charge_id,
+          "water_price": $('#water_price_edit_field').val(),
+          "electricity_price": $('#electricity_price_edit_field').val(),
+          "total_price": $('#total_price_edit_field').val(),
+          "month": $('#month_edit_field').val(),
+          "year": $('#year_edit_field').val(),
+          "payer": $('#payer_edit_field').val(),
+          "status": $('#status_edit_field').val(),
+          "index": $('#charge_index').val()
+        }
+      },
+      success: function(result){
+        console.log(result)
+        $(`#tr_service_charge_${charge_id}`).html(result)
+        toastr.success("Cập nhật hoá đơn dịch vụ thành công!")
+      },
+      error: function (error) {
+        toastr.error("Cập nhật hoá đơn dịch vụ không thành công!")
+      }
+    })
+  }
+
+  $('#service_charge_edit_form').off('submit').submit(function(e){
+    if($('#service_charge_edit_form').form('is valid')){
+      submitUpdateServiceCharge(e);
+    }
+  })
 
   $('.second.modal')
     .modal('attach events', '.first.modal .button.edit');
 
   $('.ui.dropdown')
   .dropdown();
+
+
+  // $('#service_charge_edit_form').unbind('submit').submit(function(e) {
+  //   if($('service_charge_edit_form').form('is valid')){
+  //     editSubmit();
+  //   }
+  // });
+  //VALIDATE EDIT FORM
+   $('#service_charge_edit_form')
+    .form({
+      fields: {
+        electricity_price: {
+          identifier: 'electricity_price',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Vui lòng nhập tiền điện!!'
+            },
+            {
+              type: 'integer[0..1000000000000]',
+              prompt: 'Tiền điện phải từ 0 vnđ đến 1000000000000 vnd!!'
+            }
+          ]
+        },
+        status: {
+          identifier: 'status',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Vui lòng cập nhật trạng thái!!'
+            }
+          ]
+        },
+        total_price: {
+          identifier: 'total_price',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Please enter student name!!'
+            },
+            {
+              type: 'integer[0..1000000000000]',
+              prompt: 'Tổng tiền phải từ 0 vnđ đến 1000000000000 vnd!!'
+            }
+          ]
+        },
+        water_price: {
+          identifier: 'water_price',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Vui lòng nhập tiền điện!!'
+            },
+            {
+              type: 'integer[0..1000000000000]',
+              prompt: 'Tiền nước phải từ 0 vnđ đến 1000000000000 vnd!!'
+            }
+          ]
+        }
+      },
+      inline: true,
+      on: 'blur'
+    })
+  ;
+  function closeModal() {
+    $("#service_charge_edit_form").find('.error').removeClass('error');
+    $('#show_info_modal').modal('hide');
+    $('#edit_info_modal').modal('hide');
+  }
+
 </script>

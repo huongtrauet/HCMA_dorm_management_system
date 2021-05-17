@@ -1,0 +1,8 @@
+=== puma startup: 2021-05-02 16:45:40 +0700 ===
+[72684] * Starting control server on unix:///var/folders/t9/2z7cy2n91zv4vk4bhqj7csxw0000gn/T/puma-status-1619948740241-72684
+[72684] - Worker 0 (pid: 72688) booted, phase: 0
+[72684] - Worker 1 (pid: 72689) booted, phase: 0
+[72684] - Gracefully shutting down workers...
+[72684] === puma shutdown: 2021-05-02 16:46:41 +0700 ===
+[72684] - Goodbye!
+Exiting

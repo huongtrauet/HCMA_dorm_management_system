@@ -3,31 +3,27 @@ validations:
     password:
       min_length: 6
     student_id_number:
-      min_length: 7
+      min_length: 6
       max_length: 12
+    name: 
+      max_length: 100
   complaint_reports:
     title:
-      min_length: 5
-      max_length: 500
+      max_length: 100
     description:
-      min_length: 5
       max_length: 1000
   facility:
     name:
       max_length: 100
     description:
       max_length: 1000
-      min_length: 5
   facility_reports:
     title:
-      min_length: 5
-      max_length: 500
+      max_length: 100
     description:
-      min_length: 5
       max_length: 1000
   form_request:
     description:
-      min_length: 5
       max_length: 1000
   manager:
     email:
@@ -50,7 +46,7 @@ validations:
       minimum: 0
   student_profile:
     name:
-      max_length: 50
+      max_length: 100
     email:
       regex: !ruby/regexp '/\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i'
       max_length: 255
@@ -64,8 +60,7 @@ validations:
       min_length: 3
       max_length: 20
     address:
-      min_length: 5
-      max_length: 500
+      max_length: 100
   post:
     title:
       max_length: 1000
@@ -73,3 +68,7 @@ validations:
       max_length: 100000
     writer_name:
       max_length: 100
+    image:
+      less_than: 5.megabytes
+pagination: 5
+report_pagination: 10

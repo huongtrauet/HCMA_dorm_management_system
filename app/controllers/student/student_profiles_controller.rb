@@ -1,7 +1,7 @@
 class Student::StudentProfilesController < StudentMainController
   layout 'student_layout/student'
-  before_action :set_student_profile, only: %i[ show edit update destroy ]
   before_action :logged_in_student
+  skip_before_action :verify_authenticity_token
 
   # GET /student_profiles or /student_profiles.json
   def index
@@ -20,7 +20,7 @@ class Student::StudentProfilesController < StudentMainController
 
   # GET /student_profiles/1/edit
   def edit
-    @student_profile = StudentProfile.new
+    @student = Student.find(current_user[:id])
   end
 
   # POST /student_profiles or /student_profiles.json
@@ -32,9 +32,38 @@ class Student::StudentProfilesController < StudentMainController
   end
 
   def update
-    @student = current_user
-    if @student.update(student_profile_params)
-      redirect_to "/"
+    if current_user.student_profile.update(student_profile_params)
+      respond_to do |format|
+        format.json {render json: {message: "Cập nhật thông tin cá nhân thành công!"}, status: :ok}
+      end
+    else
+      respond_to do |format|
+        format.json {render json: {message: "Cập nhật thông tin cá nhân không thành công :("}, status: :bad_request}
+      end
+    end
+  end
+
+  def update_avatar
+    if current_user.student_profile.update_attribute(:avatar, params[:avatar])
+      respond_to do |format|
+        format.json { render json: {message: "Cập nhật ảnh đại diện thành công!"}, status: :ok}
+      end
+    else
+      respond_to do |format|
+        format.json { render json: {message: "Cập nhật ảnh đại diện thất bại :("}, status: :bad_request}
+      end
+    end
+  end
+
+  def reset_ava
+    if current_user.student_profile.update_attribute(:avatar, nil)
+      respond_to do |format|
+        format.json { render json: {message: "Gỡ ảnh đại diện thành công!"}, status: :ok}
+      end
+    else
+      respond_to do |format|
+        format.json { render json: {message: "Gỡ ảnh đại diện không thành công :("}, status: :bad_request}
+      end
     end
   end
 
@@ -44,6 +73,24 @@ class Student::StudentProfilesController < StudentMainController
     respond_to do |format|
       format.html { redirect_to student_profiles_url, notice: "Student profile was successfully destroyed." }
       format.json { head :no_content }
+    end
+  end
+
+  def reset_password
+    if current_user&.authenticate reset_password_params[:current_password]
+      if current_user.update(reset_password_params.except(:current_password))
+        respond_to do |format|
+          format.json { render json: {message: "Cập nhật mật khẩu thành công!"}, status: :ok}
+        end
+      else
+        respond_to do |format|
+          format.json { render json: {message: "Cập nhật mật khẩu khồng thành cồng :("}, status: :bad_request}
+        end
+      end
+    else
+      respond_to do |format|
+        format.json { render json: {message: "Mật khẩu hiện tại không chính xác"}, status: :bad_request}
+      end
     end
   end
 
@@ -57,5 +104,18 @@ class Student::StudentProfilesController < StudentMainController
     def student_profile_params
       # params.fetch(:student_profile, {})
       params.require(:student_profile).permit :email, :class_name, :name, :date_of_birth, :identity_card_number, :address, :phone_number, :gender
+    end
+    def student_profile_params
+      profile_params = params.require(:student).require(:student_profile_attributes).permit(:email, :class_name, :date_of_birth, :identity_card_number, :address, :phone_number, :gender)
+      profile_params.merge!(class_name: nil) if profile_params[:class_name] == ""
+      profile_params.merge!(date_of_birth: nil) if profile_params[:date_of_birth] == ""
+      profile_params.merge!(identity_card_number: nil) if profile_params[:identity_card_number] == ""
+      profile_params.merge!(address: nil) if profile_params[:address] == ""
+      profile_params.merge!(phone_number: nil) if profile_params[:phone_number] == ""
+      profile_params.merge!(gender: nil) if profile_params[:gender] == ""
+      return profile_params
+    end
+    def reset_password_params
+      params.permit(:current_password, :password, :password_confirmation)
     end
 end

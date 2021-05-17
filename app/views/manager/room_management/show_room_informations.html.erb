@@ -1,0 +1,222 @@
+<div class="room_management_show">
+  <div class="ui grid" style="padding-top: 2rem">
+    <div class="four wide column" style="padding-top: 3rem">
+      <%= render partial: "manager/room_management/room_management_sidebar", locals: {active: 'information'} %>
+    </div>
+    <div class="twelve wide column" style="padding-top: 0.7rem">
+      <h5><a href="/manager/building-management" class="breadcrumb" data-turbolinks="false">Toà nhà</a> / 
+        <a href="/manager/building-management/<%= @room.building.id %>" class="breadcrumb" data-turbolinks="false"><%= @room.building.name %></a> /
+        <a href="/manager/room-management/rooms/<%= @room.id %>" class="breadcrumb" data-turbolinks="false">Phòng <%= @room.room_name %></a> /
+        <a href="/manager/room-management/rooms/<%= @room.id %>/informations" class="breadcrumb" data-turbolinks="false">Thông tin</a>
+      </h5>
+      <div class="ui inverted divider"></div>
+      <div id="room_information" style="width: 80%;">
+        <form class="ui form segment" id="room_info_form" style="border: none; -webkit-box-shadow: none">
+          <input type="hidden" id="room_id" name="room_id" value="<%= @room.id %>"/>
+          <div class="two fields">
+            <div class="required ui field field_line" >
+              <div class="ui field" id="room_field_name">
+                <label for="room_name">Tên phòng</label>
+                <input type="text" id="room_name" name="room_name" style="display:block" required placeholder="Room name" value="<%= @room.room_name %>" disabled/>
+              </div>
+            </div>
+            <div class="required field field_line">
+              <label>Loại phòng</label>
+              <div class="ui fluid search selection dropdown" id="select_room">
+                <input type="hidden" name="room_type" id="room_type" value="<%= @room.room_type%>" required placeholder="Select room type"/>
+                <i class="dropdown icon"></i>
+                <div class="default text"></div>
+                <div class="menu">
+                  <div class="item" data-value="NORMAL">Phòng thường</div>
+                  <div class="item" data-value="VIP">Phòng VIP</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="two fields">
+            <div class="required field field_line">
+              <label>Giới tính</label>
+              <div class="ui fluid search selection dropdown" id="select_room">
+                <input type="hidden" name="gender" id="gender" value="<%= @room.gender %>" required placeholder="Select room type"/>
+                <i class="dropdown icon"></i>
+                <div class="default text"><%= @room.gender %></div>
+                <div class="menu">
+                  <div class="item" data-value="MALE">Nam</div>
+                  <div class="item" data-value="FEMALE">Nữ</div>
+                </div>
+              </div>
+            </div>
+            <div class="required field field_line">
+              <label>Trạng thái</label>
+              <input type="text" name="status" required placeholder="Tên phòng" disabled value="<%= @room.status%>"/>
+            </div>
+          </div>
+          <div class="two fields">
+            <div class="required field field_line">
+              <label>Số lượng học viên</label>
+              <input type="text" name="number_student" required placeholder="Số lượng học viên" disabled  value="<%= @room.number_student%>"/>
+            </div>
+            <div class="required field field_line">
+              <label>Số học viên tối đa</label>
+              <input type="text" name="max_number_student" required placeholder="Số học viện tối đa"value="<%= @room.max_number_student%>" onchange="checkValidation(this)" />
+            </div>
+          </div>
+          <div class="ui dividing header">
+            Xác nhận
+          </div>
+          <div class="ui checkbox">
+            <div class="field">
+            <input type="checkbox" name="confirmation_checkbox">
+            <label>Bạn đã chắc chắn mọi thông tin nhập trên đều chính xác?</label>
+          </div>
+          <div class="actions" style="display: flex; justify-content: flex-start; margin-top: 1rem;">
+            <button class="ui button custom_btn">
+              Cập nhật
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $(".ui.fluid.search.selection.dropdown").dropdown()
+  $("#manager_room_management_path").addClass("active");
+  // show room info
+  function updateSubmit(){
+    let myRoomForm = document.getElementById('room_info_form');
+    let formData = new FormData(myRoomForm);  
+    let room_id = $("#room_id").val();
+    $.ajax({
+      type: "PUT",
+      url: `/manager/room_management/${room_id}/update`,
+      processData: false,
+      contentType: false,
+      mimeType: 'multipart/form-data',
+      data: formData,
+      success: function(result){
+        console.log("sbumit success")
+        toastr.success("Cập nhật thành công!")
+      },
+      error: function (error) {
+         toastr.error("Xin lỗi, cập nhật khồng thành công :(")
+      }
+    })
+  }
+  //  async function checkDuplicate(){
+  //   current_name = document.querySelectorAll('input[name=room_name]')[0].value
+  //   let result
+  //   await $.ajax({
+  //     type: "POST",
+  //     url: "/manager/room-management/checkduplicate",
+  //     data: {
+  //       "room_name": current_name
+  //     },
+  //     success: function(_result){
+  //       console.log("not dup")
+  //       result = true
+  //     },
+  //     error: function (error) {
+  //       console.log(error)
+  //       if (error.responseJSON.is_duplicate == true) {
+  //         console.log("duplicate")
+  //         $('#room_field_name').find('.error').removeClass('error');
+  //         $('#room_field_name').addClass("error")
+  //         $('#room_field_name').append(`<div class="ui basic red pointing prompt label transition visible">Tên phòng đã được tạo, vui lòng kiểm tra và đổi sang tên khác nhé!</div>`)
+  //         result = false
+  //       }
+  //     }
+  //   })
+  //   return result
+  // }
+
+  function checkValidation(data){
+    let room_id = $("#room_id").val();
+    let max_number_student = data.value
+    let validation
+    $.ajax({
+      type: "POST",
+      url: "/manager/room-management/validation/",
+      data: { 
+        max_number_student: max_number_student,
+        room_id: room_id
+      },
+      success: function(result){
+        if (result.validation == false){
+          debugger
+          $('#room_info_form')
+          .form('add rule', 'max_number_student', {
+            rules: [
+              {
+                type   : `integer[${result.number_student}..6]`,
+                prompt : 'Số lượng học viên tối đa không được ít hơn số lượng học viên hiện tại của phòng'
+              }
+            ],
+            inline: true,
+            on: 'blur'
+          })
+        }
+      },
+      error: function (error) {
+        console.log(error.responseJSON.message)
+      }
+    })
+  }
+
+  $('#room_info_form').off('submit').submit(async function(e){
+    e.preventDefault();
+    if($('#room_info_form').form('is valid')) {
+        updateSubmit()
+    }
+  })
+
+   $('#room_info_form')
+    .form({
+      fields: {
+        confirmation_checkbox: {
+          identifier: 'confirmation_checkbox',
+          rules: [
+            {
+              type: 'checked',
+              prompt: 'Hãy bấm để xác nhận!!'
+            }
+          ]
+        },
+        room_name: {
+          identifier: 'room_type',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Vui lòng nhập tên phòng!!'
+            }
+          ]
+        },
+        room_type: {
+          identifier: 'room_type',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Vui lòng nhập loại phòng!!'
+            }
+          ]
+        },
+        max_number_student: {
+          identifier: 'max_number_student',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Vui lòng nhập số lượng học viên tối đa của phòng!!'
+            },
+            {
+              type: 'integer[0..6]',
+              prompt: 'Số lượng học viên của phòng phải là số tự nhiên từ 0 đến 6!!'
+            }
+          ]
+        }
+      },
+      inline: true,
+      on: 'blur'
+    })
+  ;
+  
+</script>

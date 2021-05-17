@@ -1,35 +1,46 @@
 <div class="service_charge_list">
   <h3 class="ui dividing header">
-    Service charges
+    Hoá đơn dịch vụ
   </h3>
   <table class="ui very basic table">
     <thead>
       <tr>
         <th>STT</th>
-        <th>Thang</th>
-        <th>Tien dien</th>
-        <th>Tien nuoc</th>
-        <th>Tong</th>
-        <th>Trang thai</th>
+        <th>Tháng</th>
+        <th>Tiền nước</th>
+        <th>Tiền điện</th>
+        <th>Tổng tiền</th>
+        <th>Trạng thái</th>
+        <th>Người thanh toán</th>
       </tr>
     </thead>
-    <tbody>
-      <% for i in 0..5 do %>
-        <tr>
-          <td>1</td>
-          <td>2</td>
-          <td>200,000</td>
-          <td>300,000</td>
-          <td>500,000</td>
+    <tbody id="service_charge_table">
+      <% @service_charges.each_with_index do |charge, index| %>
+        <tr onclick="showServiceChargeInfo(<%= charge.room_id %>, <%= charge.year %>, <%= charge.month %>, <%= charge.id %>, <%= index + 1%>)" id="tr_service_charge_<%= charge.id %>">
+          <td><%= index + 1 + (@page - 1) * Settings.pagination %></td>
+          <td><%= charge.month %></td>
+          <td><%= charge.electricity_price %></td>
+          <td><%= charge.water_price %></td>
+          <td><%= charge.total_price %></td>
           <td>
-            <% if i % 2 == 0 %>
-              <a class="ui teal tag label" style="width: 6.7rem">Done</a>
-            <% else  %>
-              <a class="ui red tag label" style="width: 6.7rem">Pay now</a>
+            <% if charge.status == "PAID" %>
+              <a class="ui teal tag label">Đã thanh toán</a>
+            <% elsif charge.status == "UNPAID" %>
+              <a class="ui red tag label">Chưa thanh toán</a>
             <% end  %>
+          </td>
+          <td><%= charge.payer %></td>
+          <td style="display: none" class="checkbox_col">
+            <div class="ui checkbox">
+              <input class="remind_checkbox" type="checkbox" name="example" onchange="onHandleCheckbox(this)">
+              <label></label>
+            </div>
           </td>
         </tr>
       <% end %>
     </tbody>
   </table>
+  <div class="mt-4" style="float: right">
+    <%= paginate @service_charges, turbolinks: false %>
+  </div>
 </div>

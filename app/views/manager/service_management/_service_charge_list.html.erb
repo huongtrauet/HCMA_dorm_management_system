@@ -1,220 +1,276 @@
+<style>
+.filter_item{
+  width: 11rem !important;
+  min-width: 9rem !important;
+  margin-right: 1rem;
+}
+</style>
 <div class="service_charge_list">
-  <div class="header" style="display: flex; justify-content: space-between;">
+  <div class="header" style="display: flex; justify-content: space-between; margin-bottom: 1rem">
     <div class="header_title">
-      <h3>Service charge: </h3>
-    </div>
-    <div class="header_search">
-      <div class="ui icon input">
-        <input type="text" placeholder="Search...">
-        <i class="icon">
-          <img src="/assets/search.png" style="width: 1rem; height: 1rem; width: 1rem; top: 50%; position: absolute; transform: translateY(-50%);right: 0.7rem;">
-        </i> 
-      </div>
+      <h3>Hoá đơn dịch vụ: </h3>
     </div>
   </div>
-  <div class="filter_options" style="display: flex; justify-content: flex-start">
-    <div class="ui selection dropdown" style="min-width: 6rem; margin-right: 1rem">
-      <input type="hidden" name="room" onchange="onHandleFilter(this)">
-      <div class="default text">Phong</div>
+  <div style="display: flex; justify-content: flex-start">
+    <div class="ui selection dropdown filter_item" >
+      <input type="hidden" name="room_name_filter" onchange="onHandleFilter(this)">
+      <div class="default text">Phòng</div>
       <div class="menu">
-        <div class="item" data-value="1">Male</div>
-        <div class="item" data-value="0">Female</div>
+        <div class="item" data-value="ALL">Tất cả</div>
+        <% @rooms.each do |r|%>
+          <div class="item" data-value="<%= r.id %>"><%= r.room_name %></div>
+        <% end %>
       </div>
     </div>
-    <div class="ui selection dropdown" style="min-width: 6rem; margin-right: 1rem">
-      <input type="hidden" name="status" onchange="onHandleFilter(this)">
-      <div class="default text">Trang thai</div>
+    <div class="ui selection dropdown filter_item">
+      <input type="hidden" name="status_filter" onchange="onHandleFilter(this)">
+      <div class="default text">Trạng thái</div>
       <div class="menu">
-        <div class="item" data-value="1">Paid</div>
-        <div class="item" data-value="0">Unpaid</div>
+        <div class="item" data-value="ALL">Tất cả</div>
+        <div class="item" data-value="PAID">Đã thanh toán</div>
+        <div class="item" data-value="UNPAID">Chưa thanh toán</div>
       </div>
     </div>
-    <div class="ui selection dropdown" style="min-width: 6rem; margin-right: 1rem">
-      <input type="hidden" name="charge" onchange="onHandleFilter(this)">
-      <div class="default text">Muc tien</div>
+    <div class="ui selection dropdown filter_item" id="min_charge">
+      <input type="hidden" value="0" name="min_charge" onchange="onHandleFilter(this)">
+      <i class="dropdown icon"></i>
+      <div class="default text">Từ</div>
       <div class="menu">
-        <div class="item" data-value="1">
-          Male
-        </div>
-        <div class="item" data-value="0">
-          Female
-        </div>
+        <div class="item" data-value="ALL">Tất cả</div>
+        <div class="item" data-value="50000">50000</div>
+        <div class="item" data-value="100000">100000</div>
+        <div class="item" data-value="200000">200000</div>
+        <div class="item" data-value="300000">300000</div>
+        <div class="item" data-value="400000">400000</div>
+        <div class="item" data-value="500000">500000</div>
       </div>
     </div>
+    <div class="ui selection dropdown filter_item" id="max_charge">
+      <input type="hidden" value="0" name="max_charge" onchange="onHandleFilter(this)">
+      <i class="dropdown icon"></i>
+      <div class="default text">Đến</div>
+      <div class="menu">
+        <div class="item" data-value="ALL">Tất cả</div>
+        <div class="item" data-value="50000">50000</div>
+        <div class="item" data-value="100000">100000</div>
+        <div class="item" data-value="200000">200000</div>
+        <div class="item" data-value="300000">300000</div>
+        <div class="item" data-value="400000">400000</div>
+        <div class="item" data-value="500000">500000</div>
+      </div>
+    </div>
+    <button class="reset_button" style="width: 9rem; color: #f4810b; border: 1px solid #f4810b; border-radius: 3px; background-color: #ffffff; outline: none" onclick="resetFilter()">Đặt lại</button>
   </div>
-  <div class=" "style="width: 20rem; margin-top: 1rem;">
-    <select name="months" multiple="" class="ui fluid dropdown" onchange="onHandleFilter(this)">
-      <option value="">Month</option>
-      <option value="1">Thang 1</option>
-      <option value="2">Thang 2</option>
-      <option value="3">Thang 3</option>
-      <option value="4">Thang 4</option>
-      <option value="5">Thang 5</option>
-      <option value="6">Thang 6</option>
-      <option value="7">Thang 7</option>
-      <option value="8">Thang 8</option>
-      <option value="9">Thang 9</option>
-      <option value="10">Thang 10</option>
-      <option value="11">Thang 11</option>
-      <option value="12">Thang 12</option>
+  <div style="min-width: 8px; width: 23rem !important; margin-top: 1rem; display: flex;" >
+    <select id="month_filter" name="month_filter" multiple="" class="ui fluid multiple selection dropdown" onchange="onHandleFilter(this)">
+      <option value="">Tháng</option>
+      <option value="1">Tháng 1</option>
+      <option value="2">Tháng 2</option>
+      <option value="3">Tháng 3</option>
+      <option value="4">Tháng 4</option>
+      <option value="5">Tháng 5</option>
+      <option value="6">Tháng 6</option>
+      <option value="7">Tháng 7</option>
+      <option value="8">Tháng 8</option>
+      <option value="9">Tháng 9</option>
+      <option value="10">Tháng 10</option>
+      <option value="11">Tháng 11</option>
+      <option value="12">Tháng 12</option>
     </select>
   </div>
-   <div class="remind checkbox_col" style="display: none">
-    <button class="button" id="myElement" disabled style="float: right; margin: 1rem 1.8rem 1rem 0;" onclick="onclick()">Orange</button>
+   <div class="remind checkbox_col" style="display: none; float:right">
+    <button class="button" id="myElement" disabled style="float: right; margin: 1rem 1.8rem 1rem 0;" onclick="remind()">Nhắc nhở</button>
   </div>
-  <table class="ui very basic selectable table">
-    <thead>
-      <tr>
-        <th>STT</th>
-        <th>Phong</th>
-        <th>Thang</th>
-        <th>Tien dien</th>
-        <th>Tien nuoc</th>
-        <th>Tong</th>
-        <th>Trang thai</th>
-        <th>Nguoi nop tien</th>
-        <th style="display: none" class="checkbox_col">
-         <div class="ui checkbox">
-            <input type="checkbox" name="example" onchange="selectItem(this) ">
-            <label></label>
-          </div>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <% for i in 0..5 do %>
-        <tr onclick="showServiceChargeInfo()">
-          <td>1</td>
-          <td>P1010</td>
-          <td>2</td>
-          <td>200,000</td>
-          <td>300,000</td>
-          <td>500,000</td>
-          <td>
-            <% if i % 2 == 0 %>
-              <a class="ui teal tag label teal_label" style="width: 5.7rem">Paid</a>
-            <% else  %>
-              <a class="ui tag label danger_label" style="width: 5.7rem">Unpaid</a>
-            <% end  %>
-          </td>
-          <td>Tra</td>
-          <td style="display: none" class="checkbox_col">
-          <div class="ui checkbox">
-            <input class="remind_checkbox" type="checkbox" name="example" onchange="onHandleCheckbox(this)">
-            <label></label>
-          </div>
-          </td>
+  <button class="ui orange basic button" style="float:right; margin: 1rem 1rem 1rem 0" id="import_data_button">
+    <input style="	width: 0.1px;	height: 0.1px;	opacity: 0;	overflow: hidden;	position: absolute;	z-index: -1;" type="file" class="inputfile" id="embedpollfileinput1" onchange="uploadData(this)" style="width: 100%; height: 100%" multiple="true" name="images_input" />
+    <label id="lable_image" for="embedpollfileinput1" class="import_data_button">
+      Thêm dữ liệu
+    </label>
+  </button>
+  <div id="service_charge_table" style="margin-top: 1rem">
+    <table class="ui very basic selectable table">
+      <thead>
+        <tr>
+          <th>STT</th>
+          <th>Phòng</th>
+          <th>Tháng</th>
+          <th>Năm</th>
+          <th>Tiền điện</th>
+          <th>Tiến nước</th>
+          <th>Tổng tiền</th>
+          <th>Trạng thái</th>
+          <th>Người thanh toán</th>
+          <th>Hành động</th>
+          <th style="display: none" class="checkbox_col">
+            <div class="ui checkbox">
+              <input id="check_all" type="checkbox" name="example" onchange="selectItem(this) ">
+              <label></label>
+            </div>
+          </th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
-</div>
-<div class="ui first modal service_charge_info">
-  <i class="close icon"></i>
-  <div class="header">
-    Service charge
-  </div>
-  <div class="ui header" style="margin-bottom: 2rem; border: none">P1410</div>
-  <div class="">
-    <div class="ui grid">
-      <div class="one wide column"></div>
-      <div class="five wide column">
-        <div class="student-info">
-          <label>Thang:</label>
-          <p>Thang 2</p>
-          <label>Tong tien:</label>
-          <p>500000</p>
-        </div>
-      </div>
-      <div class="five wide column">
-        <div class="student-info">
-          <label>Tien dien: </label>
-          <p>200000</p>
-          <label>Tien nuoc</label>
-          <p>300000</p>
-        </div>
-      </div>
-      <div class="five wide column">
-        <div class="student-info">
-          <label>Trang thai: </label>
-          <p><span style="background-color: #f4810b; padding: 6px 10px; color: #fff; border-radius: 5px; font-weight: bold">Unpaid</span></p>
-          <label>Nguoi nop</label>
-          <p>Tra</p>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="actions" style="padding: 0.7rem 1rem;">
-    <div class="ui black deny button">
-      Cancel
-    </div>
-    <div class="ui positive right labeled icon button edit">
-      Edit
-      <i class="arrow right icon"></i>
+      </thead>
+      <tbody>
+        <% @service_charges.each_with_index do |charge, index| %>
+          <tr id="tr_service_charge_<%= charge.id %>">
+            <td class='index'><%= index + 1 + (@page - 1)* Settings.report_pagination%></td>
+            <td class='room_name'><%= charge.room.room_name %></td>
+            <td class='month'><%= charge.month %></td>
+            <td class='year'><%= charge.year %></td>
+            <td class='electricity_price'><%= charge.electricity_price %></td>
+            <td class='water_price'><%= charge.water_price %></td>
+            <td class='total_price'><%= charge.total_price %></td>
+            <td class='status'>
+              <% if charge.status == "PAID" %>
+                <a class="ui teal tag label">Đã thanh toán</a>
+              <% elsif charge.status == "UNPAID" %>
+                <a class="ui red tag label">Chưa thanh toán</a>
+              <% end  %>
+            </td>
+            <td class='payer'><%= charge.payer %></td>
+            <td class="view_more" onclick="showServiceChargeInfo(<%= charge.room_id %>, <%= charge.year %>, <%= charge.month %>, <%= charge.id %>, <%= index + 1%>)">
+              Xem thêm
+            </td>
+            <td style="display: none" class="checkbox_col">
+              <div class="ui checkbox">
+                <input class="remind_checkbox" type="checkbox" name="example" onchange="onHandleCheckbox(this)" value="<%= charge.id %>">
+                <label></label>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <div class="mt-4" style="float: right;">
+      <%= paginate @service_charges, turbolinks: false %>
     </div>
   </div>
 </div>
 
-<div class="ui second modal service_charge_info">
+<div class="ui first modal service_charge_info" id="show_info_modal">
   <i class="close icon"></i>
   <div class="header">
-    Service charge edit
+      <h3>Hoá đơn dịch vụ</h3>
+      <div>
+        <p style="margin-bottom: -1rem" id="show_paid_at"></p>
+        <p style="float: right; margin-right: 1rem; margin-right: 2.6rem;" class="show_room_name"></p>
+        <input type="hidden" name="room_id" id="room_id">
+        <input type="hidden" name="charge_id" id="charge_id">
+      </div>
   </div>
-  <div class="ui header" style="margin-bottom: 2rem; border: none">P1410</div>
-  <form class="ui form" style="margin: 0 1.5rem">
+  <div class="ui header" style="margin-bottom: 2rem; border: none"><%=  %></div>
+    <div class="">
+      <div class="ui grid">
+        <div class="one wide column"></div>
+        <div class="five wide column">
+          <div class="student-info">
+            <div class="ui field">
+              <label>Thời gian:</label>
+              <p id="show_month"></p>
+            </div>
+            <label>Tồng tiền:</label>
+            <p id="show_total_price"></p>
+          </div>
+        </div>
+        <div class="five wide column">
+          <div class="student-info">
+            <label>Tiền điện: </label>
+            <p id="show_electricity_price"></p>
+            <label>Tiền nước</label>
+            <p id="show_water_price"></p>
+          </div>
+        </div>
+        <div class="five wide column">
+          <div class="student-info">
+            <label>Trạng thái</label>
+            <p>
+              <span style="background-color: #f4810b; padding: 6px 10px; color: #fff; border-radius: 5px; font-weight: bold" id="show_status"></span>
+            </p>
+            <label>Người thanh toán</label>
+            <p id="show_payer"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="actions" style="padding: 0.7rem 1rem;">
+      <div class="ui black deny button" onclick="closeModal()">
+        Huỷ
+      </div>
+      <div class="ui right labeled icon button edit" style="background-color: #2185d0; color: white">
+        Cập nhật
+        <i class="arrow right icon"></i>
+      </div>
+    </div>
+</div>
+
+<div class="ui second modal service_charge_info" id="edit_info_modal">
+  <i class="close icon"></i>
+  <div class="header">
+    <h3>Sửa hoá đơn dịch vụ</h3>
+    <div>
+      <p id="paid_at" style="margin-bottom: -1rem"></p>
+      <p style="float: right; margin-right: 1rem; margin-right: 2.6rem;" class="show_room_name"></p>
+      <input type="hidden" name="charge_index" id="charge_index">
+    </div>
+  </div>
+  <div class="ui header" style="margin-bottom: 2rem; border: none"></div>
+  <form class="ui form" style="margin: 0 1.5rem" id="service_charge_edit_form" name="service_charge_edit_form" class="ui form segment">
     <div class="three fields">
       <div class="field">
-        <label>Thang</label>
-        <input type="text" placeholder="Thang" disabled value="Thang 2">
+        <label>Tháng</label>
+        <input type="text" placeholder="Tháng" disabled name="month" id="month_edit_field">
       </div>
       <div class="field">
-        <label>Tien dien</label>
-        <input type="text" placeholder="Tien dien">
+        <label>Tiền điện</label>
+        <input type="number" placeholder="Tiền điện" name="electricity_price" id="electricity_price_edit_field" onkeyup="changePrice()">
       </div>
       <div class="field">
-        <label>Trang thai</label>
+        <label>Trạng thái</label>
         <div class="ui selection dropdown">
-          <input type="hidden" name="gender">
+          <input type="hidden" name="status" id="status_edit_field">
           <i class="dropdown icon"></i>
-          <div class="default text">Trang thai</div>
+          <div class="text" style="color: black;" id="selected_item"></div>
           <div class="menu">
-            <div class="item" data-value="1">Paid</div>
-            <div class="item" data-value="0">Unpaid</div>
+            <div class="item" data-value="PAID">Đã thanh toán</div>
+            <div class="item" data-value="UNPAID">Chưa thanh toán</div>
           </div>
         </div>
       </div>
     </div>
     <div class="three fields">
       <div class="field">
-        <label>Tong tien</label>
-        <input type="text" placeholder="Tong tien">
+        <label>Tổng tiền</label>
+        <input type="number" placeholder="Tổng tiền" name="total_price" id="total_price_edit_field" disabled>
       </div>
       <div class="field">
-        <label>Tien nuoc</label>
-        <input type="text" placeholder="Tien nuoc">
+        <label>Tiền nước</label>
+        <input type="number" placeholder="Tiền nước" name="water_price" id="water_price_edit_field" onkeyup="changePrice()">
       </div>
       <div class="field">
-        <label>Nguoi nop</label>
-        <input type="text" placeholder="Nguoi nop">
+        <label>Người thanh toán</label>
+        <input type="text" placeholder="Người thanh toán" name="payer" id="payer_edit_field">
       </div>
+    </div>
+    <div class="actions" style="padding: 0.7rem 1rem; float:right; margin-right: 1.5rem">
+      <div class="ui black deny button" onclick="closeModal()">
+        Huỷ
+      </div>
+      <div class="ui blue submit button">Cập nhật</div>
     </div>
   </form>
-  <div class="actions" style="padding: 0.7rem 1rem;">
-    <div class="ui black deny button">
-      Cancel
-    </div>
-    <div class="ui positive right labeled icon button">
-      Submit
-      <i class="arrow right icon"></i>
-    </div>
-  </div>
 </div>
 
 <script>
+
+  if (window.localStorage.getItem('imported')) {
+    toastr.success(window.localStorage.getItem('imported'));
+    window.localStorage.removeItem('imported')
+  }
   $('.ui.dropdown').dropdown();
+  // ô vuông chọn 1 bên phải
   function selectItem(event) {
     if (event.checked == true) {
       $('.remind_checkbox').prop('checked', true);
+      $('.remind .button').prop('disabled', false)
       $('.remind .button').addClass('hover');
     }
     else if (event.checked == false) {
@@ -223,8 +279,35 @@
     }
   }
 
+  function uploadData(data) {
+    let form = new FormData()
+    form.set('file', data.files[0])// lấy file đầu tiên trong đống ng dùng chọn thêm vào
+    $.ajax({
+      type: "POST",
+      url: "/manager/service-management/import",
+      processData: false,
+      contentType: false,
+      cache: false,
+      mimeType: 'multipart/form-data',
+      data: form,
+      success: function(result){
+        // toastr.success(JSON.parse(result).message)
+        // toastr.success(JSON.parse(result).message)
+        window.localStorage.setItem('imported', JSON.parse(result).message )
+        window.location.reload()
+      },
+      error: function (error){
+        toastr.error(JSON.parse(error.responseText).message)
+        // toastr.success("Update avatar failed!")
+      }
+    })
+  }
+  
   function onHandleCheckbox (event) {
     var checkboxes = $('input:checkbox:checked').length;
+    if (event.checked == false) {
+      $('#check_all').prop('checked', false)
+    }
     if (checkboxes > 0) {
       $('.remind .button').prop('disabled', false)
       $('.remind .button').addClass('hover');
@@ -232,29 +315,317 @@
     else if (checkboxes <= 0)
     {
       $('.remind .button').removeClass('hover');
+      $('.remind .button').prop('disabled', true)
     }
   }
 
   function onHandleFilter (event) {
-    if (event.name == "status" & event.value == 0) {
-      $('.checkbox_col').css("display", "block");
-    }
-    else if (event.name == "status" & event.value == 1) {
-      $('.checkbox_col').css("display", "none");
-    }
+    $.ajax({
+      type: "GET",
+      url: "/manager/service-management/filter",
+      data: {
+        filter: {
+        room_id_filter: document.querySelectorAll('input[name=room_name_filter]')[0].value,
+        status_filter: document.querySelectorAll('input[name=status_filter]')[0].value,
+        month_filters: $("#month_filter").dropdown("get value"),
+        min_charge: document.querySelectorAll('input[name=min_charge]')[0].value,
+        max_charge: document.querySelectorAll('input[name=max_charge]')[0].value,
+        }
+      },
+      success: function(result){
+        $('#service_charge_table').html(result)
+        if (event.name == "status_filter" & event.value == 'UNPAID') {
+          $('.checkbox_col').css("display", "block");
+        }
+        else if (event.name == "status_filter" & event.value == 'PAID') {
+          $('.checkbox_col').css("display", "none");
+        }
+      },
+      error: function (error) {
+
+      }
+    })
+   
+    document.querySelectorAll('#max_charge .item').forEach(item => {
+      item.classList.remove("disabled")
+      if(parseInt(document.querySelectorAll("input[name=min_charge]")[0].value) != 0 ){
+        if (parseInt(item.textContent) <= parseInt(document.querySelectorAll("input[name=min_charge]")[0].value)) {
+          item.classList.add("disabled")
+        } 
+      }
+    })
+
+    document.querySelectorAll('#min_charge .item').forEach(item => {
+      item.classList.remove("disabled")
+      if(parseInt(document.querySelectorAll("input[name=max_charge]")[0].value)){
+        if (parseInt(item.textContent) >= parseInt(document.querySelectorAll("input[name=max_charge]")[0].value)) {
+          item.classList.add("disabled")
+        }
+      }
+    })
   }
 
-  function onclick() {
-    console.log(123)
+  function remind() {
+    let item_quantity = 0
+    let success_item = 0
+    function remindRoom(item) {
+      return new Promise(function(resolve, reject) {
+        if (item.checked == true) {
+          item_quantity += 1
+          console.log(item_quantity)
+          $.ajax({
+            type: 'POST',
+            url: '/manager/service-management/remind',
+            data: {
+              charge_id: item.value
+            },
+            success: function(result){
+              success_item += 1
+              $('.remind_checkbox').prop('checked', false);
+              $('#check_all').prop('checked', false);
+              $('.remind .button').prop('disabled', true)
+              $('.remind .button').removeClass('hover');
+              resolve();
+            },
+            error: function (error) {
+              reject()
+            }
+          })
+        } else {
+          resolve()
+        }
+      })
+    }
+    let remindRooms = []
+    for (let i = 0; i < document.getElementsByClassName('remind_checkbox').length; i++) {
+      const item = document.getElementsByClassName('remind_checkbox')[i];
+      console.log(item.checked)
+      remindRooms.push(remindRoom(item))
+    }
+    Promise.all(remindRooms).then(() => {
+      console.log(item_quantity, success_item)
+      if(success_item == item_quantity) {
+        console.log(item_quantity, success_item)
+        toastr.success('Nhắc nhở học viên thành công!')
+      } else {
+        toastr.error('Nhăc nhở học viên không thành công :(')
+      }
+    }).catch(() => {
+      toastr.error('Nhắc nhở học viên khồng thành cồng :(')
+    })
   }
 
-  function showServiceChargeInfo() {
-    $('.ui.modal.first.service_charge_info').modal('show');
-  }
 
   $('.second.modal')
     .modal('attach events', '.first.modal .button.edit');
 
   $('.ui.dropdown')
   .dropdown();
+
+
+  function changePrice() {
+    $('#total_price_edit_field').val(parseInt($('#electricity_price_edit_field').val()) + parseInt($('#water_price_edit_field').val()))
+  }
+  function showServiceChargeInfo(room_id, year, month, charge_id, index ){
+    $('.ui.modal.first.service_charge_info').modal('show');
+    $('#service_charge_edit_form').form('reset');
+    $("#service_charge_edit_form").find('.error').removeClass('error');
+    $.ajax({
+      type: "POST",
+      url: `/manager/service-management/${charge_id}/${year}/${month}`,
+      data: {
+        "charge_id": charge_id
+      },
+      success: function(result){
+        $('#show_month').html(`${result.service_charge.month}/${result.service_charge.year}`)
+        $('#show_year').html(result.service_charge.year)
+        $('#show_water_price').html(result.service_charge.water_price)
+        $('#show_electricity_price').html(result.service_charge.electricity_price)
+        $('#show_total_price').html(result.service_charge.total_price)
+        $('#show_payer').html(result.service_charge.payer)
+        if (result.service_charge.status == "PAID"){
+          $('#show_status').html("Đã thanh toán")
+        }
+        else{
+          $('#show_status').html("Chưa thanh toán")
+        }
+        if(result.service_charge.paid_at){
+          $('#show_paid_at').html(result.service_charge.paid_at.split('T')[0].split('-').reverse().join('/'))
+        } else {
+          $('#show_paid_at').html('')
+        }
+        $('.show_room_name').html(result.room.room_name)
+        $('#room_id').val(result.room.id)
+        $('#charge_id').val(result.service_charge.id)
+        //Edit modal
+        $('#month_edit_field').val(result.service_charge.month)
+        $('#year_edit_field').val(result.service_charge.year)
+        $('#water_price_edit_field').val(result.service_charge.water_price)
+        $('#electricity_price_edit_field').val(result.service_charge.electricity_price)
+        $('#total_price_edit_field').val(result.service_charge.total_price)
+
+        $('#status_edit_field').val(result.service_charge.status)
+        $('#payer_edit_field').val(result.service_charge.payer)
+        if(result.service_charge.paid_at){
+          $('#paid_at').html(result.service_charge.paid_at.split('T')[0].split('-').reverse().join('/'))
+        } else {
+          $('#paid_at').html('')
+        }
+        if (result.service_charge.status == "UNPAID"){
+         $('#selected_item').html("Chưa thanh toán")
+        }
+        else{
+          $('#selected_item').html("Đã thanh toán")
+        }
+        
+        $('#charge_index').val(index)
+
+        // $('#status_edit_field').val()
+      },
+      error: function (error) {
+        console.log(error)
+      }
+    })
+  }
+
+  function submitUpdateServiceCharge(e){
+    let room_id = $('#room_id').val()
+    let year = $('#year_edit_field').val();
+    let month = $('#month_edit_field').val();
+    let charge_id = $('#charge_id').val();
+    // $('#service_charge_edit_form').form('reset');
+    $("#service_charge_edit_form").find('.error').removeClass('error');
+    $('#show_info_modal').modal('hide');
+    $('#edit_info_modal').modal('hide');
+    e.preventDefault();
+    $.ajax({
+      type: "POST",
+      url: `/manager/service-management/${charge_id}/${year}/${month}/update`,
+      data: {
+        service_charge: {
+          "charge_id": charge_id,
+          "water_price": $('#water_price_edit_field').val(),
+          "electricity_price": $('#electricity_price_edit_field').val(),
+          "total_price": $('#total_price_edit_field').val(),
+          "month": $('#month_edit_field').val(),
+          "year": $('#year_edit_field').val(),
+          "payer": $('#payer_edit_field').val(),
+          "status": $('#status_edit_field').val(),
+          "index": $('#charge_index').val()
+        }
+      },
+      success: function(result){
+        $(`#tr_service_charge_${charge_id} .water_price`).html(result.charge.water_price)
+        $(`#tr_service_charge_${charge_id} .electricity_price`).html(result.charge.electricity_price)
+        $(`#tr_service_charge_${charge_id} .total_price`).html(result.charge.total_price)
+        $(`#tr_service_charge_${charge_id} .month`).html(result.charge.month)
+        $(`#tr_service_charge_${charge_id} .year`).html(result.charge.year)
+        $(`#tr_service_charge_${charge_id} .payer`).html(result.charge.payer)
+        if (result.charge.status == 'PAID') {
+          $(`#tr_service_charge_${charge_id} .status`).html(`<a class="ui teal tag label">Đã thanh toán</a>`)
+        } else if (result.charge.status == 'UNPAID') {
+          $(`#tr_service_charge_${charge_id} .status`).html(`<a class="ui red tag label">Chưa thanh toán</a>`)
+        }
+        toastr.success(result.message)
+      },
+      error: function (error) {}
+    })
+  }
+
+  $('#service_charge_edit_form').off('submit').submit(function(e){
+    if($('#service_charge_edit_form').form('is valid')){
+      submitUpdateServiceCharge(e);
+    }
+  })
+
+  $('.second.modal')
+    .modal('attach events', '.first.modal .button.edit');
+
+    $('#service_charge_edit_form')
+    .form({
+      fields: {
+        electricity_price: {
+          identifier: 'electricity_price',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Vui lòng nhập tiền điện!!'
+            },
+            {
+              type: 'integer[0..1000000000000]',
+              prompt: 'Tiền điện không được quá 1000000000000 vnd!!'
+            }
+          ]
+        },
+        status: {
+          identifier: 'status',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Vui lòng cập nhật trạng thái hoá đơn!!'
+            }
+          ]
+        },
+        total_price: {
+          identifier: 'total_price',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Vui lòng nhập tổng tiền!!'
+            },
+            {
+              type: 'integer[0..1000000000000]',
+              prompt: 'Tổng tiền hoá đơn không được quá 1000000000000 vnd!!'
+            }
+          ]
+        },
+        water_price: {
+          identifier: 'water_price',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Vui lòng nhập tiền nước!!'
+            },
+            {
+              type: 'integer[0..1000000000000]',
+              prompt: 'Tiền nước không được quá 1000000000000 vnd!!'
+            }
+          ]
+        }
+      },
+      inline: true,
+      on: 'blur'
+    })
+  ;
+  function closeModal() {
+    $("#service_charge_edit_form").find('.error').removeClass('error');
+    $('#show_info_modal').modal('hide');
+    $('#edit_info_modal').modal('hide');
+  }
+
+
+  function resetFilter(){
+    window.location.reload();
+  }
 </script>
+<style>
+.view_more:hover {
+  text-decoration: underline;
+  color: #f4810b;
+}
+.reset_button:hover {
+  background-color: #f4810b!important;
+  color: white !important;
+  cursor: pointer;
+}
+#import_data_button:hover {
+  cursor: pointer;
+  background-color: #f4810b !important;
+  color: white !important;
+}
+
+.import_data_button{
+  cursor: pointer;
+}
+
+</style>

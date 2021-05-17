@@ -1,0 +1,12 @@
+ <td><%= index %></td>
+<td><%= service_charge.month %></td>
+<td><%= service_charge.electricity_price %></td>
+<td><%= service_charge.water_price %></td>
+<td><%= service_charge.total_price %></td>
+<td>
+  <% if service_charge.status == "PAID" %>
+  <a class="ui teal tag label" style="">Đã thanh toán</a>
+  <% elsif service_charge.status == "UNPAID" %>
+  <a class="ui red tag label" style="">Chưa thanh toán</a>
+  <% end  %>
+</td> 
