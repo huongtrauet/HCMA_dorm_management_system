@@ -335,7 +335,7 @@ DEPENDENCIES
   capistrano-rbenv (~> 2.1, >= 2.1.4)
   capybara (>= 2.15)
   carrierwave (~> 2.2.0)
-  ckeditor (~> 5.0.0)
+  ckeditor (>= 5.0.0)
   config
   ed25519
   flex-slider-rails
