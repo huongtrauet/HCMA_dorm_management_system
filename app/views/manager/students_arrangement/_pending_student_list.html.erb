@@ -18,11 +18,11 @@
         <a class="ui mini label" style="background-color: #3889c8; color: #fff !important; font-size: .9rem; margin-right: 1rem"><%= student.student_id_number %></a>
         <% if student.student_profile.gender == 'MALE' %>
           <a class="ui basic image mini label">
-            <img src="/assets/elliot.jpeg"> <%= t(".male") %>
+            <img src="/assets/elliot.jpeg"> Nam
           </a>
         <% elsif student.student_profile.gender == 'FEMALE' %>
           <a class="ui basic image mini label">
-            <img src="/assets/stevie.jpeg"> <%= t(".female") %>
+            <img src="/assets/stevie.jpeg"> Nữ
           </a>
         <% end %>
       </div>

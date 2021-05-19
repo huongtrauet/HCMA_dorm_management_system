@@ -48,7 +48,6 @@ module SessionsHelper
   # end
 
   def remember(user)
-    byebug
     user.remember #tao remember digest luu vao db va remember token vao cookie
     cookies.permanent.signed[:user_id] = user.id #luu vao cookie id da bi ma hoa qua ham signed, k con la id ban dau nua
     cookies.permanent.signed[:role] = user.class.name

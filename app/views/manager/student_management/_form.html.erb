@@ -151,6 +151,7 @@
 
   function generatePreviewImage(image){
     document.getElementById("preview_image_card").src = URL.createObjectURL(image.files[0])
+    console.log(URL.createObjectURL(image.files[0]));
     let form = new FormData()
     let student_id = $('#student_id').val()
     form.set('avatar', image.files[0])

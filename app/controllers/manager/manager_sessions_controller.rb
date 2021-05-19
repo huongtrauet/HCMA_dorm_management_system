@@ -7,7 +7,7 @@ class Manager::ManagerSessionsController < ManagerMainController
   end
   def create
     manager = find_manager_by_email
-    # if manager != nil
+    if manager != nil
       if manager&.authenticate params[:password]
         log_in manager
         # remember student
@@ -18,11 +18,11 @@ class Manager::ManagerSessionsController < ManagerMainController
           format.json {render json: {message: "Mật khẩu không chính xác!!"}, status: :bad_request}
         end
       end
-    # else
-    #   respond_to do |format|
-    #     format.json {render json: {message: "Tài khoản không tồn tại!!"}, status: :bad_request}
-    #   end
-    # end
+    else
+      respond_to do |format|
+        format.json {render json: {message: "Tài khoản không tồn tại!!"}, status: :bad_request}
+      end
+    end
   end
 
   def destroy

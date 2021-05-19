@@ -15,7 +15,7 @@ class Manager::StudentManagementController < ManagerMainController
   end
 
   def create
-    byebug
+    # byebug
     if(student_create_params[:student_id_number_confirm] == student_create_params[:student_id_number])
       student_id_number = student_create_params[:student_id_number]
       new_params = student_create_params.merge(password: student_id_number, password_confirmation: student_id_number, channel: generate_channel).except(:student_id_number_confirm)
