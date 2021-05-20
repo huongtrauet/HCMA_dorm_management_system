@@ -35,13 +35,13 @@ gem 'ed25519'
 gem 'bcrypt_pbkdf'
 gem 'nokogiri', '~> 1.0'
 
-gem "capistrano"
-gem "capistrano3-puma"
-gem "capistrano-rails", require: false
-gem 'capistrano-passenger'
-gem "capistrano-yarn"
-gem "capistrano-bundler", require: false
-gem "capistrano-rvm"
+# gem "capistrano"
+# gem "capistrano3-puma"
+# gem "capistrano-rails", require: false
+# gem 'capistrano-passenger'
+# gem "capistrano-yarn"
+# gem "capistrano-bundler", require: false
+# gem "capistrano-rvm"
 
 gem 'ckeditor', '= 5.0.0'
 group :development, :test do
