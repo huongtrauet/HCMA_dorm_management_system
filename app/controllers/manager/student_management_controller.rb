@@ -229,7 +229,7 @@ class Manager::StudentManagementController < ManagerMainController
   private
 
   def student_params
-    profile_params = params.require(:student).permit(:student_id_number, :check_in_date, :check_out_date, :room_id, :extended_time, student_profile_attributes: [:email, :class_name, :name, :date_of_birth, :identity_card_number, :address, :phone_number, :gender, :avatar])
+    profile_params = params.require(:student).permit(:student_id_number, :check_in_date, :check_out_date, :room_id, :extended_time, student_profile_attributes: [:email, :class_name, :name, :date_of_birth, :identity_card_number, :address, :phone_number, :gender])
       profile_params.require(:student_profile_attributes).merge!(class_name: nil) if profile_params[:student_profile_attributes][:class_name] == ""
       profile_params.require(:student_profile_attributes).merge!(date_of_birth: nil) if profile_params[:student_profile_attributes][:date_of_birth] == ""
       profile_params.require(:student_profile_attributes).merge!(identity_card_number: nil) if profile_params[:student_profile_attributes][:identity_card_number] == ""

@@ -54,6 +54,13 @@ class Student < ApplicationRecord
     if self.room.id
       @room = Room.find(self.room.id)
       @room.update(number_student: @room.number_student + 1)
+      if @room.number_student == 0
+        @room.update(status: "PENDING") 
+      elsif @room.number_student == @room.max_number_student
+        @room.update(status: "FULL")
+      elsif @room.number_student < @room.max_number_student
+        @room.update(status: "UNFILLED")
+      end
     end
   end
 
