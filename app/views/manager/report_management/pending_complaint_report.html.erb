@@ -1,3 +1,4 @@
+<% provide :title, "Quản lý báo cáo"%>
 <p id="notice"><%= notice %></p>
 <div class="room_management_show">
   <div class="ui grid">
@@ -140,7 +141,7 @@
 
   function showReportInfo(report_id){
     $('.ui.small.first.modal.report_info').modal('show');
-  //  reset form phake
+  //  reset form cux
   $('#reject_reason').val("")
     $.ajax({
       type: "GET",
@@ -179,7 +180,7 @@
           "reject_reason": $("#reject_reason").val()
         }
       },
-      success: function(result){
+      success: function(result){ //tra ve partial
          toastr.success("Từ chối báo cáo thành công!");
         $('.ui.small.second.modal.reject').modal('hide');
         $("#reports_list").html(result)

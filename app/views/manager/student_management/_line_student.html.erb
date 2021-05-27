@@ -26,7 +26,12 @@
     <div class="ui grid">
       <div class="five wide column">
         <div class="" style="width: 15rem; margin: 0 auto;">
-          <img src="/assets/ava.jpg" style="width: 15rem; height: 15rem; margin: 0 auto;">
+          <%# <img src="/assets/profile.png" style=""> %>
+          <% if student.student_profile.avatar.url %>
+            <img src="<%= student.student_profile.avatar.url %>" style="width: 15rem; height: 15rem; margin: 0 auto;">
+          <% else %>
+            <img src="/assets/profile.png" style="width: 15rem; height: 15rem; margin: 0 auto;">
+          <% end %>
           <div class="sub-info ui grid" style="padding-top: 1rem">
             <div class="two wide column" style="padding-bottom: 0!important">
               <i class="icon address card outline"></i>

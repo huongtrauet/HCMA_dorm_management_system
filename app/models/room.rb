@@ -1,5 +1,6 @@
 class Room < ApplicationRecord
   after_commit :update_floor, on: [:create]
+  after_commit :update_order_name, on: [:create]
   after_commit :update_building, on: [:create, :update]
 
   has_many :service_charges, dependent: :destroy
@@ -16,11 +17,11 @@ class Room < ApplicationRecord
             length: {maximum: Settings.validations.room.room_name.max_length}
 
   validates :number_student, presence: true, allow_nil: true,
-            numericality: {greater_than_or_equal_to: 0, only_integer: true
+            numericality: {greater_than_or_equal_to: 0, only_integer: true, less_than_or_equal_to: 6
                           }
   validates :max_number_student, presence: true, allow_nil: false,
-            numericality: {greater_than_or_equal_to: 0,
-                          message: "Số học viên tối đa phải lớn hơn 0"
+            numericality: {greater_than_or_equal_to: 0, less_than_or_equal_to: 6,
+                          message: "Số học viên tối đa phải lớn hơn 0 và nhỏ hơn 6"
             }
   validates :room_type, presence: true, allow_nil: false, inclusion: { in: ['NORMAL', 'VIP']}
   validates :status, presence: true, allow_nil: false, inclusion: { in: ['PENDING', 'UNFILLED','FULL']}
@@ -41,5 +42,10 @@ class Room < ApplicationRecord
     if self.building.rooms.where(has_problem: true).length == 0
       self.building.update_attribute(:has_problem, false)
     end
+  end
+
+  def update_order_name
+    order = self.room_name.split('_')[0][1..-1].concat(self.room_name.split('_')[1])
+    self.update_attribute(:order_name, order.to_i)
   end
 end

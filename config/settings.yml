@@ -40,10 +40,13 @@ validations:
   service_charge:
     water_price:
       minimum: 0
+      maximum: 1000000000000
     electricity_price:
       minimum: 0
+      maximum: 1000000000000
     total_price:
       minimum: 0
+      maximum: 1000000000000
   student_profile:
     name:
       max_length: 100
@@ -63,7 +66,7 @@ validations:
       max_length: 100
   post:
     title:
-      max_length: 1000
+      max_length: 200
     content:
       max_length: 100000
     writer_name:

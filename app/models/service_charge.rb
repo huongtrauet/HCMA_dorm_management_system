@@ -1,11 +1,14 @@
 class ServiceCharge < ApplicationRecord
-  belongs_to :room, dependent: :destroy
+  belongs_to :room
   validates :water_price, presence: true, allow_nil: false,
-            numericality: {greater_than_or_equal_to: Settings.validations.service_charge.water_price.minimum}
+            numericality: {greater_than_or_equal_to: Settings.validations.service_charge.water_price.minimum, 
+                          less_than_or_equal_to: Settings.validations.service_charge.water_price.maximum}
   validates :electricity_price, presence: true, allow_nil: false,
-            numericality: {greater_than_or_equal_to: Settings.validations.service_charge.electricity_price.minimum}
+            numericality: {greater_than_or_equal_to: Settings.validations.service_charge.electricity_price.minimum,
+                          less_than_or_equal_to: Settings.validations.service_charge.electricity_price.maximum}
   validates :total_price, presence: true, allow_nil: false,
-            numericality: {greater_than_or_equal_to: Settings.validations.service_charge.total_price.minimum}
+            numericality: {greater_than_or_equal_to: Settings.validations.service_charge.total_price.minimum,
+                          greater_than_or_equal_to: Settings.validations.service_charge.total_price.maximum}
   validates :status, presence: true, allow_nil: false
   validates :month, presence: true, allow_nil: false
   validates :year, presence: true, allow_nil: false

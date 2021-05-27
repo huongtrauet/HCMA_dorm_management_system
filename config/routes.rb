@@ -22,6 +22,7 @@ Rails.application.routes.draw do
     get "/service-management/filter", to: "service_management#filter"
     post "/service-management/remind", to: "service_management#remind"
     post "/service-management/import", to: "service_management#import"
+    delete "/service-management/delete", to: "service_management#delete"
 
 
     get "/post-management", to: "post_management#index"

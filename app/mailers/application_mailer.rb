@@ -1,4 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: 'localhost:3000'
+  default from: 'dormitory@hcma.com'
   layout 'mailer'
 end

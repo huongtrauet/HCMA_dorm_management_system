@@ -102,9 +102,9 @@
   <form id="add_room_form" class="ui form segment" name="add_room_form" style="border: none; -webkit-box-shadow: none; margin: 0 !important">
     <div class="content">
       <div class="description">
-        <div class="ui field" style="display: block; width: 85%; margin: 1rem auto;" id="room_name_field" onfocusout="checkDuplicate(this)">
-          <div class="ui left corner labeled input">
-            <input type="text" placeholder="Tên phòng" style="display:block; width: 100%" name="room_name">
+        <div class="field" style="display: block; width: 85%; margin: 1rem auto;" id="room_name_field" onfocusout="checkDuplicate(this)">
+          <div class="ui left corner labeled input" style="display: block;">
+            <input type="text" placeholder="Tên phòng" style="display:block; width: 100%" name="room_name" tabindex="-1">
             <div class="ui left corner label">
               <i class="asterisk icon"></i>
             </div>
@@ -112,7 +112,7 @@
         </div>
         <div class="ui field" style="display: block; width: 85%; margin: 1rem auto;">
           <div class="ui left corner labeled input">
-            <input type="text" placeholder="Số học viên tối đa" style="display:block; width: 100%" name="max_number_student">
+            <input type="text" placeholder="Số học viên tối đa" style="display:block; width: 100%" name="max_number_student" tabindex="-1">
             <div class="ui left corner label">
               <i class="asterisk icon"></i>
             </div>
@@ -120,11 +120,11 @@
         </div>
         <div class="ui field" style="display: block; width: 85%; margin: 1rem auto;">
           <div class="ui selection dropdown field" id="room_type_dropdown">
-            <input type="hidden" name="room_type" value="">
+            <input type="hidden" name="room_type" value="NORMAL" tabindex="-1">
             <i class="dropdown icon"></i>
-            <div class="default text">Loại phòng</div>
+            <div class="default text" style="color: black">Phòng thường</div>
             <div class="menu">
-              <div class="item" data-value="NORMAL" selected="">Phòng thường</div>
+              <div class="item" data-value="NORMAL" selected>Phòng thường</div>
               <div class="item" data-value="VIP">Phòng VIP</div>
             </div>
           </div>
@@ -182,15 +182,57 @@ if(window.localStorage.getItem('create_room')) {
 
   //VALIDATE CREATE ROOM
 
-   $('#add_room_form')
+  $('#add_room_form').off('submit').submit(async function(e){
+    e.preventDefault();
+    if($('#add_room_form').form('is valid')) {
+      if (await checkDuplicate() == true){
+        console.log("is valid")
+        addSubmit(e)
+      }
+    }
+  })
+
+    async function checkDuplicate(){
+    current_name = document.querySelectorAll('input[name=room_name]')[0].value
+    let result
+    await $.ajax({
+      type: "POST",
+      url: "/manager/room-management/checkduplicate",
+      data: {
+        "room_name": current_name
+      },
+      success: function(_result){
+        $('#room_name_field').removeClass('error');
+        $('#room_name_error').remove();
+        result = true
+      },
+      error: function (error) {
+        console.log(error)
+        if (error.responseJSON.is_duplicate == true) {
+          $('#room_name_field').find('.error').removeClass('error');
+          $('#room_name_field').addClass("error")
+          $('#room_name_error').remove();
+          $('#room_name_field').append(`<div class="ui basic red pointing prompt label transition visible" id="room_name_error">Tên phòng đã được tạo, vui lòng kiểm tra và đổi sang tên khác nhé!</div>`)
+          result = false
+        }
+      }
+    })
+    return result
+  }
+
+     $('#add_room_form')
     .form({
       fields: {
-        room_type: {
-          identifier: 'room_type',
+        room_name: {
+          identifier: 'room_name',
           rules: [
             {
               type: 'empty',
-              prompt: 'Vui lòng chọn loại phòng!!'
+              prompt: 'Vui lòng nhập tên phòng!!'
+            },
+            {
+               type: 'maxLength[100]',
+              prompt: 'Tên phòng tối đa 100 ký tự!' 
             }
           ]
         },
@@ -213,41 +255,6 @@ if(window.localStorage.getItem('create_room')) {
     })
   ;
 
-  async function checkDuplicate(){
-    current_name = document.querySelectorAll('input[name=room_name]')[0].value
-    let result
-    await $.ajax({
-      type: "POST",
-      url: "/manager/room-management/checkduplicate",
-      data: {
-        "room_name": current_name
-      },
-      success: function(_result){
-        $('#room_name_field').removeClass('error');
-        $('#room_name_error').remove();
-        result = true
-      },
-      error: function (error) {
-        console.log(error)
-        if (error.responseJSON.is_duplicate == true) {
-          $('#room_name_field').find('.error').removeClass('error');
-          $('#room_name_field').addClass("error")
-          $('#room_name_field').append(`<div class="ui basic red pointing prompt label transition visible" id="room_name_error">Tên phòng đã được tạo, vui lòng kiểm tra và đổi sang tên khác nhé!</div>`)
-          result = false
-        }
-      }
-    })
-    return result
-  }
-  $('#add_room_form').off('submit').submit(async function(e){
-    e.preventDefault();
-    if($('#add_room_form').form('is valid')) {
-      if (await checkDuplicate() == true){
-        console.log("is valid")
-        addSubmit(e)
-      }
-    }
-  })
 
   $('#room_type_dropdown').dropdown('set selected', "NORMAL");
 

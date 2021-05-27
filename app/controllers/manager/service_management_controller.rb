@@ -4,7 +4,7 @@ class Manager::ServiceManagementController < ManagerMainController
   before_action :logged_in_manager
 
   def index
-    @service_charges = ServiceCharge.all.order("year DESC").order("month DESC").order("created_at DESC").page(params[:page])
+    @service_charges = ServiceCharge.all.order("year DESC").order("month DESC").order("room_id ASC").page(params[:page])
     @rooms = Room.all.where("room_name != 'A1_0000'").select(:id, :room_name)
     @page = 1 if params[:page].blank?
     @page = params[:page].to_i if params[:page].present?
@@ -40,7 +40,7 @@ class Manager::ServiceManagementController < ManagerMainController
       end
     else
       respond_to do |format|
-        format.json {render message: "Cập nhật thất bại :(" , status: :bad_request}
+        format.json {render json: { message: "Cập nhật dữ liệu không thành công :(" } , status: :bad_request}
       end
     end
   end
@@ -59,7 +59,7 @@ class Manager::ServiceManagementController < ManagerMainController
       end
     else
       respond_to do |format|
-        format.json {render message: "update fail" , status: :bad_request}
+        format.json {render json: { message: "Cập nhật hoá đơn không thành công :(" } , status: :bad_request}
       end
     end
   end
@@ -122,6 +122,19 @@ class Manager::ServiceManagementController < ManagerMainController
     rescue Exception => e
       respond_to do |format|
         format.json {render json: { message: "Thêm dữ liệu không thành công :(" }, status: :bad_request} 
+      end
+    end
+  end
+
+  def delete
+    @service_charge = ServiceCharge.find(params[:id])
+    if @service_charge.destroy
+      respond_to do |format|
+        format.json {render json: { message: "Xoá hoá đơn thành công!" }, status: :ok} 
+      end
+    else
+      respond_to do |format|
+        format.json {render json: { message: "Xoá hoá đơn không thành công :(" }, status: :bad_request} 
       end
     end
   end

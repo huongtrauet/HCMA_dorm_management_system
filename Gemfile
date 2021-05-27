@@ -34,7 +34,7 @@ gem 'sassc', '~>2.4.0'
 gem 'ed25519'
 gem 'bcrypt_pbkdf'
 gem 'nokogiri', '~> 1.0'
-
+gem "mailgun-ruby"
 # gem "capistrano"
 # gem "capistrano3-puma"
 # gem "capistrano-rails", require: false

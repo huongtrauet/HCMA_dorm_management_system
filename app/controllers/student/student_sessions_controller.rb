@@ -33,9 +33,7 @@ class Student::StudentSessionsController < StudentMainController
   end
 
   def not_logged_in
-    location
     return if !logged_in_student?
-
-    redirect_back_or "/student"
+    redirect_back_or "/student/my-room"
   end
 end

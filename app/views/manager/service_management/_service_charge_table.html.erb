@@ -46,7 +46,10 @@
           <% end  %>
         </td>
         <td><%= charge.payer %></td>
-        <td class="view_more" onclick="showServiceChargeInfo(<%= charge.room_id %>, <%= charge.year %>, <%= charge.month %>, <%= charge.id %>, <%= index + 1%>)">Xem thêm</td>
+        <td>
+          <i class="eye icon view_more" onclick="showServiceChargeInfo(<%= charge.room_id %>, <%= charge.year %>, <%= charge.month %>, <%= charge.id %>, <%= index + 1%>)"></i>
+          <i class="trash alternate outline icon view_more" style="margin-left: 1rem" onclick="confirmDeleteBill( <%= charge.id %>)"></i>
+        </td>
         <% if is_check == false %>
           <td style="display: none" class="checkbox_col">
             <div class="ui checkbox">

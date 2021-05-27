@@ -27,7 +27,7 @@ class Manager::ManagerSessionsController < ManagerMainController
 
   def destroy
     log_out if logged_in?
-    flash[:success] = "Đã đăn xuất"
+    flash[:success] = "Đã đăng xuất"
     redirect_to manager_login_path
   end
 
@@ -40,6 +40,6 @@ class Manager::ManagerSessionsController < ManagerMainController
   def not_logged_in
     return if !logged_in_manager?
 
-    redirect_to "/manager"
+    redirect_to "/manager/"
   end
 end

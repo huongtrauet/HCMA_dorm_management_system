@@ -96,7 +96,7 @@
           <th>Tháng</th>
           <th>Năm</th>
           <th>Tiền điện</th>
-          <th>Tiến nước</th>
+          <th>Tiền nước</th>
           <th>Tổng tiền</th>
           <th>Trạng thái</th>
           <th>Người thanh toán</th>
@@ -127,8 +127,9 @@
               <% end  %>
             </td>
             <td class='payer'><%= charge.payer %></td>
-            <td class="view_more" onclick="showServiceChargeInfo(<%= charge.room_id %>, <%= charge.year %>, <%= charge.month %>, <%= charge.id %>, <%= index + 1%>)">
-              Xem thêm
+            <td>
+              <i class="eye icon view_more" onclick="showServiceChargeInfo(<%= charge.room_id %>, <%= charge.year %>, <%= charge.month %>, <%= charge.id %>, <%= index + 1%>)"></i>
+              <i class="trash alternate outline icon view_more" style="margin-left: 1rem" onclick="confirmDeleteBill( <%= charge.id %>)"></i>
             </td>
             <td style="display: none" class="checkbox_col">
               <div class="ui checkbox">
@@ -259,6 +260,18 @@
   </form>
 </div>
 
+<div class="ui mini modal confirm_delete_bill">
+  <div class="header">Xoá hoá đơn</div>
+  <div class="content">
+    <p>Bạn có chắc muốn xoá hóa đơn này không?</p>
+     <input type="hidden" id="selected_bill_id" value=""/>
+  </div>
+  <div class="actions">
+    <div class="ui cancel button">Huỷ</div>
+    <div class="ui appove button custom_btn" onclick="deleteBill()">Xoá</div>
+  </div>
+</div>
+
 <script>
 
   if (window.localStorage.getItem('imported')) {
@@ -266,10 +279,10 @@
     window.localStorage.removeItem('imported')
   }
   $('.ui.dropdown').dropdown();
-  // ô vuông chọn 1 bên phải
+  // ô chọn tất cả
   function selectItem(event) {
     if (event.checked == true) {
-      $('.remind_checkbox').prop('checked', true);
+      $('.remind_checkbox').prop('checked', true); //remind_checkbox có ở mỗi bản ghi, tích checked cho tất cả các bản ghi
       $('.remind .button').prop('disabled', false)
       $('.remind .button').addClass('hover');
     }
@@ -302,7 +315,7 @@
       }
     })
   }
-  
+  //chọn 1
   function onHandleCheckbox (event) {
     var checkboxes = $('input:checkbox:checked').length;
     if (event.checked == false) {
@@ -385,6 +398,7 @@
               $('#check_all').prop('checked', false);
               $('.remind .button').prop('disabled', true)
               $('.remind .button').removeClass('hover');
+              debugger
               resolve();
             },
             error: function (error) {
@@ -528,7 +542,9 @@
         }
         toastr.success(result.message)
       },
-      error: function (error) {}
+      error: function (error) {
+        toastr.error(error.responseJSON.message)
+      }
     })
   }
 
@@ -553,7 +569,7 @@
             },
             {
               type: 'integer[0..1000000000000]',
-              prompt: 'Tiền điện không được quá 1000000000000 vnd!!'
+              prompt: 'Tiền điện không được ít hơn 0 vnđ và không được quá 1000000000000 vnđ!!'
             }
           ]
         },
@@ -575,7 +591,7 @@
             },
             {
               type: 'integer[0..1000000000000]',
-              prompt: 'Tổng tiền hoá đơn không được quá 1000000000000 vnd!!'
+              prompt: 'Tổng tiền hoá đơn không được ít hơn 0 vnđ không được quá 1000000000000 vnđ!!'
             }
           ]
         },
@@ -588,7 +604,7 @@
             },
             {
               type: 'integer[0..1000000000000]',
-              prompt: 'Tiền nước không được quá 1000000000000 vnd!!'
+              prompt: 'Tiền nước không được ít hơn 0 vnđ không được quá 1000000000000 vnđ!!'
             }
           ]
         }
@@ -607,10 +623,39 @@
   function resetFilter(){
     window.location.reload();
   }
+
+  function confirmDeleteBill(bill_id){
+    $('#selected_bill_id').val(bill_id)
+    $(".ui.mini.modal.confirm_delete_bill").modal('show');
+  }
+
+  function deleteBill(){
+      let selected_bill_id = $("#selected_bill_id").val()
+      $(".ui.mini.modal.confirm_delete_bill").modal('hide');
+      $.ajax({
+        type:"DELETE",
+        url:"/manager/service-management/delete",
+        dataType:"json",
+        data: {id: selected_bill_id},
+        success:function(result){
+          // toastr.success(result.message)
+          window.localStorage.setItem('delete_bill', result.message)
+          window.location.reload();
+        },
+        error:function (error) {
+          toastr.error(error.responseJSON.message)
+        }
+      })
+  }
+  if(localStorage.getItem('delete_bill')) {
+      toastr.success(localStorage.getItem('delete_bill'))
+      localStorage.removeItem('delete_bill')
+    }
+
 </script>
 <style>
 .view_more:hover {
-  text-decoration: underline;
+  /* text-decoration: underline; */
   color: #f4810b;
 }
 .reset_button:hover {

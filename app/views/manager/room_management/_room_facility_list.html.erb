@@ -26,7 +26,8 @@
       <% @facilities.each_with_index do |f, index|%>
         <tr onclick="showFacilityInfo(<%= f.id %>)">
           <td style="text-align: center"><%= index + 1 %></td>
-          <td style="text-align: center"><%= f.name %></td>
+          <td style="text-align: center;">
+          <span style=" margin: 0 auto; word-wrap: break-word; max-width: 15rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box"><%= f.name %></td></td>
           <td style="text-align: center"><%= f.quantity %></td>
           <td style="text-align: center">
           <% if f.status == "NEW"  %>
@@ -37,7 +38,8 @@
             <a class="ui mini label" style=" background-color: #3889c8; color: #fff !important">Đang hỏng</a>
           <% end %>
           </td>
-          <td style="text-align: center"><%= f.detail %></td>
+          <td style="text-align: center;">
+            <span style="margin: 0 auto; word-wrap: break-word; max-width: 26rem; overflow: hidden; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box"><%= f.detail %></span></td>
         </tr>
       <% end %>
     </tbody>
@@ -410,7 +412,20 @@
             prompt: 'Tên thiết bị không được quá 100 ký tự!!'
           }
         ]
-      }
+      },
+      detail: {
+        identifier: 'detail',
+        rules: [
+          {
+            type: 'empty',
+            prompt: 'Vui lòng mô tả thiết bị!!'
+          },
+          {
+            type: 'maxLength[1000]',
+            prompt: 'Mô tả thiết bị không được quá 1000 ký tự!!'
+          }
+        ]
+      },
     },
     inline: true,
   });
@@ -428,6 +443,19 @@
           {
             type: 'maxLength[100]',
             prompt: 'Tên thiết bị không được quá 100 ký tự!!'
+          }
+        ]
+      },
+      detail: {
+        identifier: 'detail',
+        rules: [
+          {
+            type: 'empty',
+            prompt: 'Vui lòng mô tả thiết bị!!'
+          },
+          {
+            type: 'maxLength[1000]',
+            prompt: 'Mô tả thiết bị không được quá 1000 ký tự!!'
           }
         ]
       },

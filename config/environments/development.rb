@@ -60,14 +60,34 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
+  # config.action_mailer.default_url_options = {host: "localhost:3000"}
+  # config.action_mailer.perform_deliveries = true
+  # config.action_mailer.delivery_method = :mailgun
+  # config.action_mailer.mailgun_settings = {
+  #   api_key: 'c8b21d3b0cae1bc6a51f30626a045c1a-07e45e2a-4c33090b',
+  #   domain: 'https://api.mailgun.net/v3/sandboxfdd15f167c0548b193583a13310e1030.mailgun.org',
+  # }
+  # config.action_mailer.smtp_settings = {
+  #   user_name: 'postmaster@sandboxfdd15f167c0548b193583a13310e1030.mailgun.org',
+  #   password: 'ee834b409c59024957ca5a3bce19fca6-07e45e2a-80e630d2',
+  #   address: 'smtp.mailgun.org',
+  #   domain: 'smtp.mailgun.org',
+  #   port: '587',
+  #   authentication: :cram_md5,
+  #   enable_starttls_auto: true
+  # }
   config.action_mailer.delivery_method = :smtp
+  # host = 'localhost:3000' #replace with your own url
+  config.action_mailer.default_url_options = { :host => 'localhost:3000', protocol: 'http' }
+  
+  # SMTP settings for gmail
   config.action_mailer.smtp_settings = {
-    user_name: '352de8526c18a7',
-    password: '9b71e3f4df1398',
-    address: 'smtp.mailtrap.io',
-    domain: 'smtp.mailtrap.io',
-    port: '2525',
-    authentication: :cram_md5,
-    enable_starttls_auto: true
+    :address              => "smtp.gmail.com",
+    :port                 => 587,
+    :user_name            => "huongtranguyen2111@gmail.com",
+    :password             => "Hoidelamgi2111",
+    :authentication       => "plain",
+    :enable_starttls_auto => true
   }
+
 end

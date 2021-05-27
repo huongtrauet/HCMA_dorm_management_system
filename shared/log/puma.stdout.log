@@ -6,3 +6,21 @@
 [72684] === puma shutdown: 2021-05-02 16:46:41 +0700 ===
 [72684] - Goodbye!
 Exiting
+=== puma startup: 2021-05-21 22:18:35 +0700 ===
+[53880] * Starting control server on unix:///var/folders/t9/2z7cy2n91zv4vk4bhqj7csxw0000gn/T/puma-status-1621610315359-53880
+  [1m[35m (12.0ms)[0m  [1m[35mSET NAMES utf8mb4,  @@SESSION.sql_mode = CONCAT(CONCAT(@@sql_mode, ',STRICT_ALL_TABLES'), ',NO_AUTO_VALUE_ON_ZERO'),  @@SESSION.sql_auto_is_null = 0, @@SESSION.wait_timeout = 2147483[0m
+  ↳ config/puma.rb:27:in `block in _load_from'
+[53880] - Worker 0 (pid: 53903) booted, phase: 0
+[53880] - Gracefully shutting down workers...
+[53880] === puma shutdown: 2021-05-21 22:21:15 +0700 ===
+[53880] - Goodbye!
+Exiting
+=== puma startup: 2021-05-22 14:20:44 +0700 ===
+[3049] * Starting control server on unix:///var/folders/t9/2z7cy2n91zv4vk4bhqj7csxw0000gn/T/puma-status-1621668044104-3049
+  [1m[35m (3.4ms)[0m  [1m[35mSET NAMES utf8mb4,  @@SESSION.sql_mode = CONCAT(CONCAT(@@sql_mode, ',STRICT_ALL_TABLES'), ',NO_AUTO_VALUE_ON_ZERO'),  @@SESSION.sql_auto_is_null = 0, @@SESSION.wait_timeout = 2147483[0m
+  ↳ config/puma.rb:27:in `block in _load_from'
+[3049] - Worker 0 (pid: 3164) booted, phase: 0
+[3049] - Gracefully shutting down workers...
+[3049] === puma shutdown: 2021-05-22 14:22:42 +0700 ===
+[3049] - Goodbye!
+Exiting

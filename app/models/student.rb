@@ -62,6 +62,8 @@ class Student < ApplicationRecord
         @room.update(status: "UNFILLED")
       end
     end
+    length = self.name.split(" ").length
+    self.update(first_name: self.name.split(" ")[length - 1], last_name: self.name.split(" ")[0])
   end
 
   after_update do

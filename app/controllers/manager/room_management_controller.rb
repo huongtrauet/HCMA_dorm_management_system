@@ -5,7 +5,7 @@ class Manager::RoomManagementController < ManagerMainController
   
   # all room in room_management
   def index
-    @rooms = Room.where.not(id: 1).order('room_name DESC').page(params[:page])
+    @rooms = Room.where.not(id: 1).order('order_name ASC').page(params[:page])
     @page = 1 if params[:page].blank?
     @page = params[:page].to_i if params[:page].present?
   end
@@ -13,6 +13,8 @@ class Manager::RoomManagementController < ManagerMainController
   def update
     @room = Room.find(params[:id])
     if @room.update(update_room_params)
+      order = @room.room_name.split('_')[0][1..-1].concat(@room.room_name.split('_')[1])
+      @room.update_attribute(:order_name, order.to_i)
       respond_to do |format|
         format.json { render json: { message: "Cập nhật thành công!" }, status: :ok}
       end
@@ -25,7 +27,7 @@ class Manager::RoomManagementController < ManagerMainController
 
   def show_room_members
     @room = Room.find(params[:room_id])
-    @room_members = @room.students.order("name DESC")
+    @room_members = @room.students.order('first_name ASC').order('last_name ASC')
     location
   end
 
@@ -96,13 +98,13 @@ class Manager::RoomManagementController < ManagerMainController
 
   def find_room
     if params[:status] == "FULL" or params[:status] == "UNFILLED" or params[:status] == "PENDING"
-      @rooms = Room.all.where.not(id: 1).where(status: params[:status])
+      @rooms = Room.all.where.not(id: 1).where(status: params[:status]).order('order_name ASC')
       if params[:q] == "" or params[:q] == nil
         respond_to do |format|
           format.js {render partial: 'room_table', locals: { rooms: @rooms } } 
         end
       elsif params[:q] 
-        @rooms = @rooms.ransack(room_name_or_status_or_room_type_cont: params[:q]).result
+        @rooms = @rooms.ransack(room_name_or_status_or_room_type_cont: params[:q]).result.order('order_name ASC')
         if @rooms
           respond_to do |format|
             format.js {render partial: 'room_table', locals: { rooms: @rooms } } 
@@ -120,7 +122,7 @@ class Manager::RoomManagementController < ManagerMainController
           format.json {render json: {is_all: true}, status: :bad_request} 
         end
       elsif params[:q] 
-        @rooms = @rooms.ransack(room_name_or_status_or_room_type_cont: params[:q]).result
+        @rooms = @rooms.ransack(room_name_or_status_or_room_type_cont: params[:q]).result.order('order_name ASC')
         if @rooms
           respond_to do |format|
             format.js {render partial: 'room_table', locals: { rooms: @rooms } } 

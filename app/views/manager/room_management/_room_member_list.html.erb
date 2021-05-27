@@ -69,7 +69,7 @@
     <div class="ui grid">
       <div class="five wide column">
         <div class="" style="width: 15rem; margin: 0 auto;">
-          <img src="/assets/ava.jpg" id="ava_img" style="width: 15rem; height: 15rem; margin: 0 auto;">
+          <img src="/assets/profile.png" id="ava_img" style="width: 15rem; height: 15rem; margin: 0 auto;">
           <div class="sub-info ui grid" style="padding-top: 1rem">
             <div class="two wide column" style="padding-bottom: 0!important">
               <i class="icon address card outline"></i>
@@ -253,6 +253,7 @@
     let addForm = document.getElementById('add-form');
     let formData = new FormData(addForm);
       e.preventDefault();
+      console.log("okeeee")
       $.ajax({
         type: "POST",
         url: "/manager/student-management/create-member",
@@ -262,21 +263,56 @@
         mimeType: 'multipart/form-data',
         data: formData,
         success: function(result){
+          // debugger
+          console.log("okii nhen")
           window.localStorage.setItem('new_student', JSON.parse(result).message)
           window.location.reload()
         },
         error: function (error) {
+          // console.log("bug")
+          // debugger
           $('#add-form').form('reset');
           toastr.error(JSON.parse(error.responseText).message);
         }
       })
   }
 
-  $('#add-form').unbind('submit').submit(function(e){
+  $('#add-form').off('submit').submit(async function(e){
+    e.preventDefault();
     if($('#add-form').form('is valid')) {
-      addSubmit(e);
+      if (await checkDuplicate() == true){
+        console.log("is valid")
+        addSubmit(e)
+      }
     }
   })
+
+  async function checkDuplicate(){
+    student_id_number = document.querySelectorAll('input[name=create_student_id_number]')[0].value
+    let result
+    await $.ajax({
+      type: "POST",
+      url: "/manager/student-management/checkduplicate",
+      data: {
+        "student_id_number": student_id_number
+      },
+      success: function(_result){
+        console.log("not dup")
+        result = true
+      },
+      error: function (error) {
+        console.log(error)
+        if (error.responseJSON.is_duplicate == true) {
+          console.log("duplicate")
+          $('#student_id_number_field').find('.error').removeClass('error');
+          $('#student_id_number_field').addClass("error")
+          $('#student_id_number_field').append(`<div class="ui basic red pointing prompt label transition visible">Tài khoản này đã được tạo</div>`)
+          result = false
+        }
+      }
+    })
+    return result
+  }
 
   $('#add-form')
     .form({

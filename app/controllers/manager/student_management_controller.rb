@@ -4,7 +4,7 @@ class Manager::StudentManagementController < ManagerMainController
   before_action :logged_in_manager
 
   def index
-    @students = Student.all.order('created_at DESC').page(params[:page])
+    @students = Student.all.order('first_name ASC').order('last_name ASC').page(params[:page])
     @page = 1 if params[:page].blank?
     @page = params[:page].to_i if params[:page].present?
   end
@@ -15,7 +15,6 @@ class Manager::StudentManagementController < ManagerMainController
   end
 
   def create
-    # byebug
     if(student_create_params[:student_id_number_confirm] == student_create_params[:student_id_number])
       student_id_number = student_create_params[:student_id_number]
       new_params = student_create_params.merge(password: student_id_number, password_confirmation: student_id_number, channel: generate_channel).except(:student_id_number_confirm)
@@ -43,7 +42,7 @@ class Manager::StudentManagementController < ManagerMainController
       student_id_number = create_room_member_params[:create_student_id_number]
       new_params = create_room_member_params.merge(password: student_id_number, password_confirmation: student_id_number, student_id_number: student_id_number, channel: generate_channel).except(:create_student_id_number_confirm, :create_student_id_number)
       @student = Student.new(new_params.merge(status: 'ACTIVE'))
-      @student.student_profile = StudentProfile.new(email:"#{@student.student_id_number}@gmail.com", identity_card_number: @student.student_id_number, name: @student.name)
+      @student.student_profile = StudentProfile.new(email:"#{@student.student_id_number}@gmail.com", name: @student.name)
     else
       respond_to do |format|
         format.json { render json: { message: "Xin lỗi, tạo tài khoản học viên không thành công :(" }, status: :bad_request }
@@ -56,7 +55,7 @@ class Manager::StudentManagementController < ManagerMainController
       end
     else
       respond_to do |format|
-        format.json { render json: { message: "Xin lỗi, taok tài khoản học viên không thành công :(" }, status: :bad_request }
+        format.json { render json: { message: "Xin lỗi, tạo tài khoản học viên không thành công :(" }, status: :bad_request }
       end
     end
   end
@@ -79,6 +78,8 @@ class Manager::StudentManagementController < ManagerMainController
   def update
     @student = Student.find(params[:id])
     if @student.update(student_params.merge(name: params[:student][:student_profile_attributes][:name]))
+    length = @student.name.split(" ").length
+      @student.update(first_name: @student.name.split(" ")[length - 1], last_name: @student.name.split(" ")[0])
       if @student.room.id != 1 and @student.status != 'ACTIVE'
         @student.update_attribute(:status, 'ACTIVE')
       elsif @student.room.id == 1 and @student.status == 'ACTIVE'
@@ -111,7 +112,7 @@ class Manager::StudentManagementController < ManagerMainController
 
   def find_pending_student
     # @room_service_charges = ServiceCharge.where(room_id: params[:id]).order("year DESC").order("month DESC")
-    @pending_students = Student.where(status: "PENDING").order("name ASC")
+    @pending_students = Student.where(status: "PENDING").order('first_name ASC').order('last_name ASC')
     respond_to do |format|
       format.js {render partial: '/manager/students_arrangement/pending_student_list', locals: { pending_students: @pending_students } } 
     end
@@ -119,13 +120,13 @@ class Manager::StudentManagementController < ManagerMainController
 
   def search_student
     if params[:status] == "PENDING" or params[:status] == "ACTIVE"
-      @students = Student.all.where(status: params[:status]).order("name ASC")
+      @students = Student.all.where(status: params[:status]).order('first_name ASC').order('last_name ASC')
       if params[:q] == "" or params[:q] == nil or params[:q] == "undefined"
         respond_to do |format|
           format.js {render partial: 'student_table', locals: { students: @students, is_full: false } } 
         end
       elsif params[:q] 
-        @students = @students.ransack(name_or_student_id_number_or_status_cont: params[:q]).result.order("name ASC")
+        @students = @students.ransack(name_or_student_id_number_or_status_cont: params[:q]).result.order('first_name ASC').order('last_name ASC')
         if @students
           respond_to do |format|
             format.js {render partial: 'student_table', locals: { students: @students, is_full: false } } 
@@ -137,13 +138,13 @@ class Manager::StudentManagementController < ManagerMainController
         end
       end
     else
-      @students = Student.all.order("name ASC")
+      @students = Student.all.order('first_name ASC').order('last_name ASC')
       if params[:q] == "" or params[:q] == nil
         respond_to do |format|
           format.json {render json: {is_all: true}, status: :bad_request} 
         end
       elsif params[:q] 
-        @students = @students.ransack(name_or_student_id_number_or_status_cont: params[:q]).result.order("name ASC")
+        @students = @students.ransack(name_or_student_id_number_or_status_cont: params[:q]).result.order('first_name ASC').order('last_name ASC')
         if @students
           respond_to do |format|
             format.js {render partial: 'student_table', locals: { students: @students, is_full: false } } 
@@ -229,7 +230,7 @@ class Manager::StudentManagementController < ManagerMainController
   private
 
   def student_params
-    profile_params = params.require(:student).permit(:student_id_number, :check_in_date, :check_out_date, :room_id, :extended_time, student_profile_attributes: [:email, :class_name, :name, :date_of_birth, :identity_card_number, :address, :phone_number, :gender])
+    profile_params = params.require(:student).permit(:student_id_number, :check_in_date, :check_out_date, :room_id, :extended_time, student_profile_attributes: [:email, :class_name, :name, :date_of_birth, :identity_card_number, :address, :phone_number, :gender, :id])
       profile_params.require(:student_profile_attributes).merge!(class_name: nil) if profile_params[:student_profile_attributes][:class_name] == ""
       profile_params.require(:student_profile_attributes).merge!(date_of_birth: nil) if profile_params[:student_profile_attributes][:date_of_birth] == ""
       profile_params.require(:student_profile_attributes).merge!(identity_card_number: nil) if profile_params[:student_profile_attributes][:identity_card_number] == ""

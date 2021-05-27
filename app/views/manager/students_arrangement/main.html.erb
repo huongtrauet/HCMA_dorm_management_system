@@ -1,3 +1,4 @@
+<% provide :title, "Sắp xếp học viên"%>
 <div class="student_arrangement main container" style="position: fixed; width: 80%">
   <div class="students_arrangement main"
     style="height: calc(100vh - 58.72px); ">
@@ -58,11 +59,13 @@
         room_id: $("#room_id_input").val() // id ở partial _room_active
       },
       success: function(result){
-        if (result.room_id != result.room.id){
-          console.log()
+        if (result.room_id != result.room.id){ //check nếu cùng 1 phongf thì k có tbao
+          console.log(result.room_id)
+          console.log(result.room.id)
           document.querySelector('.room_member_list').appendChild(document.getElementById(data)); // thêm 1 thẻ hvien có id là data đã set trên
           document.querySelector(`#${data}`).classList.add("eight", "wide","column"); // thêm class vào cho đúng định dạng
           toastr.success("Thêm học viên vào phòng thành công!");
+          // update css
           $.ajax({
             type: "GET",
             url: `room-management/${result.room.id}/number-student`,
@@ -86,8 +89,11 @@
       },
       error: function(error){
         console.log(error)
-        if(error.status == 400)
+        //check nếu cùng 1 phòng thì k thay  đổi gì cả
+        if (error.responseJSON.room_id != error.responseJSON.room.id){ 
+          if(error.status == 400)
           toastr.error("Xin lỗi, phòng này đã đủ sinh viên!");
+        }
       }
     })
   }

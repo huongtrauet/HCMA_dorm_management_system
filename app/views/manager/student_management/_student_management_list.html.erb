@@ -341,7 +341,8 @@
           console.log("duplicate")
           $('#student_id_number_field').find('.error').removeClass('error');
           $('#student_id_number_field').addClass("error")
-          $('#student_id_number_field').append(`<div class="ui basic red pointing prompt label transition visible">Tài khoản này đã được tạo</div>`)
+          $('#student_id_number_error').remove();
+          $('#student_id_number_field').append(`<div class="ui basic red pointing prompt label transition visible" id="student_id_number_error">Tài khoản này đã được tạo</div>`)
           result = false
         }
       }

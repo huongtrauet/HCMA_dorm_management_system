@@ -24,7 +24,7 @@
                 <% current_user.notifications.order('created_at DESC').each do |notification| %>
                   <% if notification.is_read %>
                     <div class="item noti_item" style="width: 20rem; max-height: 9.5rem; overflow: hidden; display: block">
-                      <div onclick="readNotification(<%= notification.id %>, '<%= notification.noti_type %>', <%= notification.report_id || 0 %>, <%= notification.page || 0 %>)" style= "width: 17rem; line-height: 1.5rem;  white-space: pre-wrap;"><%= notification.message %></div>
+                      <div onclick="readNotification(<%= notification.id %>, '<%= notification.noti_type %>', <%= notification.report_id || 0 %>, <%= notification.page || 0 %>)" style= "width: 17rem; overflow: hidden;text-overflow: ellipsis;word-wrap: break-word;-webkit-line-clamp: 2;-webkit-box-orient: vertical;line-height: 2.25rem;  white-space: pre-wrap;"><%= notification.message %></div>
                       <p style="font-size: 0.7rem; color: #b8b8b8"><%= time_ago(notification.created_at) %></p>
                     </div>
                   <% else %>

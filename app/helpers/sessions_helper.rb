@@ -49,9 +49,9 @@ module SessionsHelper
 
   def remember(user)
     user.remember #tao remember digest luu vao db va remember token vao cookie
-    cookies.permanent.signed[:user_id] = user.id #luu vao cookie id da bi ma hoa qua ham signed, k con la id ban dau nua
-    cookies.permanent.signed[:role] = user.class.name
-    cookies.permanent.signed[:remember_token] = user.remember_token
+    cookies.signed[:user_id] = { :value => user.id, :expires => 240.hour.from_now} #luu vao cookie id da bi ma hoa qua ham signed, k con la id ban dau nua
+    cookies.signed[:role] = { :value => user.class.name, :expires => 240.hour.from_now}
+    cookies.signed[:remember_token] = { :value => user.remember_token, :expires => 240.hour.from_now}
   end
 
   def location

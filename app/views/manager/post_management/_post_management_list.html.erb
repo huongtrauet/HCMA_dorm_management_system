@@ -71,7 +71,7 @@
             </td>
           </tr>
           <%# modal xem %>
-          <div class="ui long small modal first scrolling" id="show_modal_first_<%= post.id %>">
+          <div class="ui long small modal scrolling" id="show_modal_first_<%= post.id %>">
             <div class="scrolling content" style="padding: 3rem">
               <div class="description">
                 <div class="ui header"><h2><%= post.title %></h2></div>
@@ -91,7 +91,7 @@
               <button class="ui cancel button">
                 Huỷ
               </button>
-              <div class="ui primary approve button proceed">
+              <div class="ui primary approve button proceed" onclick="editPost(<%= post.id %>)">
                 Chỉnh sửa
                 <i class="right chevron icon"></i>
               </div>
@@ -106,7 +106,7 @@
   </div>
 </div>
 <%# modal sửa %>
-<div class="ui longer small modal second scrolling" id="show_modal_second">
+<div class="ui longer small modal scrolling" id="show_modal_second">
   <div class="header">
     Sửa bài đăng
   </div>
@@ -173,7 +173,7 @@
         <button class="ui cancel button" onclick="cancelCreatePost()">
           Huỷ
         </button>
-        <div class="ui blue submit button">Tạo</div>
+        <div class="ui blue submit button" id="create_submit_button">Tạo</div>
       </div>
     </div>
   </form>
@@ -250,6 +250,7 @@ if(localStorage.getItem("update_post")) {
         }
       })
   }
+  let updateEditor, createEditor
 //CKEDITOR TẠO MỚI
   document.addEventListener("DOMContentLoaded", function(event) { 
     ClassicEditor
@@ -263,7 +264,9 @@ if(localStorage.getItem("update_post")) {
           ]
         }
       })
-      .then((editor) => {})
+      .then((editor) => {
+        createEditor = editor
+      })
       .catch( error => {
         console.error( error );
       })
@@ -279,7 +282,9 @@ if(localStorage.getItem("update_post")) {
           ]
         }
       })
-      .then((editor) => {})
+      .then((editor) => {
+        updateEditor = editor
+      })
       .catch( error => {
         console.error( error );
       })
@@ -288,12 +293,18 @@ if(localStorage.getItem("update_post")) {
   );
 //show post mở cả 2 modal và fill dữ liệu cả 2 modal
   function showPost(post_id) {
-    window.setTimeout(function() {
-      $('.dimmer').css('min-height', '100vh')
-    }, 1000)
+    // window.setTimeout(function() {
+    //   $('.dimmer').css('min-height', '100vh')
+    // }, 1000)
     $(`#show_modal_first_${post_id}`).modal('show');
-    $(`#show_modal_second`)
-    .modal('attach events', `#show_modal_first_${post_id} .button.proceed`);
+
+    // $(`#show_modal_second`)
+    // .modal('attach events', `#show_modal_first_${post_id} .button.proceed`);
+
+  }
+  function editPost(post_id) {
+    $(`#show_modal_first_${post_id}`).modal('hide');
+    $(`#show_modal_second`).modal('show')
     $.ajax({
       type: 'GET',
       url: `/manager/post-management/${post_id}`,
@@ -302,9 +313,8 @@ if(localStorage.getItem("update_post")) {
         $('#post_id_edit').val(null);
         $('#preview_image_edit').html(null);
         $('#post_title_edit').val(result.object.title);
-        $('#editor_edit').next().children().next().next().children().children().html(result.object.content);
-        console.log($('.ck-editor__editable').html())
-        console.log(result.object.content)
+        // document.querySelectorAll('.ck-content')[1].innerHTML = result.object.content;
+        updateEditor.setData(result.object.content)
         $('#post_id_edit').val(result.object.id);
         $('#writer_name_edit').val(result.object.writer_name);
         let images = result.object.images
@@ -319,7 +329,6 @@ if(localStorage.getItem("update_post")) {
         toastr.error('Show post failed!')
       }
     })
-  
   }
   
 
@@ -376,7 +385,7 @@ if(localStorage.getItem("update_post")) {
     }
     formdatapost.delete('images_input')
     formdatapost.delete('content')
-    post_content = $('#editor').next().children().next().next().children().html()
+    post_content = createEditor.getData()
     formdatapost.append('content', post_content)
 
     $.ajax({
@@ -398,18 +407,22 @@ if(localStorage.getItem("update_post")) {
   }
 
   function validateContent(field_id){
-    $('.ui.pointing.red.basic.label.validate.content ').remove();
-    x = document.querySelector("#ck_editor_create");
-    var post_content = x.innerHTML
-    console.log(post_content.length)
-    if (post_content.replace(/<[^>]*>/gi, '').length < 1) {
-      $(`#${field_id}`).append(`<div class="ui pointing red basic label validate content " style="color: #9f3a38!important; border-color: #e0b4b4!important">
-                                    Vui lòng nhập nội dung!!
-                                  </div>`)
-    }
+    // pass = true
+    // $('#validate_content').remove()
+    // $("#create_submit_button").removeClass("disabled");
+    // if (field_id == "content_field"){
+    //   if(createEditor.getData() == ""){
+    //     $(`#${field_id}`).append(`<div class="ui pointing red basic label validate content" id="validate_content" style="color: #9f3a38!important; border-color: #e0b4b4!important">
+    //                                 Vui lòng nhập nội dung!!
+    //                               </div>`)
+    //     $("#create_submit_button").addClass("disabled");
+    //     pass = false
+    //   }
+    // }
+    // return pass
   }
 
-  $('#myForm').off('submit').submit(function(e){
+  $('#myForm').off('submit').submit(async function(e){
     if($('#myForm').form('is valid')) {
       console.log('form work')
       createSubmit(e);
@@ -432,7 +445,7 @@ if(localStorage.getItem("update_post")) {
         post: {
           id: $('#post_id_edit').val(),
           title: $('#post_title_edit').val(),
-          content: $('#editor_edit').next().children().next().next().children().html(),
+          content: updateEditor.getData(),
           writer_name: $('#writer_name_edit').val()
         }
       },
@@ -499,6 +512,10 @@ if(localStorage.getItem("update_post")) {
             {
               type: 'empty',
               prompt: 'Vui lòng nhập tên người viết!!'
+            },
+            {
+              type: 'maxLength[100]',
+              prompt: 'Tên người viết không được quá 100 ký tự!'
             }
           ]
         }
@@ -510,19 +527,32 @@ if(localStorage.getItem("update_post")) {
   $('#myEditForm')
     .form({
     fields: {
-      title: {
-        identifier: 'title',
+      post_title_edit: {
+        identifier: 'post_title_edit',
         rules: [
           {
             type: 'empty',
             prompt: 'Vui lòng nhập tiêu đề!'
           },
           {
-            type: 'maxLength[300]',
-            prompt: 'Tiêu đề không quá 300 ký tự'
+            type: 'maxLength[200]',
+            prompt: 'Tiêu đề không quá 200 ký tự'
           }
         ]
-      }
+      },
+      writer_name_edit: {
+        identifier: 'writer_name_edit',
+        rules: [
+          {
+            type: 'empty',
+            prompt: 'Vui lòng nhập tên người viết!!'
+          },
+          {
+            type: 'maxLength[100]',
+            prompt: 'Tên người viết không được quá 100 ký tự!'
+          }
+        ]
+        }
     },
     inline: true,
     on: 'blur'

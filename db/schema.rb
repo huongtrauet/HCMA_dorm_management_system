@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_17_061223) do
+ActiveRecord::Schema.define(version: 2021_05_25_161220) do
 
   create_table "buildings", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
@@ -130,6 +130,7 @@ ActiveRecord::Schema.define(version: 2021_04_17_061223) do
     t.string "status", default: "PENDING"
     t.string "gender"
     t.bigint "building_id", null: false
+    t.integer "order_name"
     t.index ["building_id"], name: "index_rooms_on_building_id"
     t.index ["room_name"], name: "index_rooms_on_room_name", unique: true
   end
@@ -180,6 +181,8 @@ ActiveRecord::Schema.define(version: 2021_04_17_061223) do
     t.string "channel"
     t.string "reset_digest"
     t.datetime "reset_sent_at"
+    t.string "first_name"
+    t.string "last_name"
     t.index ["room_id"], name: "index_students_on_room_id"
     t.index ["student_id_number"], name: "index_students_on_student_id_number", unique: true
   end
