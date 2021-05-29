@@ -15,8 +15,7 @@ class StudentProfile < ApplicationRecord
   validates :phone_number, presence: true, allow_nil: true,
             format: {with: Settings.validations.student_profile.phone_number.regex}
   validates :class_name, presence: true, allow_nil: true,
-            length: {maximum: Settings.validations.student_profile.class_name.max_length,
-                    minimum: Settings.validations.student_profile.class_name.min_length}
+            length: {maximum: Settings.validations.student_profile.class_name.max_length}
   validates :address, presence: true, allow_nil: true,
             length: {maximum: Settings.validations.student_profile.address.max_length}
   validates :date_of_birth, presence: true, allow_nil: true

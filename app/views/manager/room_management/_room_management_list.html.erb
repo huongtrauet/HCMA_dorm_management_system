@@ -151,6 +151,8 @@ if(window.localStorage.getItem('create_room')) {
 
   function addRoom() {
     $('#add_room_form').form('reset');
+    // $("#add_room_form").find('.error').removeClass('error');
+    $("#add_room_form").find('.error').remove();
     $('.ui.mini.modal.add_room').modal('show');
   }
 

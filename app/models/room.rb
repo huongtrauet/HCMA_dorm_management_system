@@ -1,7 +1,7 @@
 class Room < ApplicationRecord
-  after_commit :update_floor, on: [:create]
-  after_commit :update_order_name, on: [:create]
-  after_commit :update_building, on: [:create, :update]
+  after_create :update_floor, :update_order_name, :update_building
+  # after_commit  on: [:create]
+  after_update :update_building
 
   has_many :service_charges, dependent: :destroy
   has_many :facilities, dependent: :destroy
@@ -16,13 +16,8 @@ class Room < ApplicationRecord
                                                           },
             length: {maximum: Settings.validations.room.room_name.max_length}
 
-  validates :number_student, presence: true, allow_nil: true,
-            numericality: {greater_than_or_equal_to: 0, only_integer: true, less_than_or_equal_to: 6
-                          }
-  validates :max_number_student, presence: true, allow_nil: false,
-            numericality: {greater_than_or_equal_to: 0, less_than_or_equal_to: 6,
-                          message: "Số học viên tối đa phải lớn hơn 0 và nhỏ hơn 6"
-            }
+  validates :number_student, presence: true, allow_nil: true
+  validates :max_number_student, presence: true, allow_nil: false
   validates :room_type, presence: true, allow_nil: false, inclusion: { in: ['NORMAL', 'VIP']}
   validates :status, presence: true, allow_nil: false, inclusion: { in: ['PENDING', 'UNFILLED','FULL']}
 

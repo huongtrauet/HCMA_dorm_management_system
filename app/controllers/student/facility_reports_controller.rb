@@ -39,7 +39,7 @@ class Student::FacilityReportsController < StudentMainController
       # page = ((last_index - index + 1).to_f / Settings.pagination).ceil
 
       index = FacilityReport.all.where(student_id: current_user.id).count
-      page = (FacilityReport.where(status: 'PENDING').count.to_f / Settings.pagination).ceil
+      page = (FacilityReport.all.count.to_f / Settings.pagination).ceil
       if current_user.class.name == "Student"
         Notification.create(message: "#{current_user.name} đã gửi 1 báo cáo về cơ sở vật chất.", sender: current_user, receiver: Manager.first, noti_type: "create_facility_report", report_id: @facility_report.id, page: page )
       end

@@ -64,7 +64,7 @@ class Manager::StudentsArrangementController < ManagerMainController
         end
       end
     elsif params[:q] == "" or params[:q] == nil
-      @rooms = Room.where.not(id: 1)
+      @rooms = Room.where.not(id: 1).order('order_name ASC')
       respond_to do |format|
         format.js {render partial: 'room_list_arrangement', locals: { rooms: @rooms, count: Post.all.count } } 
       end

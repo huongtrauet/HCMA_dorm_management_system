@@ -22,7 +22,11 @@
         <% else %>
           <td></td>
         <% end %>
-        <td><%= student.room.room_name %></td>
+        <% if student.room.id != 1 %>
+          <td><%= student.room.room_name %></td>
+        <% else %>
+          <td></td>
+        <% end %>
         <td><%= student.student_profile.class_name %></td>
         <% if student.check_in_date%>
           <td><%= student.check_in_date.to_date %></td>
@@ -43,7 +47,7 @@
       <div class="ui modal" id= "student_info_<%= student.id %>">
         <i class="close icon"></i>
         <div class="header">
-          Student profiles
+          Thông tin học viên
         </div>
         <div class="image content">
           <div class="ui grid">
@@ -77,13 +81,11 @@
                     </div>
                   <% else %>
                     <div class="fourteen wide column" style="padding-bottom: 0!important">
-                      KKK
                     </div>
                     <div class="two wide column">
                       <i class="icon envelope outline"></i>
                     </div>
                     <div class="fourteen wide column">
-                      email@gmail.com
                     </div>
                   <% end %>
                 </div>
@@ -92,32 +94,36 @@
             <div class="description eleven wide column">
               <div class="ui header" style="margin-bottom: 2rem;"><%= student.student_profile.name %></div>
               <div class="student-info ui grid">
-              <div class="three wide column"><b>Ngay sinh:</b></div>
+              <div class="four wide column"><b>Ngày sinh:</b></div>
               <% if student.student_profile.date_of_birth %>
-                <div class="thirteen wide column"><%= student.student_profile.date_of_birth.to_date %></div>
+                <div class="twelve wide column"><%= student.student_profile.date_of_birth.to_date %></div>
               <% else %>
-                <div class="thirteen wide column"></div>
+                <div class="twelve wide column"></div>
               <% end %>
-              <div class="three wide column"><b>Gioi tinh:</b></div>
-              <div class="thirteen wide column"><%= student.student_profile.gender %></div>
-              <div class="three wide column"><b>Que quan:</b></div>
-              <div class="thirteen wide column"><%= student.student_profile.address %></div>
-              <div class="three wide column"><b>SDT:</b></div>
-              <div class="thirteen wide column"><%= student.student_profile.phone_number %></div>
-              <div class="three wide column"><b>So CMND:</b></div>
-              <div class="thirteen wide column"><%= student.student_profile.identity_card_number %></div>
-              <div class="three wide column"><b>Ngay dang ky:</b></div>
-              <div class="thirteen wide column"><%= student.created_at.to_date %></div>
-              <div class="three wide column"><b>Ngay vao:</b></div>
+              <div class="four wide column"><b>Giới tính:</b></div>
+              <div class="twelve wide column"><%= student.student_profile.gender %></div>
+              <div class="four wide column"><b>Quê quán:</b></div>
+              <div class="twelve wide column"><%= student.student_profile.address %></div>
+              <div class="four wide column"><b>Số điện thoại:</b></div>
+              <div class="twelve wide column"><%= student.student_profile.phone_number %></div>
+              <div class="four wide column"><b>Số CMND:</b></div>
+              <div class="twelve wide column"><%= student.student_profile.identity_card_number %></div>
+              <div class="four wide column"><b>Ngày đăng ký:</b></div>
+              <div class="twelve wide column"><%= student.created_at.to_date %></div>
+              <div class="four wide column"><b>Ngày vào:</b></div>
               <% if student.check_in_date %>
-                <div class="thirteen wide column"><%= student.check_in_date.to_date %></div>
+                <div class="twelve wide column"><%= student.check_in_date.to_date %></div>
               <% else %>
-                <div class="thirteen wide column"></div>
+                <div class="twelve wide column"></div>
               <% end %>
-              <div class="three wide column"><b>Thoi gian gia han:</b></div>
-              <div class="thirteen wide column"><%= student.extended_time %></div>
-              <div class="three wide column"><b>Trang thai:</b></div>
-              <div class="thirteen wide column"><%= student.status %></div>
+              <div class="four wide column"><b>Thời gian gia hạn:</b></div>
+              <div class="twelve wide column"><%= student.extended_time %> Tháng</div>
+              <div class="four wide column"><b>Trạng thái:</b></div>
+              <% if student.status == "PENDING"  %>
+                <div class="twelve wide column">Đang xử lý</div>
+              <% elsif student.status == "ACTIVE" %>
+                <div class="twelve wide column">Đã kích hoạt</div>
+              <% end %>
               </div>
             </div>
           </div>
@@ -136,25 +142,23 @@
 
         </div>
       </div>
-      <div class="ui basic modal confirm-delete" id="confirm-delete-<%= student.id %>">
-        <div class="ui icon header">
+      <div class="ui mini modal" id="confirm-delete-<%= student.id %>">
+        <div class="ui icon header" style="border: none !important">
           <i class="archive icon"></i>
-          Remove student
+          Xoá tài khoản học viên
         </div>
         <div class="content">
-          <p>Do you want to remove this student?</p>
+          <p>Bạn có chắc muốn xoá tài khoản học viên?</p>
         </div>
-        <div class="actions">
-          <div class="ui red basic cancel inverted button">
+        <div class="actions" style="display: flex; justify-content: center">
+          <div class="ui negative button">
             <i class="remove icon"></i>
-            No
+            Huỷ
           </div>
-          <%= link_to "/manager/student-management/#{student.id}/delete", method: :delete do %>
-            <div class="ui green ok inverted button">
-              <i class="checkmark icon"></i>
-              Yes
-            </div>
-          <% end %>
+          <div class="ui positive right labeled icon button custom_btn" onclick="confirmRemove(<%= student.id %>)">
+            <i class="checkmark icon"></i>
+            Xoá
+          </div>
         </div>
       </div>
     <% end %>

@@ -4,13 +4,13 @@
       <%= link_to manager_homepage_path, class: "item", id: "manager_home_path", data: { turbolinks: false } do %>
         <img src="/assets/custom_logo2.png" style="width: 14rem"/>
       <% end %>
-      <%= link_to "Bài đăng", manager_post_management_path, class: "item", id: "manager_post_management_path", data: { turbolinks: false } %>
-      <%= link_to "Sắp xếp học viên", manager_students_arrangement_path, class: "item", id: "manager_students_arrangement_path", data: { turbolinks: false } %>
-      <%= link_to "Học viên", manager_student_management_path, class: "item", id: "manager_student_management_path", data: { turbolinks: false } %>
-      <%= link_to "Phòng", manager_room_management_path, class: "item", id: "manager_room_management_path", data: { turbolinks: false } %>
-      <%= link_to "Dịch vụ", manager_service_management_path, class: "item", id: "manager_service_management_path", data: { turbolinks: false } %>
-      <%= link_to "Báo cáo", manager_report_management_path, class: "item", id: "manager_report_management_path", data: { turbolinks: false } %>
-      <%= link_to "Toà nhà", manager_building_management_path, class: "item", id: "manager_building_management_path", data: { turbolinks: false } %>
+      <%= link_to "Bài đăng", manager_post_management_path, class: "item header_item", id: "manager_post_management_path", data: { turbolinks: false } %>
+      <%= link_to "Sắp xếp học viên", manager_students_arrangement_path, class: "item header_item", id: "manager_students_arrangement_path", data: { turbolinks: false } %>
+      <%= link_to "Học viên", manager_student_management_path, class: "item header_item", id: "manager_student_management_path", data: { turbolinks: false } %>
+      <%= link_to "Phòng", manager_room_management_path, class: "item header_item", id: "manager_room_management_path", data: { turbolinks: false } %>
+      <%= link_to "Dịch vụ", manager_service_management_path, class: "item header_item", id: "manager_service_management_path", data: { turbolinks: false } %>
+      <%= link_to "Báo cáo", manager_report_management_path, class: "item header_item", id: "manager_report_management_path", data: { turbolinks: false } %>
+      <%= link_to "Toà nhà", manager_building_management_path, class: "item header_item", id: "manager_building_management_path", data: { turbolinks: false } %>
     <% end %>
     <div class="right menu">
       <% if logged_in_manager? %>
@@ -193,5 +193,8 @@
 }
 .noti_item:hover {
   background-color: #e8e8e8 !important;
+}
+.header_item:hover {
+  cursor: pointer;
 }
 </style>

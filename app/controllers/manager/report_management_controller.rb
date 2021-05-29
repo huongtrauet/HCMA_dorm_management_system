@@ -9,13 +9,6 @@ class Manager::ReportManagementController < ManagerMainController
     @complaint_reports = ComplaintReport.where(status: "PENDING").order("created_at DESC").page(params[:page])
   end
 
-  # def find_complaint_report_by_status
-  #   @complaint_reports = ComplaintReport.where(status: params[:status]).page(params[:page])
-  #   respond_to do |format|
-  #     format.js {render partial: 'report_table', locals: { reports: @complaint_reports } } 
-  #   end
-  # end
-  # thông tin chi tiết 1 complaint
   def show_complaint_report
     @complaint_report = ComplaintReport.find(params[:id])
     @student = @complaint_report.student
@@ -56,7 +49,8 @@ class Manager::ReportManagementController < ManagerMainController
       page = ((last_index - index + 1).to_f / Settings.report_pagination).ceil 
       @pending_reports = ComplaintReport.where(status: "PENDING")
       respond_to do |format|
-        format.js {render partial: 'report_table', locals: { reports: @pending_reports } } 
+        # format.js {render partial: 'report_table', locals: { reports: @pending_reports } } 
+        format.json { render json: {message: "Xử lý báo cáo thành công"}, status: :ok}
       end
       if current_user.class.name == "Manager"
         Notification.create(message: "Xin lỗi, báo cáo của bạn đã bị từ chối :(", sender: current_user, receiver: receiver_student, noti_type: "complaint_report", report_id: @complaint_report.id, page: page )
@@ -78,7 +72,8 @@ class Manager::ReportManagementController < ManagerMainController
       index = @complaint_report.index
       page = ((last_index - index + 1).to_f / Settings.report_pagination).ceil
       respond_to do |format|
-        format.js {render partial: 'report_table', locals: { reports: @pending_reports } } 
+        # format.js {render partial: 'report_table', locals: { reports: @pending_reports } } 
+        format.json { render json: {message: "Xử lý báo cáo thành công"}, status: :ok}
       end
       if current_user.class.name == "Manager"
         Notification.create(message: "Báo cáo của bạn đã được thông qua.", sender: current_user, receiver: receiver_student, noti_type: "complaint_report", report_id: @complaint_report.id, page: page)
@@ -135,7 +130,8 @@ class Manager::ReportManagementController < ManagerMainController
       page = ((last_index - index + 1).to_f / Settings.report_pagination).ceil
       @pending_reports = FacilityReport.where(status: "PENDING")
       respond_to do |format|
-        format.js {render partial: 'report_table', locals: { reports: @pending_reports } } 
+        # format.js {render partial: 'report_table', locals: { reports: @pending_reports } } 
+        format.json { render json: {message: "Xử lý báo cáo thành công"}, status: :ok}
       end
       if current_user.class.name == "Manager"
         Notification.create(message: "Xin lỗi, báo cáo của bạn đã bị từ chối :(", sender: current_user, receiver: receiver_student, noti_type: "facility_report", report_id: @facility_report.id, page: page )
@@ -158,7 +154,8 @@ class Manager::ReportManagementController < ManagerMainController
       page = ((last_index - index + 1).to_f / Settings.report_pagination).ceil
       @pending_reports = FacilityReport.where(status: "PENDING")
       respond_to do |format|
-        format.js {render partial: 'report_table', locals: { reports: @pending_reports } } 
+        # format.js {render partial: 'report_table', locals: { reports: @pending_reports } } 
+        format.json { render json: {message: "Xử lý báo cáo thành công"}, status: :ok}
       end
       if current_user.class.name == "Manager"
         Notification.create(message: "Báo cáo của bạn đã được thông qua!", sender: current_user, receiver: receiver_student, noti_type: "facility_report", report_id: @facility_report.id, page: page )
@@ -217,7 +214,8 @@ class Manager::ReportManagementController < ManagerMainController
       page = ((last_index - index + 1).to_f / Settings.report_pagination).ceil
       @pending_requests = FormRequest.where(status: "PENDING")
       respond_to do |format|
-        format.js {render partial: 'form_request_table', locals: { requests: @pending_requests } } 
+        # format.js {render partial: 'form_request_table', locals: { requests: @pending_requests } } 
+        format.json { render json: {message: "Xử lý báo cáo thành công"}, status: :ok}
       end
       if current_user.class.name == "Manager"
         Notification.create(message: "Xin lỗi, yêu cầu của bạn đã bị từ chối :(", sender: current_user, receiver: receiver_student, noti_type: "form_request", report_id: @form_request.id, page: page)
@@ -243,7 +241,8 @@ class Manager::ReportManagementController < ManagerMainController
       page = ((last_index - index + 1).to_f / Settings.report_pagination).ceil
       @form_requests = FormRequest.where(status: "PENDING")
       respond_to do |format|
-        format.js {render partial: 'form_request_table', locals: { requests: @form_requests } } 
+        # format.js {render partial: 'form_request_table', locals: { requests: @form_requests } } 
+        format.json { render json: {message: "Xử lý báo cáo thành công"}, status: :ok}
       end
       if current_user.class.name == "Manager"
         Notification.create(message: "Yêu cầu của bạn đã được thông qua!", sender: current_user, receiver: receiver_student, noti_type: "form_request", report_id: @form_request.id, page: page )

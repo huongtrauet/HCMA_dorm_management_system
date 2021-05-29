@@ -69,40 +69,46 @@
       <div class="description eleven wide column">
         <div class="ui header" style="margin-bottom: 2rem;"><%= student.student_profile.name %></div>
         <div class="student-info ui grid">
-        <div class="three wide column"><b>Ngay sinh:</b></div>
+        <div class="three wide column"><b>Ngày sinh:</b></div>
         <% if student.student_profile.date_of_birth %>
           <div class="thirteen wide column"><%= student.student_profile.date_of_birth.to_date %></div>
         <% else %>
           <div class="thirteen wide column"></div>
         <% end %>
-        <div class="three wide column"><b>Gioi tinh:</b></div>
+        <div class="three wide column"><b>Giới tính:</b></div>
         <div class="thirteen wide column"><%= student.student_profile.gender %></div>
-        <div class="three wide column"><b>Que quan:</b></div>
+        <div class="three wide column"><b>Quê quán:</b></div>
         <div class="thirteen wide column"><%= student.student_profile.address %></div>
-        <div class="three wide column"><b>SDT:</b></div>
+        <div class="three wide column"><b>Số điện thoại:</b></div>
         <div class="thirteen wide column"><%= student.student_profile.phone_number %></div>
-        <div class="three wide column"><b>So CMND:</b></div>
+        <div class="three wide column"><b>Số CMND:</b></div>
         <div class="thirteen wide column"><%= student.student_profile.identity_card_number %></div>
-        <div class="three wide column"><b>Ngay dang ky:</b></div>
+        <div class="three wide column"><b>Ngày đăng ký:</b></div>
         <div class="thirteen wide column"><%= student.created_at %></div>
-        <div class="three wide column"><b>Ngay vao:</b></div>
+        <div class="three wide column"><b>Ngày vào:</b></div>
         <% if student.check_in_date %>
           <div class="thirteen wide column"><%= student.check_in_date.to_date %></div>
         <% else %>
           <div class="thirteen wide column"></div>
         <% end %>
-        <div class="three wide column"><b>Thoi gian gia han:</b></div>
+        <div class="three wide column"><b>Thời gian gia hạn:</b></div>
         <div class="thirteen wide column"><%= student.extended_time %></div>
+        <div class="four wide column"><b>Trạng thái:</b></div>
+        <% if student.status == "PENDING"  %>
+          <div class="twelve wide column">Đang xử lý</div>
+        <% elsif student.status == "ACTIVE" %>
+          <div class="twelve wide column">Đã kích hoạt</div>
+        <% end %>
         </div>
       </div>
     </div>
   </div>
   <div class="actions" style="padding: 0.7rem 1rem;">
     <div class="ui black deny button">
-      Cancel
+      Huỷ
     </div>
     <a href="http://localhost:3000/manager/student-management/<%= student.id%>" class="ui positive right labeled icon button">
-      Edit
+      Cập nhật
       <i class="arrow right icon"></i>
     </a>
   </div>

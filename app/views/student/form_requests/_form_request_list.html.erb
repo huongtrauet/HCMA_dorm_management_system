@@ -52,10 +52,11 @@
         <span class="">
           <div class="ui scrolling dropdown">
             <input type="hidden" id="form_type" value="Thẻ ra vào">
-            <div class="default text">Thẻ ra vào</div>
+            <div class="default text">Chọn loại giấy tờ</div>
             <div class="menu">
-              <div class="item active selected">Giấy tạm trú tạm vắng</div>
-              <div class="item">Giấy chứng nhận nối trú tại ký túc xá Học viện</div>
+              <div class="item">Thẻ ra vào</div>
+              <div class="item">Giấy tạm trú tạm vắng</div>
+              <div class="item">Giấy chứng nhận nội trú tại ký túc xá Học viện</div>
             </div>
           </div>
         </span>
@@ -113,12 +114,12 @@
         let date = new Date(result.form_request.created_at)
         // console.log(result.form_request)
         let return_date = new Date(result.form_request.return_date)
-        $('#created_date').html(`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`)
+        $('#created_date').html(`${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`)
         $('#request_form_type_show').html(result.form_request.form_type);
         $('#request_description_show').html(result.form_request.description)
         $('#request_note_show').html(result.form_request.note)
         if(result.form_request.return_date != null){
-          $('#return_date_show').html(`${return_date.getDate()}/${return_date.getMonth() + 1}/${return_date.getFullYear()}`)
+          $('#return_date_show').html(`${return_date.getDate()}-${return_date.getMonth() + 1}-${return_date.getFullYear()}`)
         }
       },
       error: function(error){

@@ -36,12 +36,12 @@
                   <input type="hidden" name="student_id" id="student_id" value="<%= @student.id %>"/>
                   <div class="required field field_line">
                     <%= student.label :mã_học_viên %>
-                    <%= student.text_field :student_id_number, class: "input", id: "student_id_number_field", required: true, placeholder: "Student it number" %>
+                    <%= student.text_field :student_id_number, class: "input", id: "student_id_number_field", placeholder: "Mã học viên" %>
                   </div>
                   <div class="field field_line">
                     <label>Phòng</label>
                     <div class="ui fluid search selection dropdown" id="select_room">
-                      <%= student.text_field :room_id, placeholder: "Select room", type: "hidden" %>
+                      <%= student.text_field :room_id, placeholder: "Chọn phòng", type: "hidden" %>
                       <i class="dropdown icon"></i>
                       <div class="default text">Select room</div>
                       <div class="menu">
@@ -55,7 +55,7 @@
                 <%= student.fields_for :student_profile do |f| %>
                   <div class="required field field_line">
                     <%= f.label :tên %>
-                    <%= f.text_field :name, class: "input", required: true, placeholder: "Full name" %>
+                    <%= f.text_field :name, class: "input", placeholder: "Họ và tên" %>
                   </div>
                   <%= f.hidden_field :id, class: "input"%>
                   <div class="field field_line">
@@ -64,7 +64,7 @@
                         <label>Lớp</label>
                         <%= f.text_field :class_name, class: "input", placeholder: "Lớp" %>
                       </div>
-                      <div class="field">
+                      <div class="field required">
                         <label>Email</label>
                         <%= f.text_field :email, class: "input", placeholder: "Email" %>
                       </div>
@@ -289,6 +289,32 @@
             {
               type: 'integer',
               prompt: 'Số điên thoại chỉ chứa kí tự số!'
+            }
+          ]
+        },
+        'student[student_profile_attributes][class_name]': {
+          identifier: 'student[student_profile_attributes][class_name]',
+          rules: [
+            {
+              type: 'maxLength[20]',
+              prompt: 'Tên lớp học tối đa 20 ký tự!'
+            }
+          ]
+        },
+        'student[student_profile_attributes][email]': {
+          identifier: 'student[student_profile_attributes][email]',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Vui lòng nhập email!'
+            },
+            {
+              type: 'email',
+              prompt: 'Email không đúng định dạng!!'
+            },
+            {
+              type: 'maxLength[225]',
+              prompt: 'Email tối đa 225 ký tự!'
             }
           ]
         },

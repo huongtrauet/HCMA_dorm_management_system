@@ -108,7 +108,7 @@
       },
       success: function(result){
         let date = new Date(result.facility_report.created_at)
-        $('#created_date').html(`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`)
+        $('#created_date').html(`${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`)
         $('#report_title_show').html(result.facility_report.title)
         $('#report_description_show').html(result.facility_report.description)
         $('#report_note_show').html(result.facility_report.reject_reason)

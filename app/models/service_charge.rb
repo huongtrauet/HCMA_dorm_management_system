@@ -8,7 +8,7 @@ class ServiceCharge < ApplicationRecord
                           less_than_or_equal_to: Settings.validations.service_charge.electricity_price.maximum}
   validates :total_price, presence: true, allow_nil: false,
             numericality: {greater_than_or_equal_to: Settings.validations.service_charge.total_price.minimum,
-                          greater_than_or_equal_to: Settings.validations.service_charge.total_price.maximum}
+                          less_than_or_equal_to: Settings.validations.service_charge.total_price.maximum}
   validates :status, presence: true, allow_nil: false
   validates :month, presence: true, allow_nil: false
   validates :year, presence: true, allow_nil: false

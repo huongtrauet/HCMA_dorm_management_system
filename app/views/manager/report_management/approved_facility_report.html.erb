@@ -127,7 +127,7 @@
         $('#description_show').html(result.facility_report.description)
         $('#report_id_show').val(result.facility_report.id)
         $('#report_id_reject').val(result.facility_report.id)
-        $('#created_at_show').html(`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`)
+        $('#created_at_show').html(`${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`)
         $('#note_show').html(result.facility_report.note)
         $('#report_building').html(`Toà nhà ${result.building}/${result.room}`)
          $('#reporter_name').html(result.reporter.name)

@@ -59,6 +59,7 @@
         room_id: $("#room_id_input").val() // id ở partial _room_active
       },
       success: function(result){
+        // debugger
         if (result.room_id != result.room.id){ //check nếu cùng 1 phongf thì k có tbao
           console.log(result.room_id)
           console.log(result.room.id)
@@ -73,7 +74,7 @@
               $('#room_current_member').html(result.room.number_student + "/" + result.room.max_number_student)
               $(`#room_member_card_${result.room.id}`).html(result.room.number_student + "/" + result.room.max_number_student)
               if (result.room.status == "PENDING") {
-                  $(`#room_status_card_${result.room.id}`).html('Đang bỏ trống')
+                $(`#room_status_card_${result.room.id}`).html('Đang bỏ trống')
               } else if (result.room.status == "UNFILLED"){
                 $(`#room_status_card_${result.room.id}`).html('Đang còn chỗ')
               }
@@ -118,11 +119,11 @@
             toastr.success("Di chuyển học viên thành công!");
             $('#room_current_member').html(result.room.number_student + "/" + result.room.max_number_student)
             $(`#room_member_card_${result.room.id}`).html(result.room.number_student + "/" + result.room.max_number_student)
-            if (result.room.status == "PENDING") {
+              if (result.room.status == "PENDING") {
                 $(`#room_status_card_${result.room.id}`).html('Đang bỏ trống')
-            } else if (result.room.status == "UNFILLED"){
-              $(`#room_status_card_${result.room.id}`).html('Đang còn chỗ')
-            }
+              } else if (result.room.status == "UNFILLED"){
+                $(`#room_status_card_${result.room.id}`).html('Đang còn chỗ')
+              }
             else{
               $(`#room_status_card_${result.room.id}`).html('Đã đầy')
             }
@@ -132,13 +133,11 @@
 
           }
         })
-
       },
       error: function(result){
         console.log(result.message)
       }
     })
-
   }
   //show tất cả các room ban đầu( sd hàm seaarch khi ô search k có gì)
   // student_arrangement_controller # search_rooms_arrangement
@@ -149,7 +148,6 @@
     success: function(result){
       $('#room_list_arrangement').html(result)
     }
-
   })
 //hiển thị danh sách student ban đầu. 
 //student_management_controller # find_pending_student
@@ -182,20 +180,20 @@
   // partial student_arrangement/room_list_arrangement
 
 $(document).on("turbolinks:load", function() {
-    $(".search-room-form").on("keyup", function() {
-      $.ajax({
-        type: "GET",
-        url: "/manager/students-arrangement/all-rooms-arrangement?q=" + this.value,
-        success: function(result){
-          $('#room_list_arrangement').html(result) 
-          console.log('success' + result)
-        },
-        error: function (error){
-          console.log('error', error)
-        }
-      })
-    });
+  $(".search-room-form").on("keyup", function() {
+    $.ajax({
+      type: "GET",
+      url: "/manager/students-arrangement/all-rooms-arrangement?q=" + this.value,
+      success: function(result){
+        $('#room_list_arrangement').html(result) 
+        console.log('success' + result)
+      },
+      error: function (error){
+        console.log('error', error)
+      }
+    })
   });
+});
 
 // SEARCH STUDENT
 // controller "students_arrangement#search_pending_students_arrangement"
@@ -203,8 +201,6 @@ $(document).on("turbolinks:load", function() {
 
   $(document).on("turbolinks:load", function() {
     $(".search-student-form").on("keyup", function() {
-      // $(".students").html("");
-      // $('#pending_students_list').html("")
       $.ajax({
         type: "GET",
         url: "/manager/students-arrangement/all-pending-students-arrangement?q=" + this.value,

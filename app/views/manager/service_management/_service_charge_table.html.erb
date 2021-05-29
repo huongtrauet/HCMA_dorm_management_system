@@ -31,21 +31,21 @@
   <tbody>
     <% service_charges.each_with_index do |charge, index| %>
       <tr id="tr_service_charge_<%= charge.id %>">
-        <td><%= index + 1 %></td>
-        <td><%= charge.room.room_name %></td>
-        <td><%= charge.month %></td>
-        <td><%= charge.year %></td>
-        <td><%= charge.electricity_price %></td>
-        <td><%= charge.water_price %></td>
-        <td><%= charge.total_price %></td>
-        <td>
+        <td class='index'><%= index + 1 %></td>
+        <td class='room_name'><%= charge.room.room_name %></td>
+        <td class='month'><%= charge.month %></td>
+        <td class='year'><%= charge.year %></td>
+        <td class='electricity_price'><%= charge.electricity_price %></td>
+        <td class='water_price'><%= charge.water_price %></td>
+        <td class='total_price'><%= charge.total_price %></td>
+        <td class='status'>
           <% if charge.status == "PAID" %>
             <a class="ui teal tag label">Đã thanh toán</a>
           <% elsif charge.status == "UNPAID" %>
             <a class="ui red tag label">Chưa thanh toán</a>
           <% end  %>
         </td>
-        <td><%= charge.payer %></td>
+        <td class='payer'><%= charge.payer %></td>
         <td>
           <i class="eye icon view_more" onclick="showServiceChargeInfo(<%= charge.room_id %>, <%= charge.year %>, <%= charge.month %>, <%= charge.id %>, <%= index + 1%>)"></i>
           <i class="trash alternate outline icon view_more" style="margin-left: 1rem" onclick="confirmDeleteBill( <%= charge.id %>)"></i>

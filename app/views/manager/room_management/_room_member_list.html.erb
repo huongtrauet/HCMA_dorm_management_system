@@ -75,44 +75,41 @@
               <i class="icon address card outline"></i>
             </div>
             <div class="fourteen wide column" style="padding-bottom: 0!important" id="student_id_number">
-              17021070
             </div>
             <div class="two wide column" style="padding-bottom: 0!important">
               <i class="icon check square outline"></i>
             </div>
             <div class="fourteen wide column" style="padding-bottom: 0!important" id="class_name">
-              K62J
             </div>
             <div class="two wide column">
               <i class="icon envelope outline"></i>
             </div>
             <div class="fourteen wide column" id="email">
-              huongtra@gmail.com
             </div>
           </div>
         </div>
       </div>
       <div class="description eleven wide column">
-        <div class="ui header" style="margin-bottom: 2rem;" id="name">Nguyen Thi Huong Tra</div>
+        <div class="ui header" style="margin-bottom: 2rem;" id="name"></div>
         <div class="student-info ui grid">
           <div class="three wide column"><b>Ngày sinh</b>:</b></div>
-          <div class="thirteen wide column" id="birthday">21/11/1999</div>
+          <div class="thirteen wide column" id="birthday"></div>
           <div class="three wide column"><b>Giới tính:</b></div>
-          <div class="thirteen wide column" id="gender">Nu</div>
+          <div class="thirteen wide column" id="gender"></div>
           <div class="three wide column"><b>Địa chỉ:</b></div>
-          <div class="thirteen wide column" id="address">30A, Le Hong Phong, Vinh, Nghe An</div>
+          <div class="thirteen wide column" id="address"></div>
           <div class="three wide column"><b>Số điện thoại:</b></div>
-          <div class="thirteen wide column" id="phone_number">0972403331</div>
+          <div class="thirteen wide column" id="phone_number"></div>
           <div class="three wide column"><b>Số CMND:</b></div>
-          <div class="thirteen wide column" id="identity_card_number">0972403331</div>
+          <div class="thirteen wide column" id="identity_card_number"></div>
           <div class="three wide column"><b>Ngày đăng ký:</b></div>
-          <div class="thirteen wide column" id="created_at">20/11/2006</div>
+          <div class="thirteen wide column" id="created_at"></div>
           <div class="three wide column"><b>Ngày vào:</b></div>
-          <div class="thirteen wide column" id="check_in_date">20/12/2006</div>
+          <div class="thirteen wide column" id="check_in_date"></div>
           <div class="three wide column"><b>Thời gian gia hạn:</b></div>
-          <div class="thirteen wide column" id="check_out_date">1 nam</div>
+          <div class="thirteen wide column" id="check_out_date"></div>
           <div class="three wide column"><b>Trạng thái:</b></div>
-          <div class="thirteen wide column" id="status">Active</div>
+          <div class="thirteen wide column" id="status"></div>
         </div>
       </div>
     </div>
@@ -188,7 +185,6 @@
 //FILL VAO MODAL SHOW
   function showStudentInfo(member_id) {
     $('.ui.modal.student_info').modal('show');
-    console.log(member_id);
     $.ajax({
       type: 'GET',
       url: `/manager/student-management/${member_id}/show`,
@@ -200,8 +196,20 @@
         $('#class_name').html(result.student_profile.class_name)
         $('#email').html(result.student_profile.email)
         $('#name').html(result.student_profile.name)
-        $('#birthday').html(result.student_profile.date_of_birth)
-        $('#gender').html(result.student_profile.gender)
+        // $('#birthday').html(result.student_profile.date_of_birth)
+        if (result.student_profile.date_of_birth){
+          let date = new Date(result.student_profile.date_of_birth);
+          $('#birthday').html(`${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`)
+        }
+        else{
+          $('#birthday').html("")
+        }
+        if(result.student_profile.gender == "MALE"){
+           $('#gender').html("Nam")
+        } 
+        else if(result.student_profile.gender == "FEMALE"){
+          $('#gender').html("Nữ")
+        }
         $('#address').html(result.student_profile.address)
         $('#phone_number').html(result.student_profile.phone_number)
         $('#identity_card_number').html(result.student_profile.identity_card_number)

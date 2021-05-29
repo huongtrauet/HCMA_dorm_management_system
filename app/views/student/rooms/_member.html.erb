@@ -76,7 +76,7 @@
 
         $('#student_name').html(result.student.name)
         $('#student_id_number').html(result.student.student_id_number)
-        $('#date_of_birth').html(date ? `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}` : null)
+        $('#date_of_birth').html(date ? `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}` : null)
         $('#phone_number').html(result.student_profile.phone_number)
         $('#address').html(result.student_profile.address)
         if(result.student_profile.gender == "MALE"){

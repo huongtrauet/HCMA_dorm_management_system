@@ -292,29 +292,6 @@
     }
   }
 
-  function uploadData(data) {
-    let form = new FormData()
-    form.set('file', data.files[0])// lấy file đầu tiên trong đống ng dùng chọn thêm vào
-    $.ajax({
-      type: "POST",
-      url: "/manager/service-management/import",
-      processData: false,
-      contentType: false,
-      cache: false,
-      mimeType: 'multipart/form-data',
-      data: form,
-      success: function(result){
-        // toastr.success(JSON.parse(result).message)
-        // toastr.success(JSON.parse(result).message)
-        window.localStorage.setItem('imported', JSON.parse(result).message )
-        window.location.reload()
-      },
-      error: function (error){
-        toastr.error(JSON.parse(error.responseText).message)
-        // toastr.success("Update avatar failed!")
-      }
-    })
-  }
   //chọn 1
   function onHandleCheckbox (event) {
     var checkboxes = $('input:checkbox:checked').length;
@@ -330,6 +307,27 @@
       $('.remind .button').removeClass('hover');
       $('.remind .button').prop('disabled', true)
     }
+  }
+
+  function uploadData(data) {
+    let form = new FormData()
+    form.set('file', data.files[0])// lấy file đầu tiên trong đống ng dùng chọn thêm vào
+    $.ajax({
+      type: "POST",
+      url: "/manager/service-management/import",
+      processData: false,
+      contentType: false,
+      cache: false,
+      mimeType: 'multipart/form-data',
+      data: form,
+      success: function(result){
+        window.localStorage.setItem('imported', JSON.parse(result).message )
+        window.location.reload()
+      },
+      error: function (error){
+        toastr.error(JSON.parse(error.responseText).message)
+      }
+    })
   }
 
   function onHandleFilter (event) {
@@ -358,7 +356,7 @@
 
       }
     })
-   
+
     document.querySelectorAll('#max_charge .item').forEach(item => {
       item.classList.remove("disabled")
       if(parseInt(document.querySelectorAll("input[name=min_charge]")[0].value) != 0 ){
@@ -568,8 +566,8 @@
               prompt: 'Vui lòng nhập tiền điện!!'
             },
             {
-              type: 'integer[0..1000000000000]',
-              prompt: 'Tiền điện không được ít hơn 0 vnđ và không được quá 1000000000000 vnđ!!'
+              type: 'integer[0..1000000000]',
+              prompt: 'Tiền điện không được ít hơn 0 vnđ và không được quá 1000000000 vnđ!!'
             }
           ]
         },
@@ -590,8 +588,8 @@
               prompt: 'Vui lòng nhập tổng tiền!!'
             },
             {
-              type: 'integer[0..1000000000000]',
-              prompt: 'Tổng tiền hoá đơn không được ít hơn 0 vnđ không được quá 1000000000000 vnđ!!'
+              type: 'integer[0..1000000000]',
+              prompt: 'Tổng tiền hoá đơn không được ít hơn 0 vnđ không được quá 1000000000 vnđ!!'
             }
           ]
         },
@@ -603,8 +601,8 @@
               prompt: 'Vui lòng nhập tiền nước!!'
             },
             {
-              type: 'integer[0..1000000000000]',
-              prompt: 'Tiền nước không được ít hơn 0 vnđ không được quá 1000000000000 vnđ!!'
+              type: 'integer[0..1000000000]',
+              prompt: 'Tiền nước không được ít hơn 0 vnđ không được quá 1000000000 vnđ!!'
             }
           ]
         }
@@ -650,7 +648,7 @@
   if(localStorage.getItem('delete_bill')) {
       toastr.success(localStorage.getItem('delete_bill'))
       localStorage.removeItem('delete_bill')
-    }
+  }
 
 </script>
 <style>

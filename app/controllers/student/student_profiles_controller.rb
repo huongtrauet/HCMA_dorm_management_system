@@ -101,10 +101,10 @@ class Student::StudentProfilesController < StudentMainController
     end
 
     # Only allow a list of trusted parameters through.
-    def student_profile_params
-      # params.fetch(:student_profile, {})
-      params.require(:student_profile).permit :email, :class_name, :name, :date_of_birth, :identity_card_number, :address, :phone_number, :gender
-    end
+    # def student_profile_params
+    #   # params.fetch(:student_profile, {})
+    #   params.require(:student_profile).permit :email, :class_name, :name, :date_of_birth, :identity_card_number, :address, :phone_number, :gender
+    # end
     def student_profile_params
       profile_params = params.require(:student).require(:student_profile_attributes).permit(:email, :class_name, :date_of_birth, :identity_card_number, :address, :phone_number, :gender)
       profile_params.merge!(class_name: nil) if profile_params[:class_name] == ""

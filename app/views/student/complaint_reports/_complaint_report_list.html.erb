@@ -103,7 +103,7 @@
         console.log("success")
         console.log(result.complaint_report.title)
         let date = new Date(result.complaint_report.created_at)
-        $('#created_date').html(`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`)
+        $('#created_date').html(`${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`)
         $('#report_title_show').html(result.complaint_report.title)
         $('#report_description_show').html(result.complaint_report.description)
         $('#report_note_show').html(result.complaint_report.reject_reason)

@@ -9,7 +9,6 @@ class Student::StudentSessionsController < StudentMainController
     # byebug
     student = find_student_by_student_id_number
     if student&.authenticate params[:password]
-      flash[:success] = "Đăng nhập thành công"
       log_in student
       params[:remember_me] == 'on' ? remember(student) : forget(student)
       redirect_back_or '/student'
