@@ -3,10 +3,11 @@ Rails.application.routes.draw do
   resources :managers
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   scope "(:locale)", locale: /en|vi/ do
-    root "students#index"
+    # root "students#index"
     resources :managers
   end
   mount ActionCable.server => '/cable'
+  get "/" => redirect("/student/login")
   namespace :manager do
     get "/" => redirect("/manager/students-arrangement")
 
