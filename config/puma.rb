@@ -1,11 +1,12 @@
-# # Change to match your CPU core count
-# workers 1
+
+# Change to match your CPU core count
+workers 1
 
 # # Min and Max threads per worker
 # threads 1, 6
 
-# app_dir = File.expand_path("../..", __FILE__)
-# shared_dir = "#{app_dir}/shared"
+app_dir = "/home/ubuntu/HCMA_dorm_management_system"
+shared_dir = "#{app_dir}/tmp"
 
 # # Default to production
 # rails_env = ENV['RAILS_ENV'] || "production"
@@ -22,8 +23,8 @@
 # state_path "#{shared_dir}/pids/puma.state"
 # activate_control_app
 
-# on_worker_boot do
-#   require "active_record"
-#   ActiveRecord::Base.connection.disconnect! rescue ActiveRecord::ConnectionNotEstablished
-#   ActiveRecord::Base.establish_connection(YAML.load_file("#{app_dir}/config/database.yml")[rails_env])
-# end
+on_worker_boot do
+  require "active_record"
+  ActiveRecord::Base.connection.disconnect! rescue ActiveRecord::ConnectionNotEstablished
+  ActiveRecord::Base.establish_connection(YAML.load_file("#{app_dir}/config/database.yml")[rails_env])
+end
