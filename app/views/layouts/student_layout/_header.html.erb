@@ -20,12 +20,12 @@
                 <% if current_user.notifications.length > 0 %>
                   <% current_user.notifications.order('created_at DESC').each do |notification| %>
                     <% if notification.is_read %>
-                      <div class="item noti_item" style="width: 20rem; max-height: 9.5rem; overflow: hidden; display: block">
+                      <div class="item noti_item" style="width: 20rem; max-height: 11.5rem; overflow: hidden; display: block">
                         <div onclick="readNotification(<%= notification.id %>, '<%= notification.noti_type %>', <%= notification.report_id || 0 %>, <%= notification.page || 0 %>)" style= "width: 17rem; overflow: hidden;text-overflow: ellipsis;word-wrap: break-word;-webkit-line-clamp: 2;-webkit-box-orient: vertical;line-height: 2.25rem;  white-space: pre-wrap;"><%= notification.message %></div>
                         <p style="font-size: 0.7rem; color: #b8b8b8"><%= time_ago(notification.created_at) %></p>
                       </div>
                     <% else %>
-                      <div class="item noti_item" style="width: 20rem; max-height: 9.5rem; overflow: hidden; display: block; background-color: #e0e0e0">
+                      <div class="item noti_item" style="width: 20rem; max-height: 11.5rem; overflow: hidden; display: block; background-color: #e0e0e0">
                         <div onclick="readNotification(<%= notification.id %>, '<%= notification.noti_type %>', <%= notification.report_id || 0 %>, <%= notification.page || 0 %>)" style= "width: 17rem; overflow: hidden;text-overflow: ellipsis;word-wrap: break-word;-webkit-line-clamp: 2;-webkit-box-orient: vertical;line-height: 2.25rem;  white-space: pre-wrap;"><%= notification.message %></div>
                         <p style="font-size: 0.7rem; color: #b8b8b8"><%= time_ago(notification.created_at) %></p>
                       </div>
@@ -106,12 +106,12 @@
     var channel = pusher.subscribe(current_channel);
     channel.bind('new', function(data){
       if (data.notification.is_read) {
-        $('#list_noti').prepend(`<div class="item noti_item" style="width: 20rem; max-height: 9.5rem; overflow: hidden; display: block; background-color: #e0e0e0">
+        $('#list_noti').prepend(`<div class="item noti_item" style="width: 20rem; max-height: 11.5rem; overflow: hidden; display: block; background-color: #e0e0e0">
                                 <div onclick="readNotification(${data.notification.id}, '${data.notification.noti_type}', ${data.notification.report_id || 0}, ${data.notification.page || 0})" style= "width: 17rem; overflow: hidden;text-overflow: ellipsis;word-wrap: break-word;-webkit-line-clamp: 2;-webkit-box-orient: vertical;line-height: 2.25rem;  white-space: pre-wrap; display: flex; align-items: center">${data.notification.message}</div>
                                 <p style="font-size: 0.7rem; color: #b8b8b8">Vừa xong</p>
                               </div>`)
       } else {
-        $('#list_noti').prepend(`<div class="item noti_item" style="width: 20rem; max-height: 9.5rem; overflow: hidden; display: block; background-color: #e0e0e0">
+        $('#list_noti').prepend(`<div class="item noti_item" style="width: 20rem; max-height: 11.5rem; overflow: hidden; display: block; background-color: #e0e0e0">
                                 <div onclick="readNotification(${data.notification.id}, '${data.notification.noti_type}', ${data.notification.report_id || 0}, ${data.notification.page || 0})" style= "width: 17rem; overflow: hidden;text-overflow: ellipsis;word-wrap: break-word;-webkit-line-clamp: 2;-webkit-box-orient: vertical;line-height: 2.25rem;  white-space: pre-wrap; display: flex; align-items: center">${data.notification.message}</div>
                                 <p style="font-size: 0.7rem; color: #b8b8b8">Vừa xong</p>
                               </div>`)

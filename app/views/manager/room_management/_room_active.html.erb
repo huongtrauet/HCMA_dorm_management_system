@@ -6,9 +6,9 @@
         <p style="font-size: 4rem; margin-bottom: 0.7rem;"><%= room.room_name %></p>
         <p style="font-size: 1.5rem">
         <% if room.room_type == 'VIP' %>
-          <b><%= room.room_type %></b>
+          <b>Phòng <%= room.room_type %></b>
         <% elsif room.room_type == 'NORMAL'%>
-          <b>Thường</b>
+          <b>Phòng thường</b>
         <% end %>
         </p>
       </div>
