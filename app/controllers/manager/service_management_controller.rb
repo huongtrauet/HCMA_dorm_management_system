@@ -83,7 +83,7 @@ class Manager::ServiceManagementController < ManagerMainController
     @room = @service_charge.room
     @students = @room.students
     @students.each do |student|
-      Notification.create(message: "Nhắc nhờ nộp tiền dịch vụ tháng #{@service_charge.month}. Sinh viên nhanh chóng thanh toán hoá đơn phí dịch vụ tại phòng kế toán.", sender: current_user, receiver: student, noti_type: "service_charge_remind")
+      Notification.create(message: "Nhắc nhở nộp tiền dịch vụ tháng #{@service_charge.month}. Sinh viên nhanh chóng thanh toán hoá đơn phí dịch vụ tại phòng kế toán.", sender: current_user, receiver: student, noti_type: "service_charge_remind")
     end
   end
 
