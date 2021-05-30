@@ -5,45 +5,14 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-Manager.create!(email: 'manager123@gmail.com', phone_number: "0972403331", password: '888888', password_confirmation: '888888', channel: "manager")
+Manager.create!(email: 'hcma_manager@gmail.com', phone_number: "0972403331", password: 'hcmamanager', password_confirmation: 'hcmamanager', channel: "manager")
 
 18.times do |index|
-  Building.create!(name: "A#{index + 1}", total_floor: 10)
+  Building.create!(name: "A#{index + 1}", total_floor: 5)
 end
 
-Room.create!(room_name: 'A1_0000', number_student: 0, max_number_student: 100000, room_type: 'NORMAL', gender: "FEMALE", building_id: 1, status: 'UNFILLED')
-Room.create!(room_name: 'A1_0201', number_student: 0, max_number_student: 6, room_type: 'VIP', gender: "MALE", building_id: 1, status: 'UNFILLED')
-Room.create!(room_name: 'A1_0202', number_student: 0, max_number_student: 6, room_type: 'VIP', gender: "MALE", building_id: 1, status: 'PENDING')
-Room.create!(room_name: 'A1_0203', number_student: 0, max_number_student: 6, room_type: 'VIP', gender: "MALE", building_id: 1, status: 'PENDING')
-Room.create!(room_name: 'A1_0204', number_student: 0, max_number_student: 6, room_type: 'VIP', gender: "MALE", building_id: 1, status: 'PENDING')
-Room.create!(room_name: 'A1_0205', number_student: 0, max_number_student: 6, room_type: 'VIP', gender: "MALE", building_id: 1, status: 'PENDING')
-Room.create!(room_name: 'A1_0206', number_student: 0, max_number_student: 6, room_type: 'VIP', gender: "MALE", building_id: 1, status: 'PENDING')
-Room.create!(room_name: 'A1_0207', number_student: 0, max_number_student: 6, room_type: 'VIP', gender: "MALE", building_id: 1, status: 'PENDING')
-Room.create!(room_name: 'A1_0208', number_student: 0, max_number_student: 6, room_type: 'VIP', gender: "MALE", building_id: 1, status: 'PENDING')
-Room.create!(room_name: 'A1_0209', number_student: 0, max_number_student: 6, room_type: 'VIP', gender: "MALE", building_id: 1, status: 'PENDING')
-Room.create!(room_name: 'A1_0210', number_student: 0, max_number_student: 6, room_type: 'VIP', gender: "MALE", building_id: 1, status: 'PENDING')
-Room.create!(room_name: 'A1_0301', number_student: 0, max_number_student: 6, room_type: 'VIP', gender: "MALE", building_id: 1, status: 'PENDING')
-Room.create!(room_name: 'A1_0302', number_student: 0, max_number_student: 6, room_type: 'VIP', gender: "MALE", building_id: 1, status: 'PENDING')
-Room.create!(room_name: 'A1_0303', number_student: 0, max_number_student: 6, room_type: 'VIP', gender: "MALE", building_id: 1, status: 'PENDING')
-Room.create!(room_name: 'A2_0203', number_student: 0, max_number_student: 6, room_type: 'NORMAL', gender: "FEMALE", building_id: 2)
-Room.create!(room_name: 'A2_0304', number_student: 0, max_number_student: 6, room_type: 'NORMAL', gender: "FEMALE", building_id: 2)
-Room.create!(room_name: 'A2_0305', number_student: 0, max_number_student: 6, room_type: 'VIP', gender: "MALE", building_id: 2)
-Room.create!(room_name: 'A3_0406', number_student: 0, max_number_student: 6, room_type: 'NORMAL', gender: "FEMALE", building_id: 3)
-Room.create!(room_name: 'A4_1007', number_student: 0, max_number_student: 6, room_type: 'NORMAL', gender: "FEMALE", building_id: 4)
-Room.create!(room_name: 'A5_1007', number_student: 0, max_number_student: 6, room_type: 'NORMAL', gender: "FEMALE", building_id: 5)
-Room.create!(room_name: 'A6_1007', number_student: 0, max_number_student: 6, room_type: 'NORMAL', gender: "FEMALE", building_id: 6)
-Room.create!(room_name: 'A7_1007', number_student: 0, max_number_student: 6, room_type: 'NORMAL', gender: "FEMALE", building_id: 7)
-Room.create!(room_name: 'A8_1007', number_student: 0, max_number_student: 6, room_type: 'NORMAL', gender: "FEMALE", building_id: 8)
-Room.create!(room_name: 'A9_1007', number_student: 0, max_number_student: 6, room_type: 'NORMAL', gender: "FEMALE", building_id: 9)
-Room.create!(room_name: 'A10_1007', number_student: 0, max_number_student: 6, room_type: 'NORMAL', gender: "FEMALE", building_id: 10)
-Room.create!(room_name: 'A11_1007', number_student: 0, max_number_student: 6, room_type: 'NORMAL', gender: "FEMALE", building_id: 11)
-Room.create!(room_name: 'A12_1007', number_student: 0, max_number_student: 6, room_type: 'NORMAL', gender: "FEMALE", building_id: 12)
-Room.create!(room_name: 'A13_1007', number_student: 0, max_number_student: 6, room_type: 'NORMAL', gender: "FEMALE", building_id: 13)
-Room.create!(room_name: 'A14_1007', number_student: 0, max_number_student: 6, room_type: 'NORMAL', gender: "FEMALE", building_id: 14)
-Room.create!(room_name: 'A15_1007', number_student: 0, max_number_student: 6, room_type: 'NORMAL', gender: "FEMALE", building_id: 15)
-Room.create!(room_name: 'A16_1007', number_student: 0, max_number_student: 6, room_type: 'NORMAL', gender: "FEMALE", building_id: 16)
-Room.create!(room_name: 'A17_1007', number_student: 0, max_number_student: 6, room_type: 'NORMAL', gender: "FEMALE", building_id: 17)
-Room.create!(room_name: 'A18_1007', number_student: 0, max_number_student: 6, room_type: 'NORMAL', gender: "FEMALE", building_id: 18)
+Room.import_file File.open("#{Rails.root}/public/room.xlsx")
+Student.import_file File.open("#{Rails.root}/public/sv.xlsx")
 
 # Student.create!(student_id_number: '17021070', password: '17021070', name: 'Nguyễn Thị Hương Trà', channel: "1", room_id: 1, extended_time: 6)
 # Student.create!(student_id_number: '17021076', password: '17021076', name: 'Vũ Văn Đức', channel: "2", room_id: 1, extended_time: 12)
@@ -68,6 +37,23 @@ Room.create!(room_name: 'A18_1007', number_student: 0, max_number_student: 6, ro
 # Student.create!(student_id_number: '17021089', password: '17021089', name: 'Nguyễn Thu Quỳnh', room_id: 1, channel: "20", status: "PENDING", extended_time: 6)
 # Student.create!(student_id_number: '17021090', password: '17021090', name: 'Nguyễn Hoàng Hà', room_id: 1, channel: "21", status: "PENDING", extended_time: 6)
 
+# Student.create!(student_id_number: '17021073', password: '17021073', name: 'Nguyễn Đức Mạnh', channel: "5", room_id: 2, status: "ACTIVE", extended_time: 6)
+# Student.create!(student_id_number: '17021074', password: '17021074', name: 'Nguyễn Thu Trang', channel: "6", room_id: 2, status: "ACTIVE", extended_time: 12)
+# Student.create!(student_id_number: '17021075', password: '17021075', name: 'Trần Minh Hùng', channel: "7", room_id: 2, status: "ACTIVE", extended_time: 18)
+# Student.create!(student_id_number: '17021077', password: '17021077', name: 'Thái Đức Tùng', channel: "8", room_id: 2, status: "ACTIVE", extended_time: 6)
+# Student.create!(student_id_number: '17021078', password: '17021078', name: 'Nguyễn Bảo Minh Châu', room_id: 2, channel: "9", status: "ACTIVE", extended_time: 6)
+# Student.create!(student_id_number: '17021079', password: '17021079', name: 'Nguyễn Thị Linh', room_id: 1, channel: "10", status: "PENDING", extended_time: 6)
+# Student.create!(student_id_number: '17021080', password: '17021080', name: 'Hồ Thị Diệu Linh', room_id: 1, channel: "11", status: "PENDING", extended_time: 6)
+# Student.create!(student_id_number: '17021081', password: '17021081', name: 'Đỗ Mai Trang', room_id: 1, channel: "12", status: "PENDING", extended_time: 6)
+# Student.create!(student_id_number: '17021082', password: '17021082', name: 'Đỗ Trang Trí', room_id: 1, channel: "13", status: "PENDING", extended_time: 6)
+# Student.create!(student_id_number: '17021083', password: '17021083', name: 'Nguyễn Mai Hương', room_id: 1, channel: "14", status: "PENDING", extended_time: 6)
+# Student.create!(student_id_number: '17021084', password: '17021084', name: 'Nguyễn Quỳnh Nhu', room_id: 1, channel: "15", status: "PENDING", extended_time: 6)
+# Student.create!(student_id_number: '17021085', password: '17021085', name: 'Trần Quỳnh Nhi', room_id: 1, channel: "16", status: "PENDING", extended_time: 6)
+# Student.create!(student_id_number: '17021086', password: '17021086', name: 'Phan Ánh Tuyết', room_id: 1, channel: "17", status: "PENDING", extended_time: 6)
+# Student.create!(student_id_number: '17021087', password: '17021087', name: 'Nguyễn Quang Đăng', room_id: 1, channel: "18", status: "PENDING", extended_time: 6)
+# Student.create!(student_id_number: '17021088', password: '17021088', name: 'Nguyễn Tuyết Mai', room_id: 1, channel: "19", status: "PENDING", extended_time: 6)
+# Student.create!(student_id_number: '17021089', password: '17021089', name: 'Nguyễn Thu Quỳnh', room_id: 1, channel: "20", status: "PENDING", extended_time: 6)
+# Student.create!(student_id_number: '17021090', password: '17021090', name: 'Nguyễn Hoàng Hà', room_id: 1, channel: "21", status: "PENDING", extended_time: 6)
 
 # StudentProfile.create!(email: '17021070@gmail.com', student_id: 1, name: "Nguyễn Thị Hương Trà", avatar: "https://i.pravatar.cc/150?img=3")
 # StudentProfile.create!(email: '17021076@gmail.com', student_id: 2, name: "Vũ Văn Đức", avatar: "https://i.pravatar.cc/150?img=4" )
@@ -207,6 +193,7 @@ Post.create!(title: "THÔNG BÁO!",
               writer_name: "Hương Trà",
               manager_id: 1, 
               status: "POSTED")
+
 ComplaintReport.create(
   title: "Tình hình kiến ba khoang ở các phòng",
   description: "Hiện tại phòng em 1410 và các phòng cùng tầng có rất nhiều kiến ba khoang, gây ảnh hưởng đến sức khoẻ sinh viên. Mong ban quản lý sớm có biện pháp khắc phục",
@@ -302,5 +289,5 @@ FormRequest.create(
   index: 3
 )
 
-Student.import_file File.open("#{Rails.root}/public/sv.xlsx")
+# Student.import_file File.open("#{Rails.root}/public/sv.xlsx")
 
