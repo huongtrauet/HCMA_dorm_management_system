@@ -56,22 +56,29 @@ class Manager::RoomManagementController < ManagerMainController
 
 
   def create
-    building_name = room_params[:room_name].split("_")[0]
-    building = Building.find_by(name: building_name)
-    if building
-      @room = Room.new(room_params.merge(building_id: building.id))
-    else 
-      new_building = Building.create(name: building_name)
-      @room = Room.new(room_params.merge(building_id: new_building.id))
-    end
+    name_validation = room_params[:room_name].split('_')
+    if name_validation.length == 2 && name_validation[0][0] == 'A' && /[0-9]/.match(name_validation[0][1..-1]) && name_validation[0][1..-1].length <= 2 && name_validation[0][1..-1].length >= 1 && /[0-9]/.match(name_validation[1]) && name_validation[1].length == 4
+      building_name = room_params[:room_name].split("_")[0]
+      building = Building.find_by(name: building_name)
+      if building
+        @room = Room.new(room_params.merge(building_id: building.id))
+      else 
+        new_building = Building.create(name: building_name)
+        @room = Room.new(room_params.merge(building_id: new_building.id))
+      end
 
-    if @room.save
-      respond_to do |format|
-        format.json { render json: { message: 'Tạo mới một phòng thành công!'}, status: :ok}
+      if @room.save
+        respond_to do |format|
+          format.json { render json: { message: 'Tạo mới một phòng thành công!'}, status: :ok}
+        end
+      else
+        respond_to do |format|
+          format.json { render json: { message: 'Tạo mới phòng không thành công :('}, status: :bad_request}
+        end
       end
     else
       respond_to do |format|
-        format.json { render json: { message: 'Tạo mới phòng không thành công :('}, status: :bad_request}
+        format.json { render json: { message: 'Tên phòng không đúng định dạng :('}, status: :bad_request}
       end
     end
   end
