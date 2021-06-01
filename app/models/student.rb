@@ -110,6 +110,21 @@ class Student < ApplicationRecord
     def new_token
       SecureRandom.urlsafe_base64
     end
+
+    def import_file file
+      # file có thể ở dạng file hoặc là path của file đều được xử lý chính xác bởi method open
+      spreadsheet = Roo::Spreadsheet.open file
+      # lấy cột header (column name)
+      header = spreadsheet.row 1
+      (2..spreadsheet.last_row).each do |i|
+        # lấy ra bản ghi và biến đổi thành hash để có thể tạo record tương ứng
+        data = [header, spreadsheet.row(i)].transpose.to_h
+        # byebug
+        student = Student.create(student_id_number: data["student_id_number"].to_s, name: data["name"], channel: Time.now.to_i, password: data["student_id_number"].to_s)
+        StudentProfile.create!(email: data["email"], student_id: student.id, name: data["name"])
+      end
+    end
+    
   end
   def remember
     self.remember_token = Student.new_token

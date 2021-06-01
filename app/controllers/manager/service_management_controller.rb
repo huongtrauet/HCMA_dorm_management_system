@@ -27,6 +27,7 @@ class Manager::ServiceManagementController < ManagerMainController
   # UPDATE SERVICE CHARGE IN SERVICE CHARGE MANAGEMENT
 
   def update_service_charge
+    # byebug
     @service_charge = ServiceCharge.find(service_charge_params[:charge_id])
     params = service_charge_params
     if @service_charge.status === 'UNPAID' && service_charge_params[:status] === 'PAID'

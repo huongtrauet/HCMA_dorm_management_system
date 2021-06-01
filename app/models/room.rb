@@ -21,6 +21,21 @@ class Room < ApplicationRecord
   validates :room_type, presence: true, allow_nil: false, inclusion: { in: ['NORMAL', 'VIP']}
   validates :status, presence: true, allow_nil: false, inclusion: { in: ['PENDING', 'UNFILLED','FULL']}
 
+  class << self
+    def import_file file
+      # file có thể ở dạng file hoặc là path của file đều được xử lý chính xác bởi method open
+      spreadsheet = Roo::Spreadsheet.open file
+      # lấy cột header (column name)
+      header = spreadsheet.row 1
+      (2..spreadsheet.last_row).each do |i|
+        # lấy ra bản ghi và biến đổi thành hash để có thể tạo record tương ứng
+        data = [header, spreadsheet.row(i)].transpose.to_h
+        # byebug
+        room = Room.create(room_name: data["room_name"], number_student: data["number_student"], max_number_student: data["max_number_student"], room_type: data["room_type"], gender: data["gender"], building_id: data["building_id"])
+      end
+    end
+  end
+
   def update_floor
     floor = self.room_name.split('_')[1][0,2].to_i
     self.update(floor: floor)
