@@ -6,6 +6,6 @@ class UserMailer < ApplicationMailer
     else
       @email = user.email
     end
-    mail to: @email, subject: "Ký túc xá Học viện Chính trị Quốc gia Hồ Chí Minh"
+    mail to: @email, subject: "Ký túc xá Học viện Chính trị Quốc gia Hồ Chí Minh", from: 'admin@hcma-dormitory.com'
   end
 end
