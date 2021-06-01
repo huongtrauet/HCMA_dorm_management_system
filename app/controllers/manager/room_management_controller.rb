@@ -15,6 +15,11 @@ class Manager::RoomManagementController < ManagerMainController
     if @room.update(update_room_params)
       order = @room.room_name.split('_')[0][1..-1].concat(@room.room_name.split('_')[1])
       @room.update_attribute(:order_name, order.to_i)
+      if @room.number_student == update_room_params[:max_number_student].to_i
+        @room.update_attribute(:status, "FULL")
+      elsif @room.number_student < update_room_params[:max_number_student].to_i
+        @room.update_attribute(:status, "UNFILLED")
+      end
       respond_to do |format|
         format.json { render json: { message: "Cập nhật thành công!" }, status: :ok}
       end

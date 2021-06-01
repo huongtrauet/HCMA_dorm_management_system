@@ -49,7 +49,13 @@
             </div>
             <div class="required field field_line">
               <label>Trạng thái</label>
-              <input type="text" name="status" required placeholder="Tên phòng" disabled value="<%= @room.status%>"/>
+              <% if @room.status == "FULL" %>
+                <input type="text" name="status" id="room_status" required placeholder="Đã đầy" value="Đã đầy" disabled/>
+              <% elsif @room.status == "UNFILLED"  %>
+                <input type="text" name="status" id="room_status" required placeholder="Đang còn chỗ" value="Đang còn chỗ" disabled/>
+              <% else %>
+                <input type="text" name="status" id="room_status" required placeholder="Đang bỏ trống" value="Đang bỏ trống" disabled/>
+              <% end %>
             </div>
           </div>
           <div class="two fields">
@@ -98,6 +104,13 @@
       success: function(result){
         console.log("sbumit success")
         toastr.success("Cập nhật thành công!")
+        if(JSON.parse(result).room.status == "FULL"){
+           $("#room_status").val("Đã đầy")
+        } else if (JSON.parse(result).room.status == "UNFILLED"){
+          $("#room_status").val("Đang bỏ trống")
+        // debugger
+
+        }
       },
       error: function (error) {
          toastr.error("Xin lỗi, cập nhật khồng thành công :(")

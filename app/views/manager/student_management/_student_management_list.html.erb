@@ -54,8 +54,9 @@
               <% if student.room.room_name == 'A1_0000' %>
                 Đang xử lý
               <% else %>
-                <%= student.room.room_name %></td>
+                <%= student.room.room_name %>
               <% end %>
+            </td>
             <td><%= student.student_profile.class_name %></td>
             <% if student.check_in_date %>
               <td><%= student.check_in_date.to_date %></td>
