@@ -11,7 +11,7 @@ Manager.create!(email: 'manager123@gmail.com', phone_number: "0972403331", passw
   Building.create!(name: "A#{index + 1}", total_floor: 5)
 end
 
-Room.import_file File.open("#{Rails.root}/public/room.xlsx")
+Room.import_file File.open("#{Rails.root}/public/hcmaroomlocal.xlsx")
 Student.import_file File.open("#{Rails.root}/public/sv.xlsx")
 
 # Room.create!(room_name: 'A1_0000', number_student: 0, max_number_student: 100000, room_type: 'NORMAL', gender: "FEMALE", building_id: 1, status: 'UNFILLED')
