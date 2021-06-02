@@ -1,4 +1,4 @@
-  <table class="ui very basic selectable table">
+ <table class="ui very basic selectable table">
     <thead>
       <tr>
         <th>STT</th>
@@ -44,12 +44,13 @@
           <td>
           <%= link_to "/manager/room-management/rooms/#{room.id}", style: "display: block; width: 100%", data: { turbolinks: false } do %>
             <% if room.status == 'FULL' %>
-                <a class="ui tag label" style="background-color: #3889c8; color: #ffffff !important">Đã đầy</a>
-              <% elsif room.status == 'UNFILLED' %>
-                <a class="ui teal tag label teal_label" style="">Đang còn chỗ</a>
-              <% else %>
-                <a class="ui tag label" style="">Đang bỏ trống</a>
+              <a class="ui tag label" style="background-color: #3889c8; color: #ffffff !important">Đã đầy</a>
+            <% elsif room.status == 'UNFILLED' %>
+              <a class="ui teal tag label teal_label" style="">Đang còn chỗ</a>
+            <% else %>
+              <a class="ui tag label" style="">Đang bỏ trống</a>
             <% end %>
+          <% end %>
           </td>
         </tr>
       <% end %>
