@@ -11,8 +11,8 @@ Manager.create!(email: 'hcma_manager@gmail.com', phone_number: "0972403331", pas
   Building.create!(name: "A#{index + 1}", total_floor: 5)
 end
 
-Room.import_file File.open("#{Rails.root}/public/room.xlsx")
-Student.import_file File.open("#{Rails.root}/public/sv.xlsx")
+Room.import_file File.open("#{Rails.root}/public/hcmaroom.xlsx")
+Student.import_file File.open("#{Rails.root}/public/student.xlsx")
 
 # Student.create!(student_id_number: '17021070', password: '17021070', name: 'Nguyễn Thị Hương Trà', channel: "1", room_id: 1, extended_time: 6)
 # Student.create!(student_id_number: '17021076', password: '17021076', name: 'Vũ Văn Đức', channel: "2", room_id: 1, extended_time: 12)
