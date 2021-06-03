@@ -36,7 +36,7 @@
                   <input type="hidden" name="student_id" id="student_id" value="<%= @student.id %>"/>
                   <div class="required field field_line">
                     <%= student.label :mã_học_viên %>
-                    <%= student.text_field :student_id_number, class: "input", id: "student_id_number_field", placeholder: "Mã học viên" %>
+                    <%= student.text_field :student_id_number, class: "input", id: "student_id_number_field", disabled: true, placeholder: "Mã học viên" %>
                   </div>
                   <div class="field field_line">
                     <label>Phòng</label>
