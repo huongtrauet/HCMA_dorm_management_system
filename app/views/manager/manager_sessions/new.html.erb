@@ -28,12 +28,22 @@
             </button>
           </div>
           <%# <button class="ui inverted primary button">Primary</button> %>
-          <div class="reset_btn" onclick="resetPassword()">Quên mật khẩu</div>
+          <div class="reset_btn" onclick="openModal()">Quên mật khẩu</div>
          <form> 
       </div>
     </div>
     <div class="eight wide column" style="padding-right: 5rem">
       <img class="ui image" style="height: 100vh; width: 100%" src="/assets/manager_login.svg"/>
+    </div>
+  </div>
+
+  <div class="ui small modal" id="reset_password">
+    <div class="header">Quên mật khẩu</div>
+    <div class="content">
+      <div>Link đổi mật khẩu sẽ được gửi vào email ****manager@gmail.com</div>
+    </div>
+    <div class="actions">
+      <div class="ui button custom_btn" id="reset_password_btn" onclick="resetPassword()">Gửi</div>
     </div>
   </div>
 </div>
@@ -46,15 +56,27 @@
 </style>
 
 <script>
+  $('#reset_password')
+    .modal()
+  ;
+  function openModal() {
+    $("#reset_password_form").form('reset')
+    $('#reset_password').modal('show')
+  }
   function resetPassword() {
+    $("#reset_password_btn").addClass("loading");
     $.ajax({
       type: 'POST',
       url: '/manager/reset-password',
       success: function(result){
         toastr.success(result.message)
+        $("#reset_password_btn").addClass("loading");
+        $('#reset_password').modal('hide')
       },
       error: function (error) {
         toastr.error(error.responseJSON.message)
+        $("#reset_password_btn").addClass("loading");
+        $('#reset_password').modal('hide')
       }
     })
   }

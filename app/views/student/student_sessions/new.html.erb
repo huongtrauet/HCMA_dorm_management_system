@@ -49,7 +49,7 @@
       </form>
     </div>
     <div class="actions">
-      <div class="ui button custom_btn" onclick="resetPassword()">Gửi</div>
+      <div class="ui button custom_btn" id="reset_password_btn" onclick="resetPassword()">Gửi</div>
     </div>
   </div>
 </div>
@@ -66,9 +66,11 @@
     .modal()
   ;
   function openModal() {
+    $("#reset_password_form").form('reset')
     $('#reset_password').modal('show')
   }
   function resetPassword() {
+    $("#reset_password_btn").addClass("loading");
     $.ajax({
       type: 'POST',
       url: '/student/reset-password',
@@ -77,10 +79,12 @@
       },
       success: function(result){
         toastr.success(result.message)
+        $("#reset_password_btn").removeClass("loading");
         $('#reset_password').modal('hide')
       },
       error: function (error) {
         toastr.error(error.responseJSON.message)
+        $("#reset_password_btn").removeClass("loading");
         $('#reset_password').modal('hide')
       }
     })
