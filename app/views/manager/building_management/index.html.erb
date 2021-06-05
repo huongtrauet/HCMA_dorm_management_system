@@ -35,7 +35,7 @@
                   <div class="pie" style="transform:rotate(180deg);"></div>
                 </div>
                 <div class="pieSlice2 hold" style="transform:rotate(<%= building.full_room_quantity.to_f/ building.rooms.count * 360 + 180 %>deg);">
-                  <div class="pie" style="transform:rotate(<%= building.unfilled_room_quantity/ building.rooms.count * 360 - 180 %>deg);"></div>
+                  <div class="pie" style="transform:rotate(<%= building.unfilled_room_quantity.to_f/ building.rooms.count * 360 - 180 %>deg);"></div>
                 </div>
               <% else %>
                 <div class="pieSlice2 hold" style="transform:rotate(<%= building.full_room_quantity.to_f/ building.rooms.count * 360 %>deg);">
