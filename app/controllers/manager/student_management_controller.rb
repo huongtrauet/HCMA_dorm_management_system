@@ -7,6 +7,7 @@ class Manager::StudentManagementController < ManagerMainController
     @students = Student.all.order('first_name ASC').order('last_name ASC').page(params[:page])
     @page = 1 if params[:page].blank?
     @page = params[:page].to_i if params[:page].present?
+    # @cookie_id = cookies.signed[:user_id]
   end
 
   def edit

@@ -73,7 +73,7 @@ class Manager::StudentsArrangementController < ManagerMainController
 
   def search_pending_students_arrangement
     if params[:q] 
-      @students = Student.all.ransack(name_or_student_id_number_cont: params[:q]).result.order('first_name ASC').order('last_name ASC')
+      @students = Student.where(status: "PENDING").ransack(name_or_student_id_number_cont: params[:q]).result.order('first_name ASC').order('last_name ASC')
       if @students
         respond_to do |format|
           format.js {render partial: 'pending_student_list', locals: { pending_students: @students } } 
@@ -84,7 +84,7 @@ class Manager::StudentsArrangementController < ManagerMainController
         end
       end
     elsif params[:q] == "" or params[:q] == nil
-      @student = Student.all..order('first_name ASC').order('last_name ASC')
+      @student = Student.where(status: "PENDING").order('first_name ASC').order('last_name ASC')
       respond_to do |format|
         format.js {render partial: 'pending_student_list', locals: { pending_students: @students } } 
       end
